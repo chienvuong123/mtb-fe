@@ -13,6 +13,7 @@ import type { TextAreaProps } from 'antd/lib/input';
 export enum INPUT_TYPE {
   TEXT,
   SELECT,
+  PASSWORD,
   DATE_PICKER,
   NUMBER,
   TEXT_AREA,
@@ -27,6 +28,10 @@ export type TBaseFormItem = FormItemProps & {
 export type TFormItem =
   | (TBaseFormItem & {
       type: INPUT_TYPE.TEXT;
+      inputProps?: InputProps;
+    })
+  | (TBaseFormItem & {
+      type: INPUT_TYPE.PASSWORD;
       inputProps?: InputProps;
     })
   | (TBaseFormItem & {

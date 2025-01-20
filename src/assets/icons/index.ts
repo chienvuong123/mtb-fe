@@ -41,6 +41,7 @@ export { ReactComponent as TickCircle } from './tick-circle.svg';
 export { ReactComponent as WarningIcon } from './warning-2.svg';
 export { ReactComponent as LogoOpenIcon } from './logo_open.svg';
 export { ReactComponent as LogoCollapsed } from './logo_collapsed.svg';
+export { ReactComponent as LogoDisplay } from './display-logo.svg';
 export { ReactComponent as VectorIcon } from './vector.svg';
 export { ReactComponent as PlusIcon } from './plus.svg';
 export { ReactComponent as HelpCircleIcon } from './help-circle.svg';
