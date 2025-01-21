@@ -2,6 +2,9 @@ const ROUTE_PATH = {
   HOME: '/',
 
   LOGIN: '/login',
+  FORGOT_PASSWORD: '/forgot-password',
+  OTP: '/otp',
+  CONFIRM_PASSWORD: '/confirm-password',
   REGISTER: '/register',
 
   EXAMPLE: '/example',
@@ -12,4 +15,13 @@ const ROUTE_PATH = {
   },
 };
 
-export const { HOME, LOGIN, REGISTER, EXAMPLE, CATEGORY } = ROUTE_PATH;
+export const {
+  HOME,
+  LOGIN,
+  FORGOT_PASSWORD,
+  CONFIRM_PASSWORD,
+  OTP,
+  REGISTER,
+  EXAMPLE,
+  CATEGORY,
+} = ROUTE_PATH;

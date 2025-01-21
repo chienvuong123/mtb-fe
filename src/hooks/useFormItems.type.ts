@@ -1,18 +1,21 @@
-// import type {
+// import {
+//   Input,
 //   ColProps,
 //   DatePickerProps,
 //   FormItemProps,
+//   GetProps,
 //   InputNumberProps,
 //   InputProps,
 //   SelectProps,
 //   TimePickerProps,
 //   UploadProps,
 // } from 'antd';
-// import type { TextAreaProps } from 'antd/es/input';
+// import { TextAreaProps } from 'antd/es/input';
 
 // export enum INPUT_TYPE {
 //   TEXT,
 //   PASSWORD,
+//   OTP,
 //   SELECT,
 //   DATE_PICKER,
 //   NUMBER,
@@ -21,6 +24,9 @@
 //   FILE,
 // }
 
+// export type TOTPProps = GetProps<typeof Input.OTP>;
+// export type TPasswordProps = GetProps<typeof Input.Password>;
+
 // export type TFormItem = FormItemProps & { colProps?: ColProps } & (
 //     | {
 //         type: INPUT_TYPE.TEXT;
@@ -28,7 +34,11 @@
 //       }
 //     | {
 //         type: INPUT_TYPE.PASSWORD;
-//         inputProps: InputProps;
+//         inputProps: TPasswordProps;
+//       }
+//     | {
+//         type: INPUT_TYPE.OTP;
+//         inputProps: TOTPProps;
 //       }
 //     | {
 //         type: INPUT_TYPE.NUMBER;

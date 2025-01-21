@@ -1,0 +1,20 @@
+.form-authen {
+  .form-container {
+    max-width: 448px;
+    border-radius: 12px;
+    padding: 40px 32px 32px;
+    background: linear-gradient(
+      93.19deg,
+      #ffffff 0.35%,
+      rgba(255, 255, 255, 0.5) 100.17%
+    );
+    backdrop-filter: blur(30px);
+    .mbb-form-item-label {
+      line-height: 19px;
+    }
+  }
+
+  .text-link {
+    color: #141ed2;
+  }
+}

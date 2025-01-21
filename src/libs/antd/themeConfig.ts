@@ -36,6 +36,8 @@ const color = {
   ctError: '#e3171f',
   ct3: '#5E6371',
   ct4: '#667085',
+  ctHeading: '#262626',
+  ctSubtle: '#5A5A5A',
   ctLabelForm: '#161616',
   ctMenu: '#8A9298',
   ctWhite500: '#ffffff',
@@ -87,6 +89,7 @@ const theme: ThemeConfig = {
       fontSize: 14,
       lineHeight: 20,
       controlHeight: 40,
+      controlHeightLG: 48,
       controlHeightSM: 25,
       paddingInline: 14,
       paddingInlineSM: 10,
@@ -163,6 +166,14 @@ const theme: ThemeConfig = {
     },
     Form: {
       labelColor: color.ctLabelForm,
+      verticalLabelPadding: '0 0 4px',
+    },
+    Typography: {
+      fontSizeHeading2: 28,
+      lineHeightHeading2: 1.286,
+      titleMarginTop: 0,
+      titleMarginBottom: 0,
+      colorTextHeading: color.ctHeading,
     },
   },
 };

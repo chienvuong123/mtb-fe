@@ -8,13 +8,22 @@ import {
   TimePicker,
   Upload,
   type GetProps,
-  type InputProps,
 } from 'antd';
 import React, { useMemo } from 'react';
 
 import clsx from 'clsx';
-import { AInputArea, AInputPassword, ASelect } from '@components/atoms';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import {
+  AInputArea,
+  AInputOtp,
+  AInputPassword,
+  ASelect,
+} from '@components/atoms';
+import {
+  INPUT_TYPE,
+  type TFormItem,
+  type TOTPProps,
+  type TPasswordProps,
+} from '@types';
 
 interface IFormItemsProps {
   formItems?: TFormItem[];
@@ -29,7 +38,10 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
   [INPUT_TYPE.TEXT_AREA]: (props: GetProps<typeof AInputArea>) => (
     <AInputArea {...props} />
   ),
-  [INPUT_TYPE.PASSWORD]: (props: InputProps) => <AInputPassword {...props} />,
+  [INPUT_TYPE.OTP]: (props: TOTPProps) => <AInputOtp {...props} />,
+  [INPUT_TYPE.PASSWORD]: (props: TPasswordProps) => (
+    <AInputPassword {...props} />
+  ),
   [INPUT_TYPE.NUMBER]: (props: GetProps<typeof InputNumber>) => (
     <InputNumber {...props} controls={false} />
   ),
