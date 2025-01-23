@@ -30,6 +30,8 @@ deploy:
         - docker run -d -p 8081:8080 --name cm-fe cm-fe:latest
 
         - echo "deploy done!"
+        - docker ps -a -f "name=cm-fe"
+        - docker logs cm-fe
     tags:
         - cm-fe
     rules:
