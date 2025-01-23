@@ -1,0 +1,243 @@
+@use 'sass:color';
+@use 'sass:map';
+@use 'sass:list';
+@use './custom' as *;
+@use './mixin' as *;
+
+// Breakpoints
+$breakpoints: (
+  'xs': 480px,
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px,
+  'xxl': 1600px,
+);
+
+// Container widths
+$containers: (
+  'default': 910px,
+  'lg': 1024px,
+  'xl': 1366px,
+);
+
+// Colors
+$colors: (
+  'primary': #1890ff,
+  'success': #52c41a,
+  'warning': #faad14,
+  'error': #ff4d4f,
+  'info': #1890ff,
+  'white': #ffffff,
+  'black': #000000,
+  'gray': #808080,
+
+  // border color
+  'gray-border': #eaeaea,
+);
+
+$font-sizes: generate-array(9, 32, 1);
+$font-weights: generate-array(100, 900, 100);
+$spacing-scales: generate-array(0, 48, 4);
+// Spacing
+$spacing-unit: 4px;
+$spacing-scales: (0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48);
+
+// Border
+$border-radiuses: (
+  'none': 0,
+  'sm': 2px,
+  'md': 4px,
+  'lg': 8px,
+  'xl': 16px,
+  'full': 9999px,
+);
+
+// Z-index
+$z-indexes: (
+  'hide': -1,
+  'base': 1,
+  'dropdown': 1000,
+  'sticky': 1020,
+  'fixed': 1030,
+  'modal': 1040,
+  'popover': 1050,
+  'tooltip': 1060,
+);
+
+// Opacity
+$opacities: (0, 25, 50, 75, 100);
+
+// Atomic Values
+$space-amount-default: (
+  0,
+  1,
+  2,
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  16,
+  20,
+  22,
+  24,
+  28,
+  32,
+  36,
+  40,
+  44,
+  48,
+  56,
+  64,
+  80,
+  96,
+  100
+);
+$opacity-default: (0, 5, 10, 20, 40, 50, 60, 75, 90, 95, 100);
+$border-radius-default: (0, 1, 2, 3, 4, 8, 16, 9999);
+$border-width-default: (0, 1, 2, 4);
+$stroke-width-default: (0, 1, 2);
+$zindex-default: (0, 10, 100, 1000, 10000, 100000);
+$pos-trbl-default: (0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48);
+$percent-default: (60, 80, 100, 125, 150, 170);
+
+// Atomic Arrays
+$position-atomics: (relative, absolute, fixed, sticky);
+$display-atomics: (
+  none,
+  block,
+  inline-block,
+  inline,
+  flex,
+  inline-flex,
+  inline-table,
+  unset
+);
+$text-align-atomics: (center, start, end);
+$overflow-atomics: (auto, hidden, scroll, unset);
+$justify-content-atomics: (
+  normal,
+  flex-start,
+  flex-end,
+  center,
+  space-between,
+  space-around
+);
+$align-items-atomics: (flex-start, flex-end, center, baseline);
+$flex-direction-atomics: (row, row-reverse, column, column-reverse);
+$border-style-atomics: (solid, dashed, dotted, double, hidden, none);
+$cursor-atomics: (auto, default, pointer, grab, grabbing, move);
+$width-atomics: (auto, fit-content, max-content, min-content);
+$visibility-atomics: (none, hidden, visible);
+
+// Mở rộng atomic arrays với các properties hữu ích
+$overflow-x-atomics: (auto, hidden, scroll);
+$overflow-y-atomics: (auto, hidden, scroll);
+$justify-items-atomics: (start, end, center);
+$align-content-atomics: (
+  normal,
+  flex-start,
+  flex-end,
+  center,
+  space-between,
+  space-around
+);
+$pointer-events-atomics: (auto, none);
+$user-select-atomics: (none, text, auto, all);
+$box-shadow-style-atomics: (none);
+
+// Thêm biến cho negative positions
+$negative-pos-trbl-atomics: negative-sign($pos-trbl-default);
+
+// Kết hợp default với custom values
+$space-amounts: list.join($space-amount-default, $space-amount-custom, comma);
+$opacity-atomics: list.join($opacity-default, $opacity-custom, comma);
+$border-radius-atomics: list.join(
+  $border-radius-default,
+  $border-radius-custom,
+  comma
+);
+$border-width-atomics: list.join(
+  $border-width-default,
+  $border-width-custom,
+  comma
+);
+$stroke-width-atomics: list.join(
+  $stroke-width-default,
+  $stroke-width-custom,
+  comma
+);
+$zindex-atomics: list.join($zindex-default, $zindex-custom, comma);
+$pos-trbl-atomics: list.join($pos-trbl-default, $pos-trbl_custom, comma);
+$percent-atomics: list.join($percent-default, $percent_custom, comma);
+
+// Thay vì định nghĩa $atomicMap hai lần, chúng ta sẽ gộp thành một:
+$atomicMap: (
+  ('pos', 'position', $position-atomics),
+  ('dis', 'display', $display-atomics),
+  ('vis', 'visibility', $visibility-atomics),
+  ('text', 'text-align', $text-align-atomics),
+  ('overflow', 'overflow', $overflow-atomics),
+  ('overflow-x', 'overflow-x', $overflow-x-atomics),
+  ('overflow-y', 'overflow-y', $overflow-x-atomics),
+  ('jc', 'justify-content', $justify-content-atomics),
+  ('ji', 'justify-items', $justify-items-atomics),
+  ('ac', 'align-content', $align-content-atomics),
+  ('ai', 'align-items', $align-items-atomics),
+  ('flex', 'flex-direction', $flex-direction-atomics),
+  ('flex-grow', 'flex-grow', $space-amounts),
+  ('flex-shrink', 'flex-shrink', $space-amounts),
+  ('rounded', 'border-radius', $border-radius-atomics, px),
+  ('border', 'border', $border-width-atomics, px solid),
+  ('border-b', 'border-bottom', $border-width-atomics, px solid),
+  ('border-t', 'border-top', $border-width-atomics, px solid),
+  ('border-r', 'border-right', $border-width-atomics, px solid),
+  ('border-l', 'border-left', $border-width-atomics, px solid),
+  ('border', 'border-style', $border-style-atomics),
+  ('b-shadow', 'box-shadow', $box-shadow-style-atomics),
+  ('opacity', 'opacity', $opacity-atomics, '%'),
+  ('cursor', 'cursor', $cursor-atomics),
+  ('pointer-events', 'pointer-events', $pointer-events-atomics),
+  ('select', 'user-select', $user-select-atomics),
+  ('stroke', 'stroke-width', $stroke-width-atomics),
+  ('w', 'width', $space-amounts, px),
+  ('w', 'width', $width-atomics),
+  ('min-w', 'min-width', $space-amounts, px),
+  ('max-w', 'max-width', $space-amounts, px),
+  ('h', 'height', $space-amounts, px),
+  ('min-h', 'min-height', $space-amounts, px),
+  ('max-h', 'max-height', $space-amounts, px),
+  ('mx', ('margin-left', 'margin-right'), $space-amounts, px),
+  ('my', ('margin-top', 'margin-bottom'), $space-amounts, px),
+  ('ma', 'margin', $space-amounts, px),
+  ('mt', 'margin-top', $space-amounts, px),
+  ('mr', 'margin-right', $space-amounts, px),
+  ('mb', 'margin-bottom', $space-amounts, px),
+  ('ml', 'margin-left', $space-amounts, px),
+  ('px', ('padding-left', 'padding-right'), $space-amounts, px),
+  ('py', ('padding-top', 'padding-bottom'), $space-amounts, px),
+  ('pa', 'padding', $space-amounts, px),
+  ('pt', 'padding-top', $space-amounts, px),
+  ('pr', 'padding-right', $space-amounts, px),
+  ('pb', 'padding-bottom', $space-amounts, px),
+  ('pl', 'padding-left', $space-amounts, px),
+  ('z', 'z-index', $zindex-atomics),
+  ('fs', 'font-size', $font-sizes, px),
+  ('fw', 'font-weight', $font-weights),
+  ('top', 'top', $pos-trbl-atomics, px),
+  ('right', 'right', $pos-trbl-atomics, px),
+  ('bottom', 'bottom', $pos-trbl-atomics, px),
+  ('left', 'left', $pos-trbl-atomics, px),
+  ('-top', 'top', $pos-trbl-atomics, px, 'negative'),
+  ('-right', 'right', $pos-trbl-atomics, px, 'negative'),
+  ('-bottom', 'bottom', $pos-trbl-atomics, px, 'negative'),
+  ('-left', 'left', $pos-trbl-atomics, px, 'negative'),
+  ('lh', 'line-height', $percent-atomics, '%'),
+  ('scale', 'scale', $percent-atomics, '%'),
+  ('lh-px', 'line-height', $space-amounts, px),
+  ('gap', 'gap', $space-amounts, px),
+  ('gap-x', 'column-gap', $space-amounts, px),
+  ('gap-y', 'row-gap', $space-amounts, px)
+);

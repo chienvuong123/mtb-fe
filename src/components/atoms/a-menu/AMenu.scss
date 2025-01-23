@@ -1,0 +1,126 @@
+%title {
+  height: 44px !important;
+  line-height: 44px !important;
+  padding-left: 12px !important;
+  margin: 4px 0 !important;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  transition: none;
+
+  .mbb-menu-item-icon {
+    min-width: 24px !important;
+  }
+}
+
+.a-menu {
+  & .mbb-menu-submenu {
+    .mbb-menu-submenu-title {
+      @extend %title;
+
+      .mbb-menu-title-content {
+        font-weight: 500;
+      }
+    }
+  }
+
+  & > .mbb-menu-item:not(.mbb-menu-item-only-child) {
+    @extend %title;
+    font-weight: 500;
+
+    &.item-category {
+      pointer-events: none;
+      user-select: none !important;
+      font-size: 10px;
+      line-height: 10px !important;
+      height: 100% !important;
+      padding: 0 !important;
+      margin-bottom: 8px !important;
+      border-radius: 0;
+      .mbb-menu-title-content {
+        width: 100%;
+      }
+      .mbb-divider {
+        width: 100%;
+        margin: 15px 0 !important;
+      }
+    }
+  }
+
+  .mbb-menu-sub {
+    margin-top: 10px !important;
+    position: relative;
+    list-style: none;
+    padding-left: 0;
+
+    .mbb-menu-item {
+      .mbb-menu-title-content {
+        position: relative;
+        z-index: 1;
+        font-size: 14px;
+      }
+    }
+
+    .mbb-menu-item:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 24px;
+      width: 2px;
+      background-color: #f6f6f6;
+    }
+
+    .mbb-menu-item:last-child:before {
+      bottom: 100%;
+    }
+
+    .mbb-menu-item:after {
+      content: '';
+      position: absolute;
+      left: 24px;
+      width: 13px;
+      height: 50%;
+      transform: scaleY(1) !important;
+      border-left: 2px solid #f6f6f6;
+      border-bottom: 2px solid #f6f6f6;
+      opacity: 1 !important;
+      border-radius: 0 0 0 8px;
+    }
+
+    .mbb-menu-item-only-child {
+      list-style: none;
+      margin: 0 !important;
+    }
+  }
+}
+
+.is-collapsed {
+  & > .mbb-menu-item:not(.mbb-menu-item-only-child) {
+    &.item-category {
+      text-align: center;
+    }
+  }
+  .mbb-menu-item-selected,
+  .mbb-menu-submenu-selected {
+    background: #141ed2 !important;
+    color: #fff;
+    .mbb-menu-submenu-title {
+      color: #fff;
+    }
+  }
+}
+
+.menu-not-active {
+  .mbb-menu-item-selected,
+  .mbb-menu-submenu-selected {
+    background: transparent !important;
+  }
+
+  .item-help {
+    color: #757575 !important;
+  }
+  .item-logout {
+    color: #d55f5a !important;
+  }
+}

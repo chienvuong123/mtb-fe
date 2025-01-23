@@ -1,0 +1,29 @@
+.m-pagination {
+  .per-page {
+    border-color: #e0e0e0 !important;
+    background: #ebf5fa !important;
+    height: 25px !important;
+
+    .mbb-select-selector {
+      border-radius: 6px !important;
+      background: transparent !important;
+    }
+    .mbb-select-arrow {
+      inset-inline-end: 8px !important;
+    }
+  }
+
+  .mbb-pagination-item {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .mbb-pagination-item-link {
+    background: #cccfff !important;
+  }
+
+  .mbb-pagination-jump-next,
+  .mbb-pagination-jump-prev {
+    margin: 0 !important;
+  }
+}

@@ -1,0 +1,44 @@
+@use './variables' as *;
+@use './mixin' as *;
+
+// Typography
+h1,
+.h1 {
+  @include text-style(2.5rem, bold, 1.2);
+}
+h2,
+.h2 {
+  @include text-style(2rem, bold, 1.2);
+}
+h3,
+.h3 {
+  @include text-style(1.75rem, bold, 1.2);
+}
+h4,
+.h4 {
+  @include text-style(1.5rem, bold, 1.2);
+}
+h5,
+.h5 {
+  @include text-style(1.25rem, bold, 1.2);
+}
+h6,
+.h6 {
+  @include text-style(1rem, bold, 1.2);
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// break word
+.word-break-all {
+  word-break: break-all;
+}
+
+// whitespace nowrap
+.whitespace-nowrap {
+  white-space: nowrap;
+}

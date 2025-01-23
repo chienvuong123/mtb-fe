@@ -1,0 +1,95 @@
+@use 'sass:math';
+@use 'sass:map';
+@use 'sass:meta';
+@use './variables' as vars;
+@use './mixin' as *;
+
+// Generate Atomic Classes from Map
+@each $module in vars.$atomicMap {
+  @include generateAtomic($module);
+}
+
+// Generate Color Classes
+@each $colorName, $colorValue in vars.$colors {
+  @include createColorClass($colorName, $colorValue);
+}
+
+// Width & Height utilities
+$dimension-values: (
+  'full': 100%,
+  'screen': (
+    width: 100vw,
+    height: 100vh,
+  ),
+  'min': min-content,
+  'max': max-content,
+  'fit': fit-content,
+);
+
+@each $name, $value in $dimension-values {
+  .w-#{$name} {
+    width: if(
+      meta.type-of($value) == map,
+      map.get($value, width),
+      $value
+    ) !important;
+  }
+  .mw-#{$name} {
+    max-width: if(
+      meta.type-of($value) == map,
+      map.get($value, width),
+      $value
+    ) !important;
+  }
+  .h-#{$name} {
+    height: if(
+      meta.type-of($value) == map,
+      map.get($value, height),
+      $value
+    ) !important;
+  }
+  .max-h-#{$name} {
+    max-height: if(
+      meta.type-of($value) == map,
+      map.get($value, height),
+      $value
+    ) !important;
+  }
+  .min-h-#{$name} {
+    min-height: if(
+      meta.type-of($value) == map,
+      map.get($value, height),
+      $value
+    ) !important;
+  }
+}
+
+// Rotation utilities
+$rotation-values: (-180, -90, 0, 90, 180);
+
+@each $degree in $rotation-values {
+  .rotate-#{$degree} {
+    transform: rotate(#{$degree}deg) !important;
+  }
+  .rotateX-#{$degree} {
+    transform: rotateX(#{$degree}deg) !important;
+  }
+  .rotateY-#{$degree} {
+    transform: rotateY(#{$degree}deg) !important;
+  }
+}
+
+// Margin auto utilities
+$margin-auto-positions: (
+  'a': 'margin',
+  'r': 'margin-right',
+  'l': 'margin-left',
+  't': 'margin-top',
+  'b': 'margin-bottom',
+);
+
+@each $suffix, $property in $margin-auto-positions {
+  .m#{$suffix}-auto {
+    #{$property}: auto !important;
+  }
+}

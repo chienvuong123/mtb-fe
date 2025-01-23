@@ -1,0 +1,78 @@
+@use 'sass:math';
+@use 'sass:map';
+@use 'sass:list';
+@use 'sass:meta';
+@use 'sass:string';
+
+// Typography
+@mixin text-style($size, $weight: normal, $line-height: 1.5) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+}
+
+@mixin generateAtomic($module) {
+  $prefix: list.nth($module, 1);
+  $properties: list.nth($module, 2);
+  $values: list.nth($module, 3);
+  $suffix: if(list.length($module) >= 4, list.nth($module, 4), null);
+  $isNegative: if(list.length($module) >= 5, list.nth($module, 5), null);
+
+  @each $value in $values {
+    $actualValue: $value;
+    @if $isNegative == 'negative' {
+      $actualValue: math.div($value * -1, 1);
+    }
+
+    $className: '#{$prefix}-#{$value}';
+    $valueWithSuffix: if($suffix, #{$actualValue}#{$suffix}, $actualValue);
+
+    .#{$className} {
+      @if meta.type-of($properties) == 'list' {
+        @each $property in $properties {
+          #{$property}: $valueWithSuffix !important;
+        }
+      } @else {
+        #{$properties}: $valueWithSuffix !important;
+      }
+    }
+  }
+}
+
+@mixin createColorClass($colorName, $colorValue) {
+  $className: string.to-lower-case($colorName);
+
+  .#{$className} {
+    color: $colorValue !important;
+  }
+  .bg-#{$className} {
+    background-color: $colorValue !important;
+  }
+  .border-#{$className} {
+    border-color: $colorValue !important;
+  }
+  .fill-#{$className} path {
+    fill: $colorValue !important;
+  }
+  .svg-fill-#{$className} {
+    fill: $colorValue !important;
+  }
+}
+
+@function generate-array($start, $end, $step) {
+  $result: ();
+  @for $i from $start through $end {
+    @if ($i - $start) % $step == 0 {
+      $result: list.append($result, $i);
+    }
+  }
+  @return $result;
+}
+
+@function negative-sign($list) {
+  $result: ();
+  @each $value in $list {
+    $result: list.append($result, -$value, 'space');
+  }
+  @return $result;
+}
