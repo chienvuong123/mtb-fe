@@ -23,7 +23,7 @@ const items: TFormItem[] = [
     type: INPUT_TYPE.TEXT,
     label: 'Email',
     name: 'email',
-    inputProps: { placeholder: 'Nhập...', maxLength: 100, type: 'password' },
+    inputProps: { placeholder: 'Nhập...', maxLength: 100, type: 'email' },
     colProps: { span: 24, className: 'fw-500' },
   },
   {
