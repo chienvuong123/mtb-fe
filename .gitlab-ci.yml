@@ -1,0 +1,58 @@
+stages:
+    - build
+    - deploy
+    - notify
+build:
+    stage: build
+    script:
+        - echo "Start build!"
+        - yarn
+        - yarn build
+    artifacts:
+        paths:
+            - dist/
+        expire_in: 1 week
+    tags:
+        - cm-fe
+    rules:
+        - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "release/sit" 
+deploy:
+    stage: deploy
+    script:
+        - echo "start build image!"
+        - docker build -t cm-fe:latest .
+
+        - echo "kill old container!"
+        - docker ps -a -q --filter "name=cm-fe" | xargs -r docker rm -f
+
+        - echo "start run container!"
+        - docker run -d -p 8081:8080 --name cm-fe cm-fe:latest
+
+        - echo "deploy done!"
+    tags:
+        - cm-fe
+    rules:
+        - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "release/sit"
+notify:
+    stage: notify
+    rules:
+        - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "release/sit"
+    script:
+        - echo "Gửi thông báo đến Telegram"
+        - |
+            MESSAGE="🚀 [FrontEnd] Đã được deploy thành công!.%0A"
+            MESSAGE="${MESSAGE}MR title: $CI_MERGE_REQUEST_TITLE %0A"
+            MESSAGE="${MESSAGE}MR ID: $CI_MERGE_REQUEST_ID %0A"
+            MESSAGE="${MESSAGE}Source Branch: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME %0A"
+            MESSAGE="${MESSAGE}Target Branch: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME %0A"
+            MESSAGE="${MESSAGE}Người merge: $GITLAB_USER_LOGIN"
+
+            curl -s -X POST "https://api.telegram.org/bot${TELE_BOT_TOKEN}/sendMessage" \
+                -d chat_id="504675305" \
+                -d text="$MESSAGE" \
+                -d parse_mode="Markdown"
+    variables:
+        GIT_STRATEGY: none
+    tags:
+        - cm-fe
+
