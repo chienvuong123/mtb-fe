@@ -1,0 +1,10 @@
+.a-dropdown {
+  cursor: pointer;
+}
+.a-overlay-dropdown {
+  .mbb-dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px 0;
+  }
+}

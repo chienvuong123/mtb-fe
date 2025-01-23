@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "xabikos.reactsnippets",
+    "rvest.vs-code-prettier-eslint",
+    "dbaeumer.vscode-eslint",
+    "donjayamanne.githistory",
+    "eamodio.gitlens",
+    "gencer.html-slim-scss-css-class-completion",
+    "mrmlnc.vscode-scss"
+  ]
+}
