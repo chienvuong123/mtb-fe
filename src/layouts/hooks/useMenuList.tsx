@@ -9,14 +9,13 @@ import {
   Setting02Icon,
 } from '@assets/icons';
 import { Divider } from 'antd';
-import { uid } from '@utils/stringHelper';
 import { Link } from 'react-router-dom';
 
 const useMenuList = () => {
   const menuList = useMemo(() => {
     const menu: ItemType<MenuItemType>[] = [
       {
-        key: uid(),
+        key: 'main',
         className: 'item-category',
         label: (
           <>
@@ -54,7 +53,7 @@ const useMenuList = () => {
         icon: <MarketingIcon />,
       },
       {
-        key: uid(),
+        key: 'settings',
         className: 'item-category',
         label: (
           <>
@@ -77,13 +76,13 @@ const useMenuList = () => {
 
     const menuBottom = [
       {
-        key: uid(),
+        key: 'help',
         label: 'Typography',
         className: 'item-help',
         icon: <HelpCircleIcon />,
       },
       {
-        key: uid(),
+        key: 'logout',
         label: 'Flex',
         className: 'item-logout',
         icon: <LogoutIcon />,
@@ -91,9 +90,9 @@ const useMenuList = () => {
     ];
 
     const dropdownList = [
-      { label: 'Cài lại mật khẩu', key: uid() },
-      { label: 'Quên mật khẩu', key: uid() },
-      { label: 'Đăng xuất', key: uid() },
+      { label: 'Cài lại mật khẩu', key: 'reset-password' },
+      { label: 'Quên mật khẩu', key: 'forgot-password' },
+      { label: 'Đăng xuất', key: 'logout' },
     ];
 
     return { menu, menuBottom, dropdownList };
