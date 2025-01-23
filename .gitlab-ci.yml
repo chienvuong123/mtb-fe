@@ -4,6 +4,8 @@ stages:
     - notify
 build:
     stage: build
+    before_script:
+        - source ~/.bashrc
     script:
         - echo "Start build!"
         - pwd
