@@ -6,6 +6,7 @@ build:
     stage: build
     script:
         - echo "Start build!"
+        - pwd
         - yarn
         - yarn build
     artifacts:
