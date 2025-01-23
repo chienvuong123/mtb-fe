@@ -28,7 +28,7 @@ deploy:
         - docker ps -a -q --filter "name=cm-fe" | xargs -r docker rm -f
 
         - echo "start run container!"
-        - docker run -d -p 8081:8080 --name cm-fe cm-fe:latest
+        - docker run -d -p 8000:80 --name cm-fe cm-fe:latest
 
         - echo "deploy done!"
         - docker ps -a -f "name=cm-fe"
