@@ -47,7 +47,7 @@ const OSearchBaseForm = <T extends object>({
   };
 
   return (
-    <div className="border-2 rounded-8 border-gray-border">
+    <div className="border-2 rounded-8 border-gray-border bg-white">
       <Form form={form} onFinish={handleSearch} layout="vertical">
         <div className="pa-24 pb-22">{formContent}</div>
         <Divider className="ma-0" />

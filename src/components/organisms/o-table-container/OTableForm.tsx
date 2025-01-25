@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, type Key } from 'react';
 import { Table, Form } from 'antd';
 import { type ColumnsType } from 'antd/es/table';
 import { PlusIcon } from '@assets/icons';
@@ -6,15 +6,17 @@ import { type TableRowSelection } from 'antd/es/table/interface';
 
 import './styles.scss';
 import { AButton } from '@components/atoms';
-import { MEditableCell } from '@components/molecules';
+import { MEditableCell, MPagination } from '@components/molecules';
+import clsx from 'clsx';
 import {
   type EditableColumnType,
   type FixedType,
   type ITableForm,
+  type TTableKey,
 } from './OTableForm.type';
 import TableActions from './TableActions';
 
-const OTableForm = <T extends object & { key: string }>({
+const OTableForm = <T extends object & TTableKey>({
   data,
   form,
   editingKey,
@@ -22,8 +24,9 @@ const OTableForm = <T extends object & { key: string }>({
   selectedRowKeys,
   hideActions,
   showCreateBtn,
+  paginations,
   setEditingKey,
-  onAddNewRow,
+  onCreate,
   onDeleteRow,
   onSubmitSave,
   onCancelSave,
@@ -33,26 +36,26 @@ const OTableForm = <T extends object & { key: string }>({
   const edit = React.useCallback(
     (record: T) => {
       form.setFieldsValue({ ...record });
-      setEditingKey(record.key);
+      setEditingKey?.(record.key as string);
     },
     [form, setEditingKey],
   );
 
   const cancel = React.useCallback(() => {
-    setEditingKey(null);
-    onCancelSave();
+    setEditingKey?.(null);
+    onCancelSave?.();
   }, [setEditingKey, onCancelSave]);
 
   const save = React.useCallback(
-    async (key: string) => {
+    async (key: Key) => {
       try {
         const row = (await form.validateFields()) as T;
         const newData = [...data];
         const index = newData.findIndex((item) => key === item.key);
         if (index > -1) {
           newData[index] = { ...newData[index], ...row };
-          onSubmitSave(row, newData);
-          setEditingKey(null);
+          onSubmitSave?.(row, newData);
+          setEditingKey?.(null);
         }
       } catch (err) {
         console.error('Save failed:', err);
@@ -78,8 +81,8 @@ const OTableForm = <T extends object & { key: string }>({
                   onCancel={cancel}
                   onEdit={edit}
                   onView={onView}
-                  onDelete={onDeleteRow}
-                  editingKey={editingKey}
+                  onDelete={(id) => onDeleteRow?.(id)}
+                  editingKey={editingKey ?? null}
                 />
               ),
             },
@@ -89,7 +92,7 @@ const OTableForm = <T extends object & { key: string }>({
             {
               title: (
                 <AButton
-                  onClick={onAddNewRow}
+                  onClick={onCreate}
                   type="primary"
                   icon={<PlusIcon />}
                   disabled={editingKey !== null}
@@ -130,7 +133,7 @@ const OTableForm = <T extends object & { key: string }>({
     edit,
     onView,
     onDeleteRow,
-    onAddNewRow,
+    onCreate,
   ]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -152,19 +155,22 @@ const OTableForm = <T extends object & { key: string }>({
   };
 
   return (
-    <Form form={form} component={false}>
-      <Table<T>
-        style={{ border: '1px solid #E0E2E7', borderRadius: 8 }} // FIXME: will be fixed
-        components={components}
-        bordered={false}
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={false}
-        rowSelection={rowSelection}
-        scroll={{ x: 'max-content' }}
-      />
-    </Form>
+    <>
+      <Form form={form} component={false}>
+        <Table<T>
+          className={clsx('o-table', { 'with-pagination': !!paginations })}
+          components={components}
+          bordered={false}
+          dataSource={data}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={false}
+          rowSelection={rowSelection}
+          scroll={{ x: 'max-content' }}
+        />
+      </Form>
+      {paginations && <MPagination {...paginations} />}
+    </>
   );
 };
 

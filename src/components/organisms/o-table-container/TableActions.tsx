@@ -6,20 +6,22 @@ import {
   TrashIcon,
 } from '@assets/icons';
 import { AButton } from '@components/atoms';
-import { Space, Popconfirm } from 'antd';
+import { Space } from 'antd';
+import type { Key } from 'react';
+import type { TTableKey } from '.';
 
 interface ITableActionsProps<T> {
   record: T;
   editable: boolean;
-  onSave: (key: string) => void;
-  onCancel: () => void;
-  onEdit: (record: T) => void;
-  onView?: (key: string) => void;
-  onDelete: (key: string) => void;
-  editingKey: string | null;
+  onSave?: (key: Key) => void;
+  onCancel?: () => void;
+  onEdit?: (record: T) => void;
+  onView?: (key: Key) => void;
+  onDelete?: (key: Key) => void;
+  editingKey?: string | null;
 }
 
-const TableActions = <T extends object & { key: string }>({
+const TableActions = <T extends TTableKey>({
   record,
   editable,
   onSave,
@@ -33,7 +35,7 @@ const TableActions = <T extends object & { key: string }>({
     return (
       <Space>
         <AButton
-          onClick={() => onSave(record.key)}
+          onClick={() => onSave?.(record.key)}
           type="link"
           icon={<FloppyDiskIcon />}
           className="w-24 action-btn"
@@ -57,22 +59,18 @@ const TableActions = <T extends object & { key: string }>({
         onClick={() => onView?.(record.key)}
       />
       <AButton
-        onClick={() => onEdit(record)}
+        onClick={() => onEdit?.(record)}
         type="link"
         disabled={editingKey !== null}
         icon={<PenIcon className="action-btn-icon" />}
         className="w-22 action-btn"
       />
-      <Popconfirm
-        title="Sure to delete?"
-        onConfirm={() => onDelete(record.key)}
-      >
-        <AButton
-          type="link"
-          icon={<TrashIcon className="action-btn-icon" />}
-          className="w-22 action-btn"
-        />
-      </Popconfirm>
+      <AButton
+        type="link"
+        icon={<TrashIcon className="action-btn-icon" />}
+        className="w-22 action-btn"
+        onClick={() => onDelete?.(record.key)}
+      />
     </Space>
   );
 };

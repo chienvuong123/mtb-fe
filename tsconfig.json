@@ -37,7 +37,8 @@
       "@utils/*": ["src/utils/*"],
 
       "@hooks": ["src/hooks/index"],
-      "@types": ["src/types/index"]
+      "@types": ["src/types/index"],
+      "@dtos":["src/dtos/index"]
     }
   },
   "include": ["src"],

@@ -1,17 +1,20 @@
-type TOptionPageSize = {
+import type { PaginationProps } from 'antd';
+
+export type TOptionPageSize = {
   label: string;
   value: number;
 };
 
-type TPagination = {
+export type TPagination = {
   current: number;
   pageSize: number;
   total: number;
 };
 
-export interface IMPagination {
+export interface IMPagination extends PaginationProps {
   className?: string;
   pagination: TPagination;
-  optionPageSize?: TOptionPageSize[];
+  optionPageSize?: TOptionPageSize[] | number[];
+  justify?: React.CSSProperties['justifyContent'];
   setPagination: ({ total, current, pageSize }: TPagination) => void;
 }

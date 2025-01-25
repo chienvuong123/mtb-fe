@@ -1,3 +1,4 @@
+import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { INPUT_TYPE } from '@types';
 import type {
   DatePickerProps,
@@ -10,8 +11,11 @@ import type { Rule } from 'antd/es/form';
 import type { TextAreaProps } from 'antd/es/input';
 import type { ColumnsType } from 'antd/es/table';
 import type { FormInstance } from 'antd/lib';
+import type { Key } from 'react';
 
 export type FixedType = 'left' | 'right' | boolean;
+
+export type TTableKey = { key: Key };
 
 export type EditableCellInputProps =
   | {
@@ -49,15 +53,16 @@ export interface ITableForm<T> {
   data: T[];
   columns: EditableColumnType<T>[];
   form: FormInstance<T>;
-  editingKey: string | null;
+  editingKey?: string | null;
   selectedRowKeys?: string[];
   hideActions?: boolean;
   showCreateBtn?: boolean;
-  setEditingKey: React.Dispatch<React.SetStateAction<string | null>>;
-  onAddNewRow: () => void;
-  onDeleteRow: (key: string) => void;
-  onSubmitSave: (values: T, data: T[]) => void;
-  onCancelSave: () => void;
+  paginations?: IMPagination;
+  setEditingKey?: React.Dispatch<React.SetStateAction<string | null>>;
+  onCreate?: () => void;
+  onDeleteRow?: (key: Key) => void;
+  onSubmitSave?: (values: T, data: T[]) => void;
+  onCancelSave?: () => void;
   setSelectedRowKeys?: React.Dispatch<React.SetStateAction<string[]>>;
-  onView?: (key: string) => void;
+  onView?: (key: Key) => void;
 }

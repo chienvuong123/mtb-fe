@@ -1,4 +1,8 @@
 .m-pagination {
+  border: 2px solid #eaeaea;
+  border-top: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   .per-page {
     border-color: #e0e0e0 !important;
     background: #ebf5fa !important;
