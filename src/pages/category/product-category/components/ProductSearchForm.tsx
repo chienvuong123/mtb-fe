@@ -2,12 +2,11 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { type FC } from 'react';
+import type { TProductSearchForm } from '@dtos';
 
 interface IProductSearchForm {
-  data: unknown[];
+  onSearch: (values: TProductSearchForm) => void;
 }
-
-type TProductSearchFormType = { code: string; name: string; select: string };
 
 const items: TFormItem[] = [
   {
@@ -24,19 +23,15 @@ const items: TFormItem[] = [
   },
 ];
 
-const ProductSearchForm: FC<IProductSearchForm> = () => {
+const ProductSearchForm: FC<IProductSearchForm> = ({ onSearch }) => {
   const [form] = useForm();
 
-  const handleSearch = (values: TProductSearchFormType) => {
-    console.log(values);
-  };
-
   return (
-    <div className="bg-white">
-      <OSearchBaseForm<TProductSearchFormType>
+    <div>
+      <OSearchBaseForm<TProductSearchForm>
         items={items}
         form={form}
-        onSearch={handleSearch}
+        onSearch={onSearch}
       />
     </div>
   );

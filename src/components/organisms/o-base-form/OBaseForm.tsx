@@ -6,6 +6,8 @@ import type { TFormItem } from '@types';
 import { useMemo } from 'react';
 import clsx from 'clsx';
 
+import './styles.scss';
+
 const BUTTON_TEXT = {
   CANCEL: 'Hủy',
   SAVE: 'Lưu',

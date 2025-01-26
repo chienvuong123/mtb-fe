@@ -1,3 +1,5 @@
+import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
+
 /**
  * Recursively trims all string values in an object.
  * @param obj - The object to trim.
@@ -24,5 +26,12 @@ function trimObjectValues<T>(obj: T): T {
   return obj;
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { trimObjectValues };
+function isNumberArray(
+  value: IMPagination['optionPageSize'],
+): value is number[] {
+  return (
+    Array.isArray(value) && value.length > 0 && typeof value[0] === 'number'
+  );
+}
+
+export { trimObjectValues, isNumberArray };

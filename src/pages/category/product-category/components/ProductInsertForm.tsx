@@ -1,13 +1,14 @@
 import { OBaseForm } from '@components/organisms';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { useForm } from 'antd/es/form/Form';
-import { type FC } from 'react';
-
-type TProductInsertFormType = { code: string; name: string; select: string };
+import { useEffect, type FC } from 'react';
+import { useForm } from 'antd/lib/form/Form';
+import type { ProductCategoryDTO } from '@dtos';
+import { STATUS_OPTIONS } from '@constants/masterData';
 
 interface IProductInsertForm {
-  initialValues?: TProductInsertFormType;
+  initialValues?: Partial<ProductCategoryDTO> | null;
   onClose: () => void;
+  onSubmit: (values: ProductCategoryDTO) => void;
 }
 
 const items: TFormItem[] = [
@@ -15,62 +16,71 @@ const items: TFormItem[] = [
     type: INPUT_TYPE.TEXT,
     label: 'Mã',
     name: 'code',
-    inputProps: { title: 'Mã', placeholder: 'Nhập...' },
+    inputProps: { disabled: true },
     required: true,
     rules: [{ required: true }],
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Ten',
+    label: 'Tên',
     name: 'name',
-    inputProps: { placeholder: 'Nhập...' },
+    inputProps: { placeholder: 'Nhập...', maxLength: 100 },
     required: true,
     rules: [{ required: true }],
   },
   {
-    type: INPUT_TYPE.TEXT_AREA,
-    label: 'Ghi chu',
-    name: 'note',
-    inputProps: { placeholder: 'Nhập...', maxLength: 1000 },
+    type: INPUT_TYPE.SELECT,
+    label: 'Trạng thái',
+    name: 'status',
+    inputProps: {
+      options: STATUS_OPTIONS,
+    },
   },
   {
-    type: INPUT_TYPE.SELECT,
-    label: 'Select',
-    name: 'select',
-    inputProps: {
-      placeholder: 'Nhập...',
-      options: [
-        { value: '1', label: 'First item' },
-        { value: '2', label: 'Second item' },
-      ],
-    },
+    type: INPUT_TYPE.TEXT,
+    label: 'Ngày tạo',
+    name: 'createdDate',
+    inputProps: { disabled: true },
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Người tạo',
+    name: 'createdBy',
+    inputProps: { disabled: true },
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Ngày cập nhật',
+    name: 'updatedDate',
+    inputProps: { disabled: true },
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Người cập nhật',
+    name: 'updatedBy',
+    inputProps: { disabled: true },
   },
 ];
 
 const ProductInsertForm: FC<IProductInsertForm> = ({
   onClose,
+  onSubmit,
   initialValues,
 }) => {
   const [form] = useForm();
 
-  const handleSearch = (values: TProductInsertFormType) => {
-    console.log(values);
-    console.log(initialValues);
-  };
+  useEffect(() => {
+    if (initialValues) {
+      form.setFieldsValue({ ...initialValues });
+    }
+  }, [initialValues, form]);
+
   return (
     <div>
-      <OBaseForm<TProductInsertFormType>
-        items={[
-          ...items,
-          {
-            type: INPUT_TYPE.FILE,
-            label: 'File',
-            name: 'file',
-            inputProps: {},
-          },
-        ]}
+      <OBaseForm<ProductCategoryDTO>
+        items={items}
         form={form}
-        onSubmit={handleSearch}
+        onSubmit={onSubmit}
         onClose={() => {
           onClose();
           form.resetFields();

@@ -34,6 +34,11 @@ $colors: (
 
   // border color
   'gray-border': #eaeaea,
+
+  //
+  'green': #31c23f,
+  'red': #db3333,
+  'light': #f5f6fa,
 );
 
 $font-sizes: generate-array(9, 32, 1);
