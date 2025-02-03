@@ -5,10 +5,18 @@ interface User {
   id: string;
   name: string;
   email: string;
+  role: string;
 }
 
+const mockUser: User = {
+  id: '1',
+  name: 'Test User',
+  email: 'email',
+  role: 'ADMIN',
+};
+
 // === Base Atoms ===
-const userAtom = atom<User | null>(null);
+const userAtom = atom<User | null>(mockUser);
 
 // === Custom Hooks ===
 const useUser = () => {
@@ -21,6 +29,7 @@ const useUser = () => {
       id: '1',
       name: 'Test User',
       email: 'email',
+      role: 'ADMIN',
     };
     setUser(userData);
   };

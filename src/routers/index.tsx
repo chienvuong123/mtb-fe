@@ -1,13 +1,15 @@
-import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
 import LayoutWrapper from '@layouts/LayoutWrapper';
+import React from 'react';
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import { useUserStore } from '../stores';
 import {
-  LOGIN,
   CATEGORY,
+  CONFIRM_PASSWORD,
   EXAMPLE,
   FORGOT_PASSWORD,
+  LOGIN,
   OTP,
-  CONFIRM_PASSWORD,
+  SETTING,
 } from './path';
 
 const createLazyElement = (
@@ -15,6 +17,17 @@ const createLazyElement = (
 ) => {
   const Component = React.lazy(importFn);
   return <Component />;
+};
+
+const ProtectRoutes = ({ roles = [] }: { roles: string[] }) => {
+  const { user, isAuthenticated } = useUserStore();
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" replace />;
+  }
+  if (roles.length && !roles.includes(user.role)) {
+    return <Navigate to="/403" replace />;
+  }
+  return <Outlet />;
 };
 
 const routes = createBrowserRouter(
@@ -47,7 +60,6 @@ const routes = createBrowserRouter(
           path: EXAMPLE,
           element: createLazyElement(() => import('../pages/example')),
         },
-
         {
           path: CATEGORY.ROOT,
           children: [
@@ -59,11 +71,27 @@ const routes = createBrowserRouter(
             },
           ],
         },
+        {
+          path: SETTING.ROOT,
+          element: <ProtectRoutes roles={['ADMIN']} />,
+          children: [
+            {
+              path: SETTING.CONTROL,
+              element: createLazyElement(
+                () => import('@pages/setting/control'),
+              ),
+            },
+          ],
+        },
       ],
     },
     {
       path: '*',
       element: <>not found</>,
+    },
+    {
+      path: '/403',
+      element: <>Forbidden</>,
     },
   ],
   {

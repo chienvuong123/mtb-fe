@@ -13,6 +13,11 @@ const ROUTE_PATH = {
     ROOT: '/category',
     PRODUCT_CATEGORY: `product-category`,
   },
+
+  SETTING: {
+    ROOT: '/setting',
+    CONTROL: 'control',
+  },
 };
 
 export const {
@@ -24,4 +29,5 @@ export const {
   REGISTER,
   EXAMPLE,
   CATEGORY,
+  SETTING,
 } = ROUTE_PATH;
