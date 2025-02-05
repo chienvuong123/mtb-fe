@@ -44,13 +44,7 @@ export interface BaseSearchResponse<T> {
 }
 
 export interface BaseSearchParams {
-  reqNo: string;
   pageNumber: number;
   pageSize: number;
   pageable?: PageableObject;
-}
-
-export interface BaseViewParams {
-  reqNo: string;
-  id: number;
 }

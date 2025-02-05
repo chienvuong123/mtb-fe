@@ -1,9 +1,4 @@
-import type {
-  BaseResponse,
-  BaseSearchParams,
-  BaseSearchResponse,
-  BaseViewParams,
-} from '@dtos';
+import type { BaseResponse, BaseSearchParams, BaseSearchResponse } from '@dtos';
 import { apiRequest } from './apiClient';
 
 export class BaseApi<T, SearchParams extends BaseSearchParams> {
@@ -21,35 +16,35 @@ export class BaseApi<T, SearchParams extends BaseSearchParams> {
     });
   }
 
-  async view(params: BaseViewParams) {
+  async view(id: number) {
     return apiRequest<BaseResponse<T>>({
       url: `${this.endpoint}/view`,
       method: 'GET',
-      params,
+      params: { id },
     });
   }
 
-  async add(data: { reqNo?: string } & Partial<T>) {
-    return apiRequest<BaseResponse<T>>({
+  async add(data: Partial<T>) {
+    return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/add`,
       method: 'POST',
       data,
     });
   }
 
-  async edit(data: { reqNo?: string } & Partial<T>) {
-    return apiRequest<BaseResponse<T>>({
+  async edit(data: Partial<T>) {
+    return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/edit`,
       method: 'POST',
       data,
     });
   }
 
-  async remove(data: { reqNo: string; id: number }) {
+  async remove(id: number) {
     return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/remove`,
       method: 'POST',
-      data,
+      data: { id },
     });
   }
 }

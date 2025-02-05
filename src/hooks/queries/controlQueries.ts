@@ -13,7 +13,6 @@ import type {
   ControlViewResponse,
   ControlAddRequest,
   ControlEditRequest,
-  BaseViewParams,
 } from '@dtos';
 
 const rootKeys = {
@@ -24,11 +23,9 @@ const rootKeys = {
 
 const queryKeys = {
   list: [rootKeys.all, rootKeys.list],
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  search: ({ reqNo, ...params }: ControlSearchRequest) =>
+  search: (params: ControlSearchRequest) =>
     [rootKeys.all, rootKeys.list, params] as const,
-  detail: ({ id }: BaseViewParams) =>
-    [rootKeys.all, rootKeys.detail, id] as const,
+  detail: (id: number) => [rootKeys.all, rootKeys.detail, id] as const,
 };
 
 export const controlQueryKeys = queryKeys;
@@ -47,14 +44,14 @@ export function useControlsSearchQuery(
 }
 
 export function useControlViewQuery(
-  params: BaseViewParams,
+  params: { id: number },
   options: Partial<
     UseQueryOptions<ControlViewResponse, Error, ControlViewResponse>
   > = {},
 ) {
   return useQuery({
-    queryKey: queryKeys.detail(params),
-    queryFn: () => controlApi.view(params),
+    queryKey: queryKeys.detail(params.id),
+    queryFn: () => controlApi.view(params.id),
     enabled: !!params.id,
     ...options,
   });
@@ -62,7 +59,7 @@ export function useControlViewQuery(
 
 export function useAddControlMutation(
   options?: Partial<
-    UseMutationOptions<ControlViewResponse, Error, ControlAddRequest>
+    UseMutationOptions<BaseResponse<boolean>, Error, ControlAddRequest>
   >,
   onInvalidate?: () => void,
 ) {
@@ -82,7 +79,7 @@ export function useAddControlMutation(
 
 export function useEditControlMutation(
   options?: Partial<
-    UseMutationOptions<ControlViewResponse, Error, ControlEditRequest>
+    UseMutationOptions<BaseResponse<boolean>, Error, ControlEditRequest>
   >,
   onInvalidate?: () => void,
 ) {
@@ -102,19 +99,14 @@ export function useEditControlMutation(
 
 export function useRemoveControlMutation(
   options?: Partial<
-    UseMutationOptions<
-      BaseResponse<boolean>,
-      Error,
-      { reqNo: string; id: number }
-    >
+    UseMutationOptions<BaseResponse<boolean>, Error, { id: number }>
   >,
   onInvalidate?: () => void,
 ) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: { reqNo: string; id: number }) =>
-      controlApi.remove(data),
+    mutationFn: (data: { id: number }) => controlApi.remove(data.id),
     onSuccess: () => {
       onInvalidate?.();
       queryClient.invalidateQueries({
