@@ -1,5 +1,9 @@
-import type { BaseResponse, BaseSearchResponse } from '@dtos';
-import type { BaseEntity, BaseSearchParams } from '../common';
+import type {
+  BaseEntity,
+  BaseResponse,
+  BaseSearchParams,
+  BaseSearchResponse,
+} from './common';
 
 export enum ControlType {
   EDITOR = 'EDITOR',
