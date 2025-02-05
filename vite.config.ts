@@ -28,6 +28,8 @@ export default defineConfig({
       '@styles': resolve(__dirname, './src/styles/'),
       '@types': resolve(__dirname, './src/types/'),
       '@utils': resolve(__dirname, './src/utils/'),
+      '@dtos': resolve(__dirname, './src/dtos/'),
+      '@apis': resolve(__dirname, './src/apis/'),
     },
   },
   css: {
