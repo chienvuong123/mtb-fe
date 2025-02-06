@@ -6,7 +6,7 @@ import type { ProductCategoryDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import { type FC, useState, type ReactNode, type Key } from 'react';
 
-export type TProductRecord = TTableKey & ProductCategoryDTO;
+export type TProductRecord = TTableKey & Partial<ProductCategoryDTO>;
 
 interface IProductTable {
   dataSource: TProductRecord[];

@@ -1,5 +1,9 @@
 import { categoryApi } from '@apis';
-import type { CategoryDTO, CategorySearchRequest } from '@dtos';
+import type {
+  CategoryDTO,
+  CategorySearchRequest,
+  CategoryInsertRequest,
+} from '@dtos';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const {
@@ -8,7 +12,8 @@ export const {
   useAddMutation: useCategoryAddMutation,
   useEditMutation: useCategoryEditMutation,
   useRemoveMutation: useCategoryRemoveMutation,
-} = createBaseQueryHooks<CategoryDTO, CategorySearchRequest>(
-  'categories',
-  categoryApi,
-);
+} = createBaseQueryHooks<
+  CategoryDTO,
+  CategoryInsertRequest,
+  CategorySearchRequest
+>('categories', categoryApi);

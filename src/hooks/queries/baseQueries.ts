@@ -11,6 +11,8 @@ import type { BaseApi } from '@apis';
 export const createBaseQueryHooks = <
   // dto type
   T,
+  // mutate insert type
+  Payload extends object,
   // search params type
   SearchParams extends BaseSearchParams,
   // view response after transform type
@@ -21,7 +23,7 @@ export const createBaseQueryHooks = <
   >,
 >(
   baseKey: string,
-  api: BaseApi<T, SearchParams>,
+  api: BaseApi<T, Payload, SearchParams>,
 ) => {
   const queryKeys = {
     all: baseKey,
@@ -63,14 +65,14 @@ export const createBaseQueryHooks = <
 
   const useAddMutation = (
     options?: Partial<
-      UseMutationOptions<BaseResponse<boolean>, Error, Partial<T>>
+      UseMutationOptions<BaseResponse<boolean>, Error, Partial<Payload>>
     >,
     onInvalidate?: () => void,
   ) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-      mutationFn: (data: Partial<T>) => api.add(data),
+      mutationFn: (data: Partial<Payload>) => api.add(data),
       onSuccess: () => {
         onInvalidate?.();
         queryClient.invalidateQueries({
@@ -83,14 +85,14 @@ export const createBaseQueryHooks = <
 
   const useEditMutation = (
     options?: Partial<
-      UseMutationOptions<BaseResponse<boolean>, Error, Partial<T>>
+      UseMutationOptions<BaseResponse<boolean>, Error, Partial<Payload>>
     >,
     onInvalidate?: () => void,
   ) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-      mutationFn: (data: Partial<T>) => api.edit(data),
+      mutationFn: (data: Partial<Payload>) => api.edit(data),
       onSuccess: () => {
         onInvalidate?.();
         queryClient.invalidateQueries({

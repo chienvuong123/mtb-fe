@@ -16,6 +16,9 @@ export interface ExampleDTO extends BaseEntity {
   exampleType: ExampleType;
 }
 
+export interface ExampleInsertRequest extends BaseSearchParams {
+  example?: string;
+}
 export interface ExampleSearchRequest extends BaseSearchParams {
   exampleType?: string;
   code?: string;

@@ -6,8 +6,8 @@ import dayjs from 'dayjs';
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import {
   CategoryType,
-  type CategoryDTO,
   type ProductCategoryDTO,
+  type CategoryInsertRequest,
   type TProductSearchForm,
 } from '@dtos';
 
@@ -44,16 +44,12 @@ const ProductCategoryPage: FC = () => {
 
   const [isViewMode, setIsViewMode] = useState(false);
 
-  const { data: productList, refetch: refetchProductList } =
-    useProductCategorySearchQuery({
-      categoryType: CategoryType.PRODUCT,
-      page: {
-        pageSize: metaData.pageSize,
-        current: metaData.current - 1,
-      },
-      code: searchValues.code,
-      name: searchValues.name,
-    });
+  const { data: productRes } = useProductCategorySearchQuery({
+    categoryType: CategoryType.PRODUCT,
+    page: { pageNum: metaData.current, pageSize: metaData.pageSize },
+    code: searchValues.code,
+    name: searchValues.name,
+  });
 
   const handleCloseForm = () => {
     setShowInsertForm(false);
@@ -63,25 +59,28 @@ const ProductCategoryPage: FC = () => {
   const handleReset = () => {
     handleCloseForm();
     setInitValues(null);
-    refetchProductList();
   };
 
-  console.log(productList?.data.content);
-
-  const { mutate: mutationCreateProducts } = useProductCategoryAddMutation();
-  const { mutate: mutationUpdateProducts } = useProductCategoryEditMutation();
+  const { mutate: mutationCreateProducts } = useProductCategoryAddMutation(
+    {},
+    handleReset,
+  );
+  const { mutate: mutationUpdateProducts } = useProductCategoryEditMutation(
+    {},
+    handleReset,
+  );
   const { mutate: mutationDeleteProducts } = useProductCategoryRemoveMutation();
 
   const handleCreate = () => {
     setInitValues({
-      code: '0003', // insert from client??
+      code: '',
       name: '',
-      key: 'CODE',
+      key: '',
       status: EStatus.ACTIVE,
       createdDate: dayjs().format(DATE_SLASH_FORMAT),
       updatedDate: dayjs().format(DATE_SLASH_FORMAT),
-      createdBy: 'You',
-      updatedBy: 'You',
+      createdBy: '',
+      updatedBy: '',
     });
     setShowInsertForm(true);
   };
@@ -103,76 +102,33 @@ const ProductCategoryPage: FC = () => {
     setMetaData(data);
   };
 
-  const handleSubmitUpsert = ({
-    name,
-    code,
-    status,
-    createdBy,
-    createdDate,
-    updatedBy,
-    updatedDate,
-  }: ProductCategoryDTO) => {
-    const data: Partial<CategoryDTO> = {
-      name,
-      code, // insert from client??
-      id: initValues?.id,
-      status,
-      categoryType: CategoryType.PRODUCT,
-      createdBy, // insert from client??
-      createdDate: dayjs(createdDate).toISOString(), // insert from client??
-      updatedBy, // insert from client??
-      updatedDate: dayjs(updatedDate).toISOString(), // insert from client??
+  const handleSubmitInsert = ({ name, code, status }: ProductCategoryDTO) => {
+    const data: Partial<CategoryInsertRequest> = {
+      category: {
+        categoryTypeId: CategoryType.PRODUCT,
+        code,
+        name,
+        status,
+        id: initValues?.id,
+      },
     };
     // update product
-    if (data?.id) {
-      mutationUpdateProducts(data, {
-        onSuccess: handleReset,
-        onError: (error) => {
-          console.error('Error occurred:', error);
-        },
-        onSettled: () => {
-          console.log('Mutation finished');
-        },
-      });
+    if (data?.category?.id) {
+      mutationUpdateProducts(data);
       return;
     }
     // create new product
-    // const { id, ...params } = data;
-    delete data.id;
-    mutationCreateProducts(data, {
-      onSuccess: handleReset,
-      onError: (error) => {
-        console.error('Error occurred:', error);
-      },
-      onSettled: () => {
-        console.log('Mutation finished');
-      },
-    });
+    mutationCreateProducts(data);
   };
 
   const handleDelete = (id: string) => {
-    mutationDeleteProducts(
-      { id },
-      {
-        onSuccess: () => {
-          refetchProductList();
-        },
-        onError: (error) => {
-          console.error('Error occurred:', error);
-        },
-        onSettled: () => {
-          console.log('Mutation finished');
-        },
-      },
-    );
+    mutationDeleteProducts({ id });
   };
 
   const paginations: IMPagination = {
     pagination: {
       ...metaData,
-      total: productList?.data?.page
-        ? productList.data.page * metaData.pageSize
-        : 0,
+      total: productRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
@@ -182,8 +138,11 @@ const ProductCategoryPage: FC = () => {
   const dataSources: TProductRecord[] =
     useMemo(
       () =>
-        productList?.data?.content?.map((i) => ({ ...i, key: i.id as string })),
-      [productList],
+        productRes?.data?.content?.map((i) => ({
+          ...i,
+          key: i.id as string,
+        })),
+      [productRes],
     ) ?? [];
 
   const handleClearAll = () => {
@@ -192,8 +151,7 @@ const ProductCategoryPage: FC = () => {
   };
 
   const handleView = (id: string) => {
-    console.log(id);
-    const item = productList?.data.content.find((i) => i.id === id);
+    const item = productRes?.data.content.find((i) => i.id === id);
     if (item) {
       setIsViewMode(true);
       setInitValues({ ...item });
@@ -236,7 +194,7 @@ const ProductCategoryPage: FC = () => {
           isViewMode={isViewMode}
           onClose={handleCloseForm}
           initialValues={initValues}
-          onSubmit={handleSubmitUpsert}
+          onSubmit={handleSubmitInsert}
         />
       </Drawer>
     </div>
