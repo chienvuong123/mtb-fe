@@ -5,7 +5,7 @@ import type { TableRowSelection } from 'antd/es/table/interface';
 
 import './styles.scss';
 import { AButton } from '@components/atoms';
-import type { ColumnsType } from 'antd/es/table';
+import type { ColumnsType, TableProps } from 'antd/es/table';
 import { MPagination } from '@components/molecules';
 import clsx from 'clsx';
 import type { FixedType, ITableForm, TTableKey } from './OTableForm.type';
@@ -13,15 +13,16 @@ import TableActions from './TableActions';
 import { OModalConfirm } from '../o-modal';
 
 export interface ITable<T>
-  extends Omit<
-    ITableForm<T>,
-    | 'form'
-    | 'editingKey'
-    | 'setEditingKey'
-    | 'onSubmitSave'
-    | 'onCancelSave'
-    | 'columns'
-  > {
+  extends TableProps<T>,
+    Omit<
+      ITableForm<T>,
+      | 'form'
+      | 'editingKey'
+      | 'setEditingKey'
+      | 'onSubmitSave'
+      | 'onCancelSave'
+      | 'columns'
+    > {
   columns: ColumnsType<T>;
   onEdit?: (record: T) => void;
 }
@@ -38,6 +39,7 @@ const OTable = <T extends object & TTableKey>({
   onDeleteRow,
   onView,
   setSelectedRowKeys,
+  ...props
 }: ITable<T>) => {
   const [showModal, setShowModal] = useState(false);
   const [recordKey, setRecordKey] = useState<Key | null>(null);
@@ -126,6 +128,7 @@ const OTable = <T extends object & TTableKey>({
         pagination={false}
         rowSelection={rowSelection}
         scroll={{ x: 'max-content' }}
+        {...props}
       />
       {paginations && <MPagination {...paginations} />}
     </>

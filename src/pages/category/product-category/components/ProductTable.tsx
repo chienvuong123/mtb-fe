@@ -4,7 +4,8 @@ import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
 import type { ProductCategoryDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
-import { type FC, useState, type ReactNode, type Key } from 'react';
+import type { SortOrder, SorterResult } from 'antd/es/table/interface';
+import { useState, type FC, type ReactNode, type Key } from 'react';
 
 export type TProductRecord = TTableKey & Partial<ProductCategoryDTO>;
 
@@ -15,6 +16,7 @@ interface IProductTable {
   onEdit: ITable<TProductRecord>['onEdit'];
   onDelete: (id: string) => void;
   onView: (id: string) => void;
+  onSort: (field: string, direction: SortOrder) => void;
 }
 
 const statusObject: Record<EStatus, ReactNode> = {
@@ -34,37 +36,51 @@ const columns: ColumnType<TProductRecord>[] = [
     title: 'Mã',
     dataIndex: 'code',
     minWidth: 104,
+    sorter: true,
+    showSorterTooltip: false,
   },
   {
     title: 'Tên',
     dataIndex: 'name',
     minWidth: 213,
+    sorter: true,
+    showSorterTooltip: false,
   },
   {
     title: 'Trạng thái',
     dataIndex: 'status',
     minWidth: 164,
+    sorter: true,
+    showSorterTooltip: false,
     render: (value: EStatus) => statusObject[value] ?? null,
   },
   {
     title: 'Ngày tạo',
     dataIndex: 'createdDate',
     minWidth: 164,
+    sorter: true,
+    showSorterTooltip: false,
   },
   {
     title: 'Người tạo',
     dataIndex: 'createdBy',
     minWidth: 164,
+    sorter: true,
+    showSorterTooltip: false,
   },
   {
     title: 'Ngày cập nhật',
     dataIndex: 'updatedDate',
     minWidth: 164,
+    sorter: true,
+    showSorterTooltip: false,
   },
   {
     title: 'Người cập nhật',
     dataIndex: 'updatedBy',
     minWidth: 164,
+    sorter: true,
+    showSorterTooltip: false,
   },
 ];
 
@@ -75,6 +91,7 @@ const ProductTable: FC<IProductTable> = ({
   onEdit,
   onDelete,
   onView,
+  onSort,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
@@ -94,6 +111,10 @@ const ProductTable: FC<IProductTable> = ({
       showCreateBtn
       paginations={paginations}
       onView={(id) => onView(id as string)}
+      onChange={(_p, _f, s) => {
+        const { field, order } = s as SorterResult<TProductRecord>;
+        onSort(field as string, order as SortOrder);
+      }}
     />
   );
 };

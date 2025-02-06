@@ -18,8 +18,6 @@ const items: TFormItem[] = [
     label: 'Mã',
     name: 'code',
     inputProps: { disabled: true },
-    required: true,
-    rules: [{ required: true }],
   },
   {
     type: INPUT_TYPE.TEXT,

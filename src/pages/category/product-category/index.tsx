@@ -9,6 +9,7 @@ import {
   type ProductCategoryDTO,
   type CategoryInsertRequest,
   type TProductSearchForm,
+  type OrderDTO,
 } from '@dtos';
 
 import './index.scss';
@@ -22,6 +23,7 @@ import {
   useProductCategoryRemoveMutation,
   useProductCategorySearchQuery,
 } from '@hooks/queries/useProductCategoryQueries';
+import type { SortOrder } from 'antd/es/table/interface';
 import ProductInsertForm from './components/ProductInsertForm';
 import ProductSearchForm from './components/ProductSearchForm';
 import ProductTable, { type TProductRecord } from './components/ProductTable';
@@ -38,15 +40,18 @@ const ProductCategoryPage: FC = () => {
     total: 100,
   });
 
-  const [searchValues, setSearchValues] = useState<Partial<TProductSearchForm>>(
+  const [searchValues, setSearchValues] = useState<Partial<ProductCategoryDTO>>(
     {},
   );
+
+  const [sortObject, setSortObject] = useState<OrderDTO>();
 
   const [isViewMode, setIsViewMode] = useState(false);
 
   const { data: productRes } = useProductCategorySearchQuery({
     categoryType: CategoryType.PRODUCT,
     page: { pageNum: metaData.current, pageSize: metaData.pageSize },
+    order: sortObject,
     code: searchValues.code,
     name: searchValues.name,
   });
@@ -73,14 +78,11 @@ const ProductCategoryPage: FC = () => {
 
   const handleCreate = () => {
     setInitValues({
-      code: '',
+      code: '0013',
       name: '',
-      key: '',
       status: EStatus.ACTIVE,
       createdDate: dayjs().format(DATE_SLASH_FORMAT),
       updatedDate: dayjs().format(DATE_SLASH_FORMAT),
-      createdBy: '',
-      updatedBy: '',
     });
     setShowInsertForm(true);
   };
@@ -159,6 +161,14 @@ const ProductCategoryPage: FC = () => {
     }
   };
 
+  const handleSort = (field: string, direction: SortOrder) => {
+    setSortObject(
+      direction
+        ? { field, direction: direction.replace('end', '') }
+        : undefined,
+    );
+  };
+
   const getDrawerTitle = useMemo(() => {
     const title = '$ danh mục product';
     if (isViewMode) return title.replace('$', 'Chi tiết');
@@ -180,6 +190,7 @@ const ProductCategoryPage: FC = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}
+        onSort={handleSort}
       />
 
       <Drawer
