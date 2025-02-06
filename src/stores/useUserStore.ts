@@ -1,14 +1,16 @@
 import { atom, useAtom } from 'jotai';
+import { USER_ADMIN } from '../mocks/user';
 
 // === Define Types ===
 interface User {
   id: string;
   name: string;
   email: string;
+  role: string;
 }
 
 // === Base Atoms ===
-const userAtom = atom<User | null>(null);
+const userAtom = atom<User | null>(USER_ADMIN);
 
 // === Custom Hooks ===
 const useUser = () => {
@@ -17,11 +19,7 @@ const useUser = () => {
   const login = async () => {
     // Handle login logic
     // const userData = await apiLogin(email, password);
-    const userData: User = {
-      id: '1',
-      name: 'Test User',
-      email: 'email',
-    };
+    const userData: User = USER_ADMIN;
     setUser(userData);
   };
 

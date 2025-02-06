@@ -71,14 +71,24 @@ const useMenuList = () => {
         ),
       },
       {
-        key: 'example',
+        key: 'setting.control',
         label: (
           <>
             Cài đặt
-            <Link to="/example" />
+            <Link to="/setting/control" />
           </>
         ),
         icon: <Setting02Icon />,
+      },
+      {
+        key: 'example',
+        label: (
+          <>
+            Example
+            <Link to="/example" />
+          </>
+        ),
+        icon: <HelpCircleIcon />,
       },
     ];
 

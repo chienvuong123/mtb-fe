@@ -1,3 +1,4 @@
+import { EControlType } from '@constants/masterData';
 import type {
   BaseEntity,
   BaseResponse,
@@ -5,23 +6,10 @@ import type {
   BaseSearchResponse,
 } from './common';
 
-export enum ControlType {
-  EDITOR = 'EDITOR',
-  SELECT = 'SELECT',
-  RADIO = 'RADIO',
-  CHECKBOX = 'CHECKBOX',
-  IMAGE = 'IMAGE',
-  DATETIME = 'DATETIME',
-  TEXT = 'TEXT',
-  NUMBER = 'NUMBER',
-  SWITCH = 'SWITCH',
-  LINK = 'LINK',
-}
-
 export interface ControlDTO extends BaseEntity {
   code: string;
   name: string;
-  controlType: ControlType;
+  controlType: EControlType;
 }
 
 export interface ControlAddRequest extends Partial<ControlDTO> {
