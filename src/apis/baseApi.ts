@@ -17,11 +17,7 @@ export class BaseApi<
     return apiRequest<BaseResponse<BaseSearchResponse<T>>>({
       url: `${this.endpoint}/search`,
       method: 'GET',
-      params: {
-        ...flattenObject(params),
-        page: undefined,
-        order: undefined,
-      } as SearchParams,
+      params: flattenObject(params),
     });
   }
 

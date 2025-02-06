@@ -97,6 +97,7 @@ const ProductCategoryPage: FC = () => {
   };
 
   const handleSearch = (values: TProductSearchForm) => {
+    setMetaData((pre) => ({ ...pre, current: 1 }));
     setSearchValues(values);
   };
 
