@@ -20,6 +20,11 @@ export type PageParams = {
   pageSize: number;
 };
 
+export type SortParams = {
+  field: string;
+  direction: string;
+};
+
 // Base interfaces
 export interface BaseEntity {
   createdDate: string;
@@ -44,7 +49,6 @@ export interface BaseSearchResponse<T> {
 }
 
 export interface BaseSearchParams {
-  pageNumber: number;
-  pageSize: number;
-  pageable?: PageableObject;
+  page?: PageParams;
+  sort?: SortParams;
 }

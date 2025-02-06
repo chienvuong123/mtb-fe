@@ -1,4 +1,4 @@
-import type { PageParams } from '@dtos';
+import type { PageParams, SortParams } from '@dtos';
 import qs from 'qs';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -10,12 +10,18 @@ const useUrlParams = <T>() => {
   const {
     current = 1,
     pageSize = 20,
+    field,
+    direction,
     ...initFilters
-  } = qs.parse(search.replace('?', '')) as P & PageParams;
+  } = qs.parse(search.replace('?', '')) as P & PageParams & SortParams;
 
   const [pagination, setPagination] = useState<PageParams>({
     current,
     pageSize,
+  });
+  const [sort, setSort] = useState<SortParams>({
+    field,
+    direction,
   });
   const [filters, setFilters] = useState<P>((initFilters ?? {}) as P);
 
@@ -34,13 +40,16 @@ const useUrlParams = <T>() => {
       search: qs.stringify({
         ...filters,
         ...pagination,
+        ...sort,
       }),
     });
-  }, [filters, navigate, pagination]);
+  }, [filters, navigate, pagination, sort]);
 
   return {
     pagination,
     setPagination,
+    sort,
+    setSort,
     filters,
     setFilter,
     setFilters,

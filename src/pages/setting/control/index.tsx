@@ -27,12 +27,15 @@ const SettingControlPage: FC = () => {
     null,
   );
 
-  const { filters, setFilters, pagination, setPagination } =
+  const { filters, setFilters, pagination, setPagination, sort, setSort } =
     useUrlParams<ControlSearchRequest>();
 
   const { data: controlList } = useControlSearchQuery({
-    pageNumber: pagination.current - 1,
-    pageSize: pagination.pageSize || 10,
+    page: {
+      pageSize: pagination.pageSize,
+      current: pagination.current - 1,
+    },
+    sort,
     code: filters.code,
     name: filters.name,
   });
@@ -62,6 +65,12 @@ const SettingControlPage: FC = () => {
 
   const handlePaginationChange = ({ pageSize, current }: TPagination) => {
     setPagination({ pageSize, current });
+
+    // This for testing
+    setSort({
+      field: 'code',
+      direction: 'desc',
+    });
   };
 
   const handleSubmitUpsert = ({

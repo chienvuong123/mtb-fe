@@ -47,8 +47,10 @@ const ProductCategoryPage: FC = () => {
   const { data: productList, refetch: refetchProductList } =
     useProductCategorySearchQuery({
       categoryType: CategoryType.PRODUCT,
-      pageNumber: metaData.current - 1,
-      pageSize: metaData.pageSize,
+      page: {
+        pageSize: metaData.pageSize,
+        current: metaData.current - 1,
+      },
       code: searchValues.code,
       name: searchValues.name,
     });
