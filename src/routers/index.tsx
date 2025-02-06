@@ -1,6 +1,7 @@
 import LayoutWrapper from '@layouts/LayoutWrapper';
 import React from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import { ERole } from '@constants/masterData';
 import { useUserStore } from '../stores';
 import {
   CATEGORY,
@@ -73,7 +74,9 @@ const routes = createBrowserRouter(
         },
         {
           path: SETTING.ROOT,
-          element: <ProtectRoutes roles={['ADMIN']} />,
+          element: (
+            <ProtectRoutes roles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]} />
+          ),
           children: [
             {
               path: SETTING.CONTROL,

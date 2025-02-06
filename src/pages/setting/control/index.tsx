@@ -1,17 +1,4 @@
-import type {
-  CMResponseControlDTO,
-  CMResponseControlsDTO,
-  ControlDTO,
-  ControlUpsertRequest,
-  TControlSearchForm,
-} from '@dtos';
-import {
-  createControl,
-  deleteControl,
-  getControls,
-  updateControl,
-} from '@services/rq-hooks';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import type { ControlDTO, ControlSearchRequest } from '@dtos';
 import { Drawer } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
@@ -21,6 +8,12 @@ import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
+import {
+  useAddControlMutation,
+  useControlsSearchQuery,
+  useEditControlMutation,
+  useRemoveControlMutation,
+} from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
 import ControlInsertForm from './components/ControlInsertForm';
 import ControlSearchForm from './components/ControlSearchForm';
@@ -34,79 +27,23 @@ const SettingControlPage: FC = () => {
   );
 
   const { filters, setFilters, pagination, setPagination } =
-    useUrlParams<TControlSearchForm>();
+    useUrlParams<ControlSearchRequest>();
 
-  const { data: controlList, refetch: refetchControlList } =
-    useQuery<CMResponseControlsDTO>({
-      queryKey: [
-        'control/list',
-        pagination.current,
-        pagination.pageSize,
-        filters.code,
-        filters.name,
-      ],
-      queryFn: () =>
-        getControls({
-          pageNumber: pagination.current - 1,
-          pageSize: pagination.pageSize || 10,
-          code: filters.code,
-          name: filters.name,
-        }),
-    });
+  const { data: controlList } = useControlsSearchQuery({
+    pageNumber: pagination.current - 1,
+    pageSize: pagination.pageSize || 10,
+    code: filters.code,
+    name: filters.name,
+  });
 
   const handleCloseForm = () => setShowInsertForm(false);
-
   const handleReset = () => {
     handleCloseForm();
     setInitValues(null);
-    refetchControlList();
   };
-
-  const mutationCreateControls = useMutation<
-    CMResponseControlDTO,
-    Error,
-    ControlUpsertRequest
-  >({
-    mutationFn: (values) => createControl(values),
-    onSuccess: handleReset,
-    onError: (error) => {
-      console.error('Error occurred:', error);
-    },
-    onSettled: () => {
-      console.log('Mutation finished');
-    },
-  });
-  const mutationUpdateControls = useMutation<
-    CMResponseControlDTO,
-    Error,
-    ControlUpsertRequest
-  >({
-    mutationFn: (values) => updateControl(values),
-    onSuccess: handleReset,
-    onError: (error) => {
-      console.error('Error occurred:', error);
-    },
-    onSettled: () => {
-      console.log('Mutation finished');
-    },
-  });
-
-  const mutationDeleteControls = useMutation<
-    CMResponseControlDTO,
-    Error,
-    string
-  >({
-    mutationFn: (values) => deleteControl(values),
-    onSuccess: () => {
-      refetchControlList();
-    },
-    onError: (error) => {
-      console.error('Error occurred:', error);
-    },
-    onSettled: () => {
-      console.log('Mutation finished');
-    },
-  });
+  const addControlMutation = useAddControlMutation({}, handleReset);
+  const editControlMutation = useEditControlMutation({}, handleReset);
+  const removeControlMutation = useRemoveControlMutation({}, handleReset);
 
   const handleCreate = () => {
     setInitValues(null);
@@ -118,7 +55,7 @@ const SettingControlPage: FC = () => {
     setShowInsertForm(true);
   };
 
-  const handleSearch = (values: TControlSearchForm) => {
+  const handleSearch = (values: ControlSearchRequest) => {
     setFilters(values);
   };
 
@@ -136,8 +73,9 @@ const SettingControlPage: FC = () => {
     updatedBy,
     updatedDate,
   }: ControlDTO) => {
-    const data: ControlUpsertRequest = {
+    const data = {
       id: '',
+      reqNo: '',
       name,
       code, // insert from client??
       controlType,
@@ -149,14 +87,14 @@ const SettingControlPage: FC = () => {
     };
     if (initValues?.id) {
       data.id = initValues.id;
-      mutationUpdateControls.mutate(data);
+      addControlMutation.mutate(data);
     } else {
-      mutationCreateControls.mutate(data);
+      editControlMutation.mutate(data);
     }
   };
 
   const handleDelete = (id: string) => {
-    mutationDeleteControls.mutate(id);
+    removeControlMutation.mutate({ id });
   };
 
   const paginationProps: IMPagination = {

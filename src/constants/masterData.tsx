@@ -17,6 +17,26 @@ export enum EStatus {
   INACTIVE = 'INACTIVE',
 }
 
+export enum ERole {
+  ADMIN = 'ADMIN',
+  SELLER = 'SELLER',
+  CAMPAIGN_MANAGER = 'CAMPAIGN_MANAGER',
+  SALE_LEADER = 'SALE_LEADER',
+}
+
+export enum EControlType {
+  EDITOR = 'EDITOR',
+  SELECT = 'SELECT',
+  RADIO = 'RADIO',
+  CHECKBOX = 'CHECKBOX',
+  IMAGE = 'IMAGE',
+  DATETIME = 'DATETIME',
+  TEXT = 'TEXT',
+  NUMBER = 'NUMBER',
+  SWITCH = 'SWITCH',
+  LINK = 'LINK',
+}
+
 export const STATUS_OPTIONS = [
   {
     value: EStatus.ACTIVE,

@@ -2,10 +2,10 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { type FC } from 'react';
-import type { TControlSearchForm } from '@dtos';
+import type { ControlSearchRequest } from '@dtos';
 
 interface IControlSearchForm {
-  onSearch: (values: TControlSearchForm) => void;
+  onSearch: (values: ControlSearchRequest) => void;
 }
 
 const items: TFormItem[] = [
@@ -28,7 +28,7 @@ const ControlSearchForm: FC<IControlSearchForm> = ({ onSearch }) => {
 
   return (
     <div>
-      <OSearchBaseForm<TControlSearchForm>
+      <OSearchBaseForm<ControlSearchRequest>
         items={items}
         form={form}
         onSearch={onSearch}
