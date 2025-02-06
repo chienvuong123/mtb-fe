@@ -8,11 +8,12 @@ import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
+
 import {
-  useAddControlMutation,
-  useControlsSearchQuery,
-  useEditControlMutation,
-  useRemoveControlMutation,
+  useControlAddMutation,
+  useControlEditMutation,
+  useControlRemoveMutation,
+  useControlSearchQuery,
 } from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
 import ControlInsertForm from './components/ControlInsertForm';
@@ -29,7 +30,7 @@ const SettingControlPage: FC = () => {
   const { filters, setFilters, pagination, setPagination } =
     useUrlParams<ControlSearchRequest>();
 
-  const { data: controlList } = useControlsSearchQuery({
+  const { data: controlList } = useControlSearchQuery({
     pageNumber: pagination.current - 1,
     pageSize: pagination.pageSize || 10,
     code: filters.code,
@@ -41,9 +42,9 @@ const SettingControlPage: FC = () => {
     handleCloseForm();
     setInitValues(null);
   };
-  const addControlMutation = useAddControlMutation({}, handleReset);
-  const editControlMutation = useEditControlMutation({}, handleReset);
-  const removeControlMutation = useRemoveControlMutation({}, handleReset);
+  const addControlMutation = useControlAddMutation({}, handleReset);
+  const editControlMutation = useControlEditMutation({}, handleReset);
+  const removeControlMutation = useControlRemoveMutation({}, handleReset);
 
   const handleCreate = () => {
     setInitValues(null);
