@@ -19,6 +19,7 @@ interface IOBaseForm<T> {
   onSubmit: (values: T) => void;
   onClose?: () => void;
   className?: string;
+  isViewMode?: boolean;
 }
 
 const OBaseForm = <T extends object>({
@@ -27,6 +28,7 @@ const OBaseForm = <T extends object>({
   onSubmit,
   onClose,
   className,
+  isViewMode,
 }: IOBaseForm<T>) => {
   const transformItems = useMemo(
     () =>
@@ -67,7 +69,7 @@ const OBaseForm = <T extends object>({
           {formContent}
         </div>
 
-        <div className="w-full btn-group">
+        <div className="w-full btn-group" hidden={isViewMode}>
           <Divider className="ma-0" />
           <Flex justify="center" className="py-16 w-full" gap="middle">
             <AButton

@@ -16,7 +16,7 @@ export class BaseApi<T, SearchParams extends BaseSearchParams> {
     });
   }
 
-  async view(id: number) {
+  async view(id: string) {
     return apiRequest<BaseResponse<T>>({
       url: `${this.endpoint}/view`,
       method: 'GET',
@@ -40,7 +40,7 @@ export class BaseApi<T, SearchParams extends BaseSearchParams> {
     });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/remove`,
       method: 'POST',

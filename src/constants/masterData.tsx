@@ -1,9 +1,5 @@
 import { Typography } from 'antd';
 
-export enum ECategoryType {
-  PRODUCT = '2',
-}
-
 export enum EStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',

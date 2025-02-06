@@ -1,6 +1,7 @@
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
 import { useMemo } from 'react';
 import {
+  FolderManagementIcon,
   HelpCircleIcon,
   LogoutIcon,
   MarketingIcon,
@@ -10,6 +11,7 @@ import {
 } from '@assets/icons';
 import { Divider } from 'antd';
 import { Link } from 'react-router-dom';
+import { CATEGORY } from '@routers/path';
 
 const useMenuList = () => {
   const menuList = useMemo(() => {
@@ -25,13 +27,8 @@ const useMenuList = () => {
         ),
       },
       {
-        key: 'dashboard',
-        label: (
-          <>
-            Quản lý Category
-            <Link to="/" />
-          </>
-        ),
+        key: '/',
+        label: 'Quản lý Category',
         icon: <PieChartIcon />,
       },
       {
@@ -45,6 +42,17 @@ const useMenuList = () => {
             label: 'Danh sách nhóm khách hàng theo Campaign',
           },
           { key: 'category.3', label: 'Tạo nhóm khách hàng' },
+        ],
+      },
+      {
+        key: CATEGORY.ROOT,
+        label: 'Quản lý danh mục',
+        icon: <FolderManagementIcon />,
+        children: [
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.PRODUCT_CATEGORY}`,
+            label: 'Danh mục Product',
+          },
         ],
       },
       {

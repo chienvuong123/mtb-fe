@@ -13,7 +13,8 @@ interface IProductTable {
   paginations: IMPagination;
   onCreate: ITable<TProductRecord>['onCreate'];
   onEdit: ITable<TProductRecord>['onEdit'];
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
+  onView: (id: string) => void;
 }
 
 const statusObject: Record<EStatus, ReactNode> = {
@@ -73,11 +74,12 @@ const ProductTable: FC<IProductTable> = ({
   onCreate,
   onEdit,
   onDelete,
+  onView,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   const deleteRecord = (key: Key) => {
-    onDelete(key as number);
+    onDelete(key as string);
   };
 
   return (
@@ -91,6 +93,7 @@ const ProductTable: FC<IProductTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       showCreateBtn
       paginations={paginations}
+      onView={(id) => onView(id as string)}
     />
   );
 };

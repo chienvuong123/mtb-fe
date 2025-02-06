@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { LayoutProps } from 'antd';
 import { Layout } from 'antd';
 import clsx from 'clsx';
@@ -14,14 +14,25 @@ import {
 import { AButton } from '@components/atoms';
 import AMenu from '@components/atoms/a-menu/AMenu';
 import useMenuList from '@layouts/hooks/useMenuList';
+import type { SelectEventHandler } from 'rc-menu/lib/interface';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getFirstPathname } from '@utils/stringHelper';
 
 const { Sider } = Layout;
 
 const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
   const classAntd = clsx('l-slider', className);
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [actualActive, setActualAction] = useState(false);
+
+  const [selectedKey, setSelectedKey] = useState<string[]>([]);
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
+
   const isShowIcon = isCollapsed === actualActive;
+
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const { menu, menuBottom } = useMenuList();
 
@@ -47,6 +58,21 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
     setIsCollapsed((prev) => !prev);
     setActualAction((prev) => !prev);
   };
+
+  const handleMenuClick: SelectEventHandler = ({ key }) => {
+    navigate(key);
+    setSelectedKey([key]);
+  };
+
+  const handleOpenChange = (keys: string[]) => {
+    setOpenKeys(keys);
+  };
+
+  useEffect(() => {
+    setSelectedKey([pathname]);
+    setOpenKeys([getFirstPathname(pathname)]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="pos-relative">
@@ -80,9 +106,13 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
               {isCollapsed ? <LogoCollapsed /> : <LogoOpenIcon />}
             </div>
             <AMenu
+              selectedKeys={selectedKey}
+              openKeys={openKeys}
               items={menu}
               mode="inline"
               className={clsx({ 'is-collapsed': isCollapsed })}
+              onSelect={handleMenuClick}
+              onOpenChange={handleOpenChange}
             />
           </div>
 
