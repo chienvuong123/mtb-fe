@@ -27,7 +27,7 @@ export const createBaseQueryHooks = <
     all: baseKey,
     list: [baseKey, 'list'] as const,
     search: (params: SearchParams) => [baseKey, 'list', params] as const,
-    detail: (id: number) => [baseKey, 'detail', id] as const,
+    detail: (id: string) => [baseKey, 'detail', id] as const,
   };
 
   const useSearchQuery = (
@@ -48,7 +48,7 @@ export const createBaseQueryHooks = <
   };
 
   const useViewQuery = (
-    params: { id: number },
+    params: { id: string },
     options: Partial<
       UseQueryOptions<BaseResponse<T>, Error, ViewResponse>
     > = {},
@@ -103,14 +103,14 @@ export const createBaseQueryHooks = <
 
   const useRemoveMutation = (
     options?: Partial<
-      UseMutationOptions<BaseResponse<boolean>, Error, { id: number }>
+      UseMutationOptions<BaseResponse<boolean>, Error, { id: string }>
     >,
     onInvalidate?: () => void,
   ) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-      mutationFn: (data: { id: number }) => api.remove(data.id),
+      mutationFn: (data: { id: string }) => api.remove(data.id),
       onSuccess: () => {
         onInvalidate?.();
         queryClient.invalidateQueries({

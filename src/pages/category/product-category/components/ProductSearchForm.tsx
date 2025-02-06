@@ -6,6 +6,7 @@ import type { TProductSearchForm } from '@dtos';
 
 interface IProductSearchForm {
   onSearch: (values: TProductSearchForm) => void;
+  onClearAll?: () => void;
 }
 
 const items: TFormItem[] = [
@@ -23,7 +24,10 @@ const items: TFormItem[] = [
   },
 ];
 
-const ProductSearchForm: FC<IProductSearchForm> = ({ onSearch }) => {
+const ProductSearchForm: FC<IProductSearchForm> = ({
+  onSearch,
+  onClearAll,
+}) => {
   const [form] = useForm();
 
   return (
@@ -32,6 +36,7 @@ const ProductSearchForm: FC<IProductSearchForm> = ({ onSearch }) => {
         items={items}
         form={form}
         onSearch={onSearch}
+        onClearAll={onClearAll}
       />
     </div>
   );

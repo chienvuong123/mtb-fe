@@ -25,7 +25,7 @@ const queryKeys = {
   list: [rootKeys.all, rootKeys.list],
   search: (params: ControlSearchRequest) =>
     [rootKeys.all, rootKeys.list, params] as const,
-  detail: (id: number) => [rootKeys.all, rootKeys.detail, id] as const,
+  detail: (id: string) => [rootKeys.all, rootKeys.detail, id] as const,
 };
 
 export const controlQueryKeys = queryKeys;
@@ -44,7 +44,7 @@ export function useControlsSearchQuery(
 }
 
 export function useControlViewQuery(
-  params: { id: number },
+  params: { id: string },
   options: Partial<
     UseQueryOptions<ControlViewResponse, Error, ControlViewResponse>
   > = {},
@@ -99,14 +99,14 @@ export function useEditControlMutation(
 
 export function useRemoveControlMutation(
   options?: Partial<
-    UseMutationOptions<BaseResponse<boolean>, Error, { id: number }>
+    UseMutationOptions<BaseResponse<boolean>, Error, { id: string }>
   >,
   onInvalidate?: () => void,
 ) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: { id: number }) => controlApi.remove(data.id),
+    mutationFn: (data: { id: string }) => controlApi.remove(data.id),
     onSuccess: () => {
       onInvalidate?.();
       queryClient.invalidateQueries({

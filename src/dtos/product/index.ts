@@ -5,7 +5,7 @@ export type ProductCategoryDTO = {
   createdBy: string;
   updatedDate: string;
   updatedBy: string;
-  id: number;
+  id: string;
   code: string;
   name: string;
   status: string;

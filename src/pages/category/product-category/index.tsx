@@ -1,22 +1,14 @@
-import { ECategoryType, EStatus } from '@constants/masterData';
+import { EStatus } from '@constants/masterData';
 import { Drawer } from 'antd';
 import { type FC, useState, useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import {
-  createProduct,
-  deleteProduct,
-  getListProduct,
-  updateProduct,
-} from '@services/rq-hooks';
-import type {
-  CMResponseProductCategoryDTO,
-  CMResponseCategoryDTO,
-  ProductCategoryDTO,
-  ProductCategoryUpsertRequest,
-  TProductSearchForm,
+  CategoryType,
+  type CategoryDTO,
+  type ProductCategoryDTO,
+  type TProductSearchForm,
 } from '@dtos';
 
 import './index.scss';
@@ -24,6 +16,12 @@ import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
+import {
+  useProductCategoryAddMutation,
+  useProductCategoryEditMutation,
+  useProductCategoryRemoveMutation,
+  useProductCategorySearchQuery,
+} from '@hooks/queries/useProductCategoryQueries';
 import ProductInsertForm from './components/ProductInsertForm';
 import ProductSearchForm from './components/ProductSearchForm';
 import ProductTable, { type TProductRecord } from './components/ProductTable';
@@ -44,27 +42,21 @@ const ProductCategoryPage: FC = () => {
     {},
   );
 
+  const [isViewMode, setIsViewMode] = useState(false);
+
   const { data: productList, refetch: refetchProductList } =
-    useQuery<CMResponseCategoryDTO>({
-      queryKey: [
-        'product-category/list',
-        metaData.current,
-        metaData.pageSize,
-        searchValues.code,
-        searchValues.name,
-      ],
-      queryFn: () =>
-        getListProduct({
-          categoryType: ECategoryType.PRODUCT,
-          reqNo: '1',
-          pageNumber: metaData.current - 1,
-          pageSize: metaData.pageSize,
-          code: searchValues.code,
-          name: searchValues.name,
-        }),
+    useProductCategorySearchQuery({
+      categoryType: CategoryType.PRODUCT,
+      pageNumber: metaData.current - 1,
+      pageSize: metaData.pageSize,
+      code: searchValues.code,
+      name: searchValues.name,
     });
 
-  const handleCloseForm = () => setShowInsertForm(false);
+  const handleCloseForm = () => {
+    setShowInsertForm(false);
+    setIsViewMode(false);
+  };
 
   const handleReset = () => {
     handleCloseForm();
@@ -72,58 +64,11 @@ const ProductCategoryPage: FC = () => {
     refetchProductList();
   };
 
-  // const { data: categoryTypes } = useQuery<CMResponseProductCategoryDTO>({
-  //   queryKey: ['category-types', '1'],
-  //   queryFn: () => getCategoryTypes('1'),
-  // });
-
   console.log(productList?.data.content);
 
-  const mutationCreateProducts = useMutation<
-    CMResponseProductCategoryDTO,
-    Error,
-    ProductCategoryUpsertRequest
-  >({
-    mutationFn: (values) => createProduct(values),
-    onSuccess: handleReset,
-    onError: (error) => {
-      console.error('Error occurred:', error);
-    },
-    onSettled: () => {
-      console.log('Mutation finished');
-    },
-  });
-  const mutationUpdateProducts = useMutation<
-    CMResponseProductCategoryDTO,
-    Error,
-    ProductCategoryUpsertRequest
-  >({
-    mutationFn: (values) => updateProduct(values),
-    onSuccess: handleReset,
-    onError: (error) => {
-      console.error('Error occurred:', error);
-    },
-    onSettled: () => {
-      console.log('Mutation finished');
-    },
-  });
-
-  const mutationDeleteProducts = useMutation<
-    CMResponseProductCategoryDTO,
-    Error,
-    number
-  >({
-    mutationFn: (values) => deleteProduct(values),
-    onSuccess: () => {
-      refetchProductList();
-    },
-    onError: (error) => {
-      console.error('Error occurred:', error);
-    },
-    onSettled: () => {
-      console.log('Mutation finished');
-    },
-  });
+  const { mutate: mutationCreateProducts } = useProductCategoryAddMutation();
+  const { mutate: mutationUpdateProducts } = useProductCategoryEditMutation();
+  const { mutate: mutationDeleteProducts } = useProductCategoryRemoveMutation();
 
   const handleCreate = () => {
     setInitValues({
@@ -165,29 +110,59 @@ const ProductCategoryPage: FC = () => {
     updatedBy,
     updatedDate,
   }: ProductCategoryDTO) => {
-    const data: ProductCategoryUpsertRequest = {
-      category: {
-        name,
-        code: code || undefined, // insert from client??
-        id: initValues?.id,
-        status,
-        categoryTypeCode: ECategoryType.PRODUCT,
-        createdBy, // insert from client??
-        createdDate: dayjs(createdDate).toISOString(), // insert from client??
-        updatedBy, // insert from client??
-        updatedDate: dayjs(updatedDate).toISOString(), // insert from client??
-      },
-      reqNo: '1',
+    const data: Partial<CategoryDTO> = {
+      name,
+      code, // insert from client??
+      id: initValues?.id,
+      status,
+      categoryType: CategoryType.PRODUCT,
+      createdBy, // insert from client??
+      createdDate: dayjs(createdDate).toISOString(), // insert from client??
+      updatedBy, // insert from client??
+      updatedDate: dayjs(updatedDate).toISOString(), // insert from client??
     };
-    if (data.category?.id) {
-      mutationUpdateProducts.mutate(data);
-    } else {
-      mutationCreateProducts.mutate(data);
+    // update product
+    if (data?.id) {
+      mutationUpdateProducts(data, {
+        onSuccess: handleReset,
+        onError: (error) => {
+          console.error('Error occurred:', error);
+        },
+        onSettled: () => {
+          console.log('Mutation finished');
+        },
+      });
+      return;
     }
+    // create new product
+    // const { id, ...params } = data;
+    delete data.id;
+    mutationCreateProducts(data, {
+      onSuccess: handleReset,
+      onError: (error) => {
+        console.error('Error occurred:', error);
+      },
+      onSettled: () => {
+        console.log('Mutation finished');
+      },
+    });
   };
 
-  const handleDelete = (id: number) => {
-    mutationDeleteProducts.mutate(id);
+  const handleDelete = (id: string) => {
+    mutationDeleteProducts(
+      { id },
+      {
+        onSuccess: () => {
+          refetchProductList();
+        },
+        onError: (error) => {
+          console.error('Error occurred:', error);
+        },
+        onSettled: () => {
+          console.log('Mutation finished');
+        },
+      },
+    );
   };
 
   const paginations: IMPagination = {
@@ -204,16 +179,39 @@ const ProductCategoryPage: FC = () => {
 
   const dataSources: TProductRecord[] =
     useMemo(
-      () => productList?.data?.content?.map((i) => ({ ...i, key: i.id })),
+      () =>
+        productList?.data?.content?.map((i) => ({ ...i, key: i.id as string })),
       [productList],
     ) ?? [];
+
+  const handleClearAll = () => {
+    setMetaData((pre) => ({ ...pre, current: 1 }));
+    setSearchValues({});
+  };
+
+  const handleView = (id: string) => {
+    console.log(id);
+    const item = productList?.data.content.find((i) => i.id === id);
+    if (item) {
+      setIsViewMode(true);
+      setInitValues({ ...item });
+      setShowInsertForm(true);
+    }
+  };
+
+  const getDrawerTitle = useMemo(() => {
+    const title = '$ danh mục product';
+    if (isViewMode) return title.replace('$', 'Chi tiết');
+    if (initValues?.id) return title.replace('$', 'Chỉnh sửa');
+    return title.replace('$', 'Tạo mới');
+  }, [initValues?.id, isViewMode]);
 
   return (
     <div className="pt-32">
       <Title level={3} className="mb-24">
         Danh mục Product
       </Title>
-      <ProductSearchForm onSearch={handleSearch} />
+      <ProductSearchForm onSearch={handleSearch} onClearAll={handleClearAll} />
       <div className="mt-24" />
       <ProductTable
         dataSource={dataSources}
@@ -221,10 +219,11 @@ const ProductCategoryPage: FC = () => {
         onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onView={handleView}
       />
 
       <Drawer
-        title={`${initValues?.id ? 'Chỉnh sửa' : 'Tạo mới'} danh mục product`}
+        title={getDrawerTitle}
         onClose={handleCloseForm}
         open={showInsertForm}
         width={1025}
@@ -232,6 +231,7 @@ const ProductCategoryPage: FC = () => {
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
       >
         <ProductInsertForm
+          isViewMode={isViewMode}
           onClose={handleCloseForm}
           initialValues={initValues}
           onSubmit={handleSubmitUpsert}
