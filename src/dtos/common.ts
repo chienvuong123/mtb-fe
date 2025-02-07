@@ -46,9 +46,22 @@ export interface BaseSearchResponse<T> {
   content: T[];
   page: number;
   size: number;
+  total: number;
 }
 
+// DOCS UPDATE 06-02-2025 16:00
+
+export type PageDTO = {
+  pageSize: number;
+  pageNum: number;
+};
+
+export type OrderDTO = {
+  field: string;
+  direction: string;
+};
+
 export interface BaseSearchParams {
-  page?: PageParams;
-  sort?: SortParams;
+  page?: PageDTO;
+  order?: OrderDTO;
 }

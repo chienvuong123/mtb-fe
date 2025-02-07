@@ -33,9 +33,9 @@ const SettingControlPage: FC = () => {
   const { data: controlList } = useControlSearchQuery({
     page: {
       pageSize: pagination.pageSize,
-      current: pagination.current - 1,
+      pageNum: pagination.current - 1,
     },
-    sort,
+    order: sort,
     code: filters.code,
     name: filters.name,
   });

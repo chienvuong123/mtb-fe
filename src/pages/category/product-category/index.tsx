@@ -1,4 +1,4 @@
-import { EStatus } from '@constants/masterData';
+import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { Drawer } from 'antd';
 import { type FC, useState, useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import {
   CategoryType,
-  type CategoryDTO,
   type ProductCategoryDTO,
   type TProductSearchForm,
 } from '@dtos';
@@ -22,6 +21,8 @@ import {
   useProductCategoryRemoveMutation,
   useProductCategorySearchQuery,
 } from '@hooks/queries/useProductCategoryQueries';
+import type { SortOrder } from 'antd/es/table/interface';
+import useUrlParams from '@hooks/useUrlParams';
 import ProductInsertForm from './components/ProductInsertForm';
 import ProductSearchForm from './components/ProductSearchForm';
 import ProductTable, { type TProductRecord } from './components/ProductTable';
@@ -32,28 +33,18 @@ const ProductCategoryPage: FC = () => {
     null,
   );
 
-  const [metaData, setMetaData] = useState<TPagination>({
-    current: 1,
-    pageSize: 20,
-    total: 100,
-  });
-
-  const [searchValues, setSearchValues] = useState<Partial<TProductSearchForm>>(
-    {},
-  );
+  const { pagination, setPagination, sort, setSort, filters, setFilters } =
+    useUrlParams<Partial<ProductCategoryDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
 
-  const { data: productList, refetch: refetchProductList } =
-    useProductCategorySearchQuery({
-      categoryType: CategoryType.PRODUCT,
-      page: {
-        pageSize: metaData.pageSize,
-        current: metaData.current - 1,
-      },
-      code: searchValues.code,
-      name: searchValues.name,
-    });
+  const { data: productRes } = useProductCategorySearchQuery({
+    categoryType: CategoryType.PRODUCT,
+    page: { pageNum: pagination.current, pageSize: pagination.pageSize },
+    order: sort,
+    code: filters.code,
+    name: filters.name,
+  });
 
   const handleCloseForm = () => {
     setShowInsertForm(false);
@@ -63,25 +54,25 @@ const ProductCategoryPage: FC = () => {
   const handleReset = () => {
     handleCloseForm();
     setInitValues(null);
-    refetchProductList();
   };
 
-  console.log(productList?.data.content);
-
-  const { mutate: mutationCreateProducts } = useProductCategoryAddMutation();
-  const { mutate: mutationUpdateProducts } = useProductCategoryEditMutation();
+  const { mutate: mutationCreateProducts } = useProductCategoryAddMutation(
+    {},
+    handleReset,
+  );
+  const { mutate: mutationUpdateProducts } = useProductCategoryEditMutation(
+    {},
+    handleReset,
+  );
   const { mutate: mutationDeleteProducts } = useProductCategoryRemoveMutation();
 
   const handleCreate = () => {
     setInitValues({
-      code: '0003', // insert from client??
+      code: undefined,
       name: '',
-      key: 'CODE',
       status: EStatus.ACTIVE,
       createdDate: dayjs().format(DATE_SLASH_FORMAT),
       updatedDate: dayjs().format(DATE_SLASH_FORMAT),
-      createdBy: 'You',
-      updatedBy: 'You',
     });
     setShowInsertForm(true);
   };
@@ -95,84 +86,40 @@ const ProductCategoryPage: FC = () => {
     setShowInsertForm(true);
   };
 
-  const handleSearch = (values: TProductSearchForm) => {
-    setSearchValues(values);
+  const handleSearch = ({ code, name }: TProductSearchForm) => {
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setFilters({ code, name });
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setMetaData(data);
+    setPagination(data);
   };
 
-  const handleSubmitUpsert = ({
-    name,
-    code,
-    status,
-    createdBy,
-    createdDate,
-    updatedBy,
-    updatedDate,
-  }: ProductCategoryDTO) => {
-    const data: Partial<CategoryDTO> = {
+  const handleSubmitInsert = ({ name, code, status }: ProductCategoryDTO) => {
+    const data: Partial<ProductCategoryDTO> = {
+      categoryTypeId: CategoryType.PRODUCT,
+      code,
       name,
-      code, // insert from client??
-      id: initValues?.id,
       status,
-      categoryType: CategoryType.PRODUCT,
-      createdBy, // insert from client??
-      createdDate: dayjs(createdDate).toISOString(), // insert from client??
-      updatedBy, // insert from client??
-      updatedDate: dayjs(updatedDate).toISOString(), // insert from client??
+      id: initValues?.id,
     };
     // update product
     if (data?.id) {
-      mutationUpdateProducts(data, {
-        onSuccess: handleReset,
-        onError: (error) => {
-          console.error('Error occurred:', error);
-        },
-        onSettled: () => {
-          console.log('Mutation finished');
-        },
-      });
+      mutationUpdateProducts(data);
       return;
     }
     // create new product
-    // const { id, ...params } = data;
-    delete data.id;
-    mutationCreateProducts(data, {
-      onSuccess: handleReset,
-      onError: (error) => {
-        console.error('Error occurred:', error);
-      },
-      onSettled: () => {
-        console.log('Mutation finished');
-      },
-    });
+    mutationCreateProducts(data);
   };
 
   const handleDelete = (id: string) => {
-    mutationDeleteProducts(
-      { id },
-      {
-        onSuccess: () => {
-          refetchProductList();
-        },
-        onError: (error) => {
-          console.error('Error occurred:', error);
-        },
-        onSettled: () => {
-          console.log('Mutation finished');
-        },
-      },
-    );
+    mutationDeleteProducts({ id });
   };
 
   const paginations: IMPagination = {
     pagination: {
-      ...metaData,
-      total: productList?.data?.page
-        ? productList.data.page * metaData.pageSize
-        : 0,
+      ...pagination,
+      total: productRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
@@ -182,23 +129,33 @@ const ProductCategoryPage: FC = () => {
   const dataSources: TProductRecord[] =
     useMemo(
       () =>
-        productList?.data?.content?.map((i) => ({ ...i, key: i.id as string })),
-      [productList],
+        productRes?.data?.content?.map((i) => ({
+          ...i,
+          key: i.id as string,
+        })),
+      [productRes],
     ) ?? [];
 
   const handleClearAll = () => {
-    setMetaData((pre) => ({ ...pre, current: 1 }));
-    setSearchValues({});
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setFilters({ code: undefined, name: undefined });
   };
 
   const handleView = (id: string) => {
-    console.log(id);
-    const item = productList?.data.content.find((i) => i.id === id);
+    const item = productRes?.data.content.find((i) => i.id === id);
     if (item) {
       setIsViewMode(true);
       setInitValues({ ...item });
       setShowInsertForm(true);
     }
+  };
+
+  const handleSort = (field: string, direction: SortOrder) => {
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setSort({
+      field,
+      direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+    });
   };
 
   const getDrawerTitle = useMemo(() => {
@@ -213,15 +170,21 @@ const ProductCategoryPage: FC = () => {
       <Title level={3} className="mb-24">
         Danh mục Product
       </Title>
-      <ProductSearchForm onSearch={handleSearch} onClearAll={handleClearAll} />
+      <ProductSearchForm
+        onSearch={handleSearch}
+        onClearAll={handleClearAll}
+        initialValues={{ code: filters?.code ?? '', name: filters?.name ?? '' }}
+      />
       <div className="mt-24" />
       <ProductTable
         dataSource={dataSources}
         paginations={paginations}
+        sortDirection={sort}
         onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}
+        onSort={handleSort}
       />
 
       <Drawer
@@ -236,7 +199,7 @@ const ProductCategoryPage: FC = () => {
           isViewMode={isViewMode}
           onClose={handleCloseForm}
           initialValues={initValues}
-          onSubmit={handleSubmitUpsert}
+          onSubmit={handleSubmitInsert}
         />
       </Drawer>
     </div>

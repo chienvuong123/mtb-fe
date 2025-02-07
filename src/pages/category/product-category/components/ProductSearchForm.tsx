@@ -1,10 +1,11 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
-import { type FC } from 'react';
+import { useEffect, type FC } from 'react';
 import type { TProductSearchForm } from '@dtos';
 
 interface IProductSearchForm {
+  initialValues?: TProductSearchForm;
   onSearch: (values: TProductSearchForm) => void;
   onClearAll?: () => void;
 }
@@ -25,10 +26,17 @@ const items: TFormItem[] = [
 ];
 
 const ProductSearchForm: FC<IProductSearchForm> = ({
+  initialValues,
   onSearch,
   onClearAll,
 }) => {
   const [form] = useForm();
+
+  useEffect(() => {
+    if (initialValues) {
+      form.setFieldsValue({ ...initialValues });
+    }
+  }, [initialValues, form]);
 
   return (
     <div>

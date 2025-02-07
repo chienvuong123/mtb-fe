@@ -9,7 +9,7 @@ export type ProductCategoryDTO = {
   code: string;
   name: string;
   status: string;
-  categoryTypeCode?: string;
+  categoryTypeId?: string;
 };
 
 export type ProductCategorySearch = {
@@ -21,11 +21,8 @@ export type ProductCategorySearch = {
   pageSize: number;
   pageable?: PageableObject;
 };
-export type ProductCategoryUpsertRequest = {
-  reqNo: string;
-  category: Pick<ProductCategoryDTO, 'name' | 'status'> &
-    Partial<Omit<ProductCategoryDTO, 'name' | 'status'>>;
-};
+
+export type CategoryInsertDTO = Partial<ProductCategoryDTO> & {};
 
 export type CMResponseProductCategoryDTO = {
   reqNo: string;
