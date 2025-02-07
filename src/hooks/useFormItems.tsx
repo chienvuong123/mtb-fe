@@ -89,8 +89,14 @@ const useFormItems = ({ formItems, rowProps }: IFormItemsProps = {}) => {
         <Row {...rowProps}>
           {formItems.map(
             ({ type, inputProps, colProps, className, ...formItemProps }) => {
+              const { span, flex, ...otherColProps } = colProps ?? {};
               return (
-                <Col span={6} {...colProps} key={formItemProps.name}>
+                <Col
+                  span={span ?? 6}
+                  flex={flex ?? (span ? undefined : '20%')}
+                  {...otherColProps}
+                  key={formItemProps.name}
+                >
                   <Form.Item
                     {...formItemProps}
                     className={clsx('mb-0', className)}
