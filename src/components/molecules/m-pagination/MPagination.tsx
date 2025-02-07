@@ -54,7 +54,7 @@ const MPagination: React.FC<IMPagination> = ({
             <ASelect
               size="small"
               className="w-max per-page mr-12"
-              defaultValue={pagination.pageSize}
+              defaultValue={Number(pagination.pageSize)}
               onChange={(pageSize: number) =>
                 setPagination({ ...pagination, pageSize })
               }

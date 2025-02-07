@@ -11,6 +11,7 @@ import {
   Switch,
   Typography,
 } from 'antd';
+import type { SortOrder } from 'antd/es/table/interface';
 
 export enum EStatus {
   ACTIVE = 'ACTIVE',
@@ -110,3 +111,13 @@ export const CONTROL_TYPE_OPTIONS = [
     label: optionElementWrapper('Trình soạn thảo', CONTROL_ELEMENTS.EDITOR),
   },
 ];
+
+export const SORT_ORDER_FOR_SERVER: Record<string, string> = {
+  ascend: 'asc',
+  descend: 'desc',
+};
+
+export const SORT_ORDER_FOR_CLIENT: Record<string, SortOrder> = {
+  asc: 'ascend',
+  desc: 'descend',
+};

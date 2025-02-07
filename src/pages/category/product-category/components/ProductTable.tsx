@@ -1,17 +1,18 @@
 import { ATag } from '@components/atoms';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
-import { EStatus } from '@constants/masterData';
-import type { ProductCategoryDTO } from '@dtos';
+import { EStatus, SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
+import type { OrderDTO, ProductCategoryDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
-import { useState, type FC, type ReactNode, type Key } from 'react';
+import { useState, type FC, type ReactNode, type Key, useMemo } from 'react';
 
 export type TProductRecord = TTableKey & Partial<ProductCategoryDTO>;
 
 interface IProductTable {
   dataSource: TProductRecord[];
   paginations: IMPagination;
+  sortDirection?: OrderDTO;
   onCreate: ITable<TProductRecord>['onCreate'];
   onEdit: ITable<TProductRecord>['onEdit'];
   onDelete: (id: string) => void;
@@ -87,6 +88,7 @@ const columns: ColumnType<TProductRecord>[] = [
 const ProductTable: FC<IProductTable> = ({
   dataSource,
   paginations,
+  sortDirection,
   onCreate,
   onEdit,
   onDelete,
@@ -99,9 +101,24 @@ const ProductTable: FC<IProductTable> = ({
     onDelete(key as string);
   };
 
+  const transformColumns = useMemo(() => {
+    if (sortDirection) {
+      return columns.map((col) => {
+        if (col.dataIndex === sortDirection.field && sortDirection.direction) {
+          return {
+            ...col,
+            sortOrder: SORT_ORDER_FOR_CLIENT[sortDirection.direction] ?? null,
+          };
+        }
+        return col;
+      });
+    }
+    return columns;
+  }, [sortDirection]);
+
   return (
     <OTable<TProductRecord>
-      columns={columns}
+      columns={transformColumns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
       onCreate={onCreate}

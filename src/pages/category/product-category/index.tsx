@@ -1,4 +1,4 @@
-import { EStatus } from '@constants/masterData';
+import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { Drawer } from 'antd';
 import { type FC, useState, useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
@@ -9,7 +9,6 @@ import {
   type ProductCategoryDTO,
   type CategoryInsertRequest,
   type TProductSearchForm,
-  type OrderDTO,
 } from '@dtos';
 
 import './index.scss';
@@ -24,6 +23,7 @@ import {
   useProductCategorySearchQuery,
 } from '@hooks/queries/useProductCategoryQueries';
 import type { SortOrder } from 'antd/es/table/interface';
+import useUrlParams from '@hooks/useUrlParams';
 import ProductInsertForm from './components/ProductInsertForm';
 import ProductSearchForm from './components/ProductSearchForm';
 import ProductTable, { type TProductRecord } from './components/ProductTable';
@@ -34,26 +34,17 @@ const ProductCategoryPage: FC = () => {
     null,
   );
 
-  const [metaData, setMetaData] = useState<TPagination>({
-    current: 1,
-    pageSize: 20,
-    total: 100,
-  });
-
-  const [searchValues, setSearchValues] = useState<Partial<ProductCategoryDTO>>(
-    {},
-  );
-
-  const [sortObject, setSortObject] = useState<OrderDTO>();
+  const { pagination, setPagination, sort, setSort, filters, setFilters } =
+    useUrlParams<Partial<ProductCategoryDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
 
   const { data: productRes } = useProductCategorySearchQuery({
     categoryType: CategoryType.PRODUCT,
-    page: { pageNum: metaData.current, pageSize: metaData.pageSize },
-    order: sortObject,
-    code: searchValues.code,
-    name: searchValues.name,
+    page: { pageNum: pagination.current, pageSize: pagination.pageSize },
+    order: sort,
+    code: filters.code,
+    name: filters.name,
   });
 
   const handleCloseForm = () => {
@@ -96,13 +87,13 @@ const ProductCategoryPage: FC = () => {
     setShowInsertForm(true);
   };
 
-  const handleSearch = (values: TProductSearchForm) => {
-    setMetaData((pre) => ({ ...pre, current: 1 }));
-    setSearchValues(values);
+  const handleSearch = ({ code, name }: TProductSearchForm) => {
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setFilters({ code, name });
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setMetaData(data);
+    setPagination(data);
   };
 
   const handleSubmitInsert = ({ name, code, status }: ProductCategoryDTO) => {
@@ -130,7 +121,7 @@ const ProductCategoryPage: FC = () => {
 
   const paginations: IMPagination = {
     pagination: {
-      ...metaData,
+      ...pagination,
       total: productRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
@@ -149,8 +140,8 @@ const ProductCategoryPage: FC = () => {
     ) ?? [];
 
   const handleClearAll = () => {
-    setMetaData((pre) => ({ ...pre, current: 1 }));
-    setSearchValues({});
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setFilters({ code: undefined, name: undefined });
   };
 
   const handleView = (id: string) => {
@@ -163,11 +154,11 @@ const ProductCategoryPage: FC = () => {
   };
 
   const handleSort = (field: string, direction: SortOrder) => {
-    setSortObject(
-      direction
-        ? { field, direction: direction.replace('end', '') }
-        : undefined,
-    );
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setSort({
+      field,
+      direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+    });
   };
 
   const getDrawerTitle = useMemo(() => {
@@ -182,11 +173,16 @@ const ProductCategoryPage: FC = () => {
       <Title level={3} className="mb-24">
         Danh mục Product
       </Title>
-      <ProductSearchForm onSearch={handleSearch} onClearAll={handleClearAll} />
+      <ProductSearchForm
+        onSearch={handleSearch}
+        onClearAll={handleClearAll}
+        initialValues={{ code: filters?.code ?? '', name: filters?.name ?? '' }}
+      />
       <div className="mt-24" />
       <ProductTable
         dataSource={dataSources}
         paginations={paginations}
+        sortDirection={sort}
         onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
