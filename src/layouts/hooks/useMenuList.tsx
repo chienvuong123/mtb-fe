@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
 import { useMemo } from 'react';
 import {
@@ -10,10 +11,12 @@ import {
   Setting02Icon,
 } from '@assets/icons';
 import { Divider } from 'antd';
-import { Link } from 'react-router-dom';
-import { CATEGORY } from '@routers/path';
+import { CATEGORY, ACCOUNT } from '@routers/path';
+import { Link, useNavigate } from 'react-router-dom';
+import OPopup from '@components/organisms/o-popup/OPopup';
 
-const useMenuList = () => {
+const useMenuList = (onLogout?: () => void) => {
+  const navigate = useNavigate();
   const menuList = useMemo(() => {
     const menu: ItemType<MenuItemType>[] = [
       {
@@ -95,22 +98,32 @@ const useMenuList = () => {
     const menuBottom = [
       {
         key: 'help',
-        label: 'Typography',
+        label: 'Trợ giúp',
         className: 'item-help',
         icon: <HelpCircleIcon />,
       },
       {
         key: 'logout',
-        label: 'Flex',
+        label: (
+          <OPopup
+            title="Đăng xuất"
+            description="Bạn có chắc muốn đăng xuất?"
+            cancelText="Huỷ"
+            okText="Xác nhận"
+            onOkModal={onLogout}
+          >
+            <span>Đăng xuất</span>
+          </OPopup>
+        ),
         className: 'item-logout',
         icon: <LogoutIcon />,
       },
     ];
 
     const dropdownList = [
+      { label: 'Profile', key: 'profile', onClick: () => navigate(ACCOUNT) },
       { label: 'Cài lại mật khẩu', key: 'reset-password' },
       { label: 'Quên mật khẩu', key: 'forgot-password' },
-      { label: 'Đăng xuất', key: 'logout' },
     ];
 
     return { menu, menuBottom, dropdownList };

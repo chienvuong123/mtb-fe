@@ -1,8 +1,7 @@
 import LayoutWrapper from '@layouts/LayoutWrapper';
 import React from 'react';
-import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import { ERole } from '@constants/masterData';
-import { useUserStore } from '../stores';
 import {
   CATEGORY,
   CONFIRM_PASSWORD,
@@ -11,7 +10,11 @@ import {
   LOGIN,
   OTP,
   SETTING,
+  ACCOUNT,
 } from './path';
+import GuestGuard from './guards/GuestGuard';
+import AuthGuard from './guards/AuthGuard';
+import RoleBasedGuard from './guards/RoleBasedGuard';
 
 const createLazyElement = (
   importFn: () => Promise<{ default: React.ComponentType }>,
@@ -20,22 +23,15 @@ const createLazyElement = (
   return <Component />;
 };
 
-const ProtectRoutes = ({ roles = [] }: { roles: string[] }) => {
-  const { user, isAuthenticated } = useUserStore();
-  if (!isAuthenticated || !user) {
-    return <Navigate to="/login" replace />;
-  }
-  if (roles.length && !roles.includes(user.role)) {
-    return <Navigate to="/403" replace />;
-  }
-  return <Outlet />;
-};
-
 const routes = createBrowserRouter(
   [
     {
       path: LOGIN,
-      element: createLazyElement(() => import('@pages/authentication/login')),
+      element: (
+        <GuestGuard>
+          {createLazyElement(() => import('@pages/authentication/login'))}
+        </GuestGuard>
+      ),
     },
     {
       path: FORGOT_PASSWORD,
@@ -55,7 +51,11 @@ const routes = createBrowserRouter(
     },
     {
       path: '',
-      element: <LayoutWrapper />,
+      element: (
+        <AuthGuard>
+          <LayoutWrapper />
+        </AuthGuard>
+      ),
       children: [
         {
           path: EXAMPLE,
@@ -75,7 +75,9 @@ const routes = createBrowserRouter(
         {
           path: SETTING.ROOT,
           element: (
-            <ProtectRoutes roles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]} />
+            <RoleBasedGuard
+              accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
+            />
           ),
           children: [
             {
@@ -85,6 +87,10 @@ const routes = createBrowserRouter(
               ),
             },
           ],
+        },
+        {
+          path: ACCOUNT,
+          element: createLazyElement(() => import('../pages/account')),
         },
       ],
     },

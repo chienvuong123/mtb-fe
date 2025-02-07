@@ -17,6 +17,8 @@ import useMenuList from '@layouts/hooks/useMenuList';
 import type { SelectEventHandler } from 'rc-menu/lib/interface';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getFirstPathname } from '@utils/stringHelper';
+import { useLogoutMutation } from '@hooks/queries';
+import { useUserStore } from '../../../stores';
 
 const { Sider } = Layout;
 
@@ -34,7 +36,19 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const { menu, menuBottom } = useMenuList();
+  const { jwtInfo, logout } = useUserStore();
+  const { mutate: mutateLogout } = useLogoutMutation();
+
+  const handleLogout = () => {
+    mutateLogout(
+      {
+        refresh_token: jwtInfo?.refreshToken ?? '',
+      },
+      {
+        onSuccess: logout,
+      },
+    );
+  };
 
   const handleMouseEnter = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -74,6 +88,7 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const { menu, menuBottom } = useMenuList(handleLogout);
   return (
     <div className="pos-relative">
       {isShowIcon && (

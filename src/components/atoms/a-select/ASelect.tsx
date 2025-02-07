@@ -25,6 +25,7 @@ const ASelect: React.FC<IASelect> = ({
       className={classAntd}
       size={size}
       popupClassName={classPopup}
+      allowClear={false}
       {...props}
     />
   );

@@ -7,3 +7,4 @@ export * from './a-menu';
 export * from './a-select';
 export * from './a-tag';
 export * from './a-dropdown';
+export * from './a-modal';

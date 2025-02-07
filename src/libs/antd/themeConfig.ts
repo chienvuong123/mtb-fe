@@ -25,6 +25,7 @@ const color = {
   cbg14: '#FFEBE9',
   cbg15: '#FFF2D8',
   cbg16: '#F6F6F6',
+  cbg17: '#F5F6FA',
   cbgDisabled: '#e7e7e7',
   cbInput: '#DDDDE3',
   cbInputHv: '#A6A6B0',
@@ -65,6 +66,8 @@ const theme: ThemeConfig = {
     red6: color.red,
     purple: color.purple,
     purple1: color.cbg1,
+    geekblue1: color.cbg17,
+    geekblue6: color.ctLabelForm,
     colorPrimaryBg: color.cbg1,
   },
   components: {
@@ -88,7 +91,7 @@ const theme: ThemeConfig = {
       fontSize: 14,
     },
     Button: {
-      fontWeight: 600,
+      fontWeight: 500,
       fontSize: 14,
       lineHeight: 20,
       controlHeight: 40,
@@ -177,6 +180,9 @@ const theme: ThemeConfig = {
       titleMarginTop: 0,
       titleMarginBottom: 0,
       colorTextHeading: color.ctHeading,
+    },
+    Badge: {
+      dotSize: 10,
     },
   },
 };

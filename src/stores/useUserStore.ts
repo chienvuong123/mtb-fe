@@ -1,38 +1,49 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import type { UserDTO } from '@dtos';
 import { atom, useAtom } from 'jotai';
-import { USER_ADMIN } from '../mocks/user';
+import { useEffect } from 'react';
 
-// === Define Types ===
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
+interface IJwtInfo {
+  token: string | null;
+  refreshToken: string | null;
 }
 
 // === Base Atoms ===
-const userAtom = atom<User | null>(USER_ADMIN);
+const userAtom = atom<UserDTO | null>(null);
+const jwtInfoAtom = atom<IJwtInfo | null>(null);
 
 // === Custom Hooks ===
-const useUser = () => {
+const useUserStore = () => {
   const [user, setUser] = useAtom(userAtom);
+  const [jwtInfo, setJwtInfo] = useAtom(jwtInfoAtom);
+  const token = localStorage.getItem('token') ?? '';
+  const refreshToken = localStorage.getItem('refresh_token') ?? '';
 
-  const login = async () => {
-    // Handle login logic
-    // const userData = await apiLogin(email, password);
-    const userData: User = USER_ADMIN;
-    setUser(userData);
+  const loginSuccess = (data: IJwtInfo) => {
+    setJwtInfo(data);
   };
 
   const logout = () => {
     setUser(null);
+    setJwtInfo(null);
+    localStorage.clear();
   };
+
+  useEffect(() => {
+    setJwtInfo({
+      token,
+      refreshToken,
+    });
+  }, []);
 
   return {
     user,
-    login,
+    jwtInfo,
+    loginSuccess,
     logout,
-    isAuthenticated: !!user,
+    setUser,
+    isAuthenticated: token ?? !!user?.id,
   };
 };
 
-export default useUser;
+export default useUserStore;
