@@ -28,7 +28,13 @@ deploy:
         - docker ps -a -q --filter "name=cm-fe" | xargs -r docker rm -f
 
         - echo "start run container!"
-        - docker run -d -p 8000:80 --name cm-fe cm-fe:latest
+        - docker run -d -p 8000:80 \
+            --name cm-fe \
+            -e VITE_CLIENT_ID=${VITE_CLIENT_ID} \
+            -e VITE_CLIENT_SECRET=${VITE_CLIENT_SECRET} \
+            -e VITE_AUTH_SSO=${VITE_AUTH_SSO} \
+            -e VITE_BASE_URL=${VITE_BASE_URL} \
+            cm-fe:latest
 
         - echo "deploy done!"
         - docker ps -a -f "name=cm-fe"
