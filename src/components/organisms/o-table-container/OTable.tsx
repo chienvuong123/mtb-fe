@@ -5,15 +5,17 @@ import type { TableRowSelection } from 'antd/es/table/interface';
 
 import './styles.scss';
 import { AButton } from '@components/atoms';
-import type { ColumnsType, TableProps } from 'antd/es/table';
+import type { TableProps, ColumnType } from 'antd/es/table';
 import { MPagination } from '@components/molecules';
 import clsx from 'clsx';
+import type { OrderDTO } from '@dtos';
+import { SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
 import type { FixedType, ITableForm, TTableKey } from './OTableForm.type';
 import TableActions from './TableActions';
 import { OModalConfirm } from '../o-modal';
 
 export interface ITable<T>
-  extends TableProps<T>,
+  extends Omit<TableProps<T>, 'columns'>,
     Omit<
       ITableForm<T>,
       | 'form'
@@ -23,7 +25,8 @@ export interface ITable<T>
       | 'onCancelSave'
       | 'columns'
     > {
-  columns: ColumnsType<T>;
+  columns: ColumnType<T>[];
+  sortDirection?: OrderDTO;
   onEdit?: (record: T) => void;
 }
 
@@ -34,6 +37,7 @@ const OTable = <T extends object & TTableKey>({
   hideActions,
   showCreateBtn,
   paginations,
+  sortDirection,
   onCreate,
   onEdit,
   onDeleteRow,
@@ -43,9 +47,25 @@ const OTable = <T extends object & TTableKey>({
 }: ITable<T>) => {
   const [showModal, setShowModal] = useState(false);
   const [recordKey, setRecordKey] = useState<Key | null>(null);
-  const transformColumns = useMemo(
-    () => [
-      ...columns,
+
+  const transformColumns = useMemo(() => {
+    const columnsWithSort = sortDirection
+      ? columns.map((col) => {
+          if (
+            col.dataIndex === sortDirection.field &&
+            sortDirection.direction
+          ) {
+            return {
+              ...col,
+              sortOrder: SORT_ORDER_FOR_CLIENT[sortDirection.direction] ?? null,
+            };
+          }
+          return col;
+        })
+      : columns;
+
+    return [
+      ...columnsWithSort,
       ...(hideActions
         ? []
         : [
@@ -83,9 +103,16 @@ const OTable = <T extends object & TTableKey>({
             },
           ]
         : []),
-    ],
-    [columns, hideActions, showCreateBtn, onCreate, onEdit, onView],
-  );
+    ];
+  }, [
+    columns,
+    hideActions,
+    showCreateBtn,
+    sortDirection,
+    onCreate,
+    onEdit,
+    onView,
+  ]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys?.(newSelectedRowKeys as string[]);

@@ -34,28 +34,4 @@ function isNumberArray(
   );
 }
 
-function flattenObject<T extends object>(
-  obj: T,
-  prefix = '',
-): Record<string, unknown> {
-  return Object.entries(obj).reduce(
-    (acc: Record<string, unknown>, [key, value]) => {
-      const newKey = prefix ? `${prefix}.${key}` : key;
-
-      if (
-        typeof value === 'object' &&
-        value !== null &&
-        !Array.isArray(value)
-      ) {
-        Object.assign(acc, flattenObject(value as T, newKey));
-      } else {
-        acc[newKey] = value;
-      }
-
-      return acc;
-    },
-    {},
-  );
-}
-
-export { trimObjectValues, isNumberArray, flattenObject };
+export { trimObjectValues, isNumberArray };

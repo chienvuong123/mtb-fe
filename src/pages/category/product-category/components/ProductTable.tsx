@@ -1,11 +1,11 @@
 import { ATag } from '@components/atoms';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
-import { EStatus, SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
+import { EStatus } from '@constants/masterData';
 import type { OrderDTO, ProductCategoryDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
-import { useState, type FC, type ReactNode, type Key, useMemo } from 'react';
+import { useState, type FC, type ReactNode, type Key } from 'react';
 
 export type TProductRecord = TTableKey & Partial<ProductCategoryDTO>;
 
@@ -101,24 +101,9 @@ const ProductTable: FC<IProductTable> = ({
     onDelete(key as string);
   };
 
-  const transformColumns = useMemo(() => {
-    if (sortDirection) {
-      return columns.map((col) => {
-        if (col.dataIndex === sortDirection.field && sortDirection.direction) {
-          return {
-            ...col,
-            sortOrder: SORT_ORDER_FOR_CLIENT[sortDirection.direction] ?? null,
-          };
-        }
-        return col;
-      });
-    }
-    return columns;
-  }, [sortDirection]);
-
   return (
     <OTable<TProductRecord>
-      columns={transformColumns}
+      columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
       onCreate={onCreate}
@@ -127,6 +112,7 @@ const ProductTable: FC<IProductTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       showCreateBtn
       paginations={paginations}
+      sortDirection={sortDirection}
       onView={(id) => onView(id as string)}
       onChange={(_p, _f, s) => {
         const { field, order } = s as SorterResult<TProductRecord>;
