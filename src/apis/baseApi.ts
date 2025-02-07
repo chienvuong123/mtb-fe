@@ -2,11 +2,7 @@ import type { BaseResponse, BaseSearchParams, BaseSearchResponse } from '@dtos';
 import { flattenObject } from '@utils/objectHelper';
 import { apiRequest } from './apiClient';
 
-export class BaseApi<
-  T,
-  Payload extends object,
-  SearchParams extends BaseSearchParams,
-> {
+export class BaseApi<T, SearchParams extends BaseSearchParams> {
   protected endpoint: string;
 
   constructor(endpoint: string) {
@@ -29,7 +25,7 @@ export class BaseApi<
     });
   }
 
-  async add(data: Partial<Payload>) {
+  async add(data: Partial<T>) {
     return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/add`,
       method: 'POST',
@@ -37,7 +33,7 @@ export class BaseApi<
     });
   }
 
-  async edit(data: Partial<Payload>) {
+  async edit(data: Partial<T>) {
     return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/edit`,
       method: 'POST',

@@ -1,7 +1,6 @@
 import { exampleApi } from '@apis';
 import type {
   ExampleDTO,
-  ExampleInsertRequest,
   ExampleSearchRequest,
   // ExampleSearchResponse,
   // ExampleViewResponse,
@@ -16,7 +15,6 @@ export const {
   useRemoveMutation: useExampleRemoveMutation,
 } = createBaseQueryHooks<
   ExampleDTO,
-  ExampleInsertRequest,
   ExampleSearchRequest
   // if you need to transform the view response
   // ExampleViewResponse,

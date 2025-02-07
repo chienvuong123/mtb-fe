@@ -1,7 +1,7 @@
 import type { ControlDTO, ControlSearchRequest } from '@dtos';
 import { BaseApi } from './baseApi';
 
-class ControlApi extends BaseApi<ControlDTO, object, ControlSearchRequest> {
+class ControlApi extends BaseApi<ControlDTO, ControlSearchRequest> {
   constructor() {
     super('/control/v1.0');
   }

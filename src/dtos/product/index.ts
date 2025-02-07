@@ -24,10 +24,6 @@ export type ProductCategorySearch = {
 
 export type CategoryInsertDTO = Partial<ProductCategoryDTO> & {};
 
-export type CategoryInsertRequest = {
-  category: CategoryInsertDTO;
-};
-
 export type CMResponseProductCategoryDTO = {
   reqNo: string;
   errorCode: string;

@@ -3,7 +3,6 @@ import type {
   CategoryDTO,
   CategorySearchRequest,
   CategorySearchResponse,
-  CategoryInsertRequest,
 } from '@dtos';
 import { createBaseQueryHooks } from './baseQueries';
 
@@ -15,7 +14,6 @@ export const {
   useRemoveMutation: useProductCategoryRemoveMutation,
 } = createBaseQueryHooks<
   CategoryDTO,
-  CategoryInsertRequest,
   CategorySearchRequest,
   // if you need to transform the view response
   // ExampleViewResponse,

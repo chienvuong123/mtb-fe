@@ -1,15 +1,7 @@
-import type {
-  ExampleDTO,
-  ExampleSearchRequest,
-  ExampleInsertRequest,
-} from '@dtos';
+import type { ExampleDTO, ExampleSearchRequest } from '@dtos';
 import { BaseApi } from './baseApi';
 
-class ExampleApi extends BaseApi<
-  ExampleDTO,
-  ExampleInsertRequest,
-  ExampleSearchRequest
-> {
+class ExampleApi extends BaseApi<ExampleDTO, ExampleSearchRequest> {
   constructor() {
     super('/example/v1.0');
   }

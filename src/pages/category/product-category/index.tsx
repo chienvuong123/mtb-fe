@@ -7,7 +7,6 @@ import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import {
   CategoryType,
   type ProductCategoryDTO,
-  type CategoryInsertRequest,
   type TProductSearchForm,
 } from '@dtos';
 
@@ -69,7 +68,7 @@ const ProductCategoryPage: FC = () => {
 
   const handleCreate = () => {
     setInitValues({
-      code: '0013',
+      code: undefined,
       name: '',
       status: EStatus.ACTIVE,
       createdDate: dayjs().format(DATE_SLASH_FORMAT),
@@ -97,17 +96,15 @@ const ProductCategoryPage: FC = () => {
   };
 
   const handleSubmitInsert = ({ name, code, status }: ProductCategoryDTO) => {
-    const data: Partial<CategoryInsertRequest> = {
-      category: {
-        categoryTypeId: CategoryType.PRODUCT,
-        code,
-        name,
-        status,
-        id: initValues?.id,
-      },
+    const data: Partial<ProductCategoryDTO> = {
+      categoryTypeId: CategoryType.PRODUCT,
+      code,
+      name,
+      status,
+      id: initValues?.id,
     };
     // update product
-    if (data?.category?.id) {
+    if (data?.id) {
       mutationUpdateProducts(data);
       return;
     }

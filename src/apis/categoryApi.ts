@@ -1,15 +1,7 @@
-import type {
-  CategoryDTO,
-  CategorySearchRequest,
-  CategoryInsertRequest,
-} from '@dtos';
+import type { CategoryDTO, CategorySearchRequest } from '@dtos';
 import { BaseApi } from './baseApi';
 
-class CategoryApi extends BaseApi<
-  CategoryDTO,
-  CategoryInsertRequest,
-  CategorySearchRequest
-> {
+class CategoryApi extends BaseApi<CategoryDTO, CategorySearchRequest> {
   constructor() {
     super('/category/v1.0');
   }
