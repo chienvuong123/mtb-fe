@@ -33,6 +33,7 @@ export interface UserDTO extends BaseEntity {
   role: string;
   status: string;
   firstName: string;
+  fullName: string;
   lastName: string;
   email: string;
   phoneNum: string;
@@ -43,9 +44,9 @@ export interface UserDTO extends BaseEntity {
 }
 
 export interface UserRequest extends BaseSearchParams {
-  categoryType?: string;
-  code?: string;
-  name?: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
 }
 
 export type UserViewResponse = BaseResponse<UserDTO>;
