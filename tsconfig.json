@@ -35,11 +35,12 @@
       "@styles/*": ["src/styles/*"],
       "@types/*": ["src/types/*"],
       "@utils/*": ["src/utils/*"],
-
+      
       "@hooks": ["src/hooks/index"],
       "@types": ["src/types/index"],
       "@dtos": ["src/dtos/index"],
-      "@apis": ["src/apis/index"]
+      "@apis": ["src/apis/index"],
+      "@stores": ["src/stores/index"],
     }
   },
   "include": ["src"],

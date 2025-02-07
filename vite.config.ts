@@ -30,6 +30,7 @@ export default defineConfig({
       '@utils': resolve(__dirname, './src/utils/'),
       '@dtos': resolve(__dirname, './src/dtos/'),
       '@apis': resolve(__dirname, './src/apis/'),
+      '@stores': resolve(__dirname, './src/stores/'),
     },
   },
   css: {

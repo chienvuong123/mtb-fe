@@ -1,16 +1,17 @@
 import React from 'react';
 import { LogoDisplay } from '@assets/icons';
 import { AAlert, AButton } from '@components/atoms';
-import { Flex, Form, Typography } from 'antd';
+import { Flex, Form, type FormProps, Typography } from 'antd';
 
 import './FormContent.scss';
 
 const { Title } = Typography;
 
-interface IFormContent {
+interface IFormContent extends FormProps {
   title: string;
   subTitle: string | React.ReactNode;
   textButton: string;
+  isLoading?: boolean;
   textLink: string | React.ReactNode;
   alertText?: string;
   subLink?: string | React.ReactNode;
@@ -21,15 +22,17 @@ const FormContent: React.FC<IFormContent> = ({
   title,
   subTitle,
   textButton,
+  isLoading,
   textLink,
   alertText,
   subLink,
   formContent,
+  ...props
 }) => {
   return (
     <Flex align="center" justify="space-between" className="mt-29 form-authen">
       <Flex vertical>
-        <Form className="form-container" layout="vertical">
+        <Form className="form-container" layout="vertical" {...props}>
           <div>
             <Title level={2} className="mb-10">
               {title}
@@ -48,6 +51,8 @@ const FormContent: React.FC<IFormContent> = ({
             color="purple"
             variant="solid"
             size="large"
+            htmlType="submit"
+            loading={isLoading}
           >
             {textButton}
           </AButton>

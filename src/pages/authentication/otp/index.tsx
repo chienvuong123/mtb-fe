@@ -1,7 +1,7 @@
+import { INPUT_TYPE, type TFormItem } from '@types';
 import useFormItems from '@hooks/useFormItems';
 import { LogoOpenIcon } from '@assets/icons';
 import { Link } from 'react-router-dom';
-import { INPUT_TYPE, type TFormItem } from '@types';
 import { LayoutWrapper } from '../components';
 import { FormContentAuth } from '../components/form-content';
 import { FooterAuth } from '../components/footer';

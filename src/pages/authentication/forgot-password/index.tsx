@@ -1,8 +1,8 @@
 import { ArrowLeft01Icon, LogoOpenIcon } from '@assets/icons';
 import useFormItems from '@hooks/useFormItems';
-import { INPUT_TYPE, type TFormItem } from '@types';
 import { Link } from 'react-router-dom';
 import { LOGIN } from '@routers/path';
+import { INPUT_TYPE, type TFormItem } from '@types';
 import { LayoutWrapper } from '../components';
 import { FormContentAuth } from '../components/form-content';
 import { FooterAuth } from '../components/footer';
@@ -23,7 +23,7 @@ const items: TFormItem[] = [
     type: INPUT_TYPE.TEXT,
     label: 'Email',
     name: 'email',
-    inputProps: { placeholder: 'Nhập...', maxLength: 100, type: 'email' },
+    inputProps: { placeholder: 'Nhập...', maxLength: 100, type: 'password' },
     colProps: { span: 24, className: 'fw-500' },
   },
   {
