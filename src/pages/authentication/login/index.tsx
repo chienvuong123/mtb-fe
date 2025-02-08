@@ -4,6 +4,7 @@ import useFormItems from '@hooks/useFormItems';
 import { Link } from 'react-router-dom';
 import { FORGOT_PASSWORD } from '@routers/path';
 import { useLoginMutation } from '@hooks/queries';
+import { useState } from 'react';
 import { useUserStore } from '../../../stores';
 import { FooterAuth } from '../components/footer';
 import { FormContentAuth } from '../components/form-content';
@@ -33,6 +34,8 @@ const items: TFormItem[] = [
 ];
 
 const LoginPage = () => {
+  const [alert, setAlert] = useState('');
+
   const { loginSuccess } = useUserStore();
   const { mutate: mutateLogin, isPending } = useLoginMutation();
   const { formContent } = useFormItems({
@@ -56,6 +59,9 @@ const LoginPage = () => {
             refreshToken: value.refresh_token,
           });
         },
+        onError() {
+          setAlert('Thông tin đăng nhập không đúng');
+        },
       },
     );
   };
@@ -69,6 +75,7 @@ const LoginPage = () => {
           title="Mừng bạn quay lại"
           subTitle="Đăng nhập vào tài khoản MB Bank"
           textButton="Đăng nhập"
+          alertText={alert}
           isLoading={isPending}
           textLink={<Link to={FORGOT_PASSWORD}>Quên mật khẩu?</Link>}
           formContent={formContent}
