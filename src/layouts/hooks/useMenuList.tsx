@@ -59,6 +59,11 @@ const useMenuList = (onLogout?: () => void) => {
         ],
       },
       {
+        key: 'opportunity',
+        label: 'Quản lý cơ hội',
+        icon: <MarketingIcon />,
+      },
+      {
         key: 'help',
         label: 'Trợ giúp',
         icon: <MarketingIcon />,

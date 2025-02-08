@@ -19,6 +19,7 @@ const ROUTE_PATH = {
     ROOT: '/setting',
     CONTROL: 'control',
   },
+  OPPORTUNITY: '/opportunity'
 };
 
 export const {
@@ -32,4 +33,5 @@ export const {
   EXAMPLE,
   CATEGORY,
   SETTING,
+  OPPORTUNITY
 } = ROUTE_PATH;

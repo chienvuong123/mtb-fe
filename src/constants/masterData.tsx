@@ -38,6 +38,12 @@ export enum EControlType {
   LINK = 'LINK',
 }
 
+export enum EStatusOpportunitySell {
+  DISBURSED = 'DISBURSED',
+  OPPORTUNITY_TO_SELL = 'OPPORTUNITY_TO_SELL',
+  CANCELED = "CANCELED"
+}
+
 export const STATUS_OPTIONS = [
   {
     value: EStatus.ACTIVE,
