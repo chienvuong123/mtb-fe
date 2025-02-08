@@ -7,6 +7,7 @@ import type {
 
 export enum CategoryType {
   PRODUCT = '2',
+  MEDIA = '3',
   SERVICE = 'SERVICE',
 }
 
