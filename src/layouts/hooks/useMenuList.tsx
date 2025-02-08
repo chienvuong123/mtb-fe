@@ -97,6 +97,10 @@ const useMenuList = (onLogout?: () => void) => {
             key: `${CATEGORY.ROOT}/${CATEGORY.PRODUCT_CATEGORY}`,
             label: 'Danh mục Product',
           },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.MEDIA_CATEGORY}`,
+            label: 'Loại đa phương tiện',
+          },
         ],
       },
       {

@@ -70,6 +70,12 @@ const routes = createBrowserRouter(
                 () => import('@pages/category/product-category'),
               ),
             },
+            {
+              path: CATEGORY.MEDIA_CATEGORY,
+              element: createLazyElement(
+                () => import('@pages/category/media-category'),
+              ),
+            },
           ],
         },
         {
