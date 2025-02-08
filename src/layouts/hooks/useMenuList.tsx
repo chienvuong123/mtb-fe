@@ -2,13 +2,16 @@
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
 import { useMemo } from 'react';
 import {
+  FloppyDiskIcon,
   FolderManagementIcon,
   HelpCircleIcon,
+  HotPriceIcon,
   LogoutIcon,
   MarketingIcon,
   MuslimIcon,
   PieChartIcon,
   Setting02Icon,
+  Target02Icon,
 } from '@assets/icons';
 import { Divider } from 'antd';
 import { CATEGORY, ACCOUNT } from '@routers/path';
@@ -31,12 +34,30 @@ const useMenuList = (onLogout?: () => void) => {
       },
       {
         key: '/',
-        label: 'Quản lý Category',
+        label: 'Dashboard',
         icon: <PieChartIcon />,
+      },
+      {
+        key: 'report',
+        label: 'Báo cáo',
+        icon: <HotPriceIcon />,
       },
       {
         key: 'category',
         label: 'Quản lý Category',
+        icon: <FolderManagementIcon />,
+        children: [
+          { key: 'category.1', label: 'DS khách hàng Campaign' },
+          {
+            key: 'category.2',
+            label: 'Danh sách nhóm khách hàng theo Campaign',
+          },
+          { key: 'category.3', label: 'Tạo nhóm khách hàng' },
+        ],
+      },
+      {
+        key: 'customers',
+        label: 'Quản lý khách hàng',
         icon: <MuslimIcon />,
         children: [
           { key: 'category.1', label: 'DS khách hàng Campaign' },
@@ -48,6 +69,26 @@ const useMenuList = (onLogout?: () => void) => {
         ],
       },
       {
+        key: 'sales-opportunities',
+        label: 'Quản lý cơ hội bán',
+        icon: <MarketingIcon />,
+      },
+      {
+        key: 'script-management',
+        label: 'Quản lý kịch bản',
+        icon: <Target02Icon />,
+      },
+      {
+        key: 'saler-management',
+        label: 'Quản lý Saler',
+        icon: <MuslimIcon />,
+      },
+      {
+        key: 'multimedia-warehouse',
+        label: 'Kho đa phương tiện',
+        icon: <FloppyDiskIcon />,
+      },
+      {
         key: CATEGORY.ROOT,
         label: 'Quản lý danh mục',
         icon: <FolderManagementIcon />,
@@ -57,11 +98,6 @@ const useMenuList = (onLogout?: () => void) => {
             label: 'Danh mục Product',
           },
         ],
-      },
-      {
-        key: 'help',
-        label: 'Trợ giúp',
-        icon: <MarketingIcon />,
       },
       {
         key: 'settings',
