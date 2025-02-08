@@ -40,7 +40,7 @@ const color = {
   ctHeading: '#262626',
   ctSubtle: '#5A5A5A',
   ctLabelForm: '#161616',
-  ctMenu: '#8A9298',
+  ctMenu: '#5E6371',
   ctWhite500: '#ffffff',
   ctInk300: '#42536d',
   ctInk500: '#0f203a',
