@@ -27,6 +27,11 @@ const ROUTE_PATH = {
     CUSTOMER_CAMPAIGN_LIST: 'list',
     CUSTOMER_GROUP_CAMPAIGN_LIST: 'group-list',
   },
+  SCENARIO: {
+    ROOT: '/scenario',
+    CREATE: 'create',
+    DETAIL: ':id',
+  },
 };
 
 export const {
@@ -42,4 +47,5 @@ export const {
   SETTING,
   SALES_OPPORTUNITIES,
   CUSTOMER,
+  SCENARIO,
 } = ROUTE_PATH;

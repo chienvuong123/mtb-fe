@@ -1,6 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
-import { useMemo } from 'react';
 import {
   FolderManagementIcon,
   HelpCircleIcon,
@@ -14,6 +12,11 @@ import { Divider } from 'antd';
 import { CATEGORY, ACCOUNT, CUSTOMER } from '@routers/path';
 import { Link, useNavigate } from 'react-router-dom';
 import OPopup from '@components/organisms/o-popup/OPopup';
+import { ACCOUNT, CATEGORY, SCENARIO, SETTING } from '@routers/path';
+import { Divider } from 'antd';
+import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
+import { useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const useMenuList = (onLogout?: () => void) => {
   const navigate = useNavigate();
@@ -83,6 +86,30 @@ const useMenuList = (onLogout?: () => void) => {
         ],
       },
       {
+        key: SCENARIO.ROOT,
+        label: 'Quản lý kịch bản',
+        icon: <Target02Icon />,
+        children: [
+          {
+            key: SCENARIO.ROOT,
+            label: 'Danh sách kịch bản',
+          },
+          {
+            key: `${SCENARIO.ROOT}/${SCENARIO.CREATE}`,
+            label: 'Tạo kịch bản',
+          },
+          {
+            key: `${SCENARIO.ROOT}/abcs-1234`,
+            label: 'Chi tiết kịch bản',
+          },
+        ],
+      },
+      {
+        key: 'help',
+        label: 'Trợ giúp',
+        icon: <MarketingIcon />,
+      },
+      {
         key: 'settings',
         className: 'item-category',
         label: (
@@ -93,13 +120,8 @@ const useMenuList = (onLogout?: () => void) => {
         ),
       },
       {
-        key: 'setting.control',
-        label: (
-          <>
-            Cài đặt
-            <Link to="/setting/control" />
-          </>
-        ),
+        key: `${SETTING.ROOT}/${SETTING.CONTROL}`,
+        label: 'Cài đặt',
         icon: <Setting02Icon />,
       },
       {
