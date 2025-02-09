@@ -1,4 +1,9 @@
-import type { AuthOtpDTO, AuthOtpRequest, BaseResponse } from '@dtos';
+import type {
+  AuthOtpDTO,
+  AuthOtpRequest,
+  BaseResponse,
+  UserInfoOtpRequest,
+} from '@dtos';
 import { BaseApi } from './baseApi';
 import { apiRequest } from './apiClient';
 
@@ -7,7 +12,7 @@ export class AuthOTPApi extends BaseApi<AuthOtpDTO, AuthOtpRequest> {
     super('/auth/v1.0');
   }
 
-  async verifyOtpForgotPassword(data: Partial<AuthOtpRequest>) {
+  async verifyOtpForgotPassword(data: Partial<UserInfoOtpRequest>) {
     return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/verify-otp-forgot-password`,
       method: 'POST',
@@ -15,7 +20,7 @@ export class AuthOTPApi extends BaseApi<AuthOtpDTO, AuthOtpRequest> {
     });
   }
 
-  async verifyInfoUserForgotPassword(data: Partial<AuthOtpRequest>) {
+  async verifyInfoUserForgotPassword(data: Partial<UserInfoOtpRequest>) {
     return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/verify-info-user-forgot-password`,
       method: 'POST',
@@ -23,7 +28,7 @@ export class AuthOTPApi extends BaseApi<AuthOtpDTO, AuthOtpRequest> {
     });
   }
 
-  async resetForgotPassword(data: Partial<AuthOtpRequest>) {
+  async resetForgotPassword(data: Partial<UserInfoOtpRequest>) {
     return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/reset-forgot-password`,
       method: 'POST',
