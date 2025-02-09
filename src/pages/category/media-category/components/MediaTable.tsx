@@ -20,7 +20,7 @@ interface IMediaTable {
   onSort: (field: string, direction: SortOrder) => void;
 }
 
-const statusObject: Record<EStatus, ReactNode> = {
+const statusObject: Partial<Record<EStatus, ReactNode>> = {
   [EStatus.ACTIVE]: <ATag color="green">Đang hoạt động</ATag>,
   [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
 };
@@ -107,7 +107,9 @@ const MediaTable: FC<IMediaTable> = ({
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
       onCreate={onCreate}
-      onDeleteRow={deleteRecord}
+      onDeleteRow={(key) => {
+        deleteRecord(key);
+      }}
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
       showCreateBtn

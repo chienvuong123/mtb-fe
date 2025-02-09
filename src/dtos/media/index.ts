@@ -29,4 +29,8 @@ export type CMResponseMediaCategoryDTO = {
   data: MediaCategoryDTO[];
 };
 
-export type TMediaSearchForm = { code: string; name: string };
+export type TMediaSearchForm = {
+  code: string;
+  name: string;
+  status: string;
+};

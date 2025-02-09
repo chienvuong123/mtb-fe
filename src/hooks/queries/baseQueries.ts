@@ -65,14 +65,14 @@ export const createBaseQueryHooks = <
     options?: Partial<
       UseMutationOptions<BaseResponse<boolean>, Error, Partial<T>>
     >,
-    onInvalidate?: () => void,
+    onInvalidate?: (dataSuccess?: BaseResponse<boolean>) => void,
   ) => {
     const queryClient = useQueryClient();
 
     return useMutation({
       mutationFn: (data: Partial<T>) => api.add(data),
-      onSuccess: () => {
-        onInvalidate?.();
+      onSuccess: (dataSuccess: BaseResponse<boolean>) => {
+        onInvalidate?.(dataSuccess);
         queryClient.invalidateQueries({
           queryKey: queryKeys.list,
         });
@@ -85,14 +85,14 @@ export const createBaseQueryHooks = <
     options?: Partial<
       UseMutationOptions<BaseResponse<boolean>, Error, Partial<T>>
     >,
-    onInvalidate?: () => void,
+    onInvalidate?: (dataSuccess?: BaseResponse<boolean>) => void,
   ) => {
     const queryClient = useQueryClient();
 
     return useMutation({
       mutationFn: (data: Partial<T>) => api.edit(data),
-      onSuccess: () => {
-        onInvalidate?.();
+      onSuccess: (dataSuccess: BaseResponse<boolean>) => {
+        onInvalidate?.(dataSuccess);
         queryClient.invalidateQueries({
           queryKey: queryKeys.list,
         });

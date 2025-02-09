@@ -46,7 +46,7 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
     <InputNumber {...props} controls={false} />
   ),
   [INPUT_TYPE.SELECT]: (props: GetProps<typeof ASelect>) => (
-    <ASelect {...props} allowClear />
+    <ASelect allowClear {...props} />
   ),
   [INPUT_TYPE.DATE_PICKER]: ({
     className,

@@ -1,11 +1,12 @@
 import { OBaseForm } from '@components/organisms';
-import { STATUS_OPTIONS } from '@constants/masterData';
-import type { MediaCategoryDTO } from '@dtos';
 import { INPUT_TYPE, type TFormItem } from '@types';
+import { useEffect, type FC, useMemo } from 'react';
 import { useForm } from 'antd/lib/form/Form';
-import { useEffect, type FC } from 'react';
+import type { MediaCategoryDTO } from '@dtos';
+import { STATUS_OPTIONS } from '@constants/masterData';
 
-interface IMediaInsertForm {
+interface IMediaEditForm {
+  isViewMode?: boolean;
   initialValues?: Partial<MediaCategoryDTO> | null;
   onClose: () => void;
   onSubmit: (values: MediaCategoryDTO) => void;
@@ -60,12 +61,28 @@ const items: TFormItem[] = [
   },
 ];
 
-const MediaInsertForm: FC<IMediaInsertForm> = ({
+const MediaEditForm: FC<IMediaEditForm> = ({
   onClose,
   onSubmit,
   initialValues,
+  isViewMode,
 }) => {
   const [form] = useForm();
+
+  const formItems = useMemo(
+    () =>
+      isViewMode
+        ? items.map((i) => ({
+            ...i,
+            inputProps: {
+              ...i.inputProps,
+              disabled: i.type === INPUT_TYPE.SELECT,
+              readOnly: true,
+            },
+          }))
+        : items,
+    [isViewMode],
+  ) as TFormItem[];
 
   useEffect(() => {
     if (initialValues) {
@@ -76,9 +93,10 @@ const MediaInsertForm: FC<IMediaInsertForm> = ({
   return (
     <div>
       <OBaseForm<MediaCategoryDTO>
-        items={items}
+        items={formItems}
         form={form}
         onSubmit={onSubmit}
+        isViewMode={isViewMode}
         onClose={() => {
           onClose();
           form.resetFields();
@@ -88,4 +106,4 @@ const MediaInsertForm: FC<IMediaInsertForm> = ({
   );
 };
 
-export default MediaInsertForm;
+export default MediaEditForm;
