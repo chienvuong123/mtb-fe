@@ -23,11 +23,9 @@ const MHeaderInfo: React.FC<IMHeaderInfo> = ({ itemsDropdown }) => {
             <Avatar>{user?.firstName?.charAt(0).toLocaleUpperCase()}</Avatar>
           </Badge>
 
-          <Flex vertical gap={2}>
-            <h6>
-              {user?.firstName} {user?.lastName}
-            </h6>
-            <span className="lh-150 text1 fs-12">{user?.role}</span>
+          <Flex vertical>
+            <h6>{user?.fullName}</h6>
+            <span className="lh-150">{user?.role}</span>
           </Flex>
 
           <ArrowDown01Icon />

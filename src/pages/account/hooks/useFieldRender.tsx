@@ -23,7 +23,7 @@ const useFieldRender = () => {
     {
       type: INPUT_TYPE.TEXT,
       label: 'Họ và tên',
-      name: 'firstName',
+      name: 'fullName',
       inputProps: { placeholder: 'Nhập...' },
       colProps: { span: 8, className: 'fw-500' },
     },
@@ -38,7 +38,7 @@ const useFieldRender = () => {
       type: INPUT_TYPE.TEXT,
       label: 'Số điện thoại',
       name: 'phoneNum',
-      inputProps: { placeholder: 'Nhập...' },
+      inputProps: { placeholder: 'Nhập...', type: 'number' },
       colProps: { span: 8, className: 'fw-500' },
     },
     {
