@@ -6,11 +6,12 @@ import {
   type MediaCategoryDTO,
   type TMediaSearchForm,
 } from '@dtos';
-import { Drawer, message } from 'antd';
+import { Drawer } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState, type FC } from 'react';
 
+import { AAlert } from '@components/atoms';
 import type {
   IMPagination,
   TPagination,
@@ -47,6 +48,19 @@ const MediaCategoryPage: FC = () => {
 
   const { user } = useUserStore();
 
+  const [visible, setVisible] = useState(false);
+  const [typeAlert, setTypeAlert] = useState<'success' | 'warning' | 'error'>(
+    'success',
+  );
+  const [message, setMessage] = useState<string>('');
+
+  const showAlert = () => {
+    setVisible(true);
+    setTimeout(() => {
+      setVisible(false);
+    }, 3000);
+  };
+
   const { data: MediaRes, isLoading } = useMediaCategorySearchQuery({
     categoryType: CategoryType.MEDIA,
     page: { pageNum: pagination.current, pageSize: pagination.pageSize },
@@ -68,11 +82,15 @@ const MediaCategoryPage: FC = () => {
   ) => {
     if (!dataSuccess) return;
     if (dataSuccess.data) {
-      message.success(isEdit ? MessageSuccess.EDIT : MessageSuccess.ADD_NEW);
+      setTypeAlert('success');
+      setMessage(isEdit ? MessageSuccess.EDIT : MessageSuccess.ADD_NEW);
+      showAlert();
       return;
     }
     if (dataSuccess.errorCode === ErrorCode.CATEGORY_DUPLICATE) {
-      message.error(MessageError.MEDIA_CATEGORY_DUPLICATE);
+      setTypeAlert('error');
+      setMessage(MessageError.MEDIA_CATEGORY_DUPLICATE);
+      showAlert();
     }
   };
 
@@ -217,11 +235,19 @@ const MediaCategoryPage: FC = () => {
   }, [MediaRes, setPagination, pagination, isLoading]);
 
   return (
-    <div className="pt-32">
+    <div className="pt-32 category-media">
       <Title level={3} className="mb-24">
         Danh mục đa phương tiện
       </Title>
-
+      {visible && (
+        <AAlert
+          message={message}
+          type={typeAlert}
+          closable
+          onClose={() => setVisible(false)}
+          className={`alert-media ${typeAlert === 'success' ? 'alert-success' : ''} ${typeAlert === 'error' ? 'alert-error' : ''}`}
+        />
+      )}
       <MediaSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
