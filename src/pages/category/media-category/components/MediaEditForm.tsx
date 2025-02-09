@@ -4,6 +4,7 @@ import { useEffect, type FC, useMemo } from 'react';
 import { useForm } from 'antd/lib/form/Form';
 import type { MediaCategoryDTO } from '@dtos';
 import { STATUS_OPTIONS } from '@constants/masterData';
+import { MessageError } from '@constants/message';
 
 interface IMediaEditForm {
   isViewMode?: boolean;
@@ -25,7 +26,7 @@ const items: TFormItem[] = [
     name: 'name',
     inputProps: { placeholder: 'Nhập...', maxLength: 100 },
     required: true,
-    rules: [{ required: true, message: 'Trường này là bắt buộc' }],
+    rules: [{ required: true, message: MessageError.FIELD_REQUIRE }],
   },
   {
     type: INPUT_TYPE.SELECT,

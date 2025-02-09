@@ -13,17 +13,21 @@ const MHeaderInfo: React.FC<IMHeaderInfo> = ({ itemsDropdown }) => {
 
   return (
     <Flex justify="space-between" align="center">
-      <ADropdown items={itemsDropdown} trigger={['click']}>
+      <ADropdown
+        items={itemsDropdown}
+        trigger={['click']}
+        overlayClassName="min-w-240"
+      >
         <Flex gap={12} align="center">
           <Badge dot offset={[-5, 45]} color="green">
             <Avatar>{user?.firstName?.charAt(0).toLocaleUpperCase()}</Avatar>
           </Badge>
 
-          <Flex vertical>
+          <Flex vertical gap={2}>
             <h6>
               {user?.firstName} {user?.lastName}
             </h6>
-            <span className="lh-150">{user?.role}</span>
+            <span className="lh-150 text1 fs-12">{user?.role}</span>
           </Flex>
 
           <ArrowDown01Icon />
