@@ -1,6 +1,5 @@
 import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
-import { MessageError } from '@constants/message';
 import type { MediaCategoryDTO } from '@dtos';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
@@ -25,7 +24,7 @@ const items: TFormItem[] = [
     name: 'name',
     inputProps: { placeholder: 'Nhập...', maxLength: 100 },
     required: true,
-    rules: [{ required: true, message: MessageError.FIELD_REQUIRE }],
+    rules: [{ required: true }],
   },
   {
     type: INPUT_TYPE.SELECT,

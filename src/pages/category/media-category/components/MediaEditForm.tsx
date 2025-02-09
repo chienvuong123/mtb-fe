@@ -1,10 +1,9 @@
 import { OBaseForm } from '@components/organisms';
-import { INPUT_TYPE, type TFormItem } from '@types';
-import { useEffect, type FC, useMemo } from 'react';
-import { useForm } from 'antd/lib/form/Form';
-import type { MediaCategoryDTO } from '@dtos';
 import { STATUS_OPTIONS } from '@constants/masterData';
-import { MessageError } from '@constants/message';
+import type { MediaCategoryDTO } from '@dtos';
+import { INPUT_TYPE, type TFormItem } from '@types';
+import { useForm } from 'antd/lib/form/Form';
+import { useEffect, useMemo, type FC } from 'react';
 
 interface IMediaEditForm {
   isViewMode?: boolean;
@@ -26,7 +25,7 @@ const items: TFormItem[] = [
     name: 'name',
     inputProps: { placeholder: 'Nhập...', maxLength: 100 },
     required: true,
-    rules: [{ required: true, message: MessageError.FIELD_REQUIRE }],
+    rules: [{ required: true }],
   },
   {
     type: INPUT_TYPE.SELECT,
