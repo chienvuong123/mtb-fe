@@ -23,7 +23,7 @@ const OFormDetail = <T extends object>({
   items,
   className,
   isViewMode,
-  onClose
+  onClose,
 }: IOBaseForm<T>) => {
   const transformItems = useMemo(
     () =>
@@ -63,7 +63,7 @@ const OFormDetail = <T extends object>({
           <Divider className="ma-0" />
           <Flex justify="center" className="py-16 w-full" gap="middle">
             <AButton
-            onClick={handleClose}
+              onClick={handleClose}
               type="primary"
               variant="filled"
               data-testid="back-button"

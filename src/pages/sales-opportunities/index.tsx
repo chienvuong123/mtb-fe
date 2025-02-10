@@ -1,50 +1,53 @@
-import React, { useMemo, useState } from 'react'
-import OpportunitySellListSearch from './components/OpportunitySellSearch'
+import React, { useMemo, useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 import useUrlParams from '@hooks/useUrlParams';
-import { CategoryType } from '@dtos';
-import type { IOpportunitySellSearchForm, OpportunitySellDTO } from 'src/dtos/opportunity';
+import type {
+  TSalesOpportunitiesSearchForm,
+  SalesOpportunitiesDTO,
+} from 'src/dtos/sales-opportunities';
 import type { SortOrder } from 'antd/es/table/interface';
 import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import OpportunitySellTable, { type TOpportunitySellRecord } from './components/OpportunitySellTable';
-import { useOpportunitySellSearchQuery } from '@hooks/queries/userOpportunitySellQueries';
+import { useSalesOpportunitiesSearchQuery } from '@hooks/queries/userSalesOpportunitiesQueries';
 import { Drawer } from 'antd';
-import OpportunitySellDetail from './components/OpportunitySellDetail';
+import OpportunitySellTable, {
+  type TSalesOpportunitiesRecord,
+} from './components/SalesOpportunitiesTable';
+import SalesOpportunitiesSearch from './components/SalesOpportunitiesSearch';
+import SalesOpportunitiesDetail from './components/SalesOpportunitiesDetail';
 
-const ManageSalesOpportunities : React.FC  = () => {
+const ManageSalesOpportunities: React.FC = () => {
   const [showInsertForm, setShowInsertForm] = useState<boolean>(false);
-  const [initValues, setInitValues] = useState<Partial<TOpportunitySellRecord> | null>(
-    null,
-  );
+  const [initValues, setInitValues] =
+    useState<Partial<TSalesOpportunitiesRecord> | null>(null);
 
   const [isViewMode, setIsViewMode] = useState(false);
 
   const { setPagination, setFilters, setSort, pagination, sort, filters } =
-  useUrlParams<Partial<OpportunitySellDTO>>();
+    useUrlParams<Partial<SalesOpportunitiesDTO>>();
 
-  const { data: OpportunitySellRes } = useOpportunitySellSearchQuery({
+  const { data: OpportunitySellRes } = useSalesOpportunitiesSearchQuery({
     // categoryType: CategoryType.PRODUCT,
     // page: { pageNum: pagination.current, pageSize: pagination.pageSize },
     // order: sort,
     // code: filters.code,
     // name: filters.name,
   });
-console.log(OpportunitySellRes);
+  console.log(OpportunitySellRes);
 
-  const dataSources: TOpportunitySellRecord[] =
+  const dataSources: TSalesOpportunitiesRecord[] =
     useMemo(
       () =>
-      OpportunitySellRes?.data?.content?.map((i) => ({
+        OpportunitySellRes?.data?.content?.map((i) => ({
           ...i,
           key: i.id as string,
         })),
       [OpportunitySellRes],
     ) ?? [];
-  
+
   const handlePaginationChange = (data: TPagination) => {
     setPagination(data);
   };
@@ -60,8 +63,6 @@ console.log(OpportunitySellRes);
   };
 
   const handleView = (id: string) => {
-    setIsViewMode(true);
-    setShowInsertForm(true);
     const item = OpportunitySellRes?.data?.content.find((i) => i.id === id);
     if (item) {
       setIsViewMode(true);
@@ -70,9 +71,9 @@ console.log(OpportunitySellRes);
     }
   };
 
-  const handleSearch = ({name, code}: IOpportunitySellSearchForm) => {
+  const handleSearch = (searchObject: TSalesOpportunitiesSearchForm) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({name, code});
+    setFilters(searchObject);
   };
 
   const handleClearAll = () => {
@@ -101,16 +102,16 @@ console.log(OpportunitySellRes);
   }, [initValues?.id, isViewMode]);
 
   return (
-    <div className='pt-32'>
-      <Title level={3} className='mb-24'>
+    <div className="pt-32">
+      <Title level={3} className="mb-24">
         Danh sách cơ hội bán
       </Title>
-      <OpportunitySellListSearch
+      <SalesOpportunitiesSearch
         onSearch={handleSearch}
         onClearAll={handleClearAll}
       />
-      <div className='mt-24'/>
-      <OpportunitySellTable 
+      <div className="mt-24" />
+      <OpportunitySellTable
         dataSource={dataSources}
         onView={handleView}
         onSort={handleSort}
@@ -124,14 +125,14 @@ console.log(OpportunitySellRes);
         maskClosable={false}
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
       >
-        <OpportunitySellDetail
-          isViewMode={isViewMode} 
+        <SalesOpportunitiesDetail
+          isViewMode={isViewMode}
           onClose={handleCloseFormDetail}
           initialValues={initValues}
         />
       </Drawer>
     </div>
-  )
-}
+  );
+};
 
-export default ManageSalesOpportunities  
+export default ManageSalesOpportunities;

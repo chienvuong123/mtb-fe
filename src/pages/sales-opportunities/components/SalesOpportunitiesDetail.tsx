@@ -1,34 +1,34 @@
-import OFormDetail from '@components/organisms/o-form-detail/OFormDetail'
+import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
-import React, { useEffect, useMemo } from 'react'
-import type { OpportunitySellDTO } from 'src/dtos/opportunity'
+import React, { useEffect, useMemo } from 'react';
+import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
 
-interface IOpportunitySellDetail {
-    onClose: () => void;
-    isViewMode?: boolean;
-    initialValues?: Partial<OpportunitySellDTO> | null;
+interface ISalesOpportunitiesDetail {
+  onClose: () => void;
+  isViewMode?: boolean;
+  initialValues?: Partial<SalesOpportunitiesDTO> | null;
 }
 
 const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Order Id',
-    name: 'code',
-    inputProps: { disabled: true},
+    name: 'orderID',
+    inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Mã Category',
-    name: 'name',
-    inputProps: { placeholder: 'Nhập...', maxLength: 100},
+    name: 'codeCategory',
+    inputProps: { placeholder: 'Nhập...', maxLength: 100 },
     required: true,
     rules: [{ required: true }],
   },
   {
     type: INPUT_TYPE.SELECT,
     label: 'Tên Catagory',
-    name: 'status',
+    name: 'nameCategory',
     // inputProps: {
     //   options: STATUS_OPTIONS,
     // },
@@ -36,13 +36,13 @@ const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Mã Campaign',
-    name: 'createdDate',
+    name: 'codeCampaign',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Tên Campaign',
-    name: 'createdBy',
+    name: 'nameCampaign',
     inputProps: { disabled: true },
   },
   {
@@ -54,139 +54,139 @@ const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Mã khách hàng',
-    name: 'updatedBy',
+    name: 'codeCustomer',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Họ và tên',
-    name: 'updatedBy',
+    name: 'fullName',
     inputProps: { disabled: true },
   },
   {
-    type: INPUT_TYPE.TEXT,
+    type: INPUT_TYPE.NUMBER,
     label: 'Số điện thoại',
-    name: 'updatedBy',
+    name: 'phone',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Email',
-    name: 'updatedBy',
+    name: 'email',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Năm sinh',
-    name: 'updatedBy',
+    name: 'birthday',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Giới tính',
-    name: 'updatedBy',
+    name: 'gender',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Nghề nghiệp',
-    name: 'updatedBy',
+    name: 'profession',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Phân khúc khách hàng',
-    name: 'updatedBy',
+    name: 'segmentCustomer',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Khách hàng định danh',
-    name: 'updatedBy',
+    name: 'identifierCustomer',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Nhóm khách hàng',
-    name: 'updatedBy',
+    name: 'groupCustomer',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Sở thích',
-    name: 'updatedBy',
+    name: 'hobby',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Chi nhánh quản lý',
-    name: 'updatedBy',
+    name: 'branchManager',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Seller',
-    name: 'updatedBy',
+    name: 'Seller',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Địa chỉ',
-    name: 'updatedBy',
+    name: 'address',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'CCCD',
-    name: 'updatedBy',
+    name: 'cccd',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Trạng thái',
-    name: 'updatedBy',
+    name: 'status',
     inputProps: { disabled: true },
   },
 ];
 
-const OpportunitySellDetail: React.FC<IOpportunitySellDetail> = ({
-    onClose,
-    isViewMode,
-    initialValues
+const SalesOpportunitiesDetail: React.FC<ISalesOpportunitiesDetail> = ({
+  onClose,
+  isViewMode,
+  initialValues,
 }) => {
-    const [form] = useForm();
+  const [form] = useForm();
 
-    const formItems = useMemo(
-        () =>
-            isViewMode
-                ? items.map((i) => ({
-                    ...i,
-                    inputProps: {
-                    ...i.inputProps,
-                    disabled: i.type === INPUT_TYPE.SELECT,
-                    readOnly: true,
-                    },
-                }))
-                : items,
-            [isViewMode],
-    ) as TFormItem[];
+  const formItems = useMemo(
+    () =>
+      isViewMode
+        ? items.map((i) => ({
+            ...i,
+            inputProps: {
+              ...i.inputProps,
+              disabled: i.type === INPUT_TYPE.SELECT,
+              readOnly: true,
+            },
+          }))
+        : items,
+    [isViewMode],
+  ) as TFormItem[];
 
-    useEffect(() => {
-        if (initialValues) {
-            form.setFieldsValue({ ...initialValues });
-        }
-    }, [initialValues, form]);
+  useEffect(() => {
+    if (initialValues) {
+      form.setFieldsValue({ ...initialValues });
+    }
+  }, [initialValues, form]);
 
   return (
     <div>
-      <OFormDetail<OpportunitySellDTO>
+      <OFormDetail<SalesOpportunitiesDTO>
         form={form}
         items={formItems}
         onClose={onClose}
         isViewMode={isViewMode}
       />
     </div>
-  )
-}
+  );
+};
 
-export default OpportunitySellDetail
+export default SalesOpportunitiesDetail;

@@ -19,7 +19,7 @@ const ROUTE_PATH = {
     ROOT: '/setting',
     CONTROL: 'control',
   },
-  OPPORTUNITY: '/opportunity'
+  SALES_OPPORTUNITIES: '/sales-opportunities'
 };
 
 export const {
@@ -33,5 +33,5 @@ export const {
   EXAMPLE,
   CATEGORY,
   SETTING,
-  OPPORTUNITY
+  SALES_OPPORTUNITIES
 } = ROUTE_PATH;

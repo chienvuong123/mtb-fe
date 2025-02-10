@@ -1,30 +1,30 @@
 import { ATag } from '@components/atoms';
 import { OTable, type TTableKey } from '@components/organisms';
-import { EStatusOpportunitySell } from '@constants/masterData';
+import { ESalesOpportunities } from '@constants/masterData';
 import type { ColumnType } from 'antd/es/table';
 import React, { useState, type ReactNode } from 'react';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
-import type { OpportunitySellDTO } from 'src/dtos/opportunity';
+import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import type { OrderDTO } from '@dtos';
 
-export type TOpportunitySellRecord = TTableKey & Partial<OpportunitySellDTO>;
+export type TSalesOpportunitiesRecord = TTableKey & Partial<SalesOpportunitiesDTO>;
 
-interface IOpportunitySellTable {
-  dataSource: TOpportunitySellRecord[];
+interface ISalesOpportunitiesTable {
+  dataSource: TSalesOpportunitiesRecord[];
   onView: (id: string) => void;
   onSort: (field: string, direction: SortOrder) => void;
   paginations: IMPagination;
   sortDirection?: OrderDTO;
 }
 
-const statusObject: Record<EStatusOpportunitySell, ReactNode> = {
-  [EStatusOpportunitySell.DISBURSED]: <ATag color="green">Đã giải ngân</ATag>,
-  [EStatusOpportunitySell.OPPORTUNITY_TO_SELL]: <ATag color="blue">Đã tạo cơ hội bán</ATag>,
-  [EStatusOpportunitySell.CANCELED]: <ATag color="red">Đã hủy</ATag>,
+const statusObject: Record<ESalesOpportunities, ReactNode> = {
+  [ESalesOpportunities.DISBURSED]: <ATag color="green">Đã giải ngân</ATag>,
+  [ESalesOpportunities.OPPORTUNITY_TO_SELL]: <ATag color="blue">Đã tạo cơ hội bán</ATag>,
+  [ESalesOpportunities.CANCELED]: <ATag color="red">Đã hủy</ATag>,
 };
 
-const columns: ColumnType<TOpportunitySellRecord>[] = [
+const columns: ColumnType<TSalesOpportunitiesRecord>[] = [
   {
     title: 'STT',
     dataIndex: 'index',
@@ -34,7 +34,7 @@ const columns: ColumnType<TOpportunitySellRecord>[] = [
   },
   {
     title: 'Mã khách hàng',
-    dataIndex: 'code',
+    dataIndex: 'codeCustomer',
     minWidth: 104,
     sorter: true,
     showSorterTooltip: false,
@@ -52,7 +52,7 @@ const columns: ColumnType<TOpportunitySellRecord>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: EStatusOpportunitySell) => statusObject[value] ?? null,
+    render: (value: ESalesOpportunities) => statusObject[value] ?? null,
   },
   {
     title: 'Nhóm khách hàng',
@@ -98,7 +98,7 @@ const columns: ColumnType<TOpportunitySellRecord>[] = [
   },
 ];
 
-const OpportunitySellTable: React.FC<IOpportunitySellTable> = ({
+const SalesOpportunitiesTable: React.FC<ISalesOpportunitiesTable> = ({
   dataSource,
   onView,
   onSort,
@@ -109,7 +109,7 @@ const OpportunitySellTable: React.FC<IOpportunitySellTable> = ({
 
   return (
     <div>
-      <OTable<TOpportunitySellRecord>
+      <OTable<TSalesOpportunitiesRecord>
         columns={columns}
         data={dataSource}
         selectedRowKeys={selectedRowKeys}
@@ -118,7 +118,7 @@ const OpportunitySellTable: React.FC<IOpportunitySellTable> = ({
         sortDirection={sortDirection}
         onView={(id) => onView(id as string)}
         onChange={(_p, _f, s) => {
-          const { field, order } = s as SorterResult<TOpportunitySellRecord>;
+          const { field, order } = s as SorterResult<TSalesOpportunitiesRecord>;
           onSort(field as string, order as SortOrder);
         }}
       />
@@ -126,4 +126,4 @@ const OpportunitySellTable: React.FC<IOpportunitySellTable> = ({
   )
 }
 
-export default OpportunitySellTable
+export default SalesOpportunitiesTable;

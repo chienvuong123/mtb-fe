@@ -38,7 +38,7 @@ export enum EControlType {
   LINK = 'LINK',
 }
 
-export enum EStatusOpportunitySell {
+export enum ESalesOpportunities {
   DISBURSED = 'DISBURSED',
   OPPORTUNITY_TO_SELL = 'OPPORTUNITY_TO_SELL',
   CANCELED = "CANCELED"

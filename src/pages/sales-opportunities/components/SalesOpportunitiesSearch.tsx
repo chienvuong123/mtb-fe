@@ -2,11 +2,11 @@ import { OSearchBaseForm } from '@components/organisms';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import React, { useEffect } from 'react'
-import type { IOpportunitySellSearchForm } from 'src/dtos/opportunity';
+import type { TSalesOpportunitiesSearchForm } from 'src/dtos/sales-opportunities';
 
-interface IOpportunitySellSearch {
-  initialValues?: IOpportunitySellSearchForm;
-  onSearch: (values: IOpportunitySellSearchForm) => void;
+interface ISalesOpportunitiesSearch {
+  initialValues?: TSalesOpportunitiesSearchForm;
+  onSearch: (values: TSalesOpportunitiesSearchForm) => void;
   onClearAll?: () => void;
 }
 
@@ -14,7 +14,7 @@ const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Order ID',
-    name: 'id',
+    name: 'orderId',
     inputProps: { title: 'Mã', placeholder: 'Nhập...', maxLength: 20 },
   },
   {
@@ -44,13 +44,13 @@ const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Mã khách hàng',
-    name: 'code',
+    name: 'codeCustomer',
     inputProps: { title: 'Mã', placeholder: 'Chọn...', maxLength: 20 },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Họ và tên',
-    name: 'name',
+    name: 'fullName',
     inputProps: { title: 'Mã', placeholder: 'Nhập...', maxLength: 20 },
   },
   {
@@ -96,7 +96,7 @@ const items: TFormItem[] = [
   },
 ];
 
-const OpportunitySellSearch: React.FC<IOpportunitySellSearch> = ({
+const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
   initialValues,
   onSearch,
   onClearAll
@@ -111,7 +111,7 @@ const OpportunitySellSearch: React.FC<IOpportunitySellSearch> = ({
 
   return (
     <div>
-      <OSearchBaseForm<any>
+      <OSearchBaseForm<TSalesOpportunitiesSearchForm>
         items={items}
         form={form}
         onSearch={onSearch}
@@ -121,4 +121,4 @@ const OpportunitySellSearch: React.FC<IOpportunitySellSearch> = ({
   )
 }
 
-export default OpportunitySellSearch
+export default SalesOpportunitiesSearch;
