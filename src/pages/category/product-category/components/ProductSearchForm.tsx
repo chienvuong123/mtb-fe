@@ -3,6 +3,7 @@ import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, type FC } from 'react';
 import type { TProductSearchForm } from '@dtos';
+import { STATUS_OPTIONS } from '@constants/masterData';
 
 interface IProductSearchForm {
   initialValues?: TProductSearchForm;
@@ -22,6 +23,15 @@ const items: TFormItem[] = [
     label: 'Tên',
     name: 'name',
     inputProps: { placeholder: 'Nhập...', maxLength: 100 },
+  },
+  {
+    type: INPUT_TYPE.SELECT,
+    label: 'Trạng thái',
+    name: 'status',
+    inputProps: {
+      options: STATUS_OPTIONS,
+      allowClear: false,
+    },
   },
 ];
 
