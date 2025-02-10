@@ -12,7 +12,7 @@ import { Divider } from 'antd';
 import { CATEGORY, ACCOUNT, CUSTOMER } from '@routers/path';
 import { Link, useNavigate } from 'react-router-dom';
 import OPopup from '@components/organisms/o-popup/OPopup';
-import { ACCOUNT, CATEGORY, SCENARIO, SETTING } from '@routers/path';
+import { ACCOUNT, CATEGORY, CUSTOMER, SCENARIO, SETTING } from '@routers/path';
 import { Divider } from 'antd';
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
 import { useMemo } from 'react';
@@ -82,6 +82,17 @@ const useMenuList = (onLogout?: () => void) => {
           {
             key: `${CATEGORY.ROOT}/${CATEGORY.MEDIA_CATEGORY}`,
             label: 'Loại đa phương tiện',
+          },
+        ],
+      },
+      {
+        key: CUSTOMER.ROOT,
+        label: 'Quản lý khách hàng',
+        icon: <MuslimIcon />,
+        children: [
+          {
+            key: `${CUSTOMER.ROOT}/customer-1234`,
+            label: 'Chi tiết (CSKH)',
           },
         ],
       },

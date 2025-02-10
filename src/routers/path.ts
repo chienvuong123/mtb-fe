@@ -15,7 +15,6 @@ const ROUTE_PATH = {
     PRODUCT_CATEGORY: `product-category`,
     MEDIA_CATEGORY: `media-category`,
   },
-
   SETTING: {
     ROOT: '/setting',
     CONTROL: 'control',
@@ -26,6 +25,7 @@ const ROUTE_PATH = {
     ROOT: '/customer',
     CUSTOMER_CAMPAIGN_LIST: 'list',
     CUSTOMER_GROUP_CAMPAIGN_LIST: 'group-list',
+    DETAIL: ':id',
   },
   SCENARIO: {
     ROOT: '/scenario',

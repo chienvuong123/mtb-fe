@@ -1,22 +1,6 @@
 import { EControlType, EStatus } from '@constants/masterData';
 import type { AttributeDTO } from '@dtos';
-
-const getRandomDate = () => {
-  const start = new Date(2025, 0, 1);
-  const end = new Date();
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime()),
-  ).toISOString();
-};
-
-const users = [
-  'admin.tester',
-  'john.doe',
-  'jane.smith',
-  'bob.wilson',
-  'alice.cooper',
-];
-const getRandomUser = () => users[Math.floor(Math.random() * users.length)];
+import { getRandomDate, getRandomUser } from './common';
 
 const mockAttributes: AttributeDTO[] = [
   {

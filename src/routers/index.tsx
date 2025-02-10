@@ -88,11 +88,26 @@ const routes = createBrowserRouter(
         },
         {
           path: CUSTOMER.ROOT,
+          element: (
+            <RoleBasedGuard
+              accessibleRoles={[
+                ERole.ADMIN,
+                ERole.CAMPAIGN_MANAGER,
+                ERole.SELLER,
+              ]}
+            />
+          ),
           children: [
             {
               path: CUSTOMER.CUSTOMER_CAMPAIGN_LIST,
               element: createLazyElement(
                 () => import('@pages/customer/list-customer'),
+              ),
+            },
+            {
+              path: CUSTOMER.DETAIL,
+              element: createLazyElement(
+                () => import('@pages/customer/detail'),
               ),
             },
           ],
