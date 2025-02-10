@@ -14,6 +14,7 @@ interface IFormContent extends FormProps {
   isLoading?: boolean;
   textLink: string | React.ReactNode;
   alertText?: string;
+  typeAlert?: 'success' | 'error' | 'warning';
   subLink?: string | React.ReactNode;
   formContent: JSX.Element | null;
 }
@@ -26,6 +27,7 @@ const FormContent: React.FC<IFormContent> = ({
   textLink,
   alertText,
   subLink,
+  typeAlert = 'error',
   formContent,
   ...props
 }) => {
@@ -41,7 +43,11 @@ const FormContent: React.FC<IFormContent> = ({
           </div>
 
           {alertText && (
-            <AAlert type="error" className="mt-16" message={alertText} />
+            <AAlert
+              type={typeAlert ?? 'error'}
+              className="mt-16"
+              message={alertText}
+            />
           )}
 
           <div className="my-24 form-content">{formContent}</div>
@@ -57,7 +63,9 @@ const FormContent: React.FC<IFormContent> = ({
             {textButton}
           </AButton>
 
-          <p className="mt-24 fs-14 fw-500">{subLink}</p>
+          <p className={`mt-24 fs-14 fw-500 ${isLoading ? 'disable' : ''}`}>
+            {subLink}
+          </p>
         </Form>
 
         <span className="fs-14 py-12 mt-10 text-link">{textLink}</span>

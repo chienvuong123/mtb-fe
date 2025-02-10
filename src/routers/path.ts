@@ -13,6 +13,7 @@ const ROUTE_PATH = {
   CATEGORY: {
     ROOT: '/category',
     PRODUCT_CATEGORY: `product-category`,
+    MEDIA_CATEGORY: `media-category`,
   },
 
   SETTING: {

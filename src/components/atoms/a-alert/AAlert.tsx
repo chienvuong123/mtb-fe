@@ -3,7 +3,7 @@ import type { AlertProps } from 'antd';
 import { Alert } from 'antd';
 import { InfoIcon, TickCircle, WarningIcon } from '@assets/icons';
 
-interface IAAlert extends Omit<AlertProps, 'type'> {
+export interface IAAlert extends Omit<AlertProps, 'type'> {
   type?: 'success' | 'error' | 'warning';
 }
 
