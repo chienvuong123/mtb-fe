@@ -13,6 +13,7 @@ import type {
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { useSalesOpportunitiesSearchQuery } from '@hooks/queries/userSalesOpportunitiesQueries';
 import { Drawer } from 'antd';
+import { CategoryType } from '@dtos';
 import OpportunitySellTable, {
   type TSalesOpportunitiesRecord,
 } from './components/SalesOpportunitiesTable';
@@ -30,13 +31,12 @@ const ManageSalesOpportunities: React.FC = () => {
     useUrlParams<Partial<SalesOpportunitiesDTO>>();
 
   const { data: OpportunitySellRes } = useSalesOpportunitiesSearchQuery({
-    // categoryType: CategoryType.PRODUCT,
-    // page: { pageNum: pagination.current, pageSize: pagination.pageSize },
-    // order: sort,
-    // code: filters.code,
-    // name: filters.name,
+    categoryType: CategoryType.PRODUCT,
+    page: { pageNum: pagination.current, pageSize: pagination.pageSize },
+    order: sort,
+    code: filters.code,
+    name: filters.name,
   });
-  console.log(OpportunitySellRes);
 
   const dataSources: TSalesOpportunitiesRecord[] =
     useMemo(

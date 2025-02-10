@@ -9,8 +9,7 @@ class SalesOpportunities extends BaseApi<
   SalesOpportunitiesSearchRequest
 > {
   constructor() {
-    // super('/opportunity/v1.0');
-    super('https://67a813ae203008941f691560.mockapi.io');
+    super('/opportunity/v1.0');
   }
 }
 
