@@ -17,7 +17,6 @@ import type {
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
 import { ErrorCode } from '@constants/errorCode';
-import { MessageError, MessageSuccess } from '@constants/message';
 import {
   useMediaCategoryAddMutation,
   useMediaCategoryEditMutation,
@@ -81,17 +80,21 @@ const MediaCategoryPage: FC = () => {
     isEdit: boolean = false,
   ) => {
     if (!dataSuccess) return;
+
     if (dataSuccess.data) {
       setTypeAlert('success');
-      setMessage(isEdit ? MessageSuccess.EDIT : MessageSuccess.ADD_NEW);
-      showAlert();
-      return;
-    }
-    if (dataSuccess.errorCode === ErrorCode.CATEGORY_DUPLICATE) {
+      setMessage(isEdit ? 'Chỉnh sửa thành công' : 'Tạo mới thành công');
+    } else {
       setTypeAlert('error');
-      setMessage(MessageError.MEDIA_CATEGORY_DUPLICATE);
-      showAlert();
+      switch (dataSuccess.errorCode) {
+        case ErrorCode.CATEGORY_DUPLICATE:
+          setMessage('Lỗi! Đa phương tiện đã tồn tại');
+          break;
+        default:
+          setMessage('Lỗi! Đã xảy ra lỗi không xác định');
+      }
     }
+    showAlert();
   };
 
   const handleInvalidate = (
