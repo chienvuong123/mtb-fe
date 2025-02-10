@@ -1,4 +1,4 @@
-import { categoryApi } from '@apis';
+import { opportunitySellApi } from '@apis';
 import { createBaseQueryHooks } from './baseQueries';
 import type { 
     OpportunitySellDTO, 
@@ -16,6 +16,6 @@ export const {
   // ExampleViewResponse,
   // if you need to transform the search response
   OpportunitySellSearchResponse
->('product-category', categoryApi);
+>('opportunity-sell', opportunitySellApi);
 
 // define other queries

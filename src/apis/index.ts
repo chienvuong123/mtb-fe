@@ -4,3 +4,4 @@ export * from './exampleApi';
 export * from './authVerifyApi';
 export * from './userApi';
 export * from './baseApi';
+export * from "./opportunityApi";
