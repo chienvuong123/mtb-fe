@@ -60,4 +60,12 @@ export interface AuthRequest {
   grant_type?: string;
 }
 
+export interface UserInfoOtpRequest {
+  username?: string;
+  email?: string;
+  phoneNumber?: string;
+  newPassword?: string;
+  otp?: string;
+}
+
 export type AuthResponse = AuthVerifyDTO;

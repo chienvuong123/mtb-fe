@@ -12,9 +12,15 @@
     .mbb-form-item-label {
       line-height: 19px;
     }
+    .disable {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
   }
 
   .text-link {
-    color: #141ed2;
+    a {
+      color: #141ed2 !important;
+    }
   }
 }

@@ -15,6 +15,7 @@ import {
 import GuestGuard from './guards/GuestGuard';
 import AuthGuard from './guards/AuthGuard';
 import RoleBasedGuard from './guards/RoleBasedGuard';
+import VerifyGuard from './guards/VerifyGuard';
 
 const createLazyElement = (
   importFn: () => Promise<{ default: React.ComponentType }>,
@@ -47,7 +48,11 @@ const routes = createBrowserRouter(
     },
     {
       path: OTP,
-      element: createLazyElement(() => import('@pages/authentication/otp')),
+      element: (
+        <VerifyGuard>
+          {createLazyElement(() => import('@pages/authentication/otp'))}
+        </VerifyGuard>
+      ),
     },
     {
       path: '',
