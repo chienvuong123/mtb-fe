@@ -21,6 +21,7 @@ export interface CategorySearchRequest extends BaseSearchParams {
   categoryType?: string;
   code?: string;
   name?: string;
+  status?: string;
 }
 
 export type CategorySearchResponse = BaseResponse<

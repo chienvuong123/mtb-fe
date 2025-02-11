@@ -30,6 +30,7 @@ const items: TFormItem[] = [
     name: 'status',
     inputProps: {
       options: STATUS_OPTIONS,
+      allowClear: false,
     },
   },
 ];

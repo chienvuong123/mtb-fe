@@ -3,6 +3,7 @@ import type { IMPagination } from '@components/molecules/m-pagination/MPaginatio
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
 import type { OrderDTO, MediaCategoryDTO } from '@dtos';
+import { truncateText } from '@utils/stringHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC, type ReactNode, type Key } from 'react';
@@ -20,7 +21,7 @@ interface IMediaTable {
   onSort: (field: string, direction: SortOrder) => void;
 }
 
-const statusObject: Record<EStatus, ReactNode> = {
+const statusObject: Partial<Record<EStatus, ReactNode>> = {
   [EStatus.ACTIVE]: <ATag color="green">Đang hoạt động</ATag>,
   [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
 };
@@ -46,6 +47,7 @@ const columns: ColumnType<TMediaRecord>[] = [
     minWidth: 213,
     sorter: true,
     showSorterTooltip: false,
+    render: (value: string) => truncateText(value),
   },
   {
     title: 'Trạng thái',
@@ -68,6 +70,7 @@ const columns: ColumnType<TMediaRecord>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
+    render: (value: string) => truncateText(value),
   },
   {
     title: 'Ngày cập nhật',
@@ -82,6 +85,7 @@ const columns: ColumnType<TMediaRecord>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
+    render: (value: string) => truncateText(value),
   },
 ];
 
@@ -107,7 +111,9 @@ const MediaTable: FC<IMediaTable> = ({
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
       onCreate={onCreate}
-      onDeleteRow={deleteRecord}
+      onDeleteRow={(key) => {
+        deleteRecord(key);
+      }}
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
       showCreateBtn
