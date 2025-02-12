@@ -5,6 +5,8 @@ import { trimObjectValues } from '@utils/objectHelper';
 import { Divider, Flex, Form, type FormInstance, Typography } from 'antd';
 import { useMemo } from 'react';
 
+import './styles.scss';
+
 interface ISearchBaseForm<T> {
   items: TFormItem[];
   form: FormInstance<T>;
@@ -53,7 +55,7 @@ const OSearchBaseForm = <T extends object>({
         <Divider className="ma-0" />
         <Flex justify="end" className="py-12 px-24">
           <AButton
-            className="w-115"
+            className="clear-button w-115"
             onClick={handleClear}
             data-testid="clear-button"
           >

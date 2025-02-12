@@ -155,6 +155,7 @@ const OTable = <T extends object & TTableKey>({
         pagination={false}
         rowSelection={rowSelection}
         scroll={{ x: 'max-content' }}
+        locale={{ emptyText: 'Không có dữ liệu' }}
         {...props}
       />
       {paginations && <MPagination {...paginations} />}
