@@ -29,9 +29,6 @@ const items: TFormItem[] = [
     type: INPUT_TYPE.SELECT,
     label: 'Tên Catagory',
     name: 'nameCategory',
-    // inputProps: {
-    //   options: STATUS_OPTIONS,
-    // },
   },
   {
     type: INPUT_TYPE.TEXT,
