@@ -104,3 +104,19 @@ export const MOCK_CUSTOMER_APPROACH: CustomerApproachDTO = {
     status: EStatus.ACTIVE,
   })),
 };
+
+const generateMockCustomerApproach = (id: string): CustomerApproachDTO => ({
+  ...MOCK_CUSTOMER_APPROACH,
+  id,
+  customer: MOCK_CUSTOMER,
+  createdDate: getRandomDate(),
+  updatedDate: getRandomDate(),
+});
+
+export const MOCK_CUSTOMER_APPROACHES: CustomerApproachDTO[] = [
+  generateMockCustomerApproach('1'),
+  generateMockCustomerApproach('2'),
+  generateMockCustomerApproach('3'),
+  generateMockCustomerApproach('4'),
+  generateMockCustomerApproach('5'),
+];
