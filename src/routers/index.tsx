@@ -11,6 +11,7 @@ import {
   OTP,
   SETTING,
   ACCOUNT,
+  CUSTOMER,
 } from './path';
 import GuestGuard from './guards/GuestGuard';
 import AuthGuard from './guards/AuthGuard';
@@ -73,6 +74,23 @@ const routes = createBrowserRouter(
               path: CATEGORY.PRODUCT_CATEGORY,
               element: createLazyElement(
                 () => import('@pages/category/product-category'),
+              ),
+            },
+            {
+              path: CATEGORY.MEDIA_CATEGORY,
+              element: createLazyElement(
+                () => import('@pages/category/media-category'),
+              ),
+            },
+          ],
+        },
+        {
+          path: CUSTOMER.ROOT,
+          children: [
+            {
+              path: CUSTOMER.GROUP_CUSTOMER,
+              element: createLazyElement(
+                () => import('@pages/customer/group-customer'),
               ),
             },
             {

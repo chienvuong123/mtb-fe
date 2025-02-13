@@ -14,7 +14,7 @@ import {
   Target02Icon,
 } from '@assets/icons';
 import { Divider } from 'antd';
-import { CATEGORY, ACCOUNT } from '@routers/path';
+import { CATEGORY, ACCOUNT, CUSTOMER } from '@routers/path';
 import { Link, useNavigate } from 'react-router-dom';
 import OPopup from '@components/organisms/o-popup/OPopup';
 
@@ -56,16 +56,18 @@ const useMenuList = (onLogout?: () => void) => {
         ],
       },
       {
-        key: 'customers',
+        key: CUSTOMER.ROOT,
         label: 'Quản lý khách hàng',
         icon: <MuslimIcon />,
         children: [
-          { key: 'category.1', label: 'DS khách hàng Campaign' },
           {
-            key: 'category.2',
+            key: `${CUSTOMER.ROOT}/${CUSTOMER.CAMPAIGN_CUSTOMER}`,
+            label: 'DS khách hàng Campaign',
+          },
+          {
+            key: `${CUSTOMER.ROOT}/${CUSTOMER.GROUP_CUSTOMER}`,
             label: 'Danh sách nhóm khách hàng theo Campaign',
           },
-          { key: 'category.3', label: 'Tạo nhóm khách hàng' },
         ],
       },
       {

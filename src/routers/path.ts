@@ -16,6 +16,12 @@ const ROUTE_PATH = {
     MEDIA_CATEGORY: `media-category`,
   },
 
+  CUSTOMER: {
+    ROOT: '/customer',
+    CAMPAIGN_CUSTOMER: `campaign-customer`,
+    GROUP_CUSTOMER: `group-customer`,
+  },
+
   SETTING: {
     ROOT: '/setting',
     CONTROL: 'control',
@@ -32,5 +38,6 @@ export const {
   ACCOUNT,
   EXAMPLE,
   CATEGORY,
+  CUSTOMER,
   SETTING,
 } = ROUTE_PATH;
