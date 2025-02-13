@@ -1,6 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
-import { useMemo } from 'react';
 import {
   FloppyDiskIcon,
   FolderManagementIcon,
@@ -13,10 +11,12 @@ import {
   Setting02Icon,
   Target02Icon,
 } from '@assets/icons';
-import { Divider } from 'antd';
-import { CATEGORY, ACCOUNT, CUSTOMER } from '@routers/path';
-import { Link, useNavigate } from 'react-router-dom';
 import OPopup from '@components/organisms/o-popup/OPopup';
+import { ACCOUNT, CATEGORY, CUSTOMER } from '@routers/path';
+import { Divider } from 'antd';
+import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
+import { useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const useMenuList = (onLogout?: () => void) => {
   const navigate = useNavigate();

@@ -5,3 +5,5 @@ export * from './authVerifyApi';
 export * from './authOtpApi';
 export * from './userApi';
 export * from './baseApi';
+export * from './salesOpportunitiesApi';
+export * from './groupCustomerApi';

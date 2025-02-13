@@ -1,4 +1,4 @@
-import { groupCustomerApi } from 'src/apis/groupCustomerApi';
+import { groupCustomerApi } from '@apis';
 import type {
   GroupCustomerDTO,
   GroupCustomerSearchRequest,
