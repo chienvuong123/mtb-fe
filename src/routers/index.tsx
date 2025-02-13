@@ -11,6 +11,7 @@ import {
   OTP,
   SETTING,
   ACCOUNT,
+  SALES_OPPORTUNITIES,
 } from './path';
 import GuestGuard from './guards/GuestGuard';
 import AuthGuard from './guards/AuthGuard';
@@ -103,6 +104,10 @@ const routes = createBrowserRouter(
           path: ACCOUNT,
           element: createLazyElement(() => import('../pages/account')),
         },
+        {
+          path: SALES_OPPORTUNITIES,
+          element: createLazyElement(() => import('@pages/sales-opportunities'))
+        }
       ],
     },
     {

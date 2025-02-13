@@ -1,0 +1,11 @@
+.o-form-detail {
+  .form-wrapper {
+    min-height: calc(100vh - 72px - 72px);
+    overflow-y: auto;
+  }
+  .btn-group {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+  }
+}

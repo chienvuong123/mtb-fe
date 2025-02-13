@@ -14,7 +14,7 @@ import {
   Target02Icon,
 } from '@assets/icons';
 import { Divider } from 'antd';
-import { CATEGORY, ACCOUNT } from '@routers/path';
+import { CATEGORY, ACCOUNT, SALES_OPPORTUNITIES } from '@routers/path';
 import { Link, useNavigate } from 'react-router-dom';
 import OPopup from '@components/organisms/o-popup/OPopup';
 
