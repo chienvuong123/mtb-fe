@@ -25,6 +25,7 @@ import {
 import useUrlParams from '@hooks/useUrlParams';
 import { useUserStore } from '@stores';
 import type { SortOrder } from 'antd/es/table/interface';
+import { filterObject } from '@utils/objectHelper';
 import MediaEditForm from './components/MediaEditForm';
 import MediaInsertForm from './components/MediaInsertForm';
 import MediaSearchForm from './components/MediaSearchForm';
@@ -72,8 +73,7 @@ const MediaCategoryPage: FC = () => {
       pageSize: Number(pageSize),
     },
     order: sort,
-    code: filters.code,
-    name: filters.name,
+    ...filterObject(filters),
     status: filters.status ?? EStatus.ACTIVE,
   });
 

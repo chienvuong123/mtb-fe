@@ -8,6 +8,7 @@ import { ALLOWED_CHARACTERS_PARTERN } from '@constants/regex';
 import { dayjsToString, stringToDayjs } from '@libs/dayjs';
 import type { Dayjs } from 'dayjs';
 import clsx from 'clsx';
+import type { FormInstance } from 'antd';
 
 export type TCustomerForm = Partial<Omit<CustomerDTO, 'birthDay'>> & {
   birthDay?: Dayjs;
@@ -16,7 +17,7 @@ interface ICustomerForm {
   isViewMode?: boolean;
   initialValues?: Partial<CustomerDTO> | null;
   onClose: () => void;
-  onSubmit: (values: Partial<CustomerDTO>) => void;
+  onSubmit: (values: Partial<CustomerDTO>, form: FormInstance) => void;
 }
 
 const items: TFormItem[] = (
@@ -255,10 +256,13 @@ const CustomerForm: FC<ICustomerForm> = ({
         items={formItems}
         form={form}
         onSubmit={({ birthDay, ...v }) =>
-          onSubmit({
-            ...v,
-            birthDay: dayjsToString(birthDay),
-          })
+          onSubmit(
+            {
+              ...v,
+              birthDay: dayjsToString(birthDay),
+            },
+            form,
+          )
         }
         isViewMode={isViewMode}
         onClose={() => {

@@ -14,6 +14,7 @@ import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { useSalesOpportunitiesSearchQuery } from '@hooks/queries/userSalesOpportunitiesQueries';
 import { Drawer } from 'antd';
 import { CategoryType } from '@dtos';
+import { filterObject } from '@utils/objectHelper';
 import OpportunitySellTable, {
   type TSalesOpportunitiesRecord,
 } from './components/SalesOpportunitiesTable';
@@ -37,8 +38,7 @@ const ManageSalesOpportunities: React.FC = () => {
       pageSize: Number(pagination.pageSize),
     },
     order: sort,
-    code: filters.code,
-    name: filters.name,
+    ...filterObject(filters),
   });
 
   const dataSources: TSalesOpportunitiesRecord[] =

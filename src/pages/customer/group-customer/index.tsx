@@ -23,6 +23,7 @@ import { AButton } from '@components/atoms';
 import { ExportIcon, ImportIcon, UserGroupIcon } from '@assets/icons';
 import { OUploadPopup } from '@components/organisms/o-upload-popup';
 import useUrlParams from '@hooks/useUrlParams';
+import { filterObject } from '@utils/objectHelper';
 import CustomerListSearchForm from './components/CustomerListSearchForm';
 import CustomerListTable, {
   type TProductRecord,
@@ -54,8 +55,7 @@ const ListCustomerPage: FC = () => {
       pageSize: Number(pageSize),
     },
     order: sort,
-    // code: filters.code,
-    // name: filters.name,
+    ...filterObject(filters),
   });
 
   const handleCloseForm = () => {

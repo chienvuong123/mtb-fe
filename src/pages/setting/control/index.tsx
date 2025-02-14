@@ -16,6 +16,7 @@ import {
   useControlSearchQuery,
 } from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
+import { filterObject } from '@utils/objectHelper';
 import ControlInsertForm from './components/ControlInsertForm';
 import ControlSearchForm from './components/ControlSearchForm';
 import ControlTable, { type TControlRecord } from './components/ControlTable';
@@ -36,8 +37,7 @@ const SettingControlPage: FC = () => {
       pageNum: Number(pagination.current - 1),
     },
     order: sort,
-    code: filters.code,
-    name: filters.name,
+    ...filterObject(filters),
   });
 
   const handleCloseForm = () => setShowInsertForm(false);

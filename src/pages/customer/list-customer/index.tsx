@@ -1,5 +1,5 @@
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import { Drawer, Flex } from 'antd';
+import { Drawer, Flex, type FormInstance } from 'antd';
 import { type FC, useState, useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
 import { type CustomerDTO } from '@dtos';
@@ -25,7 +25,7 @@ import CustomerListTable, {
 } from './components/CustomerListTable';
 import CustomerForm from './components/CustomerForm';
 import CustomerGroupForm from '../group-customer/components/CustomerGroupForm';
-import { destructCustomerData } from './customerHelper';
+import { destructCustomerData, validateInsertCustomer } from './customerHelper';
 
 type TDrawerMode = 'group' | 'list' | false;
 
@@ -75,14 +75,8 @@ const ListCustomerPage: FC = () => {
     setInitValues(null);
   };
 
-  const { mutate: mutationCreateCustomer } = useCustomerAddMutation(
-    {},
-    handleReset,
-  );
-  const { mutate: mutationUpdateCustomer } = useCustomerEditMutation(
-    {},
-    handleReset,
-  );
+  const { mutate: mutationCreateCustomer } = useCustomerAddMutation();
+  const { mutate: mutationUpdateCustomer } = useCustomerEditMutation();
   const { mutate: mutationDeleteCustomer } = useCustomerRemoveMutation();
 
   const handleOpenDrawer = () => {
@@ -113,15 +107,25 @@ const ListCustomerPage: FC = () => {
   const handlePaginationChange = (data: TPagination) => {
     setPagination(data);
   };
-  const handleSubmitInsert = (data: Partial<CustomerDTO>) => {
+  const handleSubmitInsert = (
+    data: Partial<CustomerDTO>,
+    form: FormInstance,
+  ) => {
     const dData = destructCustomerData(data);
     // update customer group
     if (initValues?.id) {
-      mutationUpdateCustomer({ ...dData, id: initValues.id });
+      mutationUpdateCustomer(
+        { ...dData, id: initValues.id },
+        {
+          onSuccess: (d) => validateInsertCustomer(d, form, handleReset),
+        },
+      );
       return;
     }
     // create new customer group
-    mutationCreateCustomer(dData);
+    mutationCreateCustomer(dData, {
+      onSuccess: (d) => validateInsertCustomer(d, form, handleReset),
+    });
   };
 
   const handleSubmitInsertCustomerGroup = () => {};

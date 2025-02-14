@@ -34,4 +34,14 @@ function isNumberArray(
   );
 }
 
-export { trimObjectValues, isNumberArray };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function filterObject<T extends Record<string, any>>(obj: T): Partial<T> {
+  return Object.keys(obj).reduce((acc, key) => {
+    if (obj[key]) {
+      acc[key as keyof T] = obj[key];
+    }
+    return acc;
+  }, {} as Partial<T>);
+}
+
+export { trimObjectValues, isNumberArray, filterObject };

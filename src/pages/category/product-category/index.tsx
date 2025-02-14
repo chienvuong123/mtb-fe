@@ -23,6 +23,7 @@ import {
 } from '@hooks/queries';
 import type { SortOrder } from 'antd/es/table/interface';
 import useUrlParams from '@hooks/useUrlParams';
+import { filterObject } from '@utils/objectHelper';
 import ProductInsertForm from './components/ProductInsertForm';
 import ProductSearchForm from './components/ProductSearchForm';
 import ProductTable, { type TProductRecord } from './components/ProductTable';
@@ -51,8 +52,7 @@ const ProductCategoryPage: FC = () => {
       pageSize: Number(pageSize),
     },
     order: sort,
-    code: filters.code,
-    name: filters.name,
+    ...filterObject(filters),
   });
 
   const handleCloseForm = () => {

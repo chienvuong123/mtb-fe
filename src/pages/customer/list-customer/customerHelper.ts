@@ -1,4 +1,9 @@
-import type { CustomerDTO } from '@dtos';
+import type { BaseResponse, CustomerDTO } from '@dtos';
+import type { FormInstance } from 'antd';
+
+const customerError = {
+  CUS0003: 'code',
+};
 
 export const destructCustomerData = (
   {
@@ -62,4 +67,19 @@ export const destructCustomerData = (
         hobbies: JSON.stringify(hobbies),
         identification: JSON.stringify(identification),
       };
+};
+
+export const validateInsertCustomer = (
+  { errorCode, errorDesc }: BaseResponse<boolean>,
+  form: FormInstance,
+  callback: () => void,
+) => {
+  if (errorCode === '0') {
+    callback();
+    return;
+  }
+  const fieldError = customerError[errorCode as keyof typeof customerError];
+  if (fieldError) {
+    form.setFields([{ name: fieldError, errors: [errorDesc] }]);
+  }
 };
