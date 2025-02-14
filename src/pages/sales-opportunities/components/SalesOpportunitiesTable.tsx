@@ -8,7 +8,8 @@ import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import type { OrderDTO } from '@dtos';
 
-export type TSalesOpportunitiesRecord = TTableKey & Partial<SalesOpportunitiesDTO>;
+export type TSalesOpportunitiesRecord = TTableKey &
+  Partial<SalesOpportunitiesDTO>;
 
 interface ISalesOpportunitiesTable {
   dataSource: TSalesOpportunitiesRecord[];
@@ -20,7 +21,9 @@ interface ISalesOpportunitiesTable {
 
 const statusObject: Record<ESalesOpportunities, ReactNode> = {
   [ESalesOpportunities.DISBURSED]: <ATag color="green">Đã giải ngân</ATag>,
-  [ESalesOpportunities.OPPORTUNITY_TO_SELL]: <ATag color="blue">Đã tạo cơ hội bán</ATag>,
+  [ESalesOpportunities.OPPORTUNITY_TO_SELL]: (
+    <ATag color="blue">Đã tạo cơ hội bán</ATag>
+  ),
   [ESalesOpportunities.CANCELED]: <ATag color="red">Đã hủy</ATag>,
 };
 
@@ -103,7 +106,7 @@ const SalesOpportunitiesTable: React.FC<ISalesOpportunitiesTable> = ({
   onView,
   onSort,
   paginations,
-  sortDirection
+  sortDirection,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
@@ -123,7 +126,7 @@ const SalesOpportunitiesTable: React.FC<ISalesOpportunitiesTable> = ({
         }}
       />
     </div>
-  )
-}
+  );
+};
 
 export default SalesOpportunitiesTable;

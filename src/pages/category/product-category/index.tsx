@@ -25,6 +25,7 @@ import {
 } from '@hooks/queries/useProductCategoryQueries';
 import useUrlParams from '@hooks/useUrlParams';
 import { useUserStore } from '@stores';
+import { filterObject } from '@utils/objectHelper';
 import type { SortOrder } from 'antd/es/table/interface';
 import ProductEditForm from './components/ProductEditForm';
 import ProductInsertForm from './components/ProductInsertForm';
@@ -40,8 +41,14 @@ const ProductCategoryPage: FC = () => {
   const [initValuesEditForm, setInitValuesEditForm] =
     useState<Partial<TProductRecord> | null>(null);
 
-  const { pagination, setPagination, sort, setSort, filters, setFilters } =
-    useUrlParams<Partial<ProductCategoryDTO>>();
+  const {
+    pagination: { current, pageSize },
+    setPagination,
+    sort,
+    setSort,
+    filters,
+    setFilters,
+  } = useUrlParams<Partial<ProductCategoryDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
 
@@ -62,10 +69,12 @@ const ProductCategoryPage: FC = () => {
 
   const { data: productRes, isLoading } = useProductCategorySearchQuery({
     categoryType: CategoryType.PRODUCT,
-    page: { pageNum: pagination.current, pageSize: pagination.pageSize },
+    page: {
+      pageNum: Number(current),
+      pageSize: Number(pageSize),
+    },
     order: sort,
-    code: filters.code,
-    name: filters.name,
+    ...filterObject(filters),
     status: filters.status ?? EStatus.ACTIVE,
   });
 
@@ -188,7 +197,8 @@ const ProductCategoryPage: FC = () => {
 
   const paginations: IMPagination = {
     pagination: {
-      ...pagination,
+      current,
+      pageSize,
       total: productRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
@@ -225,18 +235,14 @@ const ProductCategoryPage: FC = () => {
   }, [initValuesEditForm?.id, isViewMode]);
 
   useEffect(() => {
-    if (
-      !isLoading &&
-      !productRes?.data?.content.length &&
-      pagination.current > 1
-    ) {
+    if (!isLoading && !productRes?.data?.content.length && current > 1) {
       setPagination((prev) => ({
         ...prev,
         current: prev.current - 1,
         total: productRes?.data?.total ?? 1,
       }));
     }
-  }, [productRes, setPagination, pagination, isLoading]);
+  }, [productRes, setPagination, current, isLoading]);
 
   return (
     <div className="pt-32 category-product">
@@ -260,13 +266,13 @@ const ProductCategoryPage: FC = () => {
           name: filters?.name ?? '',
           status: filters?.status ?? EStatus.ACTIVE,
         }}
+        onCreate={handleCreate}
       />
       <div className="mt-24" />
       <ProductTable
         dataSource={dataSources}
         paginations={paginations}
         sortDirection={sort}
-        onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}

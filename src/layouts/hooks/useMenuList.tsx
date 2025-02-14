@@ -2,19 +2,16 @@
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
 import { useMemo } from 'react';
 import {
-  FloppyDiskIcon,
   FolderManagementIcon,
   HelpCircleIcon,
   HotPriceIcon,
   LogoutIcon,
-  MarketingIcon,
   MuslimIcon,
   PieChartIcon,
   Setting02Icon,
-  Target02Icon,
 } from '@assets/icons';
 import { Divider } from 'antd';
-import { CATEGORY, ACCOUNT, SALES_OPPORTUNITIES } from '@routers/path';
+import { CATEGORY, ACCOUNT, CUSTOMER } from '@routers/path';
 import { Link, useNavigate } from 'react-router-dom';
 import OPopup from '@components/organisms/o-popup/OPopup';
 
@@ -56,37 +53,19 @@ const useMenuList = (onLogout?: () => void) => {
         ],
       },
       {
-        key: 'customers',
+        key: CUSTOMER.ROOT,
         label: 'Quản lý khách hàng',
         icon: <MuslimIcon />,
         children: [
-          { key: 'category.1', label: 'DS khách hàng Campaign' },
           {
-            key: 'category.2',
+            key: `${CUSTOMER.ROOT}/${CUSTOMER.CUSTOMER_CAMPAIGN_LIST}`,
+            label: 'DS khách hàng Campaign',
+          },
+          {
+            key: `${CUSTOMER.ROOT}/${CUSTOMER.CUSTOMER_GROUP_CAMPAIGN_LIST}`,
             label: 'Danh sách nhóm khách hàng theo Campaign',
           },
-          { key: 'category.3', label: 'Tạo nhóm khách hàng' },
         ],
-      },
-      {
-        key: 'sales-opportunities',
-        label: 'Quản lý cơ hội bán',
-        icon: <MarketingIcon />,
-      },
-      {
-        key: 'script-management',
-        label: 'Quản lý kịch bản',
-        icon: <Target02Icon />,
-      },
-      {
-        key: 'saler-management',
-        label: 'Quản lý Saler',
-        icon: <MuslimIcon />,
-      },
-      {
-        key: 'multimedia-warehouse',
-        label: 'Kho đa phương tiện',
-        icon: <FloppyDiskIcon />,
       },
       {
         key: CATEGORY.ROOT,

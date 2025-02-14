@@ -1,10 +1,8 @@
 import React, { useMemo, useState, type Key } from 'react';
 import { Table } from 'antd';
-import { PlusIcon } from '@assets/icons';
 import type { TableRowSelection } from 'antd/es/table/interface';
 
 import './styles.scss';
-import { AButton } from '@components/atoms';
 import type { TableProps, ColumnType } from 'antd/es/table';
 import { MPagination } from '@components/molecules';
 import clsx from 'clsx';
@@ -13,6 +11,7 @@ import { SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
 import type { FixedType, ITableForm, TTableKey } from './OTableForm.type';
 import TableActions from './TableActions';
 import { OModalConfirm } from '../o-modal';
+import type { IModalConfirm } from '../o-modal/OModalConfirm';
 
 export interface ITable<T>
   extends Omit<TableProps<T>, 'columns'>,
@@ -28,6 +27,7 @@ export interface ITable<T>
   columns: ColumnType<T>[];
   sortDirection?: OrderDTO;
   onEdit?: (record: T) => void;
+  confirmProps?: IModalConfirm;
 }
 
 const OTable = <T extends object & TTableKey>({
@@ -35,10 +35,9 @@ const OTable = <T extends object & TTableKey>({
   columns,
   selectedRowKeys,
   hideActions,
-  showCreateBtn,
   paginations,
   sortDirection,
-  onCreate,
+  confirmProps,
   onEdit,
   onDeleteRow,
   onView,
@@ -48,8 +47,8 @@ const OTable = <T extends object & TTableKey>({
   const [showModal, setShowModal] = useState(false);
   const [recordKey, setRecordKey] = useState<Key | null>(null);
 
-  const transformColumns = useMemo(() => {
-    const columnsWithSort = sortDirection
+  const transformColumns: ColumnType<T>[] = useMemo(() => {
+    const columnsWithSort: ColumnType<T>[] = sortDirection
       ? columns.map((col) => {
           if (
             col.dataIndex === sortDirection.field &&
@@ -64,55 +63,39 @@ const OTable = <T extends object & TTableKey>({
         })
       : columns;
 
-    return [
-      ...columnsWithSort,
-      ...(hideActions
-        ? []
-        : [
-            {
-              title: 'Thao tác',
-              dataIndex: 'actions',
-              render: (_: unknown, record: T) => (
-                <TableActions
-                  record={record}
-                  editable={false}
-                  onEdit={onEdit}
-                  onView={onView}
-                  onDelete={(key) => {
-                    setShowModal(true);
-                    setRecordKey(key);
-                  }}
-                  editingKey={null}
-                />
-              ),
-            },
-          ]),
-      ...(showCreateBtn
-        ? [
-            {
-              title: (
-                <AButton
-                  onClick={onCreate}
-                  type="primary"
-                  icon={<PlusIcon />}
-                />
-              ),
-              dataIndex: 'create',
-              width: 40,
-              fixed: 'right' as FixedType,
-            },
-          ]
-        : []),
-    ];
-  }, [
-    columns,
-    hideActions,
-    showCreateBtn,
-    sortDirection,
-    onCreate,
-    onEdit,
-    onView,
-  ]);
+    return (
+      [
+        ...columnsWithSort,
+        ...(hideActions
+          ? []
+          : [
+              {
+                title: 'Thao tác',
+                dataIndex: 'actions',
+                fixed: 'right' as FixedType,
+                width: 120,
+                minWidth: 120,
+                render: (_: unknown, record: T) => (
+                  <TableActions
+                    record={record}
+                    editable={false}
+                    onEdit={onEdit}
+                    onView={onView}
+                    onDelete={(key) => {
+                      setShowModal(true);
+                      setRecordKey(key);
+                    }}
+                    editingKey={null}
+                  />
+                ),
+              },
+            ]),
+      ] as ColumnType<T>[]
+    ).map((i) => {
+      if (i?.render) return i;
+      return { ellipsis: true, ...i };
+    });
+  }, [columns, hideActions, sortDirection, onEdit, onView]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys?.(newSelectedRowKeys as string[]);
@@ -120,6 +103,7 @@ const OTable = <T extends object & TTableKey>({
 
   const rowSelection: TableRowSelection<T> = {
     selectedRowKeys,
+    columnWidth: 73,
     onChange: onSelectChange,
     getCheckboxProps: () => ({
       className: 'table-form-checkbox px-15',
@@ -145,6 +129,7 @@ const OTable = <T extends object & TTableKey>({
         onCancel={handleCloseModal}
         onClose={handleCloseModal}
         onOk={handleSubmitDelete}
+        {...confirmProps}
       />
       <Table<T>
         className={clsx('o-table', { 'with-pagination': !!paginations })}

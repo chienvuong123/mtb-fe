@@ -42,17 +42,32 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
   [INPUT_TYPE.PASSWORD]: (props: TPasswordProps) => (
     <AInputPassword {...props} />
   ),
-  [INPUT_TYPE.NUMBER]: (props: GetProps<typeof InputNumber>) => (
-    <InputNumber {...props} controls={false} />
+  [INPUT_TYPE.NUMBER]: ({
+    className,
+    controls = false,
+    size = 'large',
+    ...props
+  }: GetProps<typeof InputNumber>) => (
+    <InputNumber
+      className={clsx('w-full fs-14', className)}
+      controls={controls}
+      size={size}
+      {...props}
+    />
   ),
   [INPUT_TYPE.SELECT]: (props: GetProps<typeof ASelect>) => (
     <ASelect allowClear {...props} />
   ),
   [INPUT_TYPE.DATE_PICKER]: ({
     className,
+    size = 'large',
     ...props
   }: GetProps<typeof DatePicker> & { className?: string }) => (
-    <DatePicker {...props} className={clsx('w-full', className)} />
+    <DatePicker
+      className={clsx('w-full h-40', className)}
+      size={size}
+      {...props}
+    />
   ),
   [INPUT_TYPE.TIME_PICKER]: ({ className }: { className?: string }) => (
     <TimePicker className={clsx('w-full', className)} showSecond={false} />

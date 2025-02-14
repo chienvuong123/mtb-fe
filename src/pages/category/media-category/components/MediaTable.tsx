@@ -14,7 +14,6 @@ interface IMediaTable {
   dataSource: TMediaRecord[];
   paginations: IMPagination;
   sortDirection?: OrderDTO;
-  onCreate: ITable<TMediaRecord>['onCreate'];
   onEdit: ITable<TMediaRecord>['onEdit'];
   onDelete: (id: string) => void;
   onView: (id: string) => void;
@@ -93,7 +92,6 @@ const MediaTable: FC<IMediaTable> = ({
   dataSource,
   paginations,
   sortDirection,
-  onCreate,
   onEdit,
   onDelete,
   onView,
@@ -110,13 +108,11 @@ const MediaTable: FC<IMediaTable> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onCreate={onCreate}
       onDeleteRow={(key) => {
         deleteRecord(key);
       }}
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
-      showCreateBtn
       paginations={paginations}
       sortDirection={sortDirection}
       onView={(id) => onView(id as string)}

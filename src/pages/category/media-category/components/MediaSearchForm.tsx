@@ -9,6 +9,7 @@ interface IMediaSearchForm {
   initialValues?: TMediaSearchForm;
   onSearch: (values: TMediaSearchForm) => void;
   onClearAll?: () => void;
+  onCreate?: () => void;
 }
 
 const items: TFormItem[] = [
@@ -39,6 +40,7 @@ const MediaSearchForm: FC<IMediaSearchForm> = ({
   initialValues,
   onSearch,
   onClearAll,
+  onCreate,
 }) => {
   const [form] = useForm();
 
@@ -55,6 +57,7 @@ const MediaSearchForm: FC<IMediaSearchForm> = ({
         form={form}
         onSearch={onSearch}
         onClearAll={onClearAll}
+        onCreate={onCreate}
       />
     </div>
   );

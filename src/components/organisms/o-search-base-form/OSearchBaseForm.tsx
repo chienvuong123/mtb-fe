@@ -10,20 +10,28 @@ import './styles.scss';
 interface ISearchBaseForm<T> {
   items: TFormItem[];
   form: FormInstance<T>;
+  disabledCreate?: boolean;
   onSearch: (values: T) => void;
   onClearAll?: () => void;
+  onDeleteAll?: () => void;
+  onCreate?: () => void;
 }
 
 const BUTTON_TEXT = {
   CLEAR: 'Bỏ lọc',
   SEARCH: 'Tìm kiếm',
+  DELETE_ALL: 'Xoá toàn bộ',
+  CREATE: 'Thêm mới',
 };
 
 const OSearchBaseForm = <T extends object>({
   form,
   items,
+  disabledCreate,
   onSearch,
   onClearAll,
+  onDeleteAll,
+  onCreate,
 }: ISearchBaseForm<T>) => {
   const transformItems = useMemo(
     () =>
@@ -53,22 +61,47 @@ const OSearchBaseForm = <T extends object>({
       <Form form={form} onFinish={handleSearch} layout="vertical">
         <div className="pa-24 pb-22">{formContent}</div>
         <Divider className="ma-0" />
-        <Flex justify="end" className="py-12 px-24">
+        <Flex justify="end" className="py-12 px-24" gap={24}>
           <AButton
             className="clear-button w-115"
             onClick={handleClear}
             data-testid="clear-button"
+            variant="filled"
+            color="primary"
           >
             {BUTTON_TEXT.CLEAR}
           </AButton>
+          {Boolean(onDeleteAll) && (
+            <AButton
+              className="w-115"
+              onClick={onDeleteAll}
+              data-testid="clear-button"
+              variant="filled"
+              color="red"
+            >
+              {BUTTON_TEXT.DELETE_ALL}
+            </AButton>
+          )}
           <AButton
             type="primary"
-            className="ml-24 w-115"
+            className="w-115"
             htmlType="submit"
             data-testid="search-button"
           >
             {BUTTON_TEXT.SEARCH}
           </AButton>
+          {Boolean(onCreate) && (
+            <AButton
+              type="primary"
+              className="w-115"
+              htmlType="submit"
+              data-testid="search-button"
+              onClick={onCreate}
+              disabled={disabledCreate}
+            >
+              {BUTTON_TEXT.CREATE}
+            </AButton>
+          )}
         </Flex>
       </Form>
     </div>

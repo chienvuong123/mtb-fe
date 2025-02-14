@@ -9,6 +9,7 @@ interface IProductSearchForm {
   initialValues?: TProductSearchForm;
   onSearch: (values: TProductSearchForm) => void;
   onClearAll?: () => void;
+  onCreate?: () => void;
 }
 
 const items: TFormItem[] = [
@@ -39,6 +40,7 @@ const ProductSearchForm: FC<IProductSearchForm> = ({
   initialValues,
   onSearch,
   onClearAll,
+  onCreate,
 }) => {
   const [form] = useForm();
 
@@ -55,6 +57,7 @@ const ProductSearchForm: FC<IProductSearchForm> = ({
         form={form}
         onSearch={onSearch}
         onClearAll={onClearAll}
+        onCreate={onCreate}
       />
     </div>
   );
