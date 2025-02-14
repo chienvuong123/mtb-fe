@@ -99,8 +99,10 @@ const routes = createBrowserRouter(
         },
         {
           path: SALES_OPPORTUNITIES,
-          element: createLazyElement(() => import('@pages/sales-opportunities'))
-        }
+          element: createLazyElement(
+            () => import('@pages/sales-opportunities'),
+          ),
+        },
       ],
     },
     {

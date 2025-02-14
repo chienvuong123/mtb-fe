@@ -48,7 +48,7 @@ export enum EControlType {
 export enum ESalesOpportunities {
   DISBURSED = 'DISBURSED',
   OPPORTUNITY_TO_SELL = 'OPPORTUNITY_TO_SELL',
-  CANCELED = "CANCELED"
+  CANCELED = 'CANCELED',
 }
 
 export const STATUS_OPTIONS = [
