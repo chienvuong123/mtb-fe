@@ -16,7 +16,6 @@ import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
-import { ErrorCode } from '@constants/errorCode';
 import {
   useProductCategoryAddMutation,
   useProductCategoryEditMutation,
@@ -95,13 +94,7 @@ const ProductCategoryPage: FC = () => {
       setMessage(isEdit ? 'Chỉnh sửa thành công' : 'Tạo mới thành công');
     } else {
       setTypeAlert('error');
-      switch (dataSuccess.errorCode) {
-        case ErrorCode.CATEGORY_DUPLICATE:
-          setMessage('Lỗi! Product đã tồn tại');
-          break;
-        default:
-          setMessage('Lỗi! Đã xảy ra lỗi không xác định');
-      }
+      setMessage(dataSuccess.errorDesc);
     }
     showAlert();
   };
@@ -144,7 +137,6 @@ const ProductCategoryPage: FC = () => {
       createdDate: dayjs(data.createdDate).format(DATE_SLASH_FORMAT),
       updatedDate: dayjs().format(DATE_SLASH_FORMAT),
     });
-    setShowInsertForm(true);
     setShowEditForm(true);
   };
 
