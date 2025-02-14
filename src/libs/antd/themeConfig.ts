@@ -184,6 +184,9 @@ const theme: ThemeConfig = {
     Badge: {
       dotSize: 10,
     },
+    DatePicker: {
+      fontSizeLG: 14,
+    },
   },
 };
 

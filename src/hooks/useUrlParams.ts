@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const useUrlParams = <T>() => {
-  type P = T & { keyword?: string };
   const navigate = useNavigate();
   const { search } = useLocation();
   const {
@@ -13,7 +12,7 @@ const useUrlParams = <T>() => {
     field,
     direction,
     ...initFilters
-  } = qs.parse(search.replace('?', '')) as P & PageParams & SortParams;
+  } = qs.parse(search.replace('?', '')) as T & PageParams & SortParams;
 
   const [pagination, setPagination] = useState<PageParams>({
     current,
@@ -23,10 +22,10 @@ const useUrlParams = <T>() => {
     field,
     direction,
   });
-  const [filters, setFilters] = useState<P>((initFilters ?? {}) as P);
+  const [filters, setFilters] = useState<T>((initFilters ?? {}) as T);
 
   const setFilter = useCallback(
-    (key: keyof P, value: P[keyof P]) => {
+    (key: keyof T, value: T[keyof T]) => {
       setFilters((prevFilters) => ({
         ...prevFilters,
         [key]: value,

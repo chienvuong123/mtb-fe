@@ -20,9 +20,10 @@ import {
   useProductCategoryEditMutation,
   useProductCategoryRemoveMutation,
   useProductCategorySearchQuery,
-} from '@hooks/queries/useProductCategoryQueries';
+} from '@hooks/queries';
 import type { SortOrder } from 'antd/es/table/interface';
 import useUrlParams from '@hooks/useUrlParams';
+import { filterObject } from '@utils/objectHelper';
 import ProductInsertForm from './components/ProductInsertForm';
 import ProductSearchForm from './components/ProductSearchForm';
 import ProductTable, { type TProductRecord } from './components/ProductTable';
@@ -33,17 +34,25 @@ const ProductCategoryPage: FC = () => {
     null,
   );
 
-  const { pagination, setPagination, sort, setSort, filters, setFilters } =
-    useUrlParams<Partial<ProductCategoryDTO>>();
+  const {
+    pagination: { current, pageSize },
+    setPagination,
+    sort,
+    setSort,
+    filters,
+    setFilters,
+  } = useUrlParams<Partial<ProductCategoryDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
 
   const { data: productRes } = useProductCategorySearchQuery({
     categoryType: CategoryType.PRODUCT,
-    page: { pageNum: pagination.current, pageSize: pagination.pageSize },
+    page: {
+      pageNum: Number(current),
+      pageSize: Number(pageSize),
+    },
     order: sort,
-    code: filters.code,
-    name: filters.name,
+    ...filterObject(filters),
   });
 
   const handleCloseForm = () => {
@@ -118,7 +127,8 @@ const ProductCategoryPage: FC = () => {
 
   const paginations: IMPagination = {
     pagination: {
-      ...pagination,
+      current,
+      pageSize,
       total: productRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
@@ -174,13 +184,13 @@ const ProductCategoryPage: FC = () => {
         onSearch={handleSearch}
         onClearAll={handleClearAll}
         initialValues={{ code: filters?.code ?? '', name: filters?.name ?? '' }}
+        onCreate={handleCreate}
       />
       <div className="mt-24" />
       <ProductTable
         dataSource={dataSources}
         paginations={paginations}
         sortDirection={sort}
-        onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}

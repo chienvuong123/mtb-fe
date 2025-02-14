@@ -1,11 +1,9 @@
 import React, { useMemo, type Key } from 'react';
 import { Table, Form } from 'antd';
 import { type ColumnsType } from 'antd/es/table';
-import { PlusIcon } from '@assets/icons';
 import { type TableRowSelection } from 'antd/es/table/interface';
 
 import './styles.scss';
-import { AButton } from '@components/atoms';
 import { MEditableCell, MPagination } from '@components/molecules';
 import clsx from 'clsx';
 import {
@@ -23,10 +21,8 @@ const OTableForm = <T extends object & TTableKey>({
   columns,
   selectedRowKeys,
   hideActions,
-  showCreateBtn,
   paginations,
   setEditingKey,
-  onCreate,
   onDeleteRow,
   onSubmitSave,
   onCancelSave,
@@ -73,6 +69,7 @@ const OTableForm = <T extends object & TTableKey>({
             {
               title: 'Thao tác',
               dataIndex: 'actions',
+              fixed: 'right' as FixedType,
               render: (_: unknown, record: T) => (
                 <TableActions
                   record={record}
@@ -87,23 +84,6 @@ const OTableForm = <T extends object & TTableKey>({
               ),
             },
           ]),
-      ...(showCreateBtn
-        ? [
-            {
-              title: (
-                <AButton
-                  onClick={onCreate}
-                  type="primary"
-                  icon={<PlusIcon />}
-                  disabled={editingKey !== null}
-                />
-              ),
-              dataIndex: 'create',
-              width: 40,
-              fixed: 'right' as FixedType,
-            },
-          ]
-        : []),
     ];
 
     return transformColumns.map((col) => {
@@ -126,14 +106,12 @@ const OTableForm = <T extends object & TTableKey>({
   }, [
     columns,
     hideActions,
-    showCreateBtn,
     editingKey,
     save,
     cancel,
     edit,
     onView,
     onDeleteRow,
-    onCreate,
   ]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {

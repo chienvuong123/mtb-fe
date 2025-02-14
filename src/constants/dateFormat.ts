@@ -1,1 +1,3 @@
 export const DATE_SLASH_FORMAT = 'YYYY/MM/DD';
+
+export const DATE_SLASH_FORMAT_DDMMYYYY = 'DD/MM/YYYY';

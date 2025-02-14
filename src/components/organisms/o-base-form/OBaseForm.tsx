@@ -63,6 +63,7 @@ const OBaseForm = <T extends object>({
       onFinish={handleSubmit}
       layout="vertical"
       className={clsx('o-base-form', className)}
+      noValidate
     >
       <div className="o-base-form pos-relative">
         <div className="form-wrapper px-40 py-28" data-testid="form-content">

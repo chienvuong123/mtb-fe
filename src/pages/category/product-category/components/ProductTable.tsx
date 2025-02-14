@@ -13,7 +13,6 @@ interface IProductTable {
   dataSource: TProductRecord[];
   paginations: IMPagination;
   sortDirection?: OrderDTO;
-  onCreate: ITable<TProductRecord>['onCreate'];
   onEdit: ITable<TProductRecord>['onEdit'];
   onDelete: (id: string) => void;
   onView: (id: string) => void;
@@ -89,7 +88,6 @@ const ProductTable: FC<IProductTable> = ({
   dataSource,
   paginations,
   sortDirection,
-  onCreate,
   onEdit,
   onDelete,
   onView,
@@ -106,11 +104,9 @@ const ProductTable: FC<IProductTable> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onCreate={onCreate}
       onDeleteRow={deleteRecord}
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
-      showCreateBtn
       paginations={paginations}
       sortDirection={sortDirection}
       onView={(id) => onView(id as string)}
@@ -118,6 +114,7 @@ const ProductTable: FC<IProductTable> = ({
         const { field, order } = s as SorterResult<TProductRecord>;
         onSort(field as string, order as SortOrder);
       }}
+      scroll={{ x: 1200 }}
     />
   );
 };
