@@ -2,11 +2,10 @@ import { ATag } from '@components/atoms';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
-import type { OrderDTO, MediaCategoryDTO } from '@dtos';
-import { truncateText } from '@utils/stringHelper';
+import type { MediaCategoryDTO, OrderDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
-import { useState, type FC, type ReactNode, type Key } from 'react';
+import { useState, type FC, type Key, type ReactNode } from 'react';
 
 export type TMediaRecord = TTableKey & Partial<MediaCategoryDTO>;
 
@@ -46,7 +45,6 @@ const columns: ColumnType<TMediaRecord>[] = [
     minWidth: 213,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: string) => truncateText(value),
   },
   {
     title: 'Trạng thái',
@@ -69,7 +67,6 @@ const columns: ColumnType<TMediaRecord>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: string) => truncateText(value),
   },
   {
     title: 'Ngày cập nhật',
@@ -84,7 +81,6 @@ const columns: ColumnType<TMediaRecord>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: string) => truncateText(value),
   },
 ];
 
@@ -120,6 +116,7 @@ const MediaTable: FC<IMediaTable> = ({
         const { field, order } = s as SorterResult<TMediaRecord>;
         onSort(field as string, order as SortOrder);
       }}
+      scroll={{ x: 1200 }}
     />
   );
 };

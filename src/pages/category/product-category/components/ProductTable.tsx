@@ -3,7 +3,6 @@ import type { IMPagination } from '@components/molecules/m-pagination/MPaginatio
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
 import type { OrderDTO, ProductCategoryDTO } from '@dtos';
-import { truncateText } from '@utils/stringHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC, type Key, type ReactNode } from 'react';
@@ -46,7 +45,6 @@ const columns: ColumnType<TProductRecord>[] = [
     minWidth: 213,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: string) => truncateText(value),
   },
   {
     title: 'Trạng thái',
@@ -69,7 +67,6 @@ const columns: ColumnType<TProductRecord>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: string) => truncateText(value),
   },
   {
     title: 'Ngày cập nhật',
@@ -84,7 +81,6 @@ const columns: ColumnType<TProductRecord>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: string) => truncateText(value),
   },
 ];
 
