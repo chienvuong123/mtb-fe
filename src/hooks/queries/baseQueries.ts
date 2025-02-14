@@ -11,7 +11,6 @@ import type { BaseApi } from '@apis';
 export const createBaseQueryHooks = <
   // dto type
   T,
-  // mutate insert type
   // search params type
   SearchParams extends BaseSearchParams,
   // view response after transform type

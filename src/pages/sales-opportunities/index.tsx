@@ -32,7 +32,10 @@ const ManageSalesOpportunities: React.FC = () => {
 
   const { data: OpportunitySellRes } = useSalesOpportunitiesSearchQuery({
     categoryType: CategoryType.PRODUCT,
-    page: { pageNum: pagination.current, pageSize: pagination.pageSize },
+    page: {
+      pageNum: Number(pagination.current),
+      pageSize: Number(pagination.pageSize),
+    },
     order: sort,
     code: filters.code,
     name: filters.name,
