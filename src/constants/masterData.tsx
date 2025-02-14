@@ -19,6 +19,12 @@ export enum EStatus {
   ALL = 'ALL',
 }
 
+export enum EGender {
+  MAN = '0',
+  WOMEN = '1',
+  OTHER = '2',
+}
+
 export enum ERole {
   ADMIN = 'ADMIN',
   SELLER = 'SELLER',
@@ -57,6 +63,21 @@ export const STATUS_OPTIONS = [
   {
     value: EStatus.ALL,
     label: <Typography.Text>Tất cả</Typography.Text>,
+  },
+];
+
+export const GENDER_OPTIONS = [
+  {
+    value: EGender.MAN,
+    label: 'Nam',
+  },
+  {
+    value: EGender.WOMEN,
+    label: 'Nữ',
+  },
+  {
+    value: EGender.OTHER,
+    label: 'Khác',
   },
 ];
 

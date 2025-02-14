@@ -5,7 +5,7 @@ import type { FC } from 'react';
 
 import './styles.scss';
 
-interface IModalConfirm extends ModalProps {
+export interface IModalConfirm extends ModalProps {
   content?: string;
 }
 

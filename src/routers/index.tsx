@@ -1,21 +1,19 @@
 import LayoutWrapper from '@layouts/LayoutWrapper';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { ERole } from '@constants/masterData';
 import {
   CATEGORY,
-  CONFIRM_PASSWORD,
   EXAMPLE,
   FORGOT_PASSWORD,
   LOGIN,
   OTP,
-  SETTING,
+  CONFIRM_PASSWORD,
+  CUSTOMER,
   ACCOUNT,
   SALES_OPPORTUNITIES,
 } from './path';
 import GuestGuard from './guards/GuestGuard';
 import AuthGuard from './guards/AuthGuard';
-import RoleBasedGuard from './guards/RoleBasedGuard';
 import VerifyGuard from './guards/VerifyGuard';
 
 const createLazyElement = (
@@ -85,17 +83,12 @@ const routes = createBrowserRouter(
           ],
         },
         {
-          path: SETTING.ROOT,
-          element: (
-            <RoleBasedGuard
-              accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
-            />
-          ),
+          path: CUSTOMER.ROOT,
           children: [
             {
-              path: SETTING.CONTROL,
+              path: CUSTOMER.CUSTOMER_CAMPAIGN_LIST,
               element: createLazyElement(
-                () => import('@pages/setting/control'),
+                () => import('@pages/customer/list-customer'),
               ),
             },
           ],

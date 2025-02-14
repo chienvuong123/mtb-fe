@@ -1,37 +1,41 @@
 import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import { Drawer } from 'antd';
+import { Drawer, Flex } from 'antd';
 import { type FC, useState, useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
-import {
-  CategoryType,
-  type ProductCategoryDTO,
-  type TProductSearchForm,
-} from '@dtos';
+import { CategoryType, type CustomerDTO } from '@dtos';
 
-import './index.scss';
 import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
 import {
+  useCustomerSearchQuery,
   useProductCategoryAddMutation,
   useProductCategoryEditMutation,
   useProductCategoryRemoveMutation,
-  useProductCategorySearchQuery,
+  // useProductCategorySearchQuery,
 } from '@hooks/queries';
 import type { SortOrder } from 'antd/es/table/interface';
+import type { AnyObject } from 'antd/es/_util/type';
+import { AButton } from '@components/atoms';
+import { ExportIcon, ImportIcon, UserGroupIcon } from '@assets/icons';
+import { OUploadPopup } from '@components/organisms/o-upload-popup';
 import useUrlParams from '@hooks/useUrlParams';
-import ProductInsertForm from './components/ProductInsertForm';
-import ProductSearchForm from './components/ProductSearchForm';
-import ProductTable, { type TProductRecord } from './components/ProductTable';
+import CustomerListSearchForm from './components/CustomerListSearchForm';
+import CustomerListTable, {
+  type TProductRecord,
+} from './components/CustomerListTable';
+import CustomerGroupForm from './components/CustomerGroupForm';
 
-const ProductCategoryPage: FC = () => {
+const ListCustomerPage: FC = () => {
   const [showInsertForm, setShowInsertForm] = useState<boolean>(false);
   const [initValues, setInitValues] = useState<Partial<TProductRecord> | null>(
     null,
   );
+
+  const [showExport, setShowImport] = useState<boolean>(false);
 
   const {
     pagination: { current, pageSize },
@@ -40,19 +44,18 @@ const ProductCategoryPage: FC = () => {
     setSort,
     filters,
     setFilters,
-  } = useUrlParams<Partial<ProductCategoryDTO>>();
+  } = useUrlParams<Partial<CustomerDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
 
-  const { data: productRes } = useProductCategorySearchQuery({
-    categoryType: CategoryType.PRODUCT,
+  const { data: productRes } = useCustomerSearchQuery({
     page: {
       pageNum: Number(current),
       pageSize: Number(pageSize),
     },
     order: sort,
-    code: filters.code,
-    name: filters.name,
+    // code: filters.code,
+    // name: filters.name,
   });
 
   const handleCloseForm = () => {
@@ -77,7 +80,6 @@ const ProductCategoryPage: FC = () => {
 
   const handleCreate = () => {
     setInitValues({
-      code: undefined,
       name: '',
       status: EStatus.ACTIVE,
       createdDate: dayjs().format(DATE_SLASH_FORMAT),
@@ -95,25 +97,24 @@ const ProductCategoryPage: FC = () => {
     setShowInsertForm(true);
   };
 
-  const handleSearch = ({ code, name }: TProductSearchForm) => {
+  const handleSearch = (obj: object) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({ code, name });
+    setFilters(obj);
   };
-
   const handlePaginationChange = (data: TPagination) => {
     setPagination(data);
   };
-
-  const handleSubmitInsert = ({ name, code, status }: ProductCategoryDTO) => {
-    const data: Partial<ProductCategoryDTO> = {
-      categoryTypeId: CategoryType.PRODUCT,
-      code,
-      name,
-      status,
-      id: initValues?.id,
+  const handleSubmitInsert = ({ name, code }: CustomerDTO) => {
+    const data: Partial<AnyObject> = {
+      category: {
+        categoryTypeId: CategoryType.PRODUCT,
+        code,
+        name,
+        id: initValues?.id,
+      },
     };
     // update product
-    if (data?.id) {
+    if (data?.category?.id) {
       mutationUpdateProducts(data);
       return;
     }
@@ -169,7 +170,7 @@ const ProductCategoryPage: FC = () => {
   };
 
   const getDrawerTitle = useMemo(() => {
-    const title = '$ danh mục product';
+    const title = '$ khách hàng';
     if (isViewMode) return title.replace('$', 'Chi tiết');
     if (initValues?.id) return title.replace('$', 'Chỉnh sửa');
     return title.replace('$', 'Tạo mới');
@@ -177,20 +178,55 @@ const ProductCategoryPage: FC = () => {
 
   return (
     <div className="pt-32">
-      <Title level={3} className="mb-24">
-        Danh mục Product
-      </Title>
-      <ProductSearchForm
+      <OUploadPopup
+        modalProps={{
+          open: showExport,
+          title: 'Tải lên danh sách khách hàng',
+          onCancel: () => setShowImport(false),
+        }}
+        onSubmit={(file) => {
+          console.log(file);
+        }}
+        onDowloadEg={() => {
+          console.log('dowload clicked');
+        }}
+      />
+
+      <Flex justify="space-between" className="mb-14">
+        <Title level={3} className="mb-0">
+          Danh sách Campaign
+        </Title>
+        <Flex gap={16}>
+          <AButton
+            variant="filled"
+            color="primary"
+            icon={<ImportIcon />}
+            onClick={() => setShowImport(true)}
+          >
+            Import
+          </AButton>
+          <AButton variant="filled" color="primary" icon={<ExportIcon />}>
+            Export
+          </AButton>
+          <AButton variant="filled" color="primary" icon={<UserGroupIcon />}>
+            Tạo nhóm khách hàng
+          </AButton>
+        </Flex>
+      </Flex>
+
+      <CustomerListSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
-        initialValues={{ code: filters?.code ?? '', name: filters?.name ?? '' }}
+        initialValues={{ ...(filters as CustomerDTO) }}
         onCreate={handleCreate}
+        onDeleteAll={() => {
+          console.log('delete all');
+        }}
       />
       <div className="mt-24" />
-      <ProductTable
+      <CustomerListTable
         dataSource={dataSources}
         paginations={paginations}
-        sortDirection={sort}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}
@@ -201,11 +237,11 @@ const ProductCategoryPage: FC = () => {
         title={getDrawerTitle}
         onClose={handleCloseForm}
         open={showInsertForm}
-        width={1025}
+        width={1643}
         maskClosable={false}
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
       >
-        <ProductInsertForm
+        <CustomerGroupForm
           isViewMode={isViewMode}
           onClose={handleCloseForm}
           initialValues={initValues}
@@ -216,4 +252,4 @@ const ProductCategoryPage: FC = () => {
   );
 };
 
-export default ProductCategoryPage;
+export default ListCustomerPage;

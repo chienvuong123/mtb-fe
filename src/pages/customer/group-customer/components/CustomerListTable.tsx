@@ -1,8 +1,9 @@
 import { ATag } from '@components/atoms';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import type { IModalConfirm } from '@components/organisms/o-modal/OModalConfirm';
 import { EStatus } from '@constants/masterData';
-import type { OrderDTO, ProductCategoryDTO } from '@dtos';
+import type { ProductCategoryDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC, type ReactNode, type Key } from 'react';
@@ -12,14 +13,13 @@ export type TProductRecord = TTableKey & Partial<ProductCategoryDTO>;
 interface IProductTable {
   dataSource: TProductRecord[];
   paginations: IMPagination;
-  sortDirection?: OrderDTO;
   onEdit: ITable<TProductRecord>['onEdit'];
   onDelete: (id: string) => void;
   onView: (id: string) => void;
   onSort: (field: string, direction: SortOrder) => void;
 }
 
-const statusObject: Partial<Record<EStatus, ReactNode>> = {
+const statusObject: Record<EStatus, ReactNode> = {
   [EStatus.ACTIVE]: <ATag color="green">Đang hoạt động</ATag>,
   [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
 };
@@ -28,14 +28,22 @@ const columns: ColumnType<TProductRecord>[] = [
   {
     title: 'STT',
     dataIndex: 'index',
-    minWidth: 76,
+    width: 68,
+    minWidth: 68,
     align: 'center',
     render: (_: unknown, __: unknown, idx: number) => idx + 1,
   },
   {
+    title: 'Nhóm khách hàng',
+    dataIndex: 'customerGroup',
+    minWidth: 193,
+    sorter: true,
+    showSorterTooltip: false,
+  },
+  {
     title: 'Mã',
     dataIndex: 'code',
-    minWidth: 104,
+    minWidth: 213,
     sorter: true,
     showSorterTooltip: false,
   },
@@ -47,47 +55,50 @@ const columns: ColumnType<TProductRecord>[] = [
     showSorterTooltip: false,
   },
   {
-    title: 'Trạng thái',
-    dataIndex: 'status',
+    title: 'Phân khúc khách hàng',
+    dataIndex: 'customerClass',
+    minWidth: 213,
+    sorter: true,
+    showSorterTooltip: false,
+  },
+  {
+    title: 'Năm sinh',
+    dataIndex: 'birthday',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
     render: (value: EStatus) => statusObject[value] ?? null,
   },
   {
-    title: 'Ngày tạo',
-    dataIndex: 'createdDate',
+    title: 'Email',
+    dataIndex: 'email',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
   },
   {
-    title: 'Người tạo',
-    dataIndex: 'createdBy',
+    title: 'Số điện thoại',
+    dataIndex: 'phone',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
   },
   {
-    title: 'Ngày cập nhật',
-    dataIndex: 'updatedDate',
-    minWidth: 164,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Người cập nhật',
-    dataIndex: 'updatedBy',
+    title: 'Seller',
+    dataIndex: 'seller',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
   },
 ];
 
-const ProductTable: FC<IProductTable> = ({
+const confirmProps: IModalConfirm = {
+  title: 'Xoá khách hàng',
+};
+
+const CustomerListTable: FC<IProductTable> = ({
   dataSource,
   paginations,
-  sortDirection,
   onEdit,
   onDelete,
   onView,
@@ -108,15 +119,15 @@ const ProductTable: FC<IProductTable> = ({
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
-      sortDirection={sortDirection}
       onView={(id) => onView(id as string)}
+      scroll={{ x: 1800 }}
       onChange={(_p, _f, s) => {
         const { field, order } = s as SorterResult<TProductRecord>;
         onSort(field as string, order as SortOrder);
       }}
-      scroll={{ x: 1200 }}
+      confirmProps={confirmProps}
     />
   );
 };
 
-export default ProductTable;
+export default CustomerListTable;

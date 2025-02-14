@@ -20,7 +20,13 @@ const ROUTE_PATH = {
     ROOT: '/setting',
     CONTROL: 'control',
   },
-  SALES_OPPORTUNITIES: '/sales-opportunities'
+  SALES_OPPORTUNITIES: '/sales-opportunities',
+
+  CUSTOMER: {
+    ROOT: '/customer',
+    CUSTOMER_CAMPAIGN_LIST: 'list',
+    CUSTOMER_GROUP_CAMPAIGN_LIST: 'group-list',
+  },
 };
 
 export const {
@@ -34,5 +40,6 @@ export const {
   EXAMPLE,
   CATEGORY,
   SETTING,
-  SALES_OPPORTUNITIES
+  SALES_OPPORTUNITIES,
+  CUSTOMER,
 } = ROUTE_PATH;

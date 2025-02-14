@@ -39,8 +39,14 @@ const MediaCategoryPage: FC = () => {
   const [initValuesEditForm, setInitValuesEditForm] =
     useState<Partial<TMediaRecord> | null>(null);
 
-  const { pagination, setPagination, sort, setSort, filters, setFilters } =
-    useUrlParams<Partial<MediaCategoryDTO>>();
+  const {
+    pagination: { current, pageSize },
+    setPagination,
+    sort,
+    setSort,
+    filters,
+    setFilters,
+  } = useUrlParams<Partial<MediaCategoryDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
 
@@ -61,7 +67,10 @@ const MediaCategoryPage: FC = () => {
 
   const { data: MediaRes, isLoading } = useMediaCategorySearchQuery({
     categoryType: CategoryType.MEDIA,
-    page: { pageNum: pagination.current, pageSize: pagination.pageSize },
+    page: {
+      pageNum: Number(current),
+      pageSize: Number(pageSize),
+    },
     order: sort,
     code: filters.code,
     name: filters.name,
@@ -180,7 +189,8 @@ const MediaCategoryPage: FC = () => {
 
   const paginations: IMPagination = {
     pagination: {
-      ...pagination,
+      current,
+      pageSize,
       total: MediaRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
@@ -217,18 +227,14 @@ const MediaCategoryPage: FC = () => {
   }, [initValuesEditForm?.id, isViewMode]);
 
   useEffect(() => {
-    if (
-      !isLoading &&
-      !MediaRes?.data?.content.length &&
-      pagination.current > 1
-    ) {
+    if (!isLoading && !MediaRes?.data?.content.length && current > 1) {
       setPagination((prev) => ({
         ...prev,
         current: prev.current - 1,
         total: MediaRes?.data?.total ?? 1,
       }));
     }
-  }, [MediaRes, setPagination, pagination, isLoading]);
+  }, [MediaRes, setPagination, current, isLoading]);
 
   return (
     <div className="pt-32 category-media">
@@ -247,6 +253,7 @@ const MediaCategoryPage: FC = () => {
       <MediaSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
+        onCreate={handleCreate}
         initialValues={{
           code: filters?.code ?? '',
           name: filters?.name ?? '',
@@ -258,7 +265,6 @@ const MediaCategoryPage: FC = () => {
         dataSource={dataSources}
         paginations={paginations}
         sortDirection={sort}
-        onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}
