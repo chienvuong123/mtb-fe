@@ -1,6 +1,6 @@
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { Drawer, Flex } from 'antd';
-import { type FC, useState, useMemo, useEffect } from 'react';
+import { type FC, useState, useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
 import { type CustomerDTO } from '@dtos';
 
@@ -41,9 +41,6 @@ const ListCustomerPage: FC = () => {
     null,
   );
   const [showExport, setShowImport] = useState<boolean>(false);
-
-  // TODO:
-  const [mData, setData] = useState<CustomerDTO[]>([]);
 
   const {
     pagination: { current, pageSize },
@@ -98,25 +95,6 @@ const ListCustomerPage: FC = () => {
       ...destructCustomerData({}),
       categoryId,
       categoryName,
-      // "campaignId": "CMP001",
-      // "code": "002",
-      // "name": "Golden",
-      // "phone": 123141414234,
-      // "email": "nghiama0029@gmail.com",
-      // "birthDay": "02/09/2026",
-      // "gender": "0",
-      // "address": "123asdasd",
-      // "identityCard": "1231231313123123",
-      // "seller": "1",
-      // "categoryId": "13d7d45d-9265-4a15-a94d-20fde3a2f68b",
-      // "branch": "1",
-      // "cusGroup": "12312313",
-      // "cusSegment": "1",
-      // "job": "1",
-      // "categoryName": "Tên danh mục",
-      // "campaignName": "Tên Campaign",
-      // "hobbies": "[\"1\",\"2\"]",
-      // "identification": "[\"1\",\"2\"]"
     });
     handleOpenDrawer();
   };
@@ -146,24 +124,7 @@ const ListCustomerPage: FC = () => {
     mutationCreateCustomer(dData);
   };
 
-  const handleSubmitInsertCustomerGroup = () => {
-    // const data: Partial<AnyObject> = {
-    //   category: {
-    //     categoryTypeId: CategoryType.PRODUCT,
-    //     code,
-    //     name,
-    //     status,
-    //     id: initValues?.id,
-    //   },
-    // };
-    // // update customer group
-    // if (data?.category?.id) {
-    //   mutationUpdateCustomer(data);
-    //   return;
-    // }
-    // // create new customer group
-    // mutationCreateCustomer(data);
-  };
+  const handleSubmitInsertCustomerGroup = () => {};
 
   const handleDelete = (id: string) => {
     mutationDeleteCustomer({ id });
@@ -183,21 +144,12 @@ const ListCustomerPage: FC = () => {
   const dataSources: TCustomerRecord[] =
     useMemo(
       () =>
-        mData?.map((i) => ({
+        customerRes?.data?.content?.map((i) => ({
           ...i,
           key: i.id as string,
         })),
-      [mData],
+      [customerRes],
     ) ?? [];
-  // const dataSources: TCustomerRecord[] =
-  //   useMemo(
-  //     () =>
-  //       customerRes?.data?.content?.map((i) => ({
-  //         ...i,
-  //         key: i.id as string,
-  //       })),
-  //     [customerRes],
-  //   ) ?? [];
 
   const handleClearAll = () => {
     setPagination((pre) => ({ ...pre, current: 1 }));
@@ -205,8 +157,7 @@ const ListCustomerPage: FC = () => {
   };
 
   const handleView = (id: string) => {
-    const item = mData?.find((i) => i.id === id);
-    // const item = customerRes?.data.content.find((i) => i.id === id);
+    const item = customerRes?.data.content.find((i) => i.id === id);
     if (item) {
       setIsViewMode(true);
       setInitValues({
@@ -231,22 +182,6 @@ const ListCustomerPage: FC = () => {
     if (initValues?.id) return title.replace('$', 'Chỉnh sửa');
     return title.replace('$', 'Tạo mới');
   }, [initValues?.id, isViewMode, drawerMode]);
-
-  useEffect(() => {
-    fetch(
-      'http://103.110.87.61:8081/cm/bo/customer/v1.0/search?page.pageNum=1&page.pageSize=20',
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json',
-        },
-      },
-    ).then((res) => {
-      res.json().then((data) => {
-        setData(data?.data ?? []);
-      });
-    });
-  }, []);
 
   return (
     <div className="pt-32">

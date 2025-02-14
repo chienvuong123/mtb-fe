@@ -1,12 +1,10 @@
-import { ATag } from '@components/atoms';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import type { IModalConfirm } from '@components/organisms/o-modal/OModalConfirm';
-import { EStatus } from '@constants/masterData';
 import type { CustomerDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
-import { useState, type FC, type ReactNode, type Key } from 'react';
+import { useState, type FC, type Key } from 'react';
 
 export type TCustomerRecord = TTableKey & Partial<CustomerDTO>;
 
@@ -19,11 +17,6 @@ interface IProductTable {
   onSort: (field: string, direction: SortOrder) => void;
 }
 
-const statusObject: Partial<Record<EStatus, ReactNode>> = {
-  [EStatus.ACTIVE]: <ATag color="green">Đang hoạt động</ATag>,
-  [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
-};
-
 const columns: ColumnType<TCustomerRecord>[] = [
   {
     title: 'STT',
@@ -35,7 +28,7 @@ const columns: ColumnType<TCustomerRecord>[] = [
   },
   {
     title: 'Nhóm khách hàng',
-    dataIndex: 'customerGroup',
+    dataIndex: 'cusGroup',
     minWidth: 193,
     sorter: true,
     showSorterTooltip: false,
@@ -56,18 +49,17 @@ const columns: ColumnType<TCustomerRecord>[] = [
   },
   {
     title: 'Phân khúc khách hàng',
-    dataIndex: 'customerClass',
+    dataIndex: 'cusSegment',
     minWidth: 213,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Năm sinh',
-    dataIndex: 'birthday',
+    dataIndex: 'birthDay',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: EStatus) => statusObject[value] ?? null,
   },
   {
     title: 'Email',
