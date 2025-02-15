@@ -1,15 +1,15 @@
 import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
-import type { MediaCategoryDTO } from '@dtos';
+import type { ProductCategoryDTO } from '@dtos';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
 
-interface IMediaEditForm {
+interface IProductEditForm {
   isViewMode?: boolean;
-  initialValues?: Partial<MediaCategoryDTO> | null;
+  initialValues?: Partial<ProductCategoryDTO> | null;
   onClose: () => void;
-  onSubmit: (values: MediaCategoryDTO) => void;
+  onSubmit: (values: ProductCategoryDTO) => void;
 }
 
 const items: TFormItem[] = [
@@ -62,7 +62,7 @@ const items: TFormItem[] = [
   },
 ];
 
-const MediaEditForm: FC<IMediaEditForm> = ({
+const ProductEditForm: FC<IProductEditForm> = ({
   onClose,
   onSubmit,
   initialValues,
@@ -93,7 +93,7 @@ const MediaEditForm: FC<IMediaEditForm> = ({
 
   return (
     <div>
-      <OBaseForm<MediaCategoryDTO>
+      <OBaseForm<ProductCategoryDTO>
         items={formItems}
         form={form}
         onSubmit={onSubmit}
@@ -107,4 +107,4 @@ const MediaEditForm: FC<IMediaEditForm> = ({
   );
 };
 
-export default MediaEditForm;
+export default ProductEditForm;

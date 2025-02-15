@@ -1,12 +1,11 @@
 import { OBaseForm } from '@components/organisms';
-import { INPUT_TYPE, type TFormItem } from '@types';
-import { useEffect, type FC, useMemo } from 'react';
-import { useForm } from 'antd/lib/form/Form';
-import type { ProductCategoryDTO } from '@dtos';
 import { STATUS_OPTIONS } from '@constants/masterData';
+import type { ProductCategoryDTO } from '@dtos';
+import { INPUT_TYPE, type TFormItem } from '@types';
+import { useForm } from 'antd/lib/form/Form';
+import { useEffect, type FC } from 'react';
 
 interface IProductInsertForm {
-  isViewMode?: boolean;
   initialValues?: Partial<ProductCategoryDTO> | null;
   onClose: () => void;
   onSubmit: (values: ProductCategoryDTO) => void;
@@ -33,6 +32,7 @@ const items: TFormItem[] = [
     name: 'status',
     inputProps: {
       options: STATUS_OPTIONS,
+      allowClear: false,
     },
   },
   {
@@ -65,24 +65,8 @@ const ProductInsertForm: FC<IProductInsertForm> = ({
   onClose,
   onSubmit,
   initialValues,
-  isViewMode,
 }) => {
   const [form] = useForm();
-
-  const formItems = useMemo(
-    () =>
-      isViewMode
-        ? items.map((i) => ({
-            ...i,
-            inputProps: {
-              ...i.inputProps,
-              disabled: i.type === INPUT_TYPE.SELECT,
-              readOnly: true,
-            },
-          }))
-        : items,
-    [isViewMode],
-  ) as TFormItem[];
 
   useEffect(() => {
     if (initialValues) {
@@ -93,10 +77,9 @@ const ProductInsertForm: FC<IProductInsertForm> = ({
   return (
     <div>
       <OBaseForm<ProductCategoryDTO>
-        items={formItems}
+        items={items}
         form={form}
         onSubmit={onSubmit}
-        isViewMode={isViewMode}
         onClose={() => {
           onClose();
           form.resetFields();

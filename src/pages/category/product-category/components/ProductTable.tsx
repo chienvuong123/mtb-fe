@@ -5,7 +5,7 @@ import { EStatus } from '@constants/masterData';
 import type { OrderDTO, ProductCategoryDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
-import { useState, type FC, type ReactNode, type Key } from 'react';
+import { useState, type FC, type Key, type ReactNode } from 'react';
 
 export type TProductRecord = TTableKey & Partial<ProductCategoryDTO>;
 
@@ -104,7 +104,9 @@ const ProductTable: FC<IProductTable> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onDeleteRow={deleteRecord}
+      onDeleteRow={(key) => {
+        deleteRecord(key);
+      }}
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}

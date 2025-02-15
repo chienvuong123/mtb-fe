@@ -60,10 +60,6 @@ export const STATUS_OPTIONS = [
     value: EStatus.INACTIVE,
     label: <Typography.Text className="red">Không hoạt động</Typography.Text>,
   },
-  {
-    value: EStatus.ALL,
-    label: <Typography.Text>Tất cả</Typography.Text>,
-  },
 ];
 
 export const GENDER_OPTIONS = [

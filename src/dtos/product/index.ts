@@ -42,4 +42,4 @@ export type CMResponseCategoryDTO = {
   };
 };
 
-export type TProductSearchForm = { code: string; name: string };
+export type TProductSearchForm = { code: string; name: string; status: string };

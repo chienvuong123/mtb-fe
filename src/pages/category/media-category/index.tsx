@@ -66,7 +66,7 @@ const MediaCategoryPage: FC = () => {
     }, 3000);
   };
 
-  const { data: MediaRes, isLoading } = useMediaCategorySearchQuery({
+  const { data: mediaRes, isLoading } = useMediaCategorySearchQuery({
     categoryType: CategoryType.MEDIA,
     page: {
       pageNum: Number(current),
@@ -176,11 +176,11 @@ const MediaCategoryPage: FC = () => {
   const dataSources: TMediaRecord[] =
     useMemo(
       () =>
-        MediaRes?.data?.content?.map((i) => ({
+        mediaRes?.data?.content?.map((i) => ({
           ...i,
           key: i.id as string,
         })),
-      [MediaRes],
+      [mediaRes],
     ) ?? [];
 
   const handleDelete = (id: string) => {
@@ -191,7 +191,7 @@ const MediaCategoryPage: FC = () => {
     pagination: {
       current,
       pageSize,
-      total: MediaRes?.data?.total ?? 1,
+      total: mediaRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
@@ -204,7 +204,7 @@ const MediaCategoryPage: FC = () => {
   };
 
   const handleView = (id: string) => {
-    const item = MediaRes?.data.content.find((i) => i.id === id);
+    const item = mediaRes?.data.content.find((i) => i.id === id);
     if (item) {
       setIsViewMode(true);
       setInitValuesEditForm({ ...item });
@@ -227,14 +227,14 @@ const MediaCategoryPage: FC = () => {
   }, [initValuesEditForm?.id, isViewMode]);
 
   useEffect(() => {
-    if (!isLoading && !MediaRes?.data?.content.length && current > 1) {
+    if (!isLoading && !mediaRes?.data?.content.length && current > 1) {
       setPagination((prev) => ({
         ...prev,
         current: prev.current - 1,
-        total: MediaRes?.data?.total ?? 1,
+        total: mediaRes?.data?.total ?? 1,
       }));
     }
-  }, [MediaRes, setPagination, current, isLoading]);
+  }, [mediaRes, setPagination, current, isLoading]);
 
   return (
     <div className="pt-32 category-media">
