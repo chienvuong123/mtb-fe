@@ -1,23 +1,23 @@
+import { ERole } from '@constants/masterData';
 import LayoutWrapper from '@layouts/LayoutWrapper';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { ERole } from '@constants/masterData';
+import AuthGuard from './guards/AuthGuard';
+import GuestGuard from './guards/GuestGuard';
+import RoleBasedGuard from './guards/RoleBasedGuard';
+import VerifyGuard from './guards/VerifyGuard';
 import {
+  ACCOUNT,
   CATEGORY,
   CONFIRM_PASSWORD,
+  CUSTOMER,
   EXAMPLE,
   FORGOT_PASSWORD,
   LOGIN,
   OTP,
-  SETTING,
-  ACCOUNT,
-  CUSTOMER,
   SALES_OPPORTUNITIES,
+  SETTING,
 } from './path';
-import GuestGuard from './guards/GuestGuard';
-import AuthGuard from './guards/AuthGuard';
-import RoleBasedGuard from './guards/RoleBasedGuard';
-import VerifyGuard from './guards/VerifyGuard';
 
 const createLazyElement = (
   importFn: () => Promise<{ default: React.ComponentType }>,
@@ -85,23 +85,7 @@ const routes = createBrowserRouter(
             },
           ],
         },
-        {
-          path: CUSTOMER.ROOT,
-          children: [
-            {
-              path: CUSTOMER.GROUP_CUSTOMER,
-              element: createLazyElement(
-                () => import('@pages/customer/group-customer'),
-              ),
-            },
-            {
-              path: CATEGORY.MEDIA_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/media-category'),
-              ),
-            },
-          ],
-        },
+
         {
           path: SETTING.ROOT,
           element: (
@@ -111,9 +95,15 @@ const routes = createBrowserRouter(
           ),
           children: [
             {
-              path: SETTING.CONTROL,
+              path: CUSTOMER.CUSTOMER_CAMPAIGN_LIST,
               element: createLazyElement(
-                () => import('@pages/setting/control'),
+                () => import('@pages/customer/list-customer'),
+              ),
+            },
+            {
+              path: CUSTOMER.CUSTOMER_GROUP_CAMPAIGN_LIST,
+              element: createLazyElement(
+                () => import('@pages/customer/group-customer'),
               ),
             },
           ],

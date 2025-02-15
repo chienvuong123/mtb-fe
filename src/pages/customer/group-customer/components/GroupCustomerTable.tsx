@@ -93,7 +93,6 @@ const GroupCustomerTable: FC<IGroupCustomerTable> = ({
       selectedRowKeys={selectedRowKeys}
       onCreate={onCreate}
       setSelectedRowKeys={setSelectedRowKeys}
-      showCreateBtn
       paginations={paginations}
       sortDirection={sortDirection}
       onView={(id) => onView(id as string)}

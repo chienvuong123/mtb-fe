@@ -1,15 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
-  FloppyDiskIcon,
   FolderManagementIcon,
   HelpCircleIcon,
   HotPriceIcon,
   LogoutIcon,
-  MarketingIcon,
   MuslimIcon,
   PieChartIcon,
   Setting02Icon,
-  Target02Icon,
 } from '@assets/icons';
 import OPopup from '@components/organisms/o-popup/OPopup';
 import { ACCOUNT, CATEGORY, CUSTOMER } from '@routers/path';
@@ -61,34 +58,14 @@ const useMenuList = (onLogout?: () => void) => {
         icon: <MuslimIcon />,
         children: [
           {
-            key: `${CUSTOMER.ROOT}/${CUSTOMER.CAMPAIGN_CUSTOMER}`,
+            key: `${CUSTOMER.ROOT}/${CUSTOMER.CUSTOMER_CAMPAIGN_LIST}`,
             label: 'DS khách hàng Campaign',
           },
           {
-            key: `${CUSTOMER.ROOT}/${CUSTOMER.GROUP_CUSTOMER}`,
+            key: `${CUSTOMER.ROOT}/${CUSTOMER.CUSTOMER_GROUP_CAMPAIGN_LIST}`,
             label: 'Danh sách nhóm khách hàng theo Campaign',
           },
         ],
-      },
-      {
-        key: 'sales-opportunities',
-        label: 'Quản lý cơ hội bán',
-        icon: <MarketingIcon />,
-      },
-      {
-        key: 'script-management',
-        label: 'Quản lý kịch bản',
-        icon: <Target02Icon />,
-      },
-      {
-        key: 'saler-management',
-        label: 'Quản lý Saler',
-        icon: <MuslimIcon />,
-      },
-      {
-        key: 'multimedia-warehouse',
-        label: 'Kho đa phương tiện',
-        icon: <FloppyDiskIcon />,
       },
       {
         key: CATEGORY.ROOT,

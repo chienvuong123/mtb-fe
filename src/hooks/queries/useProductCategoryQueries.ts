@@ -6,6 +6,8 @@ import type {
 } from '@dtos';
 import { createBaseQueryHooks } from './baseQueries';
 
+export const PRODUCT_CATEGORY_KEY = 'product-category';
+
 export const {
   useSearchQuery: useProductCategorySearchQuery,
   useViewQuery: useProductCategoryViewQuery,
@@ -19,6 +21,6 @@ export const {
   // ExampleViewResponse,
   // if you need to transform the search response
   CategorySearchResponse
->('product-category', categoryApi);
+>(PRODUCT_CATEGORY_KEY, categoryApi);
 
 // define other queries

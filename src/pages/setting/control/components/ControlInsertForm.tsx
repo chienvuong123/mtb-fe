@@ -54,6 +54,7 @@ const ControlInsertForm: FC<IControlInsertForm> = ({
   return (
     <div>
       <OBaseForm<ControlDTO>
+        mutationKey=""
         items={items}
         form={form}
         onSubmit={onSubmit}

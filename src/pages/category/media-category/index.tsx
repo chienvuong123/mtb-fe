@@ -25,6 +25,7 @@ import {
 import useUrlParams from '@hooks/useUrlParams';
 import { useUserStore } from '@stores';
 import type { SortOrder } from 'antd/es/table/interface';
+import { filterObject } from '@utils/objectHelper';
 import MediaEditForm from './components/MediaEditForm';
 import MediaInsertForm from './components/MediaInsertForm';
 import MediaSearchForm from './components/MediaSearchForm';
@@ -39,8 +40,14 @@ const MediaCategoryPage: FC = () => {
   const [initValuesEditForm, setInitValuesEditForm] =
     useState<Partial<TMediaRecord> | null>(null);
 
-  const { pagination, setPagination, sort, setSort, filters, setFilters } =
-    useUrlParams<Partial<MediaCategoryDTO>>();
+  const {
+    pagination: { current, pageSize },
+    setPagination,
+    sort,
+    setSort,
+    filters,
+    setFilters,
+  } = useUrlParams<Partial<MediaCategoryDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
 
@@ -59,12 +66,14 @@ const MediaCategoryPage: FC = () => {
     }, 3000);
   };
 
-  const { data: MediaRes, isLoading } = useMediaCategorySearchQuery({
+  const { data: mediaRes, isLoading } = useMediaCategorySearchQuery({
     categoryType: CategoryType.MEDIA,
-    page: { pageNum: pagination.current, pageSize: pagination.pageSize },
+    page: {
+      pageNum: Number(current),
+      pageSize: Number(pageSize),
+    },
     order: sort,
-    code: filters.code,
-    name: filters.name,
+    ...filterObject(filters),
     status: filters.status ?? EStatus.ACTIVE,
   });
 
@@ -167,11 +176,11 @@ const MediaCategoryPage: FC = () => {
   const dataSources: TMediaRecord[] =
     useMemo(
       () =>
-        MediaRes?.data?.content?.map((i) => ({
+        mediaRes?.data?.content?.map((i) => ({
           ...i,
           key: i.id as string,
         })),
-      [MediaRes],
+      [mediaRes],
     ) ?? [];
 
   const handleDelete = (id: string) => {
@@ -180,8 +189,9 @@ const MediaCategoryPage: FC = () => {
 
   const paginations: IMPagination = {
     pagination: {
-      ...pagination,
-      total: MediaRes?.data?.total ?? 1,
+      current,
+      pageSize,
+      total: mediaRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
@@ -194,7 +204,7 @@ const MediaCategoryPage: FC = () => {
   };
 
   const handleView = (id: string) => {
-    const item = MediaRes?.data.content.find((i) => i.id === id);
+    const item = mediaRes?.data.content.find((i) => i.id === id);
     if (item) {
       setIsViewMode(true);
       setInitValuesEditForm({ ...item });
@@ -217,18 +227,14 @@ const MediaCategoryPage: FC = () => {
   }, [initValuesEditForm?.id, isViewMode]);
 
   useEffect(() => {
-    if (
-      !isLoading &&
-      !MediaRes?.data?.content.length &&
-      pagination.current > 1
-    ) {
+    if (!isLoading && !mediaRes?.data?.content.length && current > 1) {
       setPagination((prev) => ({
         ...prev,
         current: prev.current - 1,
-        total: MediaRes?.data?.total ?? 1,
+        total: mediaRes?.data?.total ?? 1,
       }));
     }
-  }, [MediaRes, setPagination, pagination, isLoading]);
+  }, [mediaRes, setPagination, current, isLoading]);
 
   return (
     <div className="pt-32 category-media">
@@ -247,6 +253,7 @@ const MediaCategoryPage: FC = () => {
       <MediaSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
+        onCreate={handleCreate}
         initialValues={{
           code: filters?.code ?? '',
           name: filters?.name ?? '',
@@ -258,7 +265,6 @@ const MediaCategoryPage: FC = () => {
         dataSource={dataSources}
         paginations={paginations}
         sortDirection={sort}
-        onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}

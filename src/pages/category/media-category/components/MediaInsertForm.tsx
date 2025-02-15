@@ -1,6 +1,7 @@
 import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import type { MediaCategoryDTO } from '@dtos';
+import { MEDIA_CATEGORY_KEY } from '@hooks/queries/useMediaCategoryQueries';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, type FC } from 'react';
@@ -32,6 +33,7 @@ const items: TFormItem[] = [
     name: 'status',
     inputProps: {
       options: STATUS_OPTIONS,
+      allowClear: false,
     },
   },
   {
@@ -76,6 +78,7 @@ const MediaInsertForm: FC<IMediaInsertForm> = ({
   return (
     <div>
       <OBaseForm<MediaCategoryDTO>
+        mutationKey={MEDIA_CATEGORY_KEY}
         items={items}
         form={form}
         onSubmit={onSubmit}

@@ -7,3 +7,4 @@ export * from './userApi';
 export * from './baseApi';
 export * from './salesOpportunitiesApi';
 export * from './groupCustomerApi';
+export * from './customerApi';

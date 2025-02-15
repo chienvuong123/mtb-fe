@@ -16,17 +16,17 @@ const ROUTE_PATH = {
     MEDIA_CATEGORY: `media-category`,
   },
 
-  CUSTOMER: {
-    ROOT: '/customer',
-    CAMPAIGN_CUSTOMER: `campaign-customer`,
-    GROUP_CUSTOMER: `group-customer`,
-  },
-
   SETTING: {
     ROOT: '/setting',
     CONTROL: 'control',
   },
   SALES_OPPORTUNITIES: '/sales-opportunities',
+
+  CUSTOMER: {
+    ROOT: '/customer',
+    CUSTOMER_CAMPAIGN_LIST: 'list',
+    CUSTOMER_GROUP_CAMPAIGN_LIST: 'group-list',
+  },
 };
 
 export const {

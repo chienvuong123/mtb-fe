@@ -1,4 +1,5 @@
 import { OBaseForm } from '@components/organisms';
+import { GROUP_CUSTOMER_KEY } from '@hooks/queries/useGroupCustomerQueries';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import type { FC } from 'react';
@@ -59,6 +60,7 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
   return (
     <div>
       <OBaseForm<GroupCustomerDTO>
+        mutationKey={GROUP_CUSTOMER_KEY}
         items={items}
         form={form}
         onSubmit={onSubmit}

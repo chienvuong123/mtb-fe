@@ -89,7 +89,6 @@ const ControlTable: FC<IControlTable> = ({
       onDeleteRow={deleteRecord}
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
-      showCreateBtn
       paginations={pagination}
     />
   );

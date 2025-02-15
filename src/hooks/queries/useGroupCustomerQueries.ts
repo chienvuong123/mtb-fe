@@ -6,6 +6,8 @@ import type {
 } from 'src/dtos/group-customer';
 import { createBaseQueryHooks } from './baseQueries';
 
+export const GROUP_CUSTOMER_KEY = 'group-customer';
+
 export const {
   useSearchQuery: useGroupCustomerSearchQuery,
   useViewQuery: useGroupCustomerViewQuery,
@@ -14,4 +16,4 @@ export const {
   GroupCustomerDTO,
   GroupCustomerSearchRequest,
   GroupCustomerSearchResponse
->('media-category', groupCustomerApi);
+>(GROUP_CUSTOMER_KEY, groupCustomerApi);

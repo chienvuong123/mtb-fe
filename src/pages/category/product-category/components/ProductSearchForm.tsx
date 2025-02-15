@@ -3,11 +3,13 @@ import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, type FC } from 'react';
 import type { TProductSearchForm } from '@dtos';
+import { STATUS_OPTIONS } from '@constants/masterData';
 
 interface IProductSearchForm {
   initialValues?: TProductSearchForm;
   onSearch: (values: TProductSearchForm) => void;
   onClearAll?: () => void;
+  onCreate?: () => void;
 }
 
 const items: TFormItem[] = [
@@ -23,12 +25,22 @@ const items: TFormItem[] = [
     name: 'name',
     inputProps: { placeholder: 'Nhập...', maxLength: 100 },
   },
+  {
+    type: INPUT_TYPE.SELECT,
+    label: 'Trạng thái',
+    name: 'status',
+    inputProps: {
+      options: STATUS_OPTIONS,
+      allowClear: false,
+    },
+  },
 ];
 
 const ProductSearchForm: FC<IProductSearchForm> = ({
   initialValues,
   onSearch,
   onClearAll,
+  onCreate,
 }) => {
   const [form] = useForm();
 
@@ -45,6 +57,7 @@ const ProductSearchForm: FC<IProductSearchForm> = ({
         form={form}
         onSearch={onSearch}
         onClearAll={onClearAll}
+        onCreate={onCreate}
       />
     </div>
   );

@@ -47,3 +47,8 @@ export { ReactComponent as PlusIcon } from './plus.svg';
 export { ReactComponent as HelpCircleIcon } from './help-circle.svg';
 export { ReactComponent as LogoutIcon } from './log-out.svg';
 export { ReactComponent as ControlImageIcon } from './control-image.svg';
+export { ReactComponent as ExportIcon } from './export.svg';
+export { ReactComponent as ImportIcon } from './import.svg';
+export { ReactComponent as UploadCloudIcon } from './upload-cloud.svg';
+export { ReactComponent as SheetIcon } from './sheet-icon.svg';
+export { ReactComponent as UserGroupIcon } from './user-group.svg';
