@@ -8,9 +8,17 @@ import type {
   DatePickerProps,
   TimePickerProps,
   Input,
+  FormInstance,
 } from 'antd';
 import type { GetProps } from 'antd/lib';
 import type { TextAreaProps } from 'antd/lib/input';
+
+export type TFormType = 'add' | 'edit' | 'view';
+export interface IFormType<T, Init = T> {
+  mode: TFormType;
+  form: FormInstance<T>;
+  initialValues?: Partial<Init> | null;
+}
 
 export enum INPUT_TYPE {
   TEXT,

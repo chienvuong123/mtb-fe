@@ -4,7 +4,7 @@ import { useForm, useWatch } from 'antd/es/form/Form';
 import { useEffect, type FC, useMemo } from 'react';
 import type { CustomerDTO } from '@dtos';
 
-interface ICustomerListSearchForm {
+interface ICustomerSearchForm {
   initialValues: CustomerDTO;
   onSearch: (values: object) => void;
   onClearAll?: () => void;
@@ -12,7 +12,7 @@ interface ICustomerListSearchForm {
   onCreate: (values: CustomerDTO) => void;
 }
 
-const CustomerListSearchForm: FC<ICustomerListSearchForm> = ({
+const CustomerSearchForm: FC<ICustomerSearchForm> = ({
   initialValues,
   onSearch,
   onClearAll,
@@ -182,4 +182,4 @@ const CustomerListSearchForm: FC<ICustomerListSearchForm> = ({
   );
 };
 
-export default CustomerListSearchForm;
+export default CustomerSearchForm;

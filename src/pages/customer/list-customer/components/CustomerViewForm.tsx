@@ -5,19 +5,15 @@ import { CUSTOMER_KEY } from '@hooks/queries';
 import type { ICustomerForm, TCustomerForm } from '../customer.type';
 import { useCustomerForm } from '../hooks';
 
-const CustomerAddForm: FC<ICustomerForm> = ({
-  onClose,
-  onSubmit,
+const CustomerAddForm: FC<Pick<ICustomerForm, 'initialValues' | 'onClose'>> = ({
   initialValues,
-  mode,
+  onClose,
 }) => {
   const [form] = useForm();
-  const { formItems, handleSubmit, handleClose } = useCustomerForm({
-    mode,
+  const { formItems } = useCustomerForm({
+    mode: 'view',
     initialValues,
     form,
-    onSubmit,
-    onClose,
   });
 
   return (
@@ -25,8 +21,7 @@ const CustomerAddForm: FC<ICustomerForm> = ({
       mutationKey={CUSTOMER_KEY}
       items={formItems}
       form={form}
-      onSubmit={handleSubmit}
-      onClose={handleClose}
+      onClose={onClose}
     />
   );
 };

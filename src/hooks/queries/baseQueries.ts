@@ -70,8 +70,10 @@ export const createBaseQueryHooks = <
     const queryClient = useQueryClient();
 
     return useMutation({
+      mutationKey: [baseKey],
       mutationFn: (data: Partial<T>) => api.add(data),
       onSuccess: (dataSuccess: BaseResponse<boolean>) => {
+        if (dataSuccess.errorCode !== '0') return;
         onInvalidate?.(dataSuccess);
         queryClient.invalidateQueries({
           queryKey: queryKeys.list,
@@ -90,8 +92,10 @@ export const createBaseQueryHooks = <
     const queryClient = useQueryClient();
 
     return useMutation({
+      mutationKey: [baseKey],
       mutationFn: (data: Partial<T>) => api.edit(data),
       onSuccess: (dataSuccess: BaseResponse<boolean>) => {
+        if (dataSuccess.errorCode !== '0') return;
         onInvalidate?.(dataSuccess);
         queryClient.invalidateQueries({
           queryKey: queryKeys.list,
@@ -110,8 +114,10 @@ export const createBaseQueryHooks = <
     const queryClient = useQueryClient();
 
     return useMutation({
+      mutationKey: [baseKey],
       mutationFn: (data: { id: string }) => api.remove(data.id),
-      onSuccess: () => {
+      onSuccess: (dataSuccess: BaseResponse<boolean>) => {
+        if (dataSuccess.errorCode !== '0') return;
         onInvalidate?.();
         queryClient.invalidateQueries({
           queryKey: queryKeys.list,

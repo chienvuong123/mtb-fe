@@ -1,5 +1,7 @@
+import type { TDrawerMsg } from '@components/organisms';
 import type { BaseResponse, CustomerDTO } from '@dtos';
 import type { FormInstance } from 'antd';
+import type { Dispatch, SetStateAction } from 'react';
 
 const customerError = {
   CUS0003: 'code',
@@ -64,14 +66,15 @@ export const destructCustomerData = (
         job,
         categoryName,
         campaignName,
-        hobbies: JSON.stringify(hobbies),
-        identification: JSON.stringify(identification),
+        hobbies,
+        identification,
       };
 };
 
 export const validateInsertCustomer = (
   { errorCode, errorDesc }: BaseResponse<boolean>,
   form: FormInstance,
+  setMsg: Dispatch<SetStateAction<TDrawerMsg>>,
   callback: () => void,
 ) => {
   if (errorCode === '0') {
@@ -81,5 +84,8 @@ export const validateInsertCustomer = (
   const fieldError = customerError[errorCode as keyof typeof customerError];
   if (fieldError) {
     form.setFields([{ name: fieldError, errors: [errorDesc] }]);
+    setMsg({ type: 'error', message: errorDesc });
+    return;
   }
+  setMsg({ type: 'error', message: 'Đã xảy ra lỗi!' });
 };

@@ -83,6 +83,7 @@ const CustomerGroupForm: FC<ICustomerGroupForm> = ({
   return (
     <div>
       <OBaseForm<CustomerDTO>
+        mutationKey=""
         items={formItems}
         form={form}
         onSubmit={onSubmit}

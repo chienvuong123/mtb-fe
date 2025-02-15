@@ -6,6 +6,8 @@ import type {
 } from '@dtos';
 import { createBaseQueryHooks } from './baseQueries';
 
+export const MEDIA_CATEGORY_KEY = 'media-category';
+
 export const {
   useSearchQuery: useMediaCategorySearchQuery,
   useViewQuery: useMediaCategoryViewQuery,
@@ -16,4 +18,4 @@ export const {
   CategoryDTO,
   CategorySearchRequest,
   CategorySearchResponse
->('media-category', categoryApi);
+>(MEDIA_CATEGORY_KEY, categoryApi);

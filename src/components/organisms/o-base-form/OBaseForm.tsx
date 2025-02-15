@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import clsx from 'clsx';
 
 import './styles.scss';
+import useDebouncedMutating from '@hooks/useDebounceMutating';
 
 const BUTTON_TEXT = {
   CANCEL: 'Hủy',
@@ -16,10 +17,12 @@ const BUTTON_TEXT = {
 interface IOBaseForm<T> {
   items: TFormItem[];
   form: FormInstance<T>;
-  onSubmit: (values: T) => void;
+  onSubmit?: (values: T) => void;
   onClose?: () => void;
   className?: string;
   isViewMode?: boolean;
+  mutationKey: string;
+  disabledSubmit?: boolean;
 }
 
 const OBaseForm = <T extends object>({
@@ -29,7 +32,11 @@ const OBaseForm = <T extends object>({
   onClose,
   className,
   isViewMode,
+  mutationKey,
+  disabledSubmit,
 }: IOBaseForm<T>) => {
+  const isMutating = useDebouncedMutating({ mutationKey: [mutationKey] });
+
   const transformItems = useMemo(
     () =>
       items.map(({ label, colProps, ...others }) => ({
@@ -54,7 +61,7 @@ const OBaseForm = <T extends object>({
   };
 
   const handleSubmit = (values: T) => {
-    onSubmit(trimObjectValues(values));
+    onSubmit?.(trimObjectValues(values));
   };
 
   return (
@@ -85,6 +92,7 @@ const OBaseForm = <T extends object>({
               type="primary"
               htmlType="submit"
               data-testid="submit-button"
+              disabled={disabledSubmit ?? isMutating}
             >
               {BUTTON_TEXT.SAVE}
             </AButton>
