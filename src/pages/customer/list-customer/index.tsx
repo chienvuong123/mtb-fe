@@ -1,5 +1,5 @@
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import { Drawer, Flex, type FormInstance } from 'antd';
+import { Flex, type FormInstance } from 'antd';
 import { type FC, useState, useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
 import { type CustomerDTO } from '@dtos';
@@ -13,19 +13,24 @@ import {
   useCustomerAddMutation,
   useCustomerEditMutation,
   useCustomerRemoveMutation,
+  useCustomerDownloadTemplete,
 } from '@hooks/queries';
 import type { SortOrder } from 'antd/es/table/interface';
 import { AButton } from '@components/atoms';
 import { ExportIcon, ImportIcon, UserGroupIcon } from '@assets/icons';
 import { OUploadPopup } from '@components/organisms/o-upload-popup';
 import useUrlParams from '@hooks/useUrlParams';
-import CustomerListSearchForm from './components/CustomerListSearchForm';
-import CustomerListTable, {
-  type TCustomerRecord,
-} from './components/CustomerListTable';
-import CustomerForm from './components/CustomerForm';
+
+import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import CustomerGroupForm from '../group-customer/components/CustomerGroupForm';
 import { destructCustomerData, validateInsertCustomer } from './customerHelper';
+import {
+  CustomerForm,
+  CustomerListTable,
+  CustomerSearchForm,
+  CustomerViewForm,
+} from './components';
+import type { TCustomerRecord } from './customer.type';
 
 type TDrawerMode = 'group' | 'list' | false;
 
@@ -41,6 +46,8 @@ const ListCustomerPage: FC = () => {
     null,
   );
   const [showExport, setShowImport] = useState<boolean>(false);
+
+  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
 
   const {
     pagination: { current, pageSize },
@@ -70,7 +77,8 @@ const ListCustomerPage: FC = () => {
     }, 100);
   };
 
-  const handleReset = () => {
+  const handleReset = (msg: TDrawerMsg) => {
+    setAlertMessage(msg);
     handleCloseForm();
     setInitValues(null);
   };
@@ -78,6 +86,7 @@ const ListCustomerPage: FC = () => {
   const { mutate: mutationCreateCustomer } = useCustomerAddMutation();
   const { mutate: mutationUpdateCustomer } = useCustomerEditMutation();
   const { mutate: mutationDeleteCustomer } = useCustomerRemoveMutation();
+  const { refetch: downloadTemplate } = useCustomerDownloadTemplete();
 
   const handleOpenDrawer = () => {
     setDrawerWidth(DRAWER_WIDTH.list);
@@ -117,21 +126,43 @@ const ListCustomerPage: FC = () => {
       mutationUpdateCustomer(
         { ...dData, id: initValues.id },
         {
-          onSuccess: (d) => validateInsertCustomer(d, form, handleReset),
+          onSuccess: (d) =>
+            validateInsertCustomer(d, form, setAlertMessage, () =>
+              handleReset({
+                type: 'success',
+                message: 'Cập nhật khách hàng thành công!',
+              }),
+            ),
         },
       );
       return;
     }
     // create new customer group
     mutationCreateCustomer(dData, {
-      onSuccess: (d) => validateInsertCustomer(d, form, handleReset),
+      onSuccess: (d) =>
+        validateInsertCustomer(d, form, setAlertMessage, () =>
+          handleReset({
+            type: 'success',
+            message: 'Tạo mới khách hàng thành công!',
+          }),
+        ),
     });
   };
 
   const handleSubmitInsertCustomerGroup = () => {};
 
   const handleDelete = (id: string) => {
-    mutationDeleteCustomer({ id });
+    mutationDeleteCustomer(
+      { id },
+      {
+        onSuccess: () => {
+          setAlertMessage({
+            message: 'Xoá khách hàng thành công!',
+            type: 'success',
+          });
+        },
+      },
+    );
   };
 
   const paginations: IMPagination = {
@@ -187,6 +218,25 @@ const ListCustomerPage: FC = () => {
     return title.replace('$', 'Tạo mới');
   }, [initValues?.id, isViewMode, drawerMode]);
 
+  const getFormContent = () => {
+    const props = { initialValues: initValues, onClose: handleCloseForm };
+    if (drawerWidth === DRAWER_WIDTH.group)
+      return (
+        <CustomerGroupForm
+          {...props}
+          onSubmit={handleSubmitInsertCustomerGroup}
+        />
+      );
+    if (isViewMode) return <CustomerViewForm {...props} />;
+    return (
+      <CustomerForm
+        {...props}
+        mode={initValues?.id ? 'edit' : 'add'}
+        onSubmit={handleSubmitInsert}
+      />
+    );
+  };
+
   return (
     <div className="pt-32">
       <OUploadPopup
@@ -198,9 +248,7 @@ const ListCustomerPage: FC = () => {
         onSubmit={(file) => {
           console.log(file);
         }}
-        onDowloadEg={() => {
-          console.log('dowload clicked');
-        }}
+        onDowloadEg={downloadTemplate}
       />
 
       <Flex justify="space-between" className="mb-14">
@@ -233,7 +281,7 @@ const ListCustomerPage: FC = () => {
         </Flex>
       </Flex>
 
-      <CustomerListSearchForm
+      <CustomerSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
         initialValues={{ ...(filters as CustomerDTO) }}
@@ -252,29 +300,18 @@ const ListCustomerPage: FC = () => {
         onSort={handleSort}
       />
 
-      <Drawer
+      <ODrawer
         title={getDrawerTitle}
         onClose={handleCloseForm}
         open={!!drawerMode}
         width={drawerWidth}
-        maskClosable={false}
-        classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
+        alertProps={{
+          ...alertMessage,
+          setMessage: setAlertMessage,
+        }}
       >
-        {drawerWidth === DRAWER_WIDTH.group ? (
-          <CustomerGroupForm
-            onClose={handleCloseForm}
-            initialValues={initValues}
-            onSubmit={handleSubmitInsertCustomerGroup}
-          />
-        ) : (
-          <CustomerForm
-            isViewMode={isViewMode}
-            onClose={handleCloseForm}
-            initialValues={initValues}
-            onSubmit={handleSubmitInsert}
-          />
-        )}
-      </Drawer>
+        {getFormContent()}
+      </ODrawer>
     </div>
   );
 };

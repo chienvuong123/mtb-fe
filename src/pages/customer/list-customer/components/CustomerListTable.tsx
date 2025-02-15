@@ -1,21 +1,9 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import type { IModalConfirm } from '@components/organisms/o-modal/OModalConfirm';
-import type { CustomerDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC, type Key } from 'react';
-
-export type TCustomerRecord = TTableKey & Partial<CustomerDTO>;
-
-interface IProductTable {
-  dataSource: TCustomerRecord[];
-  paginations: IMPagination;
-  onEdit: ITable<TCustomerRecord>['onEdit'];
-  onDelete: (id: string) => void;
-  onView: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-}
+import type { ICustomerTable, TCustomerRecord } from '../customer.type';
 
 const columns: ColumnType<TCustomerRecord>[] = [
   {
@@ -88,7 +76,7 @@ const confirmProps: IModalConfirm = {
   title: 'Xoá khách hàng',
 };
 
-const CustomerListTable: FC<IProductTable> = ({
+const CustomerListTable: FC<ICustomerTable> = ({
   dataSource,
   paginations,
   onEdit,

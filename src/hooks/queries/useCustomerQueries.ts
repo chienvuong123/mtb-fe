@@ -1,6 +1,9 @@
 import type { CustomerDTO, CustomerSearchRequest } from '@dtos';
 import { customerApi } from '@apis';
+import { useQuery } from '@tanstack/react-query';
 import { createBaseQueryHooks } from './baseQueries';
+
+export const CUSTOMER_KEY = 'customer-list';
 
 export const {
   useSearchQuery: useCustomerSearchQuery,
@@ -9,8 +12,14 @@ export const {
   useEditMutation: useCustomerEditMutation,
   useRemoveMutation: useCustomerRemoveMutation,
 } = createBaseQueryHooks<CustomerDTO, CustomerSearchRequest>(
-  'customer-list',
+  CUSTOMER_KEY,
   customerApi,
 );
 
-// define other queries
+export const useCustomerDownloadTemplete = () => {
+  return useQuery({
+    queryKey: [CUSTOMER_KEY, 'template'],
+    queryFn: () => customerApi.downloadTemplate(),
+    enabled: false,
+  });
+};

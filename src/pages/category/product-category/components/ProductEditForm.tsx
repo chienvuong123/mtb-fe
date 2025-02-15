@@ -1,6 +1,7 @@
 import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import type { ProductCategoryDTO } from '@dtos';
+import { PRODUCT_CATEGORY_KEY } from '@hooks/queries';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
@@ -94,6 +95,7 @@ const ProductEditForm: FC<IProductEditForm> = ({
   return (
     <div>
       <OBaseForm<ProductCategoryDTO>
+        mutationKey={PRODUCT_CATEGORY_KEY}
         items={formItems}
         form={form}
         onSubmit={onSubmit}

@@ -6,7 +6,6 @@ import {
   type ProductCategoryDTO,
   type TProductSearchForm,
 } from '@dtos';
-import { Drawer } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState, type FC } from 'react';
@@ -26,15 +25,18 @@ import useUrlParams from '@hooks/useUrlParams';
 import { useUserStore } from '@stores';
 import { filterObject } from '@utils/objectHelper';
 import type { SortOrder } from 'antd/es/table/interface';
-import ProductEditForm from './components/ProductEditForm';
-import ProductInsertForm from './components/ProductInsertForm';
-import ProductSearchForm from './components/ProductSearchForm';
-import ProductTable, { type TProductRecord } from './components/ProductTable';
 import './index.scss';
+import { ODrawer } from '@components/organisms';
+import type { TFormType } from '@types';
+import {
+  ProductEditForm,
+  ProductInsertForm,
+  ProductSearchForm,
+  ProductTable,
+  type TProductRecord,
+} from './components';
 
 const ProductCategoryPage: FC = () => {
-  const [showInsertForm, setShowInsertForm] = useState<boolean>(false);
-  const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const [initValuesInsertForm, setInitValuesInsertForm] =
     useState<Partial<TProductRecord> | null>(null);
   const [initValuesEditForm, setInitValuesEditForm] =
@@ -49,7 +51,7 @@ const ProductCategoryPage: FC = () => {
     setFilters,
   } = useUrlParams<Partial<ProductCategoryDTO>>();
 
-  const [isViewMode, setIsViewMode] = useState(false);
+  const [drawerMode, setDrawerMode] = useState<TFormType>();
 
   const { user } = useUserStore();
 
@@ -78,9 +80,7 @@ const ProductCategoryPage: FC = () => {
   });
 
   const handleCloseForm = () => {
-    setShowInsertForm(false);
-    setShowEditForm(false);
-    setIsViewMode(false);
+    setDrawerMode(undefined);
   };
 
   const handleShowMessage = (
@@ -128,7 +128,7 @@ const ProductCategoryPage: FC = () => {
       updatedDate: dayjs().format(DATE_SLASH_FORMAT),
       createdBy: user?.username,
     });
-    setShowInsertForm(true);
+    setDrawerMode('add');
   };
 
   const handleEdit = (data: TProductRecord) => {
@@ -137,7 +137,7 @@ const ProductCategoryPage: FC = () => {
       createdDate: dayjs(data.createdDate).format(DATE_SLASH_FORMAT),
       updatedDate: dayjs().format(DATE_SLASH_FORMAT),
     });
-    setShowEditForm(true);
+    setDrawerMode('edit');
   };
 
   const handleSearch = ({ code, name, status }: TProductSearchForm) => {
@@ -206,7 +206,7 @@ const ProductCategoryPage: FC = () => {
   const handleView = (id: string) => {
     const item = productRes?.data.content.find((i) => i.id === id);
     if (item) {
-      setIsViewMode(true);
+      setDrawerMode('view');
       setInitValuesEditForm({ ...item });
     }
   };
@@ -218,13 +218,6 @@ const ProductCategoryPage: FC = () => {
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
     });
   };
-
-  const getDrawerTitle = useMemo(() => {
-    const title = '$ danh mục product';
-    if (isViewMode) return title.replace('$', 'Chi tiết');
-    if (initValuesEditForm?.id) return title.replace('$', 'Chỉnh sửa');
-    return title.replace('$', 'Tạo mới');
-  }, [initValuesEditForm?.id, isViewMode]);
 
   useEffect(() => {
     if (!isLoading && !productRes?.data?.content.length && current > 1) {
@@ -271,30 +264,29 @@ const ProductCategoryPage: FC = () => {
         onSort={handleSort}
       />
 
-      <Drawer
-        title={getDrawerTitle}
+      <ODrawer
+        usePrefixTitle
+        title="danh mục product"
+        mode={drawerMode}
         onClose={handleCloseForm}
-        open={showInsertForm || showEditForm || isViewMode}
+        open={!!drawerMode}
         width={1025}
-        maskClosable={false}
-        classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
       >
-        {showInsertForm && (
+        {drawerMode === 'add' ? (
           <ProductInsertForm
             onClose={handleCloseForm}
             initialValues={initValuesInsertForm}
             onSubmit={handleSubmitInsert}
           />
-        )}
-        {(showEditForm || isViewMode) && (
+        ) : (
           <ProductEditForm
-            isViewMode={isViewMode}
+            isViewMode={drawerMode === 'view'}
             onClose={handleCloseForm}
             initialValues={initValuesEditForm}
             onSubmit={handleSubmitEdit}
           />
         )}
-      </Drawer>
+      </ODrawer>
     </div>
   );
 };
