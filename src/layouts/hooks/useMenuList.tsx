@@ -67,6 +67,10 @@ const useMenuList = (onLogout?: () => void) => {
             key: `${CUSTOMER.ROOT}/${CUSTOMER.CUSTOMER_GROUP_CAMPAIGN_LIST}`,
             label: 'Danh sách nhóm khách hàng theo Campaign',
           },
+          {
+            key: `${CUSTOMER.ROOT}/customer-1234`,
+            label: 'Chi tiết (CSKH)',
+          },
         ],
       },
       {
