@@ -12,15 +12,6 @@ export interface ApproachPlanDTO extends BaseEntity {
   scenario?: ScenarioDTO;
   campaignId?: string;
 }
-
-export interface ApproachPlanAddRequest extends Partial<ApproachPlanDTO> {
-  reqNo: string;
-}
-
-export interface ApproachPlanEditRequest extends Partial<ApproachPlanDTO> {
-  reqNo: string;
-}
-
 export interface ApproachPlanSearchRequest extends BaseSearchParams {
   code?: string;
   method?: string;
