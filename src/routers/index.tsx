@@ -16,6 +16,7 @@ import {
   LOGIN,
   OTP,
   SALES_OPPORTUNITIES,
+  SCENARIO,
   SETTING,
 } from './path';
 
@@ -96,6 +97,15 @@ const routes = createBrowserRouter(
         },
         {
           path: CUSTOMER.ROOT,
+          element: (
+            <RoleBasedGuard
+              accessibleRoles={[
+                ERole.ADMIN,
+                ERole.CAMPAIGN_MANAGER,
+                ERole.SELLER,
+              ]}
+            />
+          ),
           children: [
             {
               path: CUSTOMER.CUSTOMER_CAMPAIGN_LIST,
@@ -103,10 +113,55 @@ const routes = createBrowserRouter(
                 () => import('@pages/customer/list-customer'),
               ),
             },
+
             {
               path: CUSTOMER.CUSTOMER_GROUP_CAMPAIGN_LIST,
               element: createLazyElement(
                 () => import('@pages/customer/group-customer'),
+              ),
+            },
+            {
+              path: CUSTOMER.DETAIL,
+              element: createLazyElement(
+                () => import('@pages/customer/detail'),
+              ),
+            },
+          ],
+        },
+        {
+          path: SCENARIO.ROOT,
+          element: <RoleBasedGuard accessibleRoles={[ERole.ADMIN]} />,
+          children: [
+            {
+              path: '',
+              element: createLazyElement(() => import('@pages/scenario')),
+            },
+            {
+              path: SCENARIO.CREATE,
+              element: createLazyElement(
+                () => import('@pages/scenario/create'),
+              ),
+            },
+            {
+              path: SCENARIO.DETAIL,
+              element: createLazyElement(
+                () => import('@pages/scenario/detail'),
+              ),
+            },
+          ],
+        },
+        {
+          path: SETTING.ROOT,
+          element: (
+            <RoleBasedGuard
+              accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
+            />
+          ),
+          children: [
+            {
+              path: SETTING.CONTROL,
+              element: createLazyElement(
+                () => import('@pages/setting/control'),
               ),
             },
           ],

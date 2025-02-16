@@ -111,7 +111,7 @@ const CustomerListSearchForm: FC<ICustomerListSearchForm> = ({
         },
         {
           type: INPUT_TYPE.SELECT,
-          label: 'Hạng khách hàng',
+          label: 'Phân khúc khách hàng',
           name: 'cusSegment',
           inputProps: {
             placeholder: 'Chọn...',

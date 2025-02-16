@@ -19,9 +19,10 @@ import {
   useCustomerSearchQuery,
 } from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
-import type { SortOrder } from 'antd/es/table/interface';
+import { filterObject } from '@utils/objectHelper';
 
 import { ODrawer, type TDrawerMsg } from '@components/organisms';
+import type { SortOrder } from 'antd/es/table/interface';
 import CustomerGroupForm from '../group-customer/components/CustomerGroupForm';
 import {
   CustomerForm,
@@ -30,7 +31,12 @@ import {
   CustomerViewForm,
 } from './components';
 import type { TCustomerRecord } from './customer.type';
-import { destructCustomerData, validateInsertCustomer } from './customerHelper';
+import {
+  destructCustomerData,
+  parseCustomerObj,
+  stringifyCustomerObj,
+  validateInsertCustomer,
+} from './customerHelper';
 
 type TDrawerMode = 'group' | 'list' | false;
 
@@ -66,7 +72,7 @@ const ListCustomerPage: FC = () => {
       pageSize: Number(pageSize),
     },
     order: sort,
-    ...destructCustomerData(filters, true),
+    ...filterObject(destructCustomerData(filters, true)),
   });
 
   const handleCloseForm = () => {
@@ -109,9 +115,9 @@ const ListCustomerPage: FC = () => {
     handleOpenDrawer();
   };
 
-  const handleSearch = (obj: object) => {
+  const handleSearch = (values: Partial<CustomerDTO>) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters(obj);
+    setFilters(filterObject(stringifyCustomerObj(values)));
   };
   const handlePaginationChange = (data: TPagination) => {
     setPagination(data);
@@ -121,7 +127,7 @@ const ListCustomerPage: FC = () => {
     form: FormInstance,
   ) => {
     const dData = destructCustomerData(data);
-    // update customer group
+    // update customer
     if (initValues?.id) {
       mutationUpdateCustomer(
         { ...dData, id: initValues.id },
@@ -130,20 +136,20 @@ const ListCustomerPage: FC = () => {
             validateInsertCustomer(d, form, setAlertMessage, () =>
               handleReset({
                 type: 'success',
-                message: 'Cập nhật khách hàng thành công!',
+                message: 'Cập nhật thông tin thành công',
               }),
             ),
         },
       );
       return;
     }
-    // create new customer group
+    // create new customer
     mutationCreateCustomer(dData, {
       onSuccess: (d) =>
         validateInsertCustomer(d, form, setAlertMessage, () =>
           handleReset({
             type: 'success',
-            message: 'Tạo mới khách hàng thành công!',
+            message: 'Tạo mới thành công',
           }),
         ),
     });
@@ -157,7 +163,7 @@ const ListCustomerPage: FC = () => {
       {
         onSuccess: () => {
           setAlertMessage({
-            message: 'Xoá khách hàng thành công!',
+            message: 'Xoá khách hàng thành công',
             type: 'success',
           });
         },
@@ -188,7 +194,7 @@ const ListCustomerPage: FC = () => {
 
   const handleClearAll = () => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({ code: undefined, name: undefined });
+    setFilters({});
   };
 
   const handleView = (id: string) => {
@@ -284,7 +290,7 @@ const ListCustomerPage: FC = () => {
       <CustomerSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
-        initialValues={{ ...(filters as CustomerDTO) }}
+        initialValues={parseCustomerObj(filters)}
         onCreate={handleCreate}
         onDeleteAll={() => {
           console.log('delete all');

@@ -24,6 +24,7 @@ import {
   type TOTPProps,
   type TPasswordProps,
 } from '@types';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 
 interface IFormItemsProps {
   formItems?: TFormItem[];
@@ -61,11 +62,13 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
   [INPUT_TYPE.DATE_PICKER]: ({
     className,
     size = 'large',
+    format = DATE_SLASH_FORMAT_DDMMYYYY,
     ...props
   }: GetProps<typeof DatePicker> & { className?: string }) => (
     <DatePicker
       className={clsx('w-full h-40', className)}
       size={size}
+      format={format}
       {...props}
     />
   ),

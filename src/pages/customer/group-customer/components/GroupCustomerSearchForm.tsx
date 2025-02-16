@@ -32,6 +32,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       label: 'Mã Category',
       name: 'categoryId',
       inputProps: {
+        // TODO
         options: listMasterData.campaign.map((item) => ({
           label: item.code,
           value: item.code,
@@ -45,6 +46,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       label: 'Tên Category',
       name: 'nameCategory',
       inputProps: {
+        // TODO
         options: listMasterData.campaign.map((item) => ({
           label: item.name,
           value: item.name,
@@ -57,6 +59,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       label: 'Mã campaign',
       name: 'campaignId',
       inputProps: {
+        // TODO
         options: listMasterData.campaign.map((item) => ({
           label: item.code,
           value: item.code,
@@ -69,6 +72,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       label: 'Tên campaign',
       name: 'nameCampaign',
       inputProps: {
+        // TODO
         options: listMasterData.campaign.map((item) => ({
           label: item.name,
           value: item.name,
