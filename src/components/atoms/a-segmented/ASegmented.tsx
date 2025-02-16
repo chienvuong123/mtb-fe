@@ -8,7 +8,7 @@ interface IASegmented extends SegmentedProps {
 }
 
 const ASegmented: React.FC<IASegmented> = ({ className, ...props }) => {
-  const classAntd = clsx('', className);
+  const classAntd = clsx('a-segmented', className);
 
   return <Segmented className={classAntd} {...props} />;
 };

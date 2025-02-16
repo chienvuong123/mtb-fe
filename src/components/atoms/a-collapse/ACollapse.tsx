@@ -8,7 +8,7 @@ interface IACollapse extends CollapseProps {
 }
 
 const ACollapse: React.FC<IACollapse> = ({ className, ...props }) => {
-  const classAntd = clsx('', className);
+  const classAntd = clsx('a-collapse', className);
 
   return <Collapse className={classAntd} {...props} />;
 };
