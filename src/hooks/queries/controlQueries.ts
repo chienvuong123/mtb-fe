@@ -9,6 +9,6 @@ export const {
   useEditMutation: useControlEditMutation,
   useRemoveMutation: useControlRemoveMutation,
 } = createBaseQueryHooks<ControlDTO, ControlSearchRequest>(
-  'Controls',
+  'controls',
   controlApi,
 );

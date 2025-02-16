@@ -12,14 +12,6 @@ export interface ControlDTO extends BaseEntity {
   controlType: EControlType;
 }
 
-export interface ControlAddRequest extends Partial<ControlDTO> {
-  reqNo: string;
-}
-
-export interface ControlEditRequest extends Partial<ControlDTO> {
-  reqNo: string;
-}
-
 export interface ControlSearchRequest extends BaseSearchParams {
   code?: string;
   name?: string;

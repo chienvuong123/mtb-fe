@@ -187,6 +187,15 @@ const theme: ThemeConfig = {
     DatePicker: {
       fontSizeLG: 14,
     },
+    Segmented: {
+      itemActiveBg: color.cbg1,
+      itemSelectedBg: color.cbg1,
+      itemHoverBg: color.cbg1,
+      itemColor: color.primary,
+      itemSelectedColor: color.primary,
+      trackBg: color.ctWhite500,
+      trackPadding: 4,
+    },
   },
 };
 

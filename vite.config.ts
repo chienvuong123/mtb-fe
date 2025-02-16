@@ -31,6 +31,7 @@ export default defineConfig({
       '@dtos': resolve(__dirname, './src/dtos/'),
       '@apis': resolve(__dirname, './src/apis/'),
       '@stores': resolve(__dirname, './src/stores/'),
+      '@mocks': resolve(__dirname, './src/mocks/'),
     },
   },
   css: {

@@ -1,20 +1,24 @@
+import { ERole } from '@constants/masterData';
 import LayoutWrapper from '@layouts/LayoutWrapper';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+import AuthGuard from './guards/AuthGuard';
+import GuestGuard from './guards/GuestGuard';
+import RoleBasedGuard from './guards/RoleBasedGuard';
+import VerifyGuard from './guards/VerifyGuard';
 import {
+  ACCOUNT,
   CATEGORY,
+  CONFIRM_PASSWORD,
+  CUSTOMER,
   EXAMPLE,
   FORGOT_PASSWORD,
   LOGIN,
   OTP,
-  CONFIRM_PASSWORD,
-  CUSTOMER,
-  ACCOUNT,
   SALES_OPPORTUNITIES,
+  SCENARIO,
+  SETTING,
 } from './path';
-import GuestGuard from './guards/GuestGuard';
-import AuthGuard from './guards/AuthGuard';
-import VerifyGuard from './guards/VerifyGuard';
 
 const createLazyElement = (
   importFn: () => Promise<{ default: React.ComponentType }>,
@@ -84,11 +88,64 @@ const routes = createBrowserRouter(
         },
         {
           path: CUSTOMER.ROOT,
+          element: (
+            <RoleBasedGuard
+              accessibleRoles={[
+                ERole.ADMIN,
+                ERole.CAMPAIGN_MANAGER,
+                ERole.SELLER,
+              ]}
+            />
+          ),
           children: [
             {
               path: CUSTOMER.CUSTOMER_CAMPAIGN_LIST,
               element: createLazyElement(
                 () => import('@pages/customer/list-customer'),
+              ),
+            },
+            {
+              path: CUSTOMER.DETAIL,
+              element: createLazyElement(
+                () => import('@pages/customer/detail'),
+              ),
+            },
+          ],
+        },
+        {
+          path: SCENARIO.ROOT,
+          element: <RoleBasedGuard accessibleRoles={[ERole.ADMIN]} />,
+          children: [
+            {
+              path: '',
+              element: createLazyElement(() => import('@pages/scenario')),
+            },
+            {
+              path: SCENARIO.CREATE,
+              element: createLazyElement(
+                () => import('@pages/scenario/create'),
+              ),
+            },
+            {
+              path: SCENARIO.DETAIL,
+              element: createLazyElement(
+                () => import('@pages/scenario/detail'),
+              ),
+            },
+          ],
+        },
+        {
+          path: SETTING.ROOT,
+          element: (
+            <RoleBasedGuard
+              accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
+            />
+          ),
+          children: [
+            {
+              path: SETTING.CONTROL,
+              element: createLazyElement(
+                () => import('@pages/setting/control'),
               ),
             },
           ],

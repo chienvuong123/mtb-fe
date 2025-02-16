@@ -1,0 +1,156 @@
+import { EControlType, EStatus } from '@constants/masterData';
+import type { AttributeDTO } from '@dtos';
+import { getRandomDate, getRandomUser } from './common';
+
+const mockAttributes: AttributeDTO[] = [
+  {
+    id: '1',
+    name: 'Text Input',
+    controlType: EControlType.TEXT,
+    content: `
+    Em chào anh/chị ABC ạ, em là Long gọi đến từ ngân hàng quân đội MBbank
+    Ngân hàng TMCP Quân Đội (MB) tiếp tục tung ra hàng loạt các ưu đãi lớn trong năm 2024 dành riêng cho chủ thẻ tín dụng MB VISA
+    Từ nay đến hết 31/12/2024, bạn sẽ được tận hưởng vô vàn trải nghiệm hấp dẫn với mức giá vô cùng ưu đãi khi sử dụng các sản phẩm, dịch vụ liên kết với MB. Khám phá ngay các chương trình ưu đãi khi chi tiêu trên thẻ tín dụng MB VISA để không bỏ lỡ cơ hội tối ưu chi phí!
+    Chương trình ưu đãi của MB áp dụng cho chủ sở hữu của tất cả các dòng thẻ như:  
+    - Thẻ đa năng MB HI VISA Collection
+    - Thẻ tín dụng quốc tế MB VISA Modern Youth
+    - Thẻ tín dụng quốc tế MB Priority
+    - Thẻ tín dụng quốc tế MB VISA Infinite
+    - Thẻ tín dụng quốc tế MB VISA
+`,
+    value: 'Sample text value',
+    createdDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedDate: getRandomDate(),
+    updatedBy: getRandomUser(),
+    status: '',
+  },
+  {
+    id: '2',
+    name: 'Checkbox Group',
+    controlType: EControlType.CHECKBOX,
+    content: 'Checkbox options',
+    value: ['option1', 'option2', 'option3'],
+    createdDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedDate: getRandomDate(),
+    updatedBy: getRandomUser(),
+    status: '',
+  },
+  {
+    id: '3',
+    name: 'Switch Toggle',
+    controlType: EControlType.SWITCH,
+    content: 'Switch description',
+    value: ['enable', 'disable'],
+    createdDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedDate: getRandomDate(),
+    updatedBy: getRandomUser(),
+    status: '',
+  },
+  {
+    id: '4',
+    name: 'Dropdown Select',
+    controlType: EControlType.SELECT,
+    content: 'Select an option',
+    value: ['option1', 'option2', 'option3'],
+    createdDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedDate: getRandomDate(),
+    updatedBy: getRandomUser(),
+    status: '',
+  },
+  {
+    id: '5',
+    name: 'Radio Group',
+    controlType: EControlType.RADIO,
+    content: 'Choose one option',
+    value: ['option1', 'option2', 'option3'],
+    createdDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedDate: getRandomDate(),
+    updatedBy: getRandomUser(),
+    status: '',
+  },
+  {
+    id: '6',
+    name: 'Date Picker',
+    controlType: EControlType.DATETIME,
+    content: 'Select a date',
+    value: '2024-01-01',
+    createdDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedDate: getRandomDate(),
+    updatedBy: getRandomUser(),
+    status: '',
+  },
+  {
+    id: '7',
+    name: 'Number Input',
+    controlType: EControlType.NUMBER,
+    content: 'Enter a number',
+    value: 42,
+    createdDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedDate: getRandomDate(),
+    updatedBy: getRandomUser(),
+    status: '',
+  },
+  {
+    id: '8',
+    name: 'Text Area',
+    controlType: EControlType.EDITOR,
+    content: 'Enter long text',
+    value: 'This is a sample long text input for the text area field.',
+    createdDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedDate: getRandomDate(),
+    updatedBy: getRandomUser(),
+    status: '',
+  },
+  {
+    id: '9',
+    name: 'Image Upload',
+    controlType: EControlType.IMAGE,
+    content: 'Upload an image',
+    value: { alt: 'Sample image', url: 'https://via.placeholder.com/150' },
+    createdDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedDate: getRandomDate(),
+    updatedBy: getRandomUser(),
+    status: '',
+  },
+  {
+    id: '10',
+    name: 'Link Button',
+    controlType: EControlType.LINK,
+    content: 'Click the button',
+    value: 'https://example.com',
+    createdDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedDate: getRandomDate(),
+    updatedBy: getRandomUser(),
+    status: '',
+  },
+];
+
+export const MOCK_SCENARIOS = Array.from({ length: 20 }, (_, index) => ({
+  id: `scenario-${index + 1}`,
+  name: `Scenario ${index + 1}`,
+  code: `SC-${index + 1}`,
+  description: `Description for scenario ${index + 1}`,
+  attributes: mockAttributes.map((attr) => ({
+    ...attr,
+    id: `${attr.id}-${index + 1}`,
+    createdDate: getRandomDate(),
+    updatedDate: getRandomDate(),
+    createdBy: getRandomUser(),
+    updatedBy: getRandomUser(),
+  })),
+  createdDate: getRandomDate(),
+  createdBy: getRandomUser(),
+  updatedDate: getRandomDate(),
+  updatedBy: getRandomUser(),
+  status: Math.random() > 0.5 ? EStatus.ACTIVE : EStatus.INACTIVE,
+}));
