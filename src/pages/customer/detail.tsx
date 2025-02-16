@@ -11,6 +11,7 @@ import CustomerApproachTable, {
 } from './components/CustomerApproachTable';
 import CustomerDetailForm from './components/CustomerDetailForm';
 import './index.scss';
+import CustomerApproachPreview from './components/CustomerApproachPreview';
 
 const CustomerDetailPage: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -53,10 +54,7 @@ const CustomerDetailPage: FC = () => {
       <Title level={3} className="mt-32 mb-16">
         Thông tin tiếp cận
       </Title>
-      <CustomerApproachTable
-        paginations={paginationProps}
-        dataSource={dataSources}
-      />
+      <CustomerApproachPreview data={MOCK_CUSTOMER_APPROACHES} />
     </div>
   );
 };

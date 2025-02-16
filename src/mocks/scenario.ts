@@ -7,7 +7,17 @@ const mockAttributes: AttributeDTO[] = [
     id: '1',
     name: 'Text Input',
     controlType: EControlType.TEXT,
-    content: 'Sample text content',
+    content: `
+    Em chào anh/chị ABC ạ, em là Long gọi đến từ ngân hàng quân đội MBbank
+    Ngân hàng TMCP Quân Đội (MB) tiếp tục tung ra hàng loạt các ưu đãi lớn trong năm 2024 dành riêng cho chủ thẻ tín dụng MB VISA
+    Từ nay đến hết 31/12/2024, bạn sẽ được tận hưởng vô vàn trải nghiệm hấp dẫn với mức giá vô cùng ưu đãi khi sử dụng các sản phẩm, dịch vụ liên kết với MB. Khám phá ngay các chương trình ưu đãi khi chi tiêu trên thẻ tín dụng MB VISA để không bỏ lỡ cơ hội tối ưu chi phí!
+    Chương trình ưu đãi của MB áp dụng cho chủ sở hữu của tất cả các dòng thẻ như:  
+    - Thẻ đa năng MB HI VISA Collection
+    - Thẻ tín dụng quốc tế MB VISA Modern Youth
+    - Thẻ tín dụng quốc tế MB Priority
+    - Thẻ tín dụng quốc tế MB VISA Infinite
+    - Thẻ tín dụng quốc tế MB VISA
+`,
     value: 'Sample text value',
     createdDate: getRandomDate(),
     createdBy: getRandomUser(),

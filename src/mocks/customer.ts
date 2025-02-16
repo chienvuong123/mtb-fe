@@ -108,18 +108,22 @@ export const MOCK_CUSTOMER_APPROACH: CustomerApproachDTO = {
   })),
 };
 
-const generateMockCustomerApproach = (id: string): CustomerApproachDTO => ({
-  ...MOCK_CUSTOMER_APPROACH,
-  id,
-  customer: MOCK_CUSTOMER,
-  createdDate: getRandomDate(),
-  updatedDate: getRandomDate(),
-});
-
-export const MOCK_CUSTOMER_APPROACHES: CustomerApproachDTO[] = [
-  generateMockCustomerApproach('1'),
-  generateMockCustomerApproach('2'),
-  generateMockCustomerApproach('3'),
-  generateMockCustomerApproach('4'),
-  generateMockCustomerApproach('5'),
-];
+export const MOCK_CUSTOMER_APPROACHES: CustomerApproachDTO[] =
+  MOCK_CAMPAIGN.approachPlans.map((approach) => ({
+    ...MOCK_CUSTOMER_APPROACH,
+    approachPlan: approach,
+    scenario: approach.scenario,
+    id: approach.id,
+    createdDate: getRandomDate(),
+    updatedDate: getRandomDate(),
+    result: approach.scenario?.attributes?.map((attr) => ({
+      attribute: attr,
+      value: 'Value',
+      id: '1',
+      createdBy: getRandomUser(),
+      createdDate: getRandomDate(),
+      updatedBy: getRandomUser(),
+      updatedDate: getRandomDate(),
+      status: EStatus.ACTIVE,
+    })),
+  }));

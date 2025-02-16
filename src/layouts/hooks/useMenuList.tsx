@@ -70,32 +70,6 @@ const useMenuList = (onLogout?: () => void) => {
         ],
       },
       {
-        key: CATEGORY.ROOT,
-        label: 'Quản lý danh mục',
-        icon: <FolderManagementIcon />,
-        children: [
-          {
-            key: `${CATEGORY.ROOT}/${CATEGORY.PRODUCT_CATEGORY}`,
-            label: 'Danh mục Product',
-          },
-          {
-            key: `${CATEGORY.ROOT}/${CATEGORY.MEDIA_CATEGORY}`,
-            label: 'Loại đa phương tiện',
-          },
-        ],
-      },
-      {
-        key: CUSTOMER.ROOT,
-        label: 'Quản lý khách hàng',
-        icon: <MuslimIcon />,
-        children: [
-          {
-            key: `${CUSTOMER.ROOT}/customer-1234`,
-            label: 'Chi tiết (CSKH)',
-          },
-        ],
-      },
-      {
         key: SCENARIO.ROOT,
         label: 'Quản lý kịch bản',
         icon: <Target02Icon />,
@@ -111,6 +85,21 @@ const useMenuList = (onLogout?: () => void) => {
           {
             key: `${SCENARIO.ROOT}/abcs-1234`,
             label: 'Chi tiết kịch bản',
+          },
+        ],
+      },
+      {
+        key: CATEGORY.ROOT,
+        label: 'Quản lý danh mục',
+        icon: <FolderManagementIcon />,
+        children: [
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.PRODUCT_CATEGORY}`,
+            label: 'Danh mục Product',
+          },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.MEDIA_CATEGORY}`,
+            label: 'Loại đa phương tiện',
           },
         ],
       },
