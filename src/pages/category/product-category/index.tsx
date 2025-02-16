@@ -10,7 +10,6 @@ import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState, type FC } from 'react';
 
-import { AAlert } from '@components/atoms';
 import type {
   IMPagination,
   TPagination,
@@ -25,8 +24,7 @@ import useUrlParams from '@hooks/useUrlParams';
 import { useUserStore } from '@stores';
 import { filterObject } from '@utils/objectHelper';
 import type { SortOrder } from 'antd/es/table/interface';
-import './index.scss';
-import { ODrawer } from '@components/organisms';
+import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import type { TFormType } from '@types';
 import {
   ProductEditForm,
@@ -35,6 +33,7 @@ import {
   ProductTable,
   type TProductRecord,
 } from './components';
+import { validateInsertCategory } from '../utils';
 
 const ProductCategoryPage: FC = () => {
   const [initValuesInsertForm, setInitValuesInsertForm] =
@@ -55,18 +54,7 @@ const ProductCategoryPage: FC = () => {
 
   const { user } = useUserStore();
 
-  const [visible, setVisible] = useState(false);
-  const [typeAlert, setTypeAlert] = useState<'success' | 'warning' | 'error'>(
-    'success',
-  );
-  const [message, setMessage] = useState<string>('');
-
-  const showAlert = () => {
-    setVisible(true);
-    setTimeout(() => {
-      setVisible(false);
-    }, 3000);
-  };
+  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
 
   const { data: productRes, isLoading } = useProductCategorySearchQuery({
     categoryType: CategoryType.PRODUCT,
@@ -83,41 +71,25 @@ const ProductCategoryPage: FC = () => {
     setDrawerMode(undefined);
   };
 
-  const handleShowMessage = (
-    dataSuccess?: BaseResponse<boolean>,
-    isEdit: boolean = false,
-  ) => {
-    if (!dataSuccess) return;
-
-    if (dataSuccess.data) {
-      setTypeAlert('success');
-      setMessage(isEdit ? 'Chỉnh sửa thành công' : 'Tạo mới thành công');
-    } else {
-      setTypeAlert('error');
-      setMessage(dataSuccess.errorDesc);
-    }
-    showAlert();
-  };
-
   const handleInvalidate = (
     data?: BaseResponse<boolean>,
     isEdit: boolean = false,
   ) => {
-    handleShowMessage(data, isEdit);
-    handleCloseForm();
-    setInitValuesEditForm(null);
-    setInitValuesInsertForm(null);
+    if (data)
+      validateInsertCategory(data, setAlertMessage, () => {
+        setAlertMessage({
+          message: `${isEdit ? 'Chỉnh sửa' : 'Tạo mới'} thành công`,
+          type: 'success',
+        });
+        handleCloseForm();
+        setInitValuesEditForm(null);
+        setInitValuesInsertForm(null);
+      });
   };
 
-  const { mutate: mutationCreateProducts } = useProductCategoryAddMutation(
-    {},
-    (data) => handleInvalidate(data),
-  );
-  const { mutate: mutationUpdateProducts } = useProductCategoryEditMutation(
-    {},
-    (data) => handleInvalidate(data, true),
-  );
-  const { mutate: mutationDeleteProducts } = useProductCategoryRemoveMutation();
+  const { mutate: mutationCreateProduct } = useProductCategoryAddMutation();
+  const { mutate: mutationUpdateProduct } = useProductCategoryEditMutation();
+  const { mutate: mutationDeleteProduct } = useProductCategoryRemoveMutation();
 
   const handleCreate = () => {
     setInitValuesInsertForm({
@@ -159,7 +131,9 @@ const ProductCategoryPage: FC = () => {
     };
 
     // create new product
-    mutationCreateProducts(data);
+    mutationCreateProduct(data, {
+      onSuccess: (resData) => handleInvalidate(resData),
+    });
   };
 
   const handleSubmitEdit = ({ name, code, status }: ProductCategoryDTO) => {
@@ -170,7 +144,9 @@ const ProductCategoryPage: FC = () => {
       status,
       id: initValuesEditForm?.id,
     };
-    mutationUpdateProducts(data);
+    mutationUpdateProduct(data, {
+      onSuccess: (resData) => handleInvalidate(resData, true),
+    });
   };
 
   const dataSources: TProductRecord[] =
@@ -184,7 +160,7 @@ const ProductCategoryPage: FC = () => {
     ) ?? [];
 
   const handleDelete = (id: string) => {
-    mutationDeleteProducts({ id });
+    mutationDeleteProduct({ id });
   };
 
   const paginations: IMPagination = {
@@ -234,15 +210,6 @@ const ProductCategoryPage: FC = () => {
       <Title level={3} className="mb-24">
         Danh mục Product
       </Title>
-      {visible && (
-        <AAlert
-          message={message}
-          type={typeAlert}
-          closable
-          onClose={() => setVisible(false)}
-          className={`alert-product ${typeAlert === 'success' ? 'alert-success' : ''} ${typeAlert === 'error' ? 'alert-error' : ''}`}
-        />
-      )}
       <ProductSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
@@ -271,6 +238,7 @@ const ProductCategoryPage: FC = () => {
         onClose={handleCloseForm}
         open={!!drawerMode}
         width={1025}
+        alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
         {drawerMode === 'add' ? (
           <ProductInsertForm

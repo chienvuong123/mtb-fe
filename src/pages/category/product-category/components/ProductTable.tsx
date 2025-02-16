@@ -3,6 +3,7 @@ import type { IMPagination } from '@components/molecules/m-pagination/MPaginatio
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
 import type { OrderDTO, ProductCategoryDTO } from '@dtos';
+import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC, type Key, type ReactNode } from 'react';
@@ -60,6 +61,7 @@ const columns: ColumnType<TProductRecord>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
+    render: (text) => formatDate(text),
   },
   {
     title: 'Người tạo',
@@ -74,6 +76,7 @@ const columns: ColumnType<TProductRecord>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
+    render: (text) => formatDate(text),
   },
   {
     title: 'Người cập nhật',

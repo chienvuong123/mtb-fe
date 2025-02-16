@@ -2,7 +2,7 @@ import { GENDER_OPTIONS } from '@constants/masterData';
 import { ALLOWED_VN_CHARACTERS_PARTERN } from '@constants/regex';
 import { Form } from 'antd';
 import type { CustomerDTO } from '@dtos';
-import { dayjsToString, stringToDayjs } from '@libs/dayjs';
+import { dayjsToString, stringToDayjs } from '@utils/dateHelper';
 import { INPUT_TYPE, type TFormItem, type IFormType } from '@types';
 import clsx from 'clsx';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -24,11 +24,10 @@ const useCustomerForm = ({
 
   const onSelectChange = useCallback(
     (fieldChange: keyof CustomerDTO, value: string) => {
-      // Logic xử lý sự thay đổi của select
       form.setFieldValue(fieldChange, value);
     },
     [form],
-  ); // Nếu cần dependencies, thêm vào mảng này
+  );
 
   const items = useMemo(
     () =>
