@@ -23,3 +23,11 @@ export const useCustomerDownloadTemplete = () => {
     enabled: false,
   });
 };
+
+export const useCustomerExport = (params: CustomerSearchRequest) => {
+  return useQuery({
+    queryKey: [CUSTOMER_KEY, 'export'],
+    queryFn: () => customerApi.export(params),
+    enabled: false,
+  });
+};

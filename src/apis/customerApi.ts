@@ -11,6 +11,16 @@ class CustomerApi extends BaseApi<CustomerDTO, CustomerSearchRequest> {
     return apiRequest({
       url: `${this.endpoint}/download-template`,
       method: 'GET',
+      responseType: 'blob',
+    });
+  }
+
+  async export(params: CustomerSearchRequest) {
+    return apiRequest({
+      url: `${this.endpoint}/export`,
+      method: 'GET',
+      params,
+      responseType: 'blob',
     });
   }
 }
