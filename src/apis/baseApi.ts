@@ -1,5 +1,5 @@
 import type { BaseResponse, BaseSearchParams, BaseSearchResponse } from '@dtos';
-import qs from 'qs';
+import { paramsSerializer } from '@utils/paramsHelper';
 import { apiRequest } from './apiClient';
 
 export class BaseApi<T, SearchParams extends BaseSearchParams> {
@@ -9,21 +9,12 @@ export class BaseApi<T, SearchParams extends BaseSearchParams> {
     this.endpoint = endpoint;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  protected paramsSerializer(params: Record<string, unknown>) {
-    return qs.stringify(params, {
-      arrayFormat: 'brackets', // Giữ nguyên định dạng với dấu []
-      encode: false, // Không mã hóa các tham số (giữ nguyên dấu .)
-      allowDots: true,
-    });
-  }
-
   async search(params: SearchParams) {
     return apiRequest<BaseResponse<BaseSearchResponse<T>>>({
       url: `${this.endpoint}/search`,
       method: 'GET',
       params,
-      paramsSerializer: this.paramsSerializer,
+      paramsSerializer,
     });
   }
 

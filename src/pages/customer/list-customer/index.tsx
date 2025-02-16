@@ -2,7 +2,7 @@ import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { Flex, type FormInstance } from 'antd';
 import { type FC, useState, useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
-import { type CustomerDTO } from '@dtos';
+import { type CustomerDTO, type CustomerSearchRequest } from '@dtos';
 
 import type {
   IMPagination,
@@ -14,6 +14,7 @@ import {
   useCustomerEditMutation,
   useCustomerRemoveMutation,
   useCustomerDownloadTemplete,
+  useCustomerExport,
 } from '@hooks/queries';
 import type { SortOrder } from 'antd/es/table/interface';
 import { AButton } from '@components/atoms';
@@ -26,6 +27,7 @@ import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import CustomerGroupForm from '../group-customer/components/CustomerGroupForm';
 import {
   destructCustomerData,
+  downloadFileByGetMethod,
   parseCustomerObj,
   stringifyCustomerObj,
   validateInsertCustomer,
@@ -66,14 +68,19 @@ const ListCustomerPage: FC = () => {
 
   const [isViewMode, setIsViewMode] = useState(false);
 
-  const { data: customerRes } = useCustomerSearchQuery({
-    page: {
-      pageNum: Number(current),
-      pageSize: Number(pageSize),
-    },
-    order: sort,
-    ...filterObject(destructCustomerData(filters, true)),
-  });
+  const searchParams: CustomerSearchRequest = useMemo(
+    () => ({
+      page: {
+        pageNum: Number(current),
+        pageSize: Number(pageSize),
+      },
+      order: sort,
+      ...filterObject(destructCustomerData(filters, true)),
+    }),
+    [current, pageSize, sort, filters],
+  );
+
+  const { data: customerRes } = useCustomerSearchQuery(searchParams);
 
   const handleCloseForm = () => {
     setDrawerMode(false);
@@ -93,6 +100,7 @@ const ListCustomerPage: FC = () => {
   const { mutate: mutationUpdateCustomer } = useCustomerEditMutation();
   const { mutate: mutationDeleteCustomer } = useCustomerRemoveMutation();
   const { refetch: downloadTemplate } = useCustomerDownloadTemplete();
+  const { refetch: customerExport } = useCustomerExport(searchParams);
 
   const handleOpenDrawer = () => {
     setDrawerWidth(DRAWER_WIDTH.list);
@@ -254,7 +262,9 @@ const ListCustomerPage: FC = () => {
         onSubmit={(file) => {
           console.log(file);
         }}
-        onDowloadEg={downloadTemplate}
+        onDowloadEg={() =>
+          downloadFileByGetMethod(downloadTemplate, 'DSKH_Template.xlsx')
+        }
       />
 
       <Flex justify="space-between" className="mb-14">
@@ -270,7 +280,12 @@ const ListCustomerPage: FC = () => {
           >
             Import
           </AButton>
-          <AButton variant="filled" color="primary" icon={<ExportIcon />}>
+          <AButton
+            variant="filled"
+            color="primary"
+            icon={<ExportIcon />}
+            onClick={() => downloadFileByGetMethod(customerExport, 'DSKH.xlsx')}
+          >
             Export
           </AButton>
           <AButton
