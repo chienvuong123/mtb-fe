@@ -29,49 +29,42 @@ const columns: ColumnType<TGroupCustomerRecord>[] = [
     title: 'Mã Category',
     dataIndex: 'categoryId',
     minWidth: 104,
-    sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Tên Category',
     dataIndex: 'nameCategory',
     minWidth: 213,
-    sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Mã Campaign',
     dataIndex: 'campaignId',
     minWidth: 164,
-    sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Tên Campaign',
     dataIndex: 'nameCampaign',
     minWidth: 164,
-    sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Mã nhóm khách',
-    dataIndex: 'groupId',
+    dataIndex: 'code',
     minWidth: 164,
-    sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Tên nhóm khách',
-    dataIndex: 'nameGroup',
+    dataIndex: 'name',
     minWidth: 164,
-    sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Số lượng',
-    dataIndex: 'code',
+    dataIndex: 'customerQuantity',
     minWidth: 164,
-    sorter: true,
     showSorterTooltip: false,
   },
 ];
@@ -90,6 +83,7 @@ const GroupCustomerTable: FC<IGroupCustomerTable> = ({
     <OTable<TGroupCustomerRecord>
       columns={columns}
       data={dataSource}
+      isShowDeleteBtn={false}
       selectedRowKeys={selectedRowKeys}
       onCreate={onCreate}
       setSelectedRowKeys={setSelectedRowKeys}
@@ -100,6 +94,7 @@ const GroupCustomerTable: FC<IGroupCustomerTable> = ({
         const { field, order } = s as SorterResult<TGroupCustomerRecord>;
         onSort(field as string, order as SortOrder);
       }}
+      scroll={{ x: 1300 }}
     />
   );
 };

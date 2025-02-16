@@ -93,6 +93,9 @@ const routes = createBrowserRouter(
               accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
             />
           ),
+        },
+        {
+          path: CUSTOMER.ROOT,
           children: [
             {
               path: CUSTOMER.CUSTOMER_CAMPAIGN_LIST,

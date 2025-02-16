@@ -5,6 +5,7 @@ import type {
 } from '@components/molecules/m-pagination/MPagination.type';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { BaseResponse } from '@dtos';
+import { useCampaignSearchMasterDataQuery } from '@hooks/queries/useCampaignQueries';
 import {
   useGroupCustomerAddMutation,
   useGroupCustomerSearchQuery,
@@ -14,10 +15,7 @@ import { Drawer } from 'antd';
 import type { SortOrder } from 'antd/es/table/interface';
 import Title from 'antd/lib/typography/Title';
 import { useEffect, useMemo, useState } from 'react';
-import type {
-  GroupCustomerDTO,
-  TGroupCustomerSearchForm,
-} from 'src/dtos/group-customer';
+import type { GroupCustomerDTO } from 'src/dtos/group-customer';
 import GroupCustomerInsertForm from './components/GroupCustomerInsertForm';
 import GroupCustomerSearchForm from './components/GroupCustomerSearchForm';
 import type { TGroupCustomerRecord } from './components/GroupCustomerTable';
@@ -42,6 +40,7 @@ const GroupCustomerPage = () => {
     }, 3000);
   };
 
+  // search list group customer
   const { data: groupCustomerRes, isLoading } = useGroupCustomerSearchQuery({
     page: { pageNum: pagination.current, pageSize: pagination.pageSize },
     order: sort,
@@ -49,8 +48,14 @@ const GroupCustomerPage = () => {
     nameCampaign: filters.nameCampaign,
     categoryId: filters.categoryId,
     nameCategory: filters.nameCategory,
-    groupId: filters.groupId,
-    nameGroup: filters.nameGroup,
+    code: filters.code,
+    name: filters.name,
+  });
+
+  // search list master data campaign
+  const { data: campaignMasterData } = useCampaignSearchMasterDataQuery({
+    // TODO
+    page: { pageNum: 1, pageSize: 10 },
   });
 
   const handleCloseForm = () => {
@@ -91,9 +96,9 @@ const GroupCustomerPage = () => {
       campaignId: '',
       nameCampaign: '',
       categoryId: '',
-      groupId: '',
       nameCategory: '',
-      nameGroup: '',
+      code: '',
+      name: '',
     });
   };
 
@@ -116,18 +121,18 @@ const GroupCustomerPage = () => {
     campaignId,
     nameCampaign,
     categoryId,
-    groupId,
     nameCategory,
-    nameGroup,
-  }: TGroupCustomerSearchForm) => {
+    code,
+    name,
+  }: GroupCustomerDTO) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setFilters({
       campaignId,
       nameCampaign,
       categoryId,
-      groupId,
       nameCategory,
-      nameGroup,
+      code,
+      name,
     });
   };
 
@@ -138,18 +143,14 @@ const GroupCustomerPage = () => {
   const handleSubmitInsert = ({
     campaignId,
     categoryId,
-    groupId,
-    nameCampaign,
-    nameCategory,
-    nameGroup,
-  }: GroupCustomerDTO) => {
+    code,
+    name,
+  }: Partial<GroupCustomerDTO>) => {
     const data: Partial<GroupCustomerDTO> = {
       campaignId,
       categoryId,
-      groupId,
-      nameCampaign,
-      nameCategory,
-      nameGroup,
+      code,
+      name,
     };
 
     // create new group customer
@@ -168,6 +169,8 @@ const GroupCustomerPage = () => {
         groupCustomerRes?.data?.content?.map((i) => ({
           ...i,
           key: i.id as string,
+          nameCampaign: i.campaign?.name ?? '',
+          nameCategory: i.category?.name ?? '',
         })),
       [groupCustomerRes],
     ) ?? [];
@@ -185,7 +188,7 @@ const GroupCustomerPage = () => {
   useEffect(() => {
     if (
       !isLoading &&
-      !groupCustomerRes?.data?.content.length &&
+      !groupCustomerRes?.data?.content?.length &&
       pagination.current > 1
     ) {
       setPagination((prev) => ({
@@ -213,13 +216,19 @@ const GroupCustomerPage = () => {
       <GroupCustomerSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
+        onCreate={handleCreate}
+        listMasterData={{
+          campaign: campaignMasterData?.data?.content ?? [],
+          // TODO
+          category: [],
+        }}
         initialValues={{
           campaignId: filters?.campaignId ?? '',
           nameCampaign: filters?.nameCampaign ?? '',
           categoryId: filters?.categoryId ?? '',
-          groupId: filters?.groupId ?? '',
           nameCategory: filters?.nameCategory ?? '',
-          nameGroup: filters?.nameGroup ?? '',
+          code: filters?.code ?? '',
+          name: filters?.name ?? '',
         }}
       />
       <div className="mt-24" />
@@ -240,12 +249,11 @@ const GroupCustomerPage = () => {
         maskClosable={false}
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
       >
-        {showInsertForm && (
-          <GroupCustomerInsertForm
-            onClose={handleCloseForm}
-            onSubmit={handleSubmitInsert}
-          />
-        )}
+        <GroupCustomerInsertForm
+          mode={isViewMode ? 'view' : 'insert'}
+          onClose={handleCloseForm}
+          onSubmit={handleSubmitInsert}
+        />
       </Drawer>
     </div>
   );

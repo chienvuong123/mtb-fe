@@ -42,6 +42,7 @@ const OTable = <T extends object & TTableKey>({
   onDeleteRow,
   onView,
   setSelectedRowKeys,
+  isShowDeleteBtn,
   ...props
 }: ITable<T>) => {
   const [showModal, setShowModal] = useState(false);
@@ -76,17 +77,20 @@ const OTable = <T extends object & TTableKey>({
                 width: 120,
                 minWidth: 120,
                 render: (_: unknown, record: T) => (
-                  <TableActions
-                    record={record}
-                    editable={false}
-                    onEdit={onEdit}
-                    onView={onView}
-                    onDelete={(key) => {
-                      setShowModal(true);
-                      setRecordKey(key);
-                    }}
-                    editingKey={null}
-                  />
+                  <div className="flex justify-content-center">
+                    <TableActions
+                      record={record}
+                      editable={false}
+                      onEdit={onEdit}
+                      onView={onView}
+                      onDelete={(key) => {
+                        setShowModal(true);
+                        setRecordKey(key);
+                      }}
+                      editingKey={null}
+                      isShowDeleteBtn={isShowDeleteBtn}
+                    />
+                  </div>
                 ),
               },
             ]),
@@ -95,7 +99,7 @@ const OTable = <T extends object & TTableKey>({
       if (i?.render) return i;
       return { ellipsis: true, ...i };
     });
-  }, [columns, hideActions, sortDirection, onEdit, onView]);
+  }, [columns, hideActions, isShowDeleteBtn, sortDirection, onEdit, onView]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys?.(newSelectedRowKeys as string[]);

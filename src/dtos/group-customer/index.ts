@@ -1,3 +1,5 @@
+import type { CampaignDTO } from '../campaign';
+import type { CategoryDTO } from '../category';
 import type {
   BaseEntity,
   BaseResponse,
@@ -6,58 +8,26 @@ import type {
 } from '../common';
 
 export interface GroupCustomerDTO extends BaseEntity {
-  reqNo: string;
+  campaign: CampaignDTO;
   campaignId: string;
-  categoryId: string;
-  groupId: string;
   nameCampaign: string;
+  category: CategoryDTO;
+  categoryId: string;
   nameCategory: string;
-  nameGroup: string;
+  customerQuantity: number;
   code: string;
   name: string;
-}
-
-export type GroupCustomerSearch = {
-  page: {
-    pageSize: number;
-    pageNum: number;
-  };
-  order: {
-    field: string;
-    direction: string;
-  };
-  campaignId: string;
-  categoryId: string;
-  groupId: string;
-  nameCampaign: string;
-  nameCategory: string;
-  nameGroup: string;
-};
-
-export type CMResponseGroupCustomerDTO = {
   reqNo: string;
-  errorCode: string;
-  errorDesc: string;
-  data: GroupCustomerDTO[];
-  total: number;
-};
-
-export type TGroupCustomerSearchForm = {
-  campaignId: string;
-  categoryId: string;
-  groupId: string;
-  nameCampaign: string;
-  nameCategory: string;
-  nameGroup: string;
-};
+}
 
 export interface GroupCustomerSearchRequest extends BaseSearchParams {
   campaignId?: string;
   categoryId?: string;
-  groupId?: string;
   nameCampaign?: string;
   nameCategory?: string;
-  nameGroup?: string;
+  code?: string;
+  name?: string;
+  custormerQuantity?: number;
 }
 
 export type GroupCustomerSearchResponse = BaseResponse<

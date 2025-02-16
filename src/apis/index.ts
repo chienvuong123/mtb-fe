@@ -8,3 +8,4 @@ export * from './baseApi';
 export * from './salesOpportunitiesApi';
 export * from './groupCustomerApi';
 export * from './customerApi';
+export * from './campaignApi';
