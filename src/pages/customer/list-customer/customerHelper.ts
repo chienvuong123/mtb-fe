@@ -7,6 +7,34 @@ const customerError = {
   CUS0003: 'code',
 };
 
+export const parseCustomerObj = ({
+  cusSegment,
+  cusGroup,
+  job,
+  ...values
+}: Partial<CustomerDTO>) => {
+  return {
+    cusSegment: cusSegment ? JSON.parse(cusSegment) : undefined,
+    cusGroup: cusGroup ? JSON.parse(cusGroup) : undefined,
+    job: job ? JSON.parse(job) : undefined,
+    ...values,
+  };
+};
+
+export const stringifyCustomerObj = ({
+  cusSegment,
+  cusGroup,
+  job,
+  ...values
+}: Partial<CustomerDTO>) => {
+  return {
+    cusSegment: cusSegment ? JSON.stringify(cusSegment) : undefined,
+    cusGroup: cusGroup ? JSON.stringify(cusGroup) : undefined,
+    job: job ? JSON.stringify(job) : undefined,
+    ...values,
+  };
+};
+
 export const destructCustomerData = (
   {
     id,
@@ -35,6 +63,7 @@ export const destructCustomerData = (
   const birthDay = birthday;
   return isSearch
     ? {
+        code,
         categoryId,
         categoryName,
         campaignId,
