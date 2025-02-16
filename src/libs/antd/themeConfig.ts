@@ -186,6 +186,10 @@ const theme: ThemeConfig = {
     },
     DatePicker: {
       fontSizeLG: 14,
+      controlHeight: 40,
+    },
+    InputNumber: {
+      controlHeight: 40,
     },
     Segmented: {
       itemActiveBg: color.cbg1,

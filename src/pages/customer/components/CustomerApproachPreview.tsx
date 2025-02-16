@@ -1,13 +1,9 @@
 import { AButton } from '@components/atoms';
-import { ACollapse } from '@components/atoms/a-collapse';
 import { ASegmented } from '@components/atoms/a-segmented';
-import {
-  EApproachStatus,
-  type CustomerApproachDTO,
-  type ScenarioDTO,
-} from '@dtos';
-import { Flex, Input, theme, Typography } from 'antd';
-import { useMemo, useState, type FC } from 'react';
+import { EApproachStatus, type CustomerApproachDTO } from '@dtos';
+import { Flex, Input } from 'antd';
+import { useState, type FC } from 'react';
+import ScenarioScriptContainer from './ScenarioScriptContainer';
 
 interface ICustomerApproachPreview {
   data: CustomerApproachDTO[];
@@ -17,39 +13,6 @@ const statusObject: Record<EApproachStatus, string> = {
   [EApproachStatus.PENDING]: 'Chưa bắt đầu',
   [EApproachStatus.INPROGRESS]: 'Đang triển khai',
   [EApproachStatus.FINISHED]: 'Hoàn thành',
-};
-
-const ScenarioPreview: FC<{ data: ScenarioDTO }> = ({ data }) => {
-  const { token } = theme.useToken();
-
-  const attributeItems = useMemo(() => {
-    return data.attributes?.map((attr) => ({
-      key: attr.id,
-      label: attr.name,
-      content: attr.value,
-      children: attr.content,
-      style: {
-        marginBottom: 16,
-        borderRadius: token.borderRadiusLG,
-        overflow: 'hidden',
-        border: 'none',
-      },
-    }));
-  }, [data.attributes, token]);
-  return (
-    <div>
-      <Typography.Title level={4} className="mt-24 mb-16">
-        Kịch bản {data.name}
-      </Typography.Title>
-      <ACollapse
-        bordered={false}
-        defaultActiveKey={attributeItems?.map((x) => x.key)}
-        expandIconPosition="right"
-        style={{ background: token.colorBgContainer }}
-        items={attributeItems}
-      />
-    </div>
-  );
 };
 
 const CustomerApproachPreview: FC<ICustomerApproachPreview> = ({ data }) => {
@@ -83,7 +46,13 @@ const CustomerApproachPreview: FC<ICustomerApproachPreview> = ({ data }) => {
           </div>
           <AButton type="primary">Thông tin hạn mức</AButton>
         </Flex>
-        {approach?.scenario && <ScenarioPreview data={approach?.scenario} />}
+        {approach?.scenario && (
+          <ScenarioScriptContainer
+            key={approach.id}
+            approach={approach}
+            scenario={approach?.scenario}
+          />
+        )}
       </div>
     </div>
   );
