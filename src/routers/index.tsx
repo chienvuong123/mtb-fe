@@ -141,6 +141,14 @@ const routes = createBrowserRouter(
               accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
             />
           ),
+          children: [
+            {
+              path: SETTING.CONTROL,
+              element: createLazyElement(
+                () => import('@pages/setting/control'),
+              ),
+            },
+          ],
         },
         {
           path: ACCOUNT,

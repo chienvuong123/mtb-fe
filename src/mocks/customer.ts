@@ -31,12 +31,12 @@ export const MOCK_CUSTOMER: CustomerDTO = {
   name: 'John Smith',
   phone: '0123456789',
   email: 'john.smith@example.com',
-  gender: EGender.MALE,
+  gender: EGender.MAN,
   job: 'Engineer',
   birthday: '1990-01-15T00:00:00Z',
   address: '123 Main St, New York, NY 10001',
   identityNumber: 'ID123456789',
-  hobby: 'Sports',
+  hobbies: 'Sports',
   branch: 'HQ',
   description: 'VIP Customer',
   categoryId: '1',
@@ -78,6 +78,9 @@ export const MOCK_CUSTOMER: CustomerDTO = {
   status: EStatus.ACTIVE,
   campaign: MOCK_CAMPAIGN,
   seller: USER_SELLER,
+  campaignId: MOCK_CAMPAIGN.id,
+  campaignName: MOCK_CAMPAIGN.name,
+  identification: '',
 };
 
 export const MOCK_CUSTOMER_APPROACH: CustomerApproachDTO = {

@@ -32,12 +32,6 @@ export enum ERole {
   SALE_LEADER = 'SALE_LEADER',
 }
 
-export enum EGender {
-  MALE = 'MALE',
-  FEMAIL = 'FEMAIL',
-  OTHER = 'OTHER',
-}
-
 export enum EControlType {
   EDITOR = 'EDITOR',
   SELECT = 'SELECT',
@@ -75,21 +69,6 @@ export const GENDER_OPTIONS = [
   },
   {
     value: EGender.WOMEN,
-    label: 'Nữ',
-  },
-  {
-    value: EGender.OTHER,
-    label: 'Khác',
-  },
-];
-
-export const GENDER_OPTIONS = [
-  {
-    value: EGender.MALE,
-    label: 'Nam',
-  },
-  {
-    value: EGender.FEMAIL,
     label: 'Nữ',
   },
   {

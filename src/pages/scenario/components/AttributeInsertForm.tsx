@@ -46,6 +46,7 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
   return (
     <div>
       <OBaseForm<AttributeDTO>
+        mutationKey="AttributeInsert"
         items={items}
         form={form}
         onSubmit={onSubmit}

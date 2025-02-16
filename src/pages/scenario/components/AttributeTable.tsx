@@ -11,7 +11,6 @@ export type TAttributeRecord = TTableKey & AttributeDTO;
 interface IAttributeTable {
   dataSource: TAttributeRecord[];
   pagination: IMPagination;
-  onCreate: ITable<TAttributeRecord>['onCreate'];
   onEdit: ITable<TAttributeRecord>['onEdit'];
   onDelete: (id: string) => void;
 }
@@ -59,7 +58,6 @@ const columns: ColumnType<TAttributeRecord>[] = [
 const AttributeTable: FC<IAttributeTable> = ({
   dataSource,
   pagination,
-  onCreate,
   onEdit,
   onDelete,
 }) => {
@@ -74,11 +72,9 @@ const AttributeTable: FC<IAttributeTable> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onCreate={onCreate}
       onDeleteRow={deleteRecord}
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
-      showCreateBtn
       paginations={pagination}
     />
   );

@@ -4,13 +4,12 @@ import {
   HelpCircleIcon,
   HotPriceIcon,
   LogoutIcon,
+  MarketingIcon,
   MuslimIcon,
   PieChartIcon,
   Setting02Icon,
+  Target02Icon,
 } from '@assets/icons';
-import { Divider } from 'antd';
-import { CATEGORY, ACCOUNT, CUSTOMER } from '@routers/path';
-import { Link, useNavigate } from 'react-router-dom';
 import OPopup from '@components/organisms/o-popup/OPopup';
 import { ACCOUNT, CATEGORY, CUSTOMER, SCENARIO, SETTING } from '@routers/path';
 import { Divider } from 'antd';

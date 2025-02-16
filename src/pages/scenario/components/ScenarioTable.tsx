@@ -11,7 +11,6 @@ export type TScenarioRecord = TTableKey & ScenarioDTO;
 interface IScenarioTable {
   dataSource: TScenarioRecord[];
   pagination: IMPagination;
-  onCreate: ITable<TScenarioRecord>['onCreate'];
   onEdit: ITable<TScenarioRecord>['onEdit'];
   onDelete: (id: string) => void;
 }
@@ -59,7 +58,6 @@ const columns: ColumnType<TScenarioRecord>[] = [
 const ScenarioTable: FC<IScenarioTable> = ({
   dataSource,
   pagination,
-  onCreate,
   onEdit,
   onDelete,
 }) => {
@@ -74,11 +72,9 @@ const ScenarioTable: FC<IScenarioTable> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onCreate={onCreate}
       onDeleteRow={deleteRecord}
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
-      showCreateBtn
       paginations={pagination}
     />
   );

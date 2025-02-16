@@ -93,12 +93,11 @@ const ScenarioPage: FC = () => {
       <Title level={3} className="mb-24">
         Danh sách kịch bản
       </Title>
-      <ScenarioSearchForm onSearch={handleSearch} />
+      <ScenarioSearchForm onCreate={handleCreate} onSearch={handleSearch} />
       <div className="mt-24" />
       <ScenarioTable
         dataSource={dataSources}
         pagination={paginationProps}
-        onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />

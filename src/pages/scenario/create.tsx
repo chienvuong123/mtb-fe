@@ -53,6 +53,7 @@ const ScenarioCreatePage: FC = () => {
 
   const handleCreateAttribute = (data: AttributeDTO) => {
     console.log(data);
+    handleCreate();
   };
 
   const dataSources: TAttributeRecord[] =
@@ -81,7 +82,6 @@ const ScenarioCreatePage: FC = () => {
       <AttributeTable
         dataSource={dataSources}
         pagination={paginationProps}
-        onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />

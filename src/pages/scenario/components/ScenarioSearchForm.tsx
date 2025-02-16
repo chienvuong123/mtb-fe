@@ -7,6 +7,7 @@ import { type FC } from 'react';
 
 interface IScenarioSearchForm {
   onSearch: (values: ScenarioSearchRequest) => void;
+  onCreate: () => void;
 }
 
 const items: TFormItem[] = [
@@ -51,12 +52,16 @@ const items: TFormItem[] = [
   },
 ];
 
-const ScenarioSearchForm: FC<IScenarioSearchForm> = ({ onSearch }) => {
+const ScenarioSearchForm: FC<IScenarioSearchForm> = ({
+  onSearch,
+  onCreate,
+}) => {
   const [form] = useForm();
 
   return (
     <div>
       <OSearchBaseForm<ScenarioSearchRequest>
+        onCreate={onCreate}
         items={items}
         form={form}
         onSearch={onSearch}

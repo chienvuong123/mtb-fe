@@ -11,6 +11,7 @@ export const USER_ADMIN = {
 export const USER_SELLER: UserDTO = {
   id: '2',
   email: 'seller@test.com',
+  fullName: 'John Doe',
   role: ERole.SELLER,
   createdDate: '2024-01-01T00:00:00Z',
   createdBy: 'system',
