@@ -1,6 +1,5 @@
 import { OBaseForm } from '@components/organisms';
 import { type FC } from 'react';
-import { useForm } from 'antd/lib/form/Form';
 import { CUSTOMER_KEY } from '@hooks/queries';
 import type { ICustomerForm, TCustomerForm } from '../customer.type';
 import { useCustomerForm } from '../hooks';
@@ -11,11 +10,9 @@ const CustomerAddForm: FC<ICustomerForm> = ({
   initialValues,
   mode,
 }) => {
-  const [form] = useForm();
-  const { formItems, handleSubmit, handleClose } = useCustomerForm({
+  const { form, formItems, handleSubmit, handleClose } = useCustomerForm({
     mode,
     initialValues,
-    form,
     onSubmit,
     onClose,
   });

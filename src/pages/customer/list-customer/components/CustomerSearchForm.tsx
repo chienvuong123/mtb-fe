@@ -1,11 +1,11 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
-import { useForm, useWatch } from 'antd/es/form/Form';
+import { useForm } from 'antd/es/form/Form';
 import { useEffect, type FC, useMemo } from 'react';
 import type { CustomerDTO } from '@dtos';
 
 interface ICustomerSearchForm {
-  initialValues: CustomerDTO;
+  initialValues: Partial<CustomerDTO>;
   onSearch: (values: object) => void;
   onClearAll?: () => void;
   onDeleteAll: () => void;
@@ -20,11 +20,6 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
   onDeleteAll,
 }) => {
   const [form] = useForm();
-
-  const categoryId = useWatch('categoryId', form);
-  const categoryName = useWatch('categoryName', form);
-
-  const unselectedCategory = !categoryId || !categoryName;
 
   const items: TFormItem[] = useMemo(
     () =>
@@ -44,8 +39,6 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
               },
             ],
           },
-          rules: [{ required: true, message: 'Bắt buộc chọn category' }],
-          required: true,
         },
         {
           type: INPUT_TYPE.SELECT,
@@ -57,15 +50,12 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             filterOption: true,
             options: [{ value: 'Tên danh mục', label: 'Tên danh mục' }],
           },
-          rules: [{ required: true, message: 'Bắt buộc chọn category' }],
-          required: true,
         },
         {
           type: INPUT_TYPE.SELECT,
           label: 'Mã Campaign',
           name: 'campaignId',
           inputProps: {
-            disabled: unselectedCategory,
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
@@ -80,7 +70,6 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
           label: 'Tên Campaign',
           name: 'campaignName',
           inputProps: {
-            disabled: unselectedCategory,
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
@@ -110,7 +99,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
         },
         {
           type: INPUT_TYPE.SELECT,
-          label: 'Hạng khách hàng',
+          label: 'Phân khúc khách hàng',
           name: 'cusSegment',
           inputProps: {
             placeholder: 'Chọn...',
@@ -158,7 +147,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
           },
         },
       ] as TFormItem[],
-    [unselectedCategory],
+    [],
   );
 
   useEffect(() => {
@@ -170,7 +159,6 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
   return (
     <div>
       <OSearchBaseForm<CustomerDTO>
-        disabledCreate={unselectedCategory}
         items={items}
         form={form}
         onSearch={onSearch}

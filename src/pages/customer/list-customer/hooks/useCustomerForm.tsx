@@ -1,19 +1,35 @@
 import { GENDER_OPTIONS } from '@constants/masterData';
 import { ALLOWED_VN_CHARACTERS_PARTERN } from '@constants/regex';
+import { Form } from 'antd';
 import type { CustomerDTO } from '@dtos';
 import { dayjsToString, stringToDayjs } from '@libs/dayjs';
 import { INPUT_TYPE, type TFormItem, type IFormType } from '@types';
 import clsx from 'clsx';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import type { ICustomerForm, TCustomerForm } from '../customer.type';
 
 const useCustomerForm = ({
   mode,
-  form,
   initialValues,
   onSubmit,
   onClose,
 }: IFormType<TCustomerForm, CustomerDTO> & Partial<ICustomerForm>) => {
+  const [form] = Form.useForm<Partial<TCustomerForm>>();
+
+  const categoryId = Form.useWatch(['categoryId'], form);
+  const categoryName = Form.useWatch(['categoryName'], form);
+  const campaignId = Form.useWatch(['campaignId'], form);
+
+  const hasCategory = categoryId && categoryName;
+
+  const onSelectChange = useCallback(
+    (fieldChange: keyof CustomerDTO, value: string) => {
+      // Logic xử lý sự thay đổi của select
+      form.setFieldValue(fieldChange, value);
+    },
+    [form],
+  ); // Nếu cần dependencies, thêm vào mảng này
+
   const items = useMemo(
     () =>
       (
@@ -22,34 +38,44 @@ const useCustomerForm = ({
             type: INPUT_TYPE.TEXT,
             label: 'Mã Category',
             name: 'categoryId',
-            inputProps: { disabled: true },
+            required: true,
+            rules: [{ required: true }],
           },
           {
             type: INPUT_TYPE.TEXT,
             label: 'Tên category',
             name: 'categoryName',
-            inputProps: { disabled: true },
+            required: true,
+            rules: [{ required: true }],
           },
           {
             type: INPUT_TYPE.SELECT,
             label: 'Mã Campaign',
+            name: 'campaignId',
+            required: true,
+            rules: [{ required: true }],
             inputProps: {
               options: [{ value: 'CMP001', label: 'CMP001' }],
               placeholder: 'Chọn...',
               showSearch: true,
               filterOption: true,
+              disabled: !hasCategory,
+              onChange: (value) => onSelectChange('campaignName', value),
             },
-            name: 'campaignId',
           },
           {
             type: INPUT_TYPE.SELECT,
             label: 'Tên Campaign',
             name: 'campaignName',
+            required: true,
+            rules: [{ required: true }],
             inputProps: {
-              options: [{ value: 'Tên Campaign', label: 'Tên Campaign' }],
+              options: [{ value: 'CMP001', label: 'Campaign CMP001' }],
               placeholder: 'Chọn...',
               showSearch: true,
               filterOption: true,
+              disabled: !hasCategory,
+              onChange: (value) => onSelectChange('campaignId', value),
             },
           },
           {
@@ -110,10 +136,11 @@ const useCustomerForm = ({
             inputProps: { options: GENDER_OPTIONS },
           },
           {
-            type: INPUT_TYPE.TEXT,
+            type: INPUT_TYPE.SELECT,
             label: 'Nhóm khách hàng',
             name: 'cusGroup',
             inputProps: {
+              disabled: !hasCategory || !campaignId,
               options: [
                 { value: '1', label: 'Selection 1' },
                 { value: '2', label: 'Selection 2' },
@@ -147,7 +174,7 @@ const useCustomerForm = ({
           },
           {
             type: INPUT_TYPE.SELECT,
-            label: 'Khách hàng định danh',
+            label: 'Định danh khách hàng',
             name: 'identification',
             inputProps: {
               options: [
@@ -224,7 +251,7 @@ const useCustomerForm = ({
         }
         return item;
       }),
-    [mode],
+    [mode, hasCategory, campaignId, onSelectChange],
   ) as TFormItem[];
 
   useEffect(() => {
@@ -264,7 +291,7 @@ const useCustomerForm = ({
     form.resetFields();
   };
 
-  return { formItems: items, handleSubmit, handleClose };
+  return { form, formItems: items, handleSubmit, handleClose };
 };
 
 export default useCustomerForm;

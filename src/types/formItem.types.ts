@@ -16,7 +16,7 @@ import type { TextAreaProps } from 'antd/lib/input';
 export type TFormType = 'add' | 'edit' | 'view';
 export interface IFormType<T, Init = T> {
   mode: TFormType;
-  form: FormInstance<T>;
+  form?: FormInstance<T>;
   initialValues?: Partial<Init> | null;
 }
 
