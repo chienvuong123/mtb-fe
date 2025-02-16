@@ -1,5 +1,4 @@
 import type { CustomerDTO, CustomerSearchRequest } from '@dtos';
-import { paramsSerializer } from '@utils/paramsHelper';
 import { BaseApi } from './baseApi';
 import { apiRequest } from './apiClient';
 
@@ -21,7 +20,6 @@ class CustomerApi extends BaseApi<CustomerDTO, CustomerSearchRequest> {
       url: `${this.endpoint}/export`,
       method: 'GET',
       params,
-      paramsSerializer,
       responseType: 'blob',
     });
   }

@@ -1,5 +1,4 @@
 import type { BaseResponse, BaseSearchParams, BaseSearchResponse } from '@dtos';
-import { paramsSerializer } from '@utils/paramsHelper';
 import { apiRequest } from './apiClient';
 
 export class BaseApi<T, SearchParams extends BaseSearchParams> {
@@ -14,7 +13,6 @@ export class BaseApi<T, SearchParams extends BaseSearchParams> {
       url: `${this.endpoint}/search`,
       method: 'GET',
       params,
-      paramsSerializer,
     });
   }
 
