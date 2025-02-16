@@ -41,14 +41,6 @@ export interface CustomerDTO extends BaseEntity {
   seller?: UserDTO;
 }
 
-export interface CustomerAddRequest extends Partial<CustomerDTO> {
-  reqNo: string;
-}
-
-export interface CustomerEditRequest extends Partial<CustomerDTO> {
-  reqNo: string;
-}
-
 export interface CustomerSearchRequest extends BaseSearchParams {
   code?: string;
   name?: string;

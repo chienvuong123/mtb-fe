@@ -12,14 +12,6 @@ export interface CampaignDTO extends BaseEntity {
   approachPlans: ApproachPlanDTO[];
 }
 
-export interface CampaignAddRequest extends Partial<CampaignDTO> {
-  reqNo: string;
-}
-
-export interface CampaignEditRequest extends Partial<CampaignDTO> {
-  reqNo: string;
-}
-
 export interface CampaignSearchRequest extends BaseSearchParams {
   code?: string;
   name?: string;

@@ -35,16 +35,6 @@ export interface CustomerApproachDTO extends BaseEntity {
   result?: CustomerApproachResultDTO[];
 }
 
-export interface CustomerApproachAddRequest
-  extends Partial<CustomerApproachDTO> {
-  reqNo: string;
-}
-
-export interface CustomerApproachEditRequest
-  extends Partial<CustomerApproachDTO> {
-  reqNo: string;
-}
-
 export interface CustomerApproachSearchRequest extends BaseSearchParams {
   code?: string;
   method?: string;

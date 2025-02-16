@@ -29,14 +29,6 @@ export interface AttributeDTO extends BaseEntity {
   value: ControlValueType;
 }
 
-export interface AttributeAddRequest extends Partial<AttributeDTO> {
-  reqNo: string;
-}
-
-export interface AttributeEditRequest extends Partial<AttributeDTO> {
-  reqNo: string;
-}
-
 export interface AttributeSearchRequest extends BaseSearchParams {
   name?: string;
 }

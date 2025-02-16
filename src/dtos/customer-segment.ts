@@ -10,15 +10,6 @@ export interface CustomerSegmentDTO extends BaseEntity {
   name: string;
 }
 
-export interface CustomerSegmentAddRequest extends Partial<CustomerSegmentDTO> {
-  reqNo: string;
-}
-
-export interface CustomerSegmentEditRequest
-  extends Partial<CustomerSegmentDTO> {
-  reqNo: string;
-}
-
 export interface CustomerSegmentSearchRequest extends BaseSearchParams {
   code?: string;
   name?: string;

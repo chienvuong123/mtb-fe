@@ -18,14 +18,6 @@ export interface ScenarioDTO extends BaseEntity {
   attributes?: AttributeDTO[];
 }
 
-export interface ScenarioAddRequest extends Partial<ScenarioDTO> {
-  reqNo: string;
-}
-
-export interface ScenarioEditRequest extends Partial<ScenarioDTO> {
-  reqNo: string;
-}
-
 export interface ScenarioSearchRequest extends BaseSearchParams {
   code?: string;
   name?: string;

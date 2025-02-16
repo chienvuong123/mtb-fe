@@ -10,14 +10,6 @@ export interface CustomerGroupDTO extends BaseEntity {
   name: string;
 }
 
-export interface CustomerGroupAddRequest extends Partial<CustomerGroupDTO> {
-  reqNo: string;
-}
-
-export interface CustomerGroupEditRequest extends Partial<CustomerGroupDTO> {
-  reqNo: string;
-}
-
 export interface CustomerGroupSearchRequest extends BaseSearchParams {
   code?: string;
   name?: string;
