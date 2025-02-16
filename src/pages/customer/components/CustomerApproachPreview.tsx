@@ -4,6 +4,7 @@ import { EApproachStatus, type CustomerApproachDTO } from '@dtos';
 import { Flex, Input } from 'antd';
 import { useState, type FC } from 'react';
 import ScenarioScriptContainer from './ScenarioScriptContainer';
+import CollectCustomerInformationModal from './CollectCustomerInformationModal';
 
 interface ICustomerApproachPreview {
   data: CustomerApproachDTO[];
@@ -16,6 +17,7 @@ const statusObject: Record<EApproachStatus, string> = {
 };
 
 const CustomerApproachPreview: FC<ICustomerApproachPreview> = ({ data }) => {
+  const [openModal, setOpenModal] = useState(false);
   const [approach, setApproach] = useState<CustomerApproachDTO | null>(data[0]);
   return (
     <div>
@@ -44,7 +46,9 @@ const CustomerApproachPreview: FC<ICustomerApproachPreview> = ({ data }) => {
             <p className="mb-4">Seller</p>
             <Input value={approach?.seller?.fullName} disabled />
           </div>
-          <AButton type="primary">Thông tin hạn mức</AButton>
+          <AButton onClick={() => setOpenModal(true)} type="primary">
+            Thông tin hạn mức
+          </AButton>
         </Flex>
         {approach?.scenario && (
           <ScenarioScriptContainer
@@ -54,6 +58,11 @@ const CustomerApproachPreview: FC<ICustomerApproachPreview> = ({ data }) => {
           />
         )}
       </div>
+      <CollectCustomerInformationModal
+        open={openModal}
+        onCancel={() => setOpenModal(false)}
+        onOk={() => setOpenModal(false)}
+      />
     </div>
   );
 };
