@@ -44,7 +44,9 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({ approach }) => {
         </Flex>
       </Flex>
       <Flex gap={24} justify="end">
-        <AButton>Hủy</AButton>
+        <AButton variant="filled" color="primary">
+          Hủy
+        </AButton>
         <AButton type="primary">Lưu</AButton>
       </Flex>
     </Flex>

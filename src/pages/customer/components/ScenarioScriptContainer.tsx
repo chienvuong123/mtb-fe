@@ -11,6 +11,7 @@ import {
   type ScenarioDTO,
 } from '@dtos';
 import {
+  Affix,
   Checkbox,
   DatePicker,
   Divider,
@@ -21,7 +22,14 @@ import {
   theme,
   Typography,
 } from 'antd';
-import { useMemo, type FC } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FC,
+  type ReactNode,
+} from 'react';
 import ScenarioScriptFooter from './ScenarioScriptFooter';
 
 const AttributeItem: FC<{
@@ -106,7 +114,12 @@ const AttributeItem: FC<{
       case EControlType.BUTTON: {
         const button = data.config as ControlValue<EControlType.BUTTON>;
         return (
-          <AButton type="primary" href={button.link}>
+          <AButton
+            type="primary"
+            href={button.link}
+            target="_blank"
+            rel="noreferrer"
+          >
             {button.title}
           </AButton>
         );
@@ -146,11 +159,23 @@ const ExpandIcon: FC<{ isActive?: boolean }> = ({ isActive }) => (
   <ArrowDown01RoundIcon rotate={isActive ? '90deg' : 0} />
 );
 
+const AffixWrapper: FC<{ children: ReactNode; affix: boolean }> = ({
+  children,
+  affix,
+}) => {
+  if (!affix) {
+    return children;
+  }
+  return <Affix offsetBottom={24}>{children}</Affix>;
+};
+
 const ScenarioScriptContainer: FC<{
   scenario: ScenarioDTO;
   approach?: CustomerApproachDTO;
 }> = ({ scenario, approach }) => {
   const { token } = theme.useToken();
+  const [showAffixFooter, setShowAffixFooter] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   const attributeItems = useMemo(() => {
     return scenario.attributes?.map((attr, index) => ({
@@ -165,8 +190,29 @@ const ScenarioScriptContainer: FC<{
       },
     }));
   }, [scenario.attributes, token]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowAffixFooter(entry.isIntersecting);
+      },
+      {
+        threshold: 0,
+        rootMargin: '0px',
+      },
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <div>
+    <div ref={ref}>
       <Typography.Title level={4} className="mt-24 mb-16">
         Kịch bản {scenario.name}
       </Typography.Title>
@@ -178,8 +224,16 @@ const ScenarioScriptContainer: FC<{
         style={{ background: token.colorBgContainer }}
         items={attributeItems}
       />
-      <Divider />
-      <ScenarioScriptFooter approach={approach} />
+
+      <AffixWrapper affix={showAffixFooter}>
+        <div
+          className="bg-white"
+          style={{ paddingBottom: 24, marginBottom: -24 }}
+        >
+          <Divider />
+          <ScenarioScriptFooter approach={approach} />
+        </div>
+      </AffixWrapper>
     </div>
   );
 };
