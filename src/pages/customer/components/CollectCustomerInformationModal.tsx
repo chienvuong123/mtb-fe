@@ -378,9 +378,9 @@ const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
       className="collect-customer-information-modal"
       width={1100}
       style={{ top: 20, bottom: 20 }}
-      title="Thu thập thông tin khách hàng"
       open={open}
       onCancel={onCancel}
+      closeIcon={null}
       footer={[
         <AButton color="primary" variant="filled" onClick={saveDraft}>
           Lưu nháp
