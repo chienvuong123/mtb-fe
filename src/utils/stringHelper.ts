@@ -19,4 +19,8 @@ const getFullName = ({ firstName, lastName } = {} as NameProps) => {
   return [lastName, firstName].join(' ');
 };
 
-export { getFirstPathname, truncateText, getFullName };
+const formatMoney = (value: number) => {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
+export { getFirstPathname, truncateText, getFullName, formatMoney };

@@ -1,13 +1,13 @@
-.a-collapse {
+.a-collapse-form {
   .mbb-collapse-header {
     font-weight: 500;
-    background-color: #eaeaea;
+    border-bottom: 1px solid #f3f3f3;
     font-size: 20px;
     padding: 16px 32px !important;
     align-items: center !important;
   }
   .mbb-collapse-content-box {
-    padding: 16px 32px !important;
-    background-color: #f6f6f69c !important;
+    padding: 24px !important;
+    background-color: #fff !important;
   }
 }

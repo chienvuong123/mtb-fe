@@ -6,12 +6,12 @@ import type { BaseSearchParams } from '@dtos';
 import useUrlParams from '@hooks/useUrlParams';
 import { MOCK_CUSTOMER, MOCK_CUSTOMER_APPROACHES } from '@mocks/customer';
 import { useParams } from 'react-router-dom';
+import CustomerApproachPreview from './components/CustomerApproachPreview';
 import CustomerApproachTable, {
   type TCustomerApproachRecord,
 } from './components/CustomerApproachTable';
 import CustomerDetailForm from './components/CustomerDetailForm';
 import './index.scss';
-import CustomerApproachPreview from './components/CustomerApproachPreview';
 
 const CustomerDetailPage: FC = () => {
   const { id } = useParams<{ id: string }>();
