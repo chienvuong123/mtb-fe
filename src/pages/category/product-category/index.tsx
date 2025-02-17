@@ -57,7 +57,7 @@ const ProductCategoryPage: FC = () => {
   const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
 
   const { data: productRes, isLoading } = useProductCategorySearchQuery({
-    categoryType: CategoryType.PRODUCT,
+    categoryTypeCode: CategoryType.PRODUCT,
     page: {
       pageNum: Number(current),
       pageSize: Number(pageSize),
@@ -123,7 +123,7 @@ const ProductCategoryPage: FC = () => {
 
   const handleSubmitInsert = ({ name, code, status }: ProductCategoryDTO) => {
     const data: Partial<ProductCategoryDTO> = {
-      categoryTypeId: CategoryType.PRODUCT,
+      categoryTypeCode: CategoryType.PRODUCT,
       code,
       name,
       status,
@@ -138,7 +138,7 @@ const ProductCategoryPage: FC = () => {
 
   const handleSubmitEdit = ({ name, code, status }: ProductCategoryDTO) => {
     const data: Partial<ProductCategoryDTO> = {
-      categoryTypeId: CategoryType.MEDIA,
+      categoryTypeCode: CategoryType.MEDIA,
       code,
       name,
       status,
@@ -196,7 +196,7 @@ const ProductCategoryPage: FC = () => {
   };
 
   useEffect(() => {
-    if (!isLoading && !productRes?.data?.content.length && current > 1) {
+    if (!isLoading && !productRes?.data?.content?.length && current > 1) {
       setPagination((prev) => ({
         ...prev,
         current: prev.current - 1,
