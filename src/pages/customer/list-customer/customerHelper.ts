@@ -48,7 +48,7 @@ export const destructCustomerData = (
     name,
     phone,
     email,
-    birthDay: birthday,
+    birthday,
     gender,
     address,
     identityCard,
@@ -65,7 +65,6 @@ export const destructCustomerData = (
   }: Partial<CustomerDTO>,
   isSearch?: boolean,
 ) => {
-  const birthDay = birthday;
   return isSearch
     ? {
         code,
@@ -88,7 +87,7 @@ export const destructCustomerData = (
         name,
         phone,
         email,
-        birthDay,
+        birthday,
         gender,
         address,
         identityCard,
