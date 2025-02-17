@@ -45,7 +45,7 @@ export const MOCK_CUSTOMER: CustomerDTO = {
     name: 'VIP',
     code: 'VIP',
     status: EStatus.ACTIVE,
-    categoryType: CategoryType.PRODUCT,
+    categoryTypeCode: CategoryType.PRODUCT,
     createdDate: '',
     createdBy: '',
     updatedDate: '',

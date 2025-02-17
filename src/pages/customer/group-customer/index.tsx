@@ -4,7 +4,7 @@ import { type FC, useState, useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
-import { CategoryType, type CustomerDTO } from '@dtos';
+import { type CustomerDTO } from '@dtos';
 
 import type {
   IMPagination,
@@ -107,7 +107,6 @@ const ListCustomerPage: FC = () => {
   const handleSubmitInsert = ({ name, code }: CustomerDTO) => {
     const data: Partial<AnyObject> = {
       category: {
-        categoryTypeId: CategoryType.PRODUCT,
         code,
         name,
         id: initValues?.id,

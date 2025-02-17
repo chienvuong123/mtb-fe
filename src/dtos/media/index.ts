@@ -1,3 +1,4 @@
+import type { CategoryType } from '../category';
 import type { PageableObject } from '../common';
 
 export type MediaCategoryDTO = {
@@ -9,11 +10,11 @@ export type MediaCategoryDTO = {
   code: string;
   name: string;
   status: string;
-  categoryTypeId?: string;
+  categoryTypeCode?: CategoryType;
 };
 
 export type MediaCategorySearch = {
-  categoryType: string;
+  categoryTypeCode: CategoryType;
   reqNo?: string;
   code?: string;
   name?: string;
