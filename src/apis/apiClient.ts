@@ -11,7 +11,7 @@ import {
 } from '@constants/baseUrl';
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
-  _retry?: boolean; // Thêm _retry vào cấu hình
+  _retry?: boolean;
 }
 
 const generateReqNo = () => {
@@ -53,6 +53,8 @@ export const apiClient = axios.create({
   },
   paramsSerializer,
 });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let refreshTokenPromise: Promise<any> | null = null;
 
 // Interceptors setup
 apiClient.interceptors.request.use(
@@ -82,9 +84,17 @@ apiClient.interceptors.response.use(
       const refreshToken = localStorage.getItem('refresh_token');
 
       if (!refreshToken) throw new Error('Token are undefined');
+
       try {
         if (originalRequest.headers) {
-          const response = await onRefreshToken(refreshToken);
+          if (!refreshTokenPromise) {
+            refreshTokenPromise = onRefreshToken(refreshToken).finally(() => {
+              refreshTokenPromise = null;
+            });
+          }
+
+          const response = await refreshTokenPromise;
+
           if (response) {
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('refresh_token', response.data.refresh_token);
