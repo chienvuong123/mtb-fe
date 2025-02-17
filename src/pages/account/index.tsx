@@ -6,7 +6,7 @@ import { AButton } from '@components/atoms';
 import { EStatus } from '@constants/masterData';
 import { useUserEditMutation } from '@hooks/queries';
 import type { UserDTO } from '@dtos';
-import { useUserStore } from '../../stores';
+import { useProfile } from '../../stores';
 import useFieldRender from './hooks/useFieldRender';
 
 import './index.scss';
@@ -18,7 +18,7 @@ const AccountPage = () => {
     formItems: items,
     rowProps: { gutter: [16, 24] },
   });
-  const { user } = useUserStore();
+  const { user } = useProfile();
 
   const { mutate: userEditMutate } = useUserEditMutation();
 

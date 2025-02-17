@@ -28,6 +28,7 @@ const ROUTE_PATH = {
     DETAIL: ':id',
   },
   SCENARIO: {
+    LIST: 'list',
     ROOT: '/scenario',
     CREATE: 'create',
     DETAIL: ':id',

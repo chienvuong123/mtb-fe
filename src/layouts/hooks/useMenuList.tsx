@@ -79,7 +79,7 @@ const useMenuList = (onLogout?: () => void) => {
         icon: <Target02Icon />,
         children: [
           {
-            key: SCENARIO.ROOT,
+            key: `${SCENARIO.ROOT}/${SCENARIO.LIST}`,
             label: 'Danh sách kịch bản',
           },
           {

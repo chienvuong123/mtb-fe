@@ -21,7 +21,7 @@ import {
   useProductCategorySearchQuery,
 } from '@hooks/queries/useProductCategoryQueries';
 import useUrlParams from '@hooks/useUrlParams';
-import { useUserStore } from '@stores';
+import { useProfile } from '@stores';
 import { filterObject } from '@utils/objectHelper';
 import type { SortOrder } from 'antd/es/table/interface';
 import { ODrawer, type TDrawerMsg } from '@components/organisms';
@@ -52,7 +52,7 @@ const ProductCategoryPage: FC = () => {
 
   const [drawerMode, setDrawerMode] = useState<TFormType>();
 
-  const { user } = useUserStore();
+  const { user } = useProfile();
 
   const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
 
