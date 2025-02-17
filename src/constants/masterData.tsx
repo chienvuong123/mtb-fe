@@ -1,4 +1,5 @@
 import { ControlImageIcon } from '@assets/icons';
+import { EApproachStatus } from '@dtos';
 import {
   Checkbox,
   DatePicker,
@@ -43,6 +44,7 @@ export enum EControlType {
   NUMBER = 'NUMBER',
   SWITCH = 'SWITCH',
   LINK = 'LINK',
+  BUTTON = 'BUTTON',
 }
 
 export enum ESalesOpportunities {
@@ -59,6 +61,21 @@ export const STATUS_OPTIONS = [
   {
     value: EStatus.INACTIVE,
     label: <Typography.Text className="red">Không hoạt động</Typography.Text>,
+  },
+];
+
+export const APPROACH_STATUS_OPTIONS = [
+  {
+    value: EApproachStatus.PENDING,
+    label: 'Chưa bắt đầu',
+  },
+  {
+    value: EApproachStatus.INPROGRESS,
+    label: 'Đang triển khai',
+  },
+  {
+    value: EApproachStatus.FINISHED,
+    label: 'Hoàn thành',
   },
 ];
 

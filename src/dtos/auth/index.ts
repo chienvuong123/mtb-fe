@@ -1,3 +1,4 @@
+import type { CategoryType } from '../category';
 import type { BaseEntity, BaseResponse, BaseSearchParams } from '../common';
 
 export interface AuthVerifyDTO extends BaseEntity {
@@ -18,7 +19,7 @@ export interface AuthOtpDTO extends BaseEntity {
 }
 
 export interface AuthOtpRequest extends BaseSearchParams {
-  categoryType?: string;
+  categoryTypeCode?: CategoryType;
   code?: string;
   name?: string;
 }

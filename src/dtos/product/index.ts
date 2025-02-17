@@ -1,3 +1,5 @@
+import type { CategoryType } from '../category';
+
 export type ProductCategoryDTO = {
   createdDate: string;
   createdBy: string;
@@ -7,7 +9,7 @@ export type ProductCategoryDTO = {
   code: string;
   name: string;
   status: string;
-  categoryTypeId?: string;
+  categoryTypeCode?: CategoryType;
 };
 
 export type TProductSearchForm = { code: string; name: string; status: string };

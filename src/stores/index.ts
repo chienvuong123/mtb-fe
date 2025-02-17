@@ -1,2 +1,1 @@
-// eslint-disable-next-line import/prefer-default-export
-export { default as useUserStore } from './useUserStore';
+export { default as useProfile } from './useProfile';

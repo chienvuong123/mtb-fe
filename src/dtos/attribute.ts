@@ -9,13 +9,21 @@ import type {
 export type ControlValue<T extends EControlType> = {
   TEXT: string;
   EDITOR: string;
-  SELECT: string[];
-  RADIO: string[];
-  CHECKBOX: string[];
-  IMAGE: { alt: string; url: string };
+  SELECT: {
+    options: { text: string; value: string }[];
+  };
+  RADIO: {
+    options: { text: string; value: string }[];
+  };
+  CHECKBOX: {
+    options: { text: string; value: string }[];
+  };
+  IMAGE: { title: string; src: string };
   DATETIME: string;
   NUMBER: number;
-  SWITCH: string[];
+  SWITCH: {
+    options: { text: string; value: string }[];
+  };
   LINK: string;
   BUTTON: { title: string; link: string };
 }[T];
@@ -23,14 +31,16 @@ export type ControlValue<T extends EControlType> = {
 export type ControlValueType = ControlValue<EControlType>;
 
 export interface AttributeDTO extends BaseEntity {
-  name: string;
+  attributeName: string;
   controlType: EControlType;
   content: string;
-  value: ControlValueType;
+  config: ControlValueType;
+  haveNote?: boolean;
+  controlName?: string;
 }
 
 export interface AttributeSearchRequest extends BaseSearchParams {
-  name?: string;
+  attributeName?: string;
 }
 
 export type AttributeSearchResponse = BaseResponse<

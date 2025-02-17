@@ -11,13 +11,21 @@ import {
 } from '@constants/baseUrl';
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
-  _retry?: boolean; // Thêm _retry vào cấu hình
+  _retry?: boolean;
 }
 
 const generateReqNo = () => {
   const timestamp = new Date().getTime();
   const random = Math.random().toString(36).substring(2, 8);
   return `${timestamp}_${random}`;
+};
+
+const paramsSerializer = (params: Record<string, unknown>) => {
+  return qs.stringify(params, {
+    arrayFormat: 'brackets', // Preserve array format with square brackets []
+    encode: false, // Do not encode parameters (keep dots as they are)
+    allowDots: true, // Allow dot notation for nested objects
+  });
 };
 
 const onRefreshToken = (token: string) => {
@@ -43,7 +51,10 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  paramsSerializer,
 });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let refreshTokenPromise: Promise<any> | null = null;
 
 // Interceptors setup
 apiClient.interceptors.request.use(
@@ -73,9 +84,17 @@ apiClient.interceptors.response.use(
       const refreshToken = localStorage.getItem('refresh_token');
 
       if (!refreshToken) throw new Error('Token are undefined');
+
       try {
         if (originalRequest.headers) {
-          const response = await onRefreshToken(refreshToken);
+          if (!refreshTokenPromise) {
+            refreshTokenPromise = onRefreshToken(refreshToken).finally(() => {
+              refreshTokenPromise = null;
+            });
+          }
+
+          const response = await refreshTokenPromise;
+
           if (response) {
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('refresh_token', response.data.refresh_token);

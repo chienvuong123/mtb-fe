@@ -13,7 +13,6 @@ import type {
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { useSalesOpportunitiesSearchQuery } from '@hooks/queries/userSalesOpportunitiesQueries';
 import { Drawer } from 'antd';
-import { CategoryType } from '@dtos';
 import { filterObject } from '@utils/objectHelper';
 import OpportunitySellTable, {
   type TSalesOpportunitiesRecord,
@@ -31,8 +30,7 @@ const ManageSalesOpportunities: React.FC = () => {
   const { setPagination, setFilters, setSort, pagination, sort, filters } =
     useUrlParams<Partial<SalesOpportunitiesDTO>>();
 
-  const { data: OpportunitySellRes } = useSalesOpportunitiesSearchQuery({
-    categoryType: CategoryType.PRODUCT,
+  const { data: opportunitySellRes } = useSalesOpportunitiesSearchQuery({
     page: {
       pageNum: Number(pagination.current),
       pageSize: Number(pagination.pageSize),
@@ -44,11 +42,11 @@ const ManageSalesOpportunities: React.FC = () => {
   const dataSources: TSalesOpportunitiesRecord[] =
     useMemo(
       () =>
-        OpportunitySellRes?.data?.content?.map((i) => ({
+        opportunitySellRes?.data?.content?.map((i) => ({
           ...i,
           key: i.id as string,
         })),
-      [OpportunitySellRes],
+      [opportunitySellRes],
     ) ?? [];
 
   const handlePaginationChange = (data: TPagination) => {
@@ -58,7 +56,7 @@ const ManageSalesOpportunities: React.FC = () => {
   const paginations: IMPagination = {
     pagination: {
       ...pagination,
-      total: OpportunitySellRes?.data?.total ?? 1,
+      total: opportunitySellRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
@@ -66,7 +64,7 @@ const ManageSalesOpportunities: React.FC = () => {
   };
 
   const handleView = (id: string) => {
-    const item = OpportunitySellRes?.data?.content.find((i) => i.id === id);
+    const item = opportunitySellRes?.data?.content.find((i) => i.id === id);
     if (item) {
       setIsViewMode(true);
       setInitValues({ ...item });

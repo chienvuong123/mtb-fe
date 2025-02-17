@@ -1,3 +1,4 @@
+import type { CategoryType } from '../category';
 import type {
   BaseResponse,
   BaseSearchParams,
@@ -5,7 +6,7 @@ import type {
 } from '../common';
 
 export interface SalesOpportunitiesSearchRequest extends BaseSearchParams {
-  categoryType?: string;
+  categoryTypeCode?: CategoryType;
   code?: string;
   name?: string;
 }

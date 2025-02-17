@@ -52,3 +52,4 @@ export { ReactComponent as ImportIcon } from './import.svg';
 export { ReactComponent as UploadCloudIcon } from './upload-cloud.svg';
 export { ReactComponent as SheetIcon } from './sheet-icon.svg';
 export { ReactComponent as UserGroupIcon } from './user-group.svg';
+export { ReactComponent as ArrowDown01RoundIcon } from './arrow-down-01-round.svg';
