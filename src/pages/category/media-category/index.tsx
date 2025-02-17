@@ -21,7 +21,7 @@ import {
   useMediaCategorySearchQuery,
 } from '@hooks/queries/useMediaCategoryQueries';
 import useUrlParams from '@hooks/useUrlParams';
-import { useUserStore } from '@stores';
+import { useProfile } from '@stores';
 import type { SortOrder } from 'antd/es/table/interface';
 import { filterObject } from '@utils/objectHelper';
 import { ODrawer, type TDrawerMsg } from '@components/organisms';
@@ -49,7 +49,7 @@ const MediaCategoryPage: FC = () => {
 
   const [drawerMode, setDrawerMode] = useState<TFormType>();
 
-  const { user } = useUserStore();
+  const { user } = useProfile();
 
   const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
 

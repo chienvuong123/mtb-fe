@@ -18,7 +18,7 @@ import type { SelectEventHandler } from 'rc-menu/lib/interface';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getFirstPathname } from '@utils/stringHelper';
 import { useLogoutMutation } from '@hooks/queries';
-import { useUserStore } from '../../../stores';
+import { LOGIN } from '@routers/path';
 
 const { Sider } = Layout;
 
@@ -36,16 +36,18 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const { jwtInfo, logout } = useUserStore();
   const { mutate: mutateLogout } = useLogoutMutation();
 
   const handleLogout = () => {
     mutateLogout(
       {
-        refresh_token: jwtInfo?.refreshToken ?? '',
+        refresh_token: localStorage.getItem('refresh_token') ?? '',
       },
       {
-        onSuccess: logout,
+        onSuccess: () => {
+          localStorage.clear();
+          navigate(LOGIN);
+        },
       },
     );
   };

@@ -2,14 +2,14 @@ import React from 'react';
 import { ArrowDown01Icon } from '@assets/icons';
 import { ADropdown } from '@components/atoms';
 import { Avatar, Badge, Flex, type MenuProps } from 'antd';
-import { useUserStore } from '../../../stores';
+import { useProfile } from '@stores';
 
 interface IMHeaderInfo {
   itemsDropdown: MenuProps['items'];
 }
 
 const MHeaderInfo: React.FC<IMHeaderInfo> = ({ itemsDropdown }) => {
-  const { user } = useUserStore();
+  const { user } = useProfile();
 
   return (
     <Flex justify="space-between" align="center">

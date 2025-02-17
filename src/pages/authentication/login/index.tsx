@@ -1,11 +1,10 @@
 import { LogoOpenIcon } from '@assets/icons';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import useFormItems from '@hooks/useFormItems';
-import { Link } from 'react-router-dom';
-import { FORGOT_PASSWORD } from '@routers/path';
+import { Link, useNavigate } from 'react-router-dom';
+import { FORGOT_PASSWORD, HOME } from '@routers/path';
 import { useLoginMutation } from '@hooks/queries';
 import { useState } from 'react';
-import { useUserStore } from '../../../stores';
 import { FooterAuth } from '../components/footer';
 import { FormContentAuth } from '../components/form-content';
 import { LayoutWrapper } from '../components';
@@ -35,8 +34,8 @@ const items: TFormItem[] = [
 
 const LoginPage = () => {
   const [alert, setAlert] = useState('');
+  const navigate = useNavigate();
 
-  const { loginSuccess } = useUserStore();
   const { mutate: mutateLogin, isPending } = useLoginMutation();
   const { formContent } = useFormItems({
     formItems: items,
@@ -54,10 +53,7 @@ const LoginPage = () => {
         onSuccess(value) {
           localStorage.setItem('token', value.access_token);
           localStorage.setItem('refresh_token', value.refresh_token);
-          loginSuccess({
-            token: value.access_token,
-            refreshToken: value.refresh_token,
-          });
+          navigate(HOME);
         },
         onError() {
           setAlert('Thông tin đăng nhập không đúng');
