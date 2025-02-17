@@ -5,7 +5,6 @@ import type {
 } from '@components/molecules/m-pagination/MPagination.type';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { BaseResponse } from '@dtos';
-import { useCampaignSearchMasterDataQuery } from '@hooks/queries/useCampaignQueries';
 import {
   useGroupCustomerAddMutation,
   useGroupCustomerSearchQuery,
@@ -50,12 +49,6 @@ const GroupCustomerPage = () => {
     nameCategory: filters.nameCategory,
     code: filters.code,
     name: filters.name,
-  });
-
-  // search list master data campaign
-  const { data: campaignMasterData } = useCampaignSearchMasterDataQuery({
-    // TODO
-    page: { pageNum: 1, pageSize: 10 },
   });
 
   const handleCloseForm = () => {
@@ -217,11 +210,6 @@ const GroupCustomerPage = () => {
         onSearch={handleSearch}
         onClearAll={handleClearAll}
         onCreate={handleCreate}
-        listMasterData={{
-          campaign: campaignMasterData?.data?.content ?? [],
-          // TODO
-          category: [],
-        }}
         initialValues={{
           campaignId: filters?.campaignId ?? '',
           nameCampaign: filters?.nameCampaign ?? '',

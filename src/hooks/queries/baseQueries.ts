@@ -132,6 +132,23 @@ export const createBaseQueryHooks = <
     });
   };
 
+  const useSearchMasterDataQuery = (
+    params: SearchParams,
+    options: Partial<
+      UseQueryOptions<
+        BaseResponse<BaseSearchResponse<T>>,
+        Error,
+        SearchResponse
+      >
+    > = {},
+  ) => {
+    return useQuery({
+      queryKey: queryKeys.searchMasterData(params),
+      queryFn: () => api.searchMasterData(params),
+      ...options,
+    });
+  };
+
   const useInfiniteSearchQuery = (
     params: SearchParams,
     options: Partial<
@@ -166,6 +183,7 @@ export const createBaseQueryHooks = <
     useAddMutation,
     useEditMutation,
     useRemoveMutation,
+    useSearchMasterDataQuery,
     useInfiniteSearchQuery,
   };
 };

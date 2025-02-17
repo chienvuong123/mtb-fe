@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   UploadProps,
   FormItemProps,
@@ -34,7 +35,10 @@ export enum INPUT_TYPE {
 
 export type TOTPProps = GetProps<typeof Input.OTP>;
 export type TPasswordProps = GetProps<typeof Input.Password>;
-
+export type TSelectProps = SelectProps & {
+  fetchHook?: any;
+  getQueryParams?: any;
+};
 export type TBaseFormItem = FormItemProps & {
   colProps?: ColProps;
 };
@@ -58,7 +62,7 @@ export type TFormItem =
     })
   | (TBaseFormItem & {
       type: INPUT_TYPE.SELECT;
-      inputProps?: SelectProps;
+      inputProps?: TSelectProps;
     })
   | (TBaseFormItem & {
       type: INPUT_TYPE.DATE_PICKER;

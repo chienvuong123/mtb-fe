@@ -30,7 +30,6 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
             inputProps: {
               options: [],
               allowClear: false,
-              colProps: { span: 24 },
             },
           },
 
@@ -41,6 +40,7 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
             inputProps: {
               options: [],
               allowClear: false,
+              colProps: { span: 24, flex: 1 },
             },
           },
 

@@ -1,16 +1,12 @@
 import { OSearchBaseForm } from '@components/organisms';
-import type { CategoryDTO } from '@dtos';
+import { STATUS_OPTIONS } from '@constants/masterData';
+import { useCampaignSearchMasterDataQuery } from '@hooks/queries/useCampaignQueries';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, type FC } from 'react';
-import type { CampaignDTO } from 'src/dtos/campaign';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
 
 interface IGroupCustomerSearchForm {
-  listMasterData: {
-    campaign: CampaignDTO[];
-    category: CategoryDTO[];
-  };
   initialValues?: Partial<GroupCustomerDTO>;
   onSearch: (values: GroupCustomerDTO) => void;
   onClearAll?: () => void;
@@ -18,7 +14,6 @@ interface IGroupCustomerSearchForm {
 }
 
 const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
-  listMasterData,
   initialValues,
   onSearch,
   onClearAll,
@@ -32,13 +27,15 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       label: 'Mã Category',
       name: 'categoryId',
       inputProps: {
-        // TODO
-        options: listMasterData.campaign.map((item) => ({
-          label: item.code,
-          value: item.code,
-        })),
         showSearch: true,
-        allowClear: false,
+        placeholder: 'Chọn...',
+        fetchHook: useCampaignSearchMasterDataQuery,
+        getQueryParams: (searchText: string, page: number) => {
+          return {
+            page: { pageNum: page, pageSize: 10 },
+            code: searchText,
+          };
+        },
       },
     },
     {
@@ -47,10 +44,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       name: 'nameCategory',
       inputProps: {
         // TODO
-        options: listMasterData.campaign.map((item) => ({
-          label: item.name,
-          value: item.name,
-        })),
+        options: STATUS_OPTIONS,
         allowClear: false,
       },
     },
@@ -60,10 +54,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       name: 'campaignId',
       inputProps: {
         // TODO
-        options: listMasterData.campaign.map((item) => ({
-          label: item.code,
-          value: item.code,
-        })),
+        options: STATUS_OPTIONS,
         allowClear: false,
       },
     },
@@ -73,10 +64,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       name: 'nameCampaign',
       inputProps: {
         // TODO
-        options: listMasterData.campaign.map((item) => ({
-          label: item.name,
-          value: item.name,
-        })),
+        options: STATUS_OPTIONS,
         allowClear: false,
       },
     },

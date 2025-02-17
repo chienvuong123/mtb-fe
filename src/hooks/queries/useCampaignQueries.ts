@@ -12,7 +12,7 @@ export const {
   useSearchQuery: useCampaignSearchQuery,
   useViewQuery: useCampaignViewQuery,
   useAddMutation: useCampaignAddMutation,
-  useInfiniteSearchQuery: useCampaignSearchMasterDataQuery,
+  useSearchMasterDataQuery: useCampaignSearchMasterDataQuery,
 } = createBaseQueryHooks<
   CampaignDTO,
   CampaignSearchRequest,
