@@ -260,8 +260,8 @@ const useCustomerForm = ({
       form.setFieldsValue({
         ...otherInit,
         birthday: birthday ? stringToDayjs(birthday) : undefined,
-        hobbies: hobbies ? JSON.parse(hobbies) : [],
-        identification: identification ? JSON.parse(identification) : [],
+        hobbies: hobbies?.split(',') ?? [],
+        identification: identification?.split(',') ?? [],
       } as TCustomerForm);
     }
   }, [initialValues, form]);
@@ -276,10 +276,8 @@ const useCustomerForm = ({
       {
         ...values,
         birthday: dayjsToString(birthday),
-        hobbies: hobbies ? JSON.stringify(hobbies) : undefined,
-        identification: identification
-          ? JSON.stringify(identification)
-          : undefined,
+        hobbies: hobbies?.join(','),
+        identification: identification?.join(','),
       },
       form,
     );
