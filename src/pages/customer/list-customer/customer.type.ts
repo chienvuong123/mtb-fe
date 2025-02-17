@@ -7,9 +7,9 @@ import type { SortOrder } from 'antd/es/table/interface';
 import type { Dayjs } from 'dayjs';
 
 export type TCustomerForm = Partial<
-  Omit<CustomerDTO, 'birthDay' | 'hobbies' | 'identification'>
+  Omit<CustomerDTO, 'birthday' | 'hobbies' | 'identification'>
 > & {
-  birthDay?: Dayjs;
+  birthday?: Dayjs;
   hobbies?: string[];
   identification?: string[];
 };
