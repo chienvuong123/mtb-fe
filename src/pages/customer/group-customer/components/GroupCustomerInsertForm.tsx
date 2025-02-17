@@ -3,18 +3,20 @@ import { GROUP_CUSTOMER_KEY } from '@hooks/queries/useGroupCustomerQueries';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import clsx from 'clsx';
-import { useMemo, type FC } from 'react';
+import { useEffect, useMemo, type FC } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
 
 interface IGroupCustomerInsertForm {
   onClose: () => void;
   onSubmit: (values: Partial<GroupCustomerDTO>) => void;
-  mode: 'insert' | 'view';
+  mode: 'add' | 'view';
+  initialValues?: Partial<GroupCustomerDTO> | null;
 }
 
 const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
   onClose,
   onSubmit,
+  initialValues,
   mode,
 }) => {
   const [form] = useForm();
@@ -71,6 +73,12 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
       }),
     [mode],
   ) as TFormItem[];
+
+  useEffect(() => {
+    if (initialValues) {
+      form.setFieldsValue({ ...initialValues });
+    }
+  }, [initialValues, form]);
 
   return (
     <div>

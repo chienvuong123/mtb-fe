@@ -16,7 +16,6 @@ export interface CampaignDTO extends BaseEntity {
   name: string;
   startDate: string;
   endDate: string;
-  reqNo: string;
 
   branches: string;
   campaignManagerId: string;

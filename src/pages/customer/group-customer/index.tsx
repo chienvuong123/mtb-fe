@@ -1,8 +1,8 @@
-import { AAlert } from '@components/atoms';
 import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
+import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { BaseResponse } from '@dtos';
 import {
@@ -10,7 +10,9 @@ import {
   useGroupCustomerSearchQuery,
 } from '@hooks/queries/useGroupCustomerQueries';
 import useUrlParams from '@hooks/useUrlParams';
-import { Drawer } from 'antd';
+import type { TFormType } from '@types';
+
+import { validateInsertCategory } from '@pages/category/utils';
 import type { SortOrder } from 'antd/es/table/interface';
 import Title from 'antd/lib/typography/Title';
 import { useEffect, useMemo, useState } from 'react';
@@ -21,23 +23,14 @@ import type { TGroupCustomerRecord } from './components/GroupCustomerTable';
 import GroupCustomerTable from './components/GroupCustomerTable';
 
 const GroupCustomerPage = () => {
-  const [showInsertForm, setShowInsertForm] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [isViewMode, setIsViewMode] = useState(false);
-  const [typeAlert, setTypeAlert] = useState<'success' | 'warning' | 'error'>(
-    'success',
-  );
-  const [message, setMessage] = useState<string>('');
+  const [drawerMode, setDrawerMode] = useState<TFormType>();
+  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
+
+  const [initialValuesForm, setInitialValuesForm] =
+    useState<Partial<TGroupCustomerRecord> | null>(null);
 
   const { pagination, setPagination, sort, setSort, filters, setFilters } =
     useUrlParams<Partial<GroupCustomerDTO>>();
-
-  const showAlert = () => {
-    setVisible(true);
-    setTimeout(() => {
-      setVisible(false);
-    }, 3000);
-  };
 
   // search list group customer
   const { data: groupCustomerRes, isLoading } = useGroupCustomerSearchQuery({
@@ -52,26 +45,18 @@ const GroupCustomerPage = () => {
   });
 
   const handleCloseForm = () => {
-    setShowInsertForm(false);
-    setIsViewMode(false);
-  };
-
-  const handleShowMessage = (dataSuccess?: BaseResponse<boolean>) => {
-    if (!dataSuccess) return;
-
-    if (dataSuccess.data) {
-      setTypeAlert('success');
-      setMessage('Tạo mới thành công');
-    } else {
-      setTypeAlert('error');
-      setMessage(dataSuccess.errorDesc);
-    }
-    showAlert();
+    setDrawerMode(undefined);
   };
 
   const handleInvalidate = (data?: BaseResponse<boolean>) => {
-    handleShowMessage(data);
-    handleCloseForm();
+    if (data)
+      validateInsertCategory(data, setAlertMessage, () => {
+        setAlertMessage({
+          message: 'Tạo mới thành công',
+          type: 'success',
+        });
+        handleCloseForm();
+      });
   };
 
   const { mutate: mutationCreateGroupCustomer } = useGroupCustomerAddMutation(
@@ -80,7 +65,7 @@ const GroupCustomerPage = () => {
   );
 
   const handleCreate = () => {
-    setShowInsertForm(true);
+    setDrawerMode('add');
   };
 
   const handleClearAll = () => {
@@ -98,7 +83,8 @@ const GroupCustomerPage = () => {
   const handleView = (id: string) => {
     const item = groupCustomerRes?.data.content.find((i) => i.id === id);
     if (item) {
-      setIsViewMode(true);
+      setDrawerMode('view');
+      setInitialValuesForm({ ...item });
     }
   };
 
@@ -150,12 +136,6 @@ const GroupCustomerPage = () => {
     mutationCreateGroupCustomer(data);
   };
 
-  const getDrawerTitle = useMemo(() => {
-    const title = '$ nhóm khách hàng';
-    if (isViewMode) return title.replace('$', 'Chi tiết');
-    return title.replace('$', 'Tạo mới');
-  }, [isViewMode]);
-
   const dataSources: TGroupCustomerRecord[] =
     useMemo(
       () =>
@@ -197,15 +177,7 @@ const GroupCustomerPage = () => {
       <Title level={3} className="mb-24 group-customer">
         Danh sách nhóm khách hàng
       </Title>
-      {visible && (
-        <AAlert
-          message={message}
-          type={typeAlert}
-          closable
-          onClose={() => setVisible(false)}
-          className={`alert-media ${typeAlert === 'success' ? 'alert-success' : ''} ${typeAlert === 'error' ? 'alert-error' : ''}`}
-        />
-      )}
+
       <GroupCustomerSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
@@ -229,20 +201,22 @@ const GroupCustomerPage = () => {
         onSort={handleSort}
       />
 
-      <Drawer
-        title={getDrawerTitle}
+      <ODrawer
+        usePrefixTitle
+        title="nhóm khách hàng"
+        mode={drawerMode}
         onClose={handleCloseForm}
-        open={showInsertForm || isViewMode}
+        open={!!drawerMode}
         width={1025}
-        maskClosable={false}
-        classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
+        alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
         <GroupCustomerInsertForm
-          mode={isViewMode ? 'view' : 'insert'}
+          mode={drawerMode ? 'view' : 'add'}
+          initialValues={initialValuesForm}
           onClose={handleCloseForm}
           onSubmit={handleSubmitInsert}
         />
-      </Drawer>
+      </ODrawer>
     </div>
   );
 };

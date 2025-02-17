@@ -17,7 +17,6 @@ export interface GroupCustomerDTO extends BaseEntity {
   customerQuantity: number;
   code: string;
   name: string;
-  reqNo: string;
 }
 
 export interface GroupCustomerSearchRequest extends BaseSearchParams {

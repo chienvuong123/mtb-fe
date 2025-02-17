@@ -77,7 +77,7 @@ const OTable = <T extends object & TTableKey>({
                 width: 120,
                 minWidth: 120,
                 render: (_: unknown, record: T) => (
-                  <div className="flex justify-content-center">
+                  <div className="dis-flex jc-center">
                     <TableActions
                       record={record}
                       editable={false}
