@@ -30,6 +30,7 @@ export enum INPUT_TYPE {
   TEXT_AREA,
   TIME_PICKER,
   FILE,
+  BLANK,
 }
 
 export type TOTPProps = GetProps<typeof Input.OTP>;
@@ -37,6 +38,7 @@ export type TPasswordProps = GetProps<typeof Input.Password>;
 
 export type TBaseFormItem = FormItemProps & {
   colProps?: ColProps;
+  onAddClick?: (field?: string) => void;
 };
 
 export type TFormItem =
@@ -75,4 +77,5 @@ export type TFormItem =
   | (TBaseFormItem & {
       type: INPUT_TYPE.FILE;
       inputProps?: UploadProps;
-    });
+    })
+  | (TBaseFormItem & { type: INPUT_TYPE.BLANK; inputProps?: InputProps });

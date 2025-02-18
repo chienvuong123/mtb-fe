@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import { MOCK_SCENARIOS } from '@mocks/scenario';
 import type { CampaignDTO } from '../dtos/campaign';
 import type { ApproachPlanDTO } from '../dtos/approach-plan';

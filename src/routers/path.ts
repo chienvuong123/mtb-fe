@@ -16,6 +16,13 @@ const ROUTE_PATH = {
     PRODUCT_CATEGORY: `product-category`,
     MEDIA_CATEGORY: `media-category`,
   },
+
+  MANAGER_CATEGORY: {
+    ROOT: 'manager-category',
+    CAMPAIGN: `campaign`,
+    CAMPAIGN_DETAIL: `campaign-detail`,
+  },
+
   SETTING: {
     ROOT: '/setting',
     CONTROL: 'control',
@@ -50,5 +57,6 @@ export const {
   SETTING,
   SALES_OPPORTUNITIES,
   CUSTOMER,
+  MANAGER_CATEGORY,
   SCENARIO,
 } = ROUTE_PATH;

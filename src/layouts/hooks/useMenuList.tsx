@@ -10,12 +10,19 @@ import {
   Setting02Icon,
   Target02Icon,
 } from '@assets/icons';
-import OPopup from '@components/organisms/o-popup/OPopup';
-import { ACCOUNT, CATEGORY, CUSTOMER, SCENARIO, SETTING } from '@routers/path';
 import { Divider } from 'antd';
+import {
+  CATEGORY,
+  ACCOUNT,
+  CUSTOMER,
+  MANAGER_CATEGORY,
+  SCENARIO,
+  SETTING,
+} from '@routers/path';
+import { Link, useNavigate } from 'react-router-dom';
+import OPopup from '@components/organisms/o-popup/OPopup';
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
 import { useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 
 const useMenuList = (onLogout?: () => void, onRequestChangePw?: () => void) => {
   const navigate = useNavigate();
@@ -46,7 +53,10 @@ const useMenuList = (onLogout?: () => void, onRequestChangePw?: () => void) => {
         label: 'Quản lý Category',
         icon: <FolderManagementIcon />,
         children: [
-          { key: 'category.1', label: 'DS khách hàng Campaign' },
+          {
+            key: `${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN}`,
+            label: 'DS khách hàng Campaign',
+          },
           {
             key: 'category.2',
             label: 'Danh sách nhóm khách hàng theo Campaign',

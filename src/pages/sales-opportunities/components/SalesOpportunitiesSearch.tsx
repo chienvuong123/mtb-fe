@@ -67,7 +67,7 @@ const items: TFormItem[] = [
       title: 'sdt',
       placeholder: 'Nhập...',
       maxLength: 10,
-      style: { width: '100%', height: '40px', lineHeight: '40px' },
+      className: 'input-custom',
     },
   },
   {
@@ -110,7 +110,7 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
   }, [initialValues, form]);
 
   return (
-    <div>
+    <div className="search-oppportunites-wrapper">
       <OSearchBaseForm<TSalesOpportunitiesSearchForm>
         items={items}
         form={form}

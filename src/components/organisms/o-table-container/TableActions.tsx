@@ -51,26 +51,32 @@ const TableActions = <T extends TTableKey>({
   }
   return (
     <Space>
-      <AButton
-        icon={<EyeIcon className="action-btn-icon" />}
-        type="link"
-        disabled={editingKey !== null}
-        className="w-22 action-btn"
-        onClick={() => onView?.(record.key)}
-      />
-      <AButton
-        onClick={() => onEdit?.(record)}
-        type="link"
-        disabled={editingKey !== null}
-        icon={<PenIcon className="action-btn-icon" />}
-        className="w-22 action-btn"
-      />
-      <AButton
-        type="link"
-        icon={<TrashIcon className="action-btn-icon" />}
-        className="w-22 action-btn"
-        onClick={() => onDelete?.(record.key)}
-      />
+      {Boolean(onView) && (
+        <AButton
+          icon={<EyeIcon className="action-btn-icon" />}
+          type="link"
+          disabled={editingKey !== null}
+          className="w-22 action-btn"
+          onClick={() => onView?.(record.key)}
+        />
+      )}
+      {Boolean(onEdit) && (
+        <AButton
+          onClick={() => onEdit?.(record)}
+          type="link"
+          disabled={editingKey !== null}
+          icon={<PenIcon className="action-btn-icon" />}
+          className="w-22 action-btn"
+        />
+      )}
+      {Boolean(onDelete) && (
+        <AButton
+          type="link"
+          icon={<TrashIcon className="action-btn-icon" />}
+          className="w-22 action-btn"
+          onClick={() => onDelete?.(record.key)}
+        />
+      )}
     </Space>
   );
 };

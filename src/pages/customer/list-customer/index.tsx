@@ -28,7 +28,6 @@ import CustomerGroupForm from '../group-customer/components/CustomerGroupForm';
 import {
   destructCustomerData,
   downloadFileByGetMethod,
-  parseCustomerObj,
   stringifyCustomerObj,
   validateInsertCustomer,
 } from './customerHelper';
@@ -38,7 +37,7 @@ import {
   CustomerSearchForm,
   CustomerViewForm,
 } from './components';
-import type { TCustomerRecord } from './customer.type';
+import type { TCustomerRecord, TCustomerSearchForm } from './customer.type';
 
 type TDrawerMode = 'group' | 'list' | false;
 
@@ -123,7 +122,7 @@ const ListCustomerPage: FC = () => {
     handleOpenDrawer();
   };
 
-  const handleSearch = (values: Partial<CustomerDTO>) => {
+  const handleSearch = (values: Partial<TCustomerSearchForm>) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setFilters(filterObject(stringifyCustomerObj(values)));
   };
@@ -305,7 +304,7 @@ const ListCustomerPage: FC = () => {
       <CustomerSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
-        initialValues={parseCustomerObj(filters)}
+        initialValues={filters}
         onCreate={handleCreate}
         onDeleteAll={() => {
           console.log('delete all');

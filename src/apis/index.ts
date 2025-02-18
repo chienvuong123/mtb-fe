@@ -7,4 +7,6 @@ export * from './userApi';
 export * from './baseApi';
 export * from './salesOpportunitiesApi';
 export * from './customerApi';
+export * from './campaignApi';
 export * from './scenarioApi';
+export * from './assetApi';

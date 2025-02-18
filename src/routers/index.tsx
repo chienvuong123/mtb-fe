@@ -2,10 +2,7 @@ import { ERole } from '@constants/masterData';
 import LayoutWrapper from '@layouts/LayoutWrapper';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import AuthGuard from './guards/AuthGuard';
-import GuestGuard from './guards/GuestGuard';
-import RoleBasedGuard from './guards/RoleBasedGuard';
-import VerifyGuard from './guards/VerifyGuard';
+
 import {
   ACCOUNT,
   CATEGORY,
@@ -17,9 +14,14 @@ import {
   LOGIN,
   OTP,
   SALES_OPPORTUNITIES,
-  SCENARIO,
+  MANAGER_CATEGORY,
   SETTING,
+  SCENARIO,
 } from './path';
+import GuestGuard from './guards/GuestGuard';
+import AuthGuard from './guards/AuthGuard';
+import VerifyGuard from './guards/VerifyGuard';
+import RoleBasedGuard from './guards/RoleBasedGuard';
 
 const createLazyElement = (
   importFn: () => Promise<{ default: React.ComponentType }>,
@@ -99,14 +101,27 @@ const routes = createBrowserRouter(
           ],
         },
         {
+          path: MANAGER_CATEGORY.ROOT,
+          children: [
+            {
+              path: MANAGER_CATEGORY.CAMPAIGN,
+              element: createLazyElement(
+                () => import('@pages/campaign/campaign-list'),
+              ),
+            },
+            {
+              path: `${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/:id`,
+              element: createLazyElement(
+                () => import('@pages/campaign/campaign-detail'),
+              ),
+            },
+          ],
+        },
+        {
           path: CUSTOMER.ROOT,
           element: (
             <RoleBasedGuard
-              accessibleRoles={[
-                ERole.ADMIN,
-                ERole.CAMPAIGN_MANAGER,
-                ERole.SELLER,
-              ]}
+              accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
             />
           ),
           children: [
@@ -120,6 +135,23 @@ const routes = createBrowserRouter(
               path: CUSTOMER.DETAIL,
               element: createLazyElement(
                 () => import('@pages/customer/detail'),
+              ),
+            },
+          ],
+        },
+        {
+          path: MANAGER_CATEGORY.ROOT,
+          children: [
+            {
+              path: MANAGER_CATEGORY.CAMPAIGN,
+              element: createLazyElement(
+                () => import('@pages/campaign/campaign-list'),
+              ),
+            },
+            {
+              path: `${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/:id`,
+              element: createLazyElement(
+                () => import('@pages/campaign/campaign-detail'),
               ),
             },
           ],

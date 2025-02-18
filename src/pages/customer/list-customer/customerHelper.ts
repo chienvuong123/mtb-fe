@@ -7,6 +7,7 @@ import type {
 import { downloadFile } from '@utils/fileHelper';
 import type { FormInstance } from 'antd';
 import type { Dispatch, SetStateAction } from 'react';
+import type { TCustomerSearchForm } from './customer.type';
 
 const customerError = {
   CUS0003: 'code',
@@ -19,9 +20,9 @@ export const parseCustomerObj = ({
   ...values
 }: Partial<CustomerDTO>) => {
   return {
-    cusSegment: cusSegment ? JSON.parse(cusSegment) : undefined,
-    cusGroup: cusGroup ? JSON.parse(cusGroup) : undefined,
-    job: job ? JSON.parse(job) : undefined,
+    cusSegment: cusSegment?.split(','),
+    cusGroup: cusGroup?.split(','),
+    job: job?.split(','),
     ...values,
   };
 };
@@ -31,11 +32,11 @@ export const stringifyCustomerObj = ({
   cusGroup,
   job,
   ...values
-}: Partial<CustomerDTO>) => {
+}: Partial<TCustomerSearchForm>) => {
   return {
-    cusSegment: cusSegment ? JSON.stringify(cusSegment) : undefined,
-    cusGroup: cusGroup ? JSON.stringify(cusGroup) : undefined,
-    job: job ? JSON.stringify(job) : undefined,
+    cusSegment: cusSegment?.join(','),
+    cusGroup: cusGroup?.join(','),
+    job: job?.join(','),
     ...values,
   };
 };
