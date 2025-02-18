@@ -10,7 +10,7 @@ const BUTTON_TEXT = {
   BACK: 'Trở về',
 } as const;
 
-interface IOBaseForm<T> {
+interface IOFormDetail<T> {
   items: TFormItem[];
   form: FormInstance<T>;
   className?: string;
@@ -24,13 +24,12 @@ const OFormDetail = <T extends object>({
   className,
   isViewMode,
   onClose,
-}: IOBaseForm<T>) => {
+}: IOFormDetail<T>) => {
   const transformItems = useMemo(
     () =>
       items.map(({ label, colProps, ...others }) => ({
-        label: <Typography className="fw-500 fs-14">{label}</Typography>,
+        label: <Typography className="fw-600 fs-14">{label}</Typography>,
         colProps: {
-          span: colProps?.span ?? 4,
           ...colProps,
         },
         ...others,

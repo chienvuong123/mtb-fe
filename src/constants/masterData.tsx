@@ -20,10 +20,22 @@ export enum EStatus {
   ALL = 'ALL',
 }
 
+export enum EStatusCampaign {
+  INPROGRESS = 'INPROGRESS',
+  PENDING = 'PENDING',
+  ENDED = 'ENDED',
+}
+
 export enum EGender {
   MAN = '0',
   WOMEN = '1',
   OTHER = '2',
+}
+
+export enum ESalesCampaign {
+  DISBURSED = 'DISBURSED',
+  OPPORTUNITY_TO_SELL = 'OPPORTUNITY_TO_SELL',
+  CANCELED = 'CANCELED',
 }
 
 export enum ERole {
@@ -76,6 +88,21 @@ export const APPROACH_STATUS_OPTIONS = [
   {
     value: EApproachStatus.FINISHED,
     label: 'Hoàn thành',
+  },
+];
+
+export const STATUS_CAMPAIGN_OPTIONS = [
+  {
+    value: EStatusCampaign.INPROGRESS,
+    label: <Typography.Text className="green">Đang triển khai</Typography.Text>,
+  },
+  {
+    value: EStatusCampaign.PENDING,
+    label: <Typography.Text className="info">Chưa bắt đầu</Typography.Text>,
+  },
+  {
+    value: EStatusCampaign.ENDED,
+    label: <Typography.Text className="red">Kết thúc</Typography.Text>,
   },
 ];
 

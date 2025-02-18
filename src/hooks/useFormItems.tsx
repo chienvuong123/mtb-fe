@@ -91,6 +91,7 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
       <p className="ant-upload-hint">Support for a single or bulk upload.</p>
     </Upload.Dragger>
   ),
+  [INPUT_TYPE.BLANK]: () => <div />,
 };
 
 const useFormItems = ({ formItems, rowProps }: IFormItemsProps = {}) => {
