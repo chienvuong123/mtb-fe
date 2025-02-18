@@ -3,10 +3,13 @@ import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, type FC, useMemo } from 'react';
 import type { CustomerDTO } from '@dtos';
+import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
+import { parseCustomerObj } from '../customerHelper';
+import type { TCustomerSearchForm } from '../customer.type';
 
 interface ICustomerSearchForm {
   initialValues: Partial<CustomerDTO>;
-  onSearch: (values: object) => void;
+  onSearch: (values: TCustomerSearchForm) => void;
   onClearAll?: () => void;
   onDeleteAll: () => void;
   onCreate: (values: CustomerDTO) => void;
@@ -32,12 +35,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: [
-              {
-                value: '13d7d45d-9265-4a15-a94d-20fde3a2f68b',
-                label: 'Selection 1',
-              },
-            ],
+            options: MOCK_CUSTOMER_OPTIONS,
           },
         },
         {
@@ -48,7 +46,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: [{ value: 'Tên danh mục', label: 'Tên danh mục' }],
+            options: MOCK_CUSTOMER_OPTIONS,
           },
         },
         {
@@ -59,10 +57,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: [
-              { value: 1, label: 'Selection 1' },
-              { value: 2, label: 'Selection 2' },
-            ],
+            options: MOCK_CUSTOMER_OPTIONS,
           },
         },
         {
@@ -73,10 +68,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: [
-              { value: 1, label: 'Selection 1' },
-              { value: 2, label: 'Selection 2' },
-            ],
+            options: MOCK_CUSTOMER_OPTIONS,
           },
         },
         {
@@ -106,10 +98,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             mode: 'multiple',
             showSearch: true,
             filterOption: true,
-            options: [
-              { value: 1, label: 'Selection 1' },
-              { value: 2, label: 'Selection 2' },
-            ],
+            options: MOCK_CUSTOMER_OPTIONS,
           },
         },
         {
@@ -125,10 +114,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
           inputProps: {
             placeholder: 'Chọn...',
             mode: 'multiple',
-            options: [
-              { value: 1, label: 'Selection 1' },
-              { value: 2, label: 'Selection 2' },
-            ],
+            options: MOCK_CUSTOMER_OPTIONS,
           },
         },
         {
@@ -140,10 +126,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             mode: 'multiple',
             showSearch: true,
             filterOption: true,
-            options: [
-              { value: 1, label: 'Selection 1' },
-              { value: 2, label: 'Selection 2' },
-            ],
+            options: MOCK_CUSTOMER_OPTIONS,
           },
         },
       ] as TFormItem[],
@@ -152,13 +135,13 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
 
   useEffect(() => {
     if (initialValues) {
-      form.setFieldsValue({ ...initialValues });
+      form.setFieldsValue(parseCustomerObj(initialValues));
     }
   }, [initialValues, form]);
 
   return (
     <div>
-      <OSearchBaseForm<CustomerDTO>
+      <OSearchBaseForm<TCustomerSearchForm>
         items={items}
         form={form}
         onSearch={onSearch}

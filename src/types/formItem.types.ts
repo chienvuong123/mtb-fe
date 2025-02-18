@@ -37,6 +37,7 @@ export type TPasswordProps = GetProps<typeof Input.Password>;
 
 export type TBaseFormItem = FormItemProps & {
   colProps?: ColProps;
+  onAddClick?: (field?: string) => void;
 };
 
 export type TFormItem =

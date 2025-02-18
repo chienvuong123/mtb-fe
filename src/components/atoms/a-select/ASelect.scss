@@ -1,6 +1,21 @@
 .a-select {
   .mbb-select-selector {
     box-shadow: none !important;
+    padding-left: 2px;
+  }
+  .mbb-select-clear {
+    inset-inline-end: 19px;
+    width: 18px;
+    height: 18px;
+  }
+  .mbb-select-selection-overflow {
+    column-gap: 2px;
+    .mbb-select-selection-overflow-item {
+      .mbb-select-selection-item {
+        height: 32px !important;
+        line-height: 32px !important;
+      }
+    }
   }
 }
 .a-select-popup {
