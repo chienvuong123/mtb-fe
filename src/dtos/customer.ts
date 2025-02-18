@@ -13,8 +13,7 @@ import type { CustomerSegmentDTO } from './customer-segment';
 
 export interface CustomerDTO extends BaseEntity {
   code: string;
-  birthday: string;
-  birthDay?: string; // date-time
+  birthday?: string; // date-time
   identityType?: string;
   identityNumber?: string;
   description: string;
