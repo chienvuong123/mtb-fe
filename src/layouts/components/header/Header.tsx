@@ -36,13 +36,12 @@ const Header = () => {
       <OPopup
         title="Thông báo"
         description={
-          <div>
+          <div style={{ textAlign: 'center' }}>
             Một đường dẫn đổi mật khẩu đã được gửi tới mail: <br />
             <strong>{user?.email}</strong>, vui lòng truy cập vào mail để tiếp
             tục.
           </div>
         }
-        cancelText="Đóng"
         okText="Đóng"
         isShowCancelBtn={false}
         isOpen={isPopupOpen}
