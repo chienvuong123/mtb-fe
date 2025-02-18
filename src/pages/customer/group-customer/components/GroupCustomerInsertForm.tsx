@@ -1,5 +1,5 @@
 import { OBaseForm } from '@components/organisms';
-import { GROUP_CUSTOMER_KEY } from '@hooks/queries/useGroupCustomerQueries';
+import { GROUP_CUSTOMER_KEY } from '@hooks/queries/groupCustomerQueries';
 import {
   MOCK_CAMPAIGN_OPTIONS,
   MOCK_CATEGORY_CAMPAIGN_OPTIONS,

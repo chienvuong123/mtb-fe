@@ -10,3 +10,4 @@ export * from './groupCustomerApi';
 export * from './customerApi';
 export * from './campaignApi';
 export * from './scenarioApi';
+export * from './assetApi';

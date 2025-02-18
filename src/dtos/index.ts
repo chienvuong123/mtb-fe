@@ -14,3 +14,4 @@ export * from './customer-group';
 export * from './customer-segment';
 export * from './customer-approach';
 export * from './approach-plan';
+export * from './asset';

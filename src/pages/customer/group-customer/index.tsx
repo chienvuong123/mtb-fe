@@ -8,7 +8,7 @@ import type { BaseResponse } from '@dtos';
 import {
   useGroupCustomerAddMutation,
   useGroupCustomerSearchQuery,
-} from '@hooks/queries/useGroupCustomerQueries';
+} from '@hooks/queries/groupCustomerQueries';
 import useUrlParams from '@hooks/useUrlParams';
 import type { TFormType } from '@types';
 
