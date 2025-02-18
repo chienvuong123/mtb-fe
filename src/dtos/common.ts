@@ -32,7 +32,7 @@ export interface BaseEntity {
   updatedDate: string;
   updatedBy: string;
   id: string;
-  status: string;
+  status?: string;
 }
 
 export interface BaseResponse<T> {

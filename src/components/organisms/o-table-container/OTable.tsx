@@ -28,6 +28,7 @@ export interface ITable<T>
   sortDirection?: OrderDTO;
   onEdit?: (record: T) => void;
   confirmProps?: IModalConfirm;
+  isCheckboxHidden?: boolean;
 }
 
 const OTable = <T extends object & TTableKey>({
@@ -38,6 +39,7 @@ const OTable = <T extends object & TTableKey>({
   paginations,
   sortDirection,
   confirmProps,
+  isCheckboxHidden,
   onEdit,
   onDeleteRow,
   onView,
@@ -138,7 +140,7 @@ const OTable = <T extends object & TTableKey>({
         columns={transformColumns}
         rowClassName="editable-row"
         pagination={false}
-        rowSelection={rowSelection}
+        rowSelection={!isCheckboxHidden ? rowSelection : undefined}
         scroll={{ x: 'max-content' }}
         locale={{ emptyText: 'Không có dữ liệu' }}
         {...props}
