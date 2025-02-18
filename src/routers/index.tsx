@@ -106,7 +106,7 @@ const routes = createBrowserRouter(
           ],
         },
         {
-          path: SETTING.ROOT,
+          path: CUSTOMER.ROOT,
           element: (
             <RoleBasedGuard
               accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
