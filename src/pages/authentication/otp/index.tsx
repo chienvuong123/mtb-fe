@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { INPUT_TYPE, type TFormItem } from '@types';
-import useFormItems from '@hooks/useFormItems';
 import { ArrowLeft01Icon, LogoOpenIcon } from '@assets/icons';
-import { Link, useNavigate } from 'react-router-dom';
-import { getOTPCheck, saveOTPCheck } from '@utils/otpHelper';
+import type { UserInfoOtpRequest } from '@dtos';
 import {
   useVerifyInfoUserForgotPassword,
   useVerifyOtpForgotPasswor,
 } from '@hooks/queries';
-import type { UserInfoOtpRequest } from '@dtos';
+import useFormItems from '@hooks/useFormItems';
 import { CONFIRM_PASSWORD, FORGOT_PASSWORD } from '@routers/path';
+import { INPUT_TYPE, type TFormItem } from '@types';
+import { getOTPCheck, saveOTPCheck } from '@utils/otpHelper';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { LayoutWrapper } from '../components';
-import { FormContentAuth } from '../components/form-content';
 import { FooterAuth } from '../components/footer';
+import { FormContentAuth } from '../components/form-content';
 
 import './index.scss';
 
@@ -21,7 +21,9 @@ const items: TFormItem[] = [
     type: INPUT_TYPE.OTP,
     label: '',
     name: 'otp',
-    inputProps: {},
+    inputProps: {
+      type: 'number',
+    },
     colProps: { span: 24, className: 'fw-500' },
   },
 ];
@@ -57,6 +59,7 @@ const OTP = () => {
   };
 
   const handleVerifyOtp = (values: UserInfoOtpRequest) => {
+    if (values.otp?.length !== 6) return;
     const data = {
       username: valueValidOtp.username,
       otp: values.otp,
@@ -112,7 +115,7 @@ const OTP = () => {
           }
           subLink={
             <>
-              Chưa nhận được mail.{' '}
+              Chưa nhận được mail.
               <span
                 className="remind-link cursor-pointer"
                 onClick={handleResendOtp}

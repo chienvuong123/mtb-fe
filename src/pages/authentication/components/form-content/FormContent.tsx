@@ -1,7 +1,7 @@
-import React from 'react';
 import { LogoDisplay } from '@assets/icons';
 import { AAlert, AButton } from '@components/atoms';
 import { Flex, Form, type FormProps, Typography } from 'antd';
+import React from 'react';
 
 import './FormContent.scss';
 

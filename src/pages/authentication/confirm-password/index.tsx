@@ -1,38 +1,62 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
-import useFormItems from '@hooks/useFormItems';
 import { ArrowLeft01Icon, LogoOpenIcon } from '@assets/icons';
-import { INPUT_TYPE, type TFormItem } from '@types';
 import { useResetForgotPassword } from '@hooks/queries';
-import { getOTPCheck } from '@utils/otpHelper';
-import { Link, useNavigate } from 'react-router-dom';
+import useFormItems from '@hooks/useFormItems';
 import { LOGIN, OTP } from '@routers/path';
+import { getOTPCheck } from '@utils/otpHelper';
+import { Form } from 'antd';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { INPUT_TYPE, type TFormItem } from '@types';
 import { LayoutWrapper } from '../components';
-import { FormContentAuth } from '../components/form-content';
 import { FooterAuth } from '../components/footer';
+import { FormContentAuth } from '../components/form-content';
 
 import './index.scss';
 
-const items: TFormItem[] = [
-  {
-    type: INPUT_TYPE.PASSWORD,
-    label: 'Mật khẩu mới',
-    name: 'password',
-    inputProps: { placeholder: 'Nhập...', maxLength: 100 },
-    colProps: { span: 24, className: 'fw-500' },
-  },
-  {
-    type: INPUT_TYPE.PASSWORD,
-    label: 'Nhập lại mật khẩu mới',
-    name: 'newPassword',
-    inputProps: { placeholder: 'Nhập...', maxLength: 100 },
-    colProps: { span: 24, className: 'fw-500' },
-  },
-];
-
 const ConfirmPassword = () => {
+  const [form] = Form.useForm();
+
   const [alert, setAlert] = useState('');
   const [isReset, setIsReset] = useState(false);
+
+  const items: TFormItem[] = useMemo(() => {
+    return [
+      {
+        type: INPUT_TYPE.PASSWORD,
+        label: 'Mật khẩu mới',
+        name: 'password',
+        inputProps: { placeholder: 'Nhập...', maxLength: 50 },
+        colProps: { span: 24, className: 'fw-500' },
+        rules: [
+          { required: true },
+          { min: 8, message: 'Mật khẩu phải dài hơn 8 ký tự' },
+        ],
+      },
+      {
+        type: INPUT_TYPE.PASSWORD,
+        label: 'Nhập lại mật khẩu mới',
+        name: 'newPassword',
+        inputProps: { placeholder: 'Nhập...', maxLength: 50 },
+        colProps: { span: 24, className: 'fw-500' },
+        dependencies: ['password'],
+        rules: [
+          { required: true },
+          { min: 8, message: 'Mật khẩu phải dài hơn 8 ký tự' },
+          {
+            validator: async (_: unknown, value: string) => {
+              if (!value || form.getFieldValue('password') === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(
+                new Error('Mật khẩu không khớp, vui lòng nhập lại'),
+              );
+            },
+          },
+        ],
+      },
+    ];
+  }, []);
 
   const navigate = useNavigate();
   const valueValidOtp = getOTPCheck();
@@ -83,6 +107,8 @@ const ConfirmPassword = () => {
         <LogoOpenIcon />
 
         <FormContentAuth
+          form={form}
+          requiredMark="optional"
           title="Nhập mật khẩu mới"
           subTitle="Nhập mật khẩu"
           textButton="Tiếp tục"
