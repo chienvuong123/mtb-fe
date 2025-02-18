@@ -14,6 +14,14 @@ export type TCustomerForm = Partial<
   identification?: string[];
 };
 
+export type TCustomerSearchForm = Partial<
+  Omit<CustomerDTO, 'cusSegment' | 'cusGroup' | 'job'>
+> & {
+  cusSegment?: string[];
+  cusGroup?: string[];
+  job?: string[];
+};
+
 export interface ICustomerForm {
   mode: TFormType;
   initialValues?: Partial<CustomerDTO> | null;
