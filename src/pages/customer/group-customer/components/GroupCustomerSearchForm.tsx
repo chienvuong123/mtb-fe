@@ -1,5 +1,8 @@
 import { OSearchBaseForm } from '@components/organisms';
-import { useCampaignSearchMasterDataQuery } from '@hooks/queries/useCampaignQueries';
+import {
+  MOCK_CAMPAIGN_OPTIONS,
+  MOCK_CATEGORY_CAMPAIGN_OPTIONS,
+} from '@mocks/group-customer';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, type FC } from 'react';
@@ -26,8 +29,13 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       label: 'Mã Category',
       name: 'categoryId',
       inputProps: {
-        allowClear: false,
         placeholder: 'Chọn...',
+        showSearch: true,
+        filterOption: true,
+        options: MOCK_CATEGORY_CAMPAIGN_OPTIONS.map((item) => ({
+          value: item.id,
+          label: item.id,
+        })),
       },
     },
     {
@@ -35,8 +43,13 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       label: 'Tên Category',
       name: 'nameCategory',
       inputProps: {
-        showSearch: true,
         placeholder: 'Chọn...',
+        showSearch: true,
+        filterOption: true,
+        options: MOCK_CATEGORY_CAMPAIGN_OPTIONS.map((item) => ({
+          value: item.name,
+          label: item.name,
+        })),
       },
     },
     {
@@ -44,14 +57,13 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       label: 'Mã campaign',
       name: 'campaignId',
       inputProps: {
-        optionsQuery: { value: 'id', label: 'id' },
-        getListOptions: useCampaignSearchMasterDataQuery,
-        getQueryParams: (searchText: string, page: number) => {
-          return {
-            page: { pageNum: page, pageSize: 10 },
-            code: searchText,
-          };
-        },
+        placeholder: 'Chọn...',
+        showSearch: true,
+        filterOption: true,
+        options: MOCK_CAMPAIGN_OPTIONS.map((item) => ({
+          value: item.id,
+          label: item.id,
+        })),
       },
     },
     {
@@ -59,14 +71,13 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       label: 'Tên campaign',
       name: 'nameCampaign',
       inputProps: {
-        optionsQuery: { value: 'name', label: 'name' },
-        getListOptions: useCampaignSearchMasterDataQuery,
-        getQueryParams: (searchText: string, page: number) => {
-          return {
-            page: { pageNum: page, pageSize: 10 },
-            name: searchText,
-          };
-        },
+        placeholder: 'Chọn...',
+        showSearch: true,
+        filterOption: true,
+        options: MOCK_CAMPAIGN_OPTIONS.map((item) => ({
+          value: item.name,
+          label: item.name,
+        })),
       },
     },
     {

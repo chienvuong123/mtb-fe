@@ -1,15 +1,12 @@
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  type UseQueryOptions,
-  type UseMutationOptions,
-  useInfiniteQuery,
-  type UseInfiniteQueryOptions,
-  type InfiniteData,
-} from '@tanstack/react-query';
-import type { BaseResponse, BaseSearchParams, BaseSearchResponse } from '@dtos';
 import type { BaseApi } from '@apis';
+import type { BaseResponse, BaseSearchParams, BaseSearchResponse } from '@dtos';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type UseMutationOptions,
+  type UseQueryOptions,
+} from '@tanstack/react-query';
 
 export const createBaseQueryHooks = <
   // dto type
@@ -30,8 +27,6 @@ export const createBaseQueryHooks = <
     all: baseKey,
     list: [baseKey, 'list'] as const,
     search: (params: SearchParams) => [baseKey, 'list', params] as const,
-    searchMasterData: (params: BaseSearchParams) =>
-      [baseKey, 'listMasterData', params] as const,
     detail: (id: string) => [baseKey, 'detail', id] as const,
   };
 
@@ -132,54 +127,11 @@ export const createBaseQueryHooks = <
     });
   };
 
-  const useSearchMasterDataQuery = (
-    params: BaseSearchParams,
-    options: Partial<
-      UseQueryOptions<BaseResponse<BaseSearchResponse<T>>, Error>
-    > = {},
-  ) => {
-    return useQuery({
-      queryKey: queryKeys.searchMasterData(params),
-      queryFn: () => api.searchMasterData(params),
-      ...options,
-    });
-  };
-
-  const useInfiniteSearchQuery = (
-    params: SearchParams,
-    options: Partial<
-      UseInfiniteQueryOptions<
-        InfiniteData<BaseResponse<BaseSearchResponse<T>>>,
-        Error,
-        SearchResponse
-      >
-    > = {},
-  ) => {
-    return useInfiniteQuery({
-      queryKey: queryKeys.searchMasterData(params),
-      queryFn: async ({ pageParam = 1 }) => {
-        const response = await api.searchMasterData({
-          ...params,
-          page: { ...params.page, pageNum: pageParam },
-        });
-        return {
-          pages: [response],
-          pageParams: [pageParam],
-        };
-      },
-      initialPageParam: 1,
-      getNextPageParam: (_, allPage) => allPage.length + 1 || undefined,
-      ...options,
-    });
-  };
-
   return {
     useSearchQuery,
     useViewQuery,
     useAddMutation,
     useEditMutation,
     useRemoveMutation,
-    useSearchMasterDataQuery,
-    useInfiniteSearchQuery,
   };
 };

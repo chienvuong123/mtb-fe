@@ -19,6 +19,7 @@ interface ITableActionsProps<T> {
   onView?: (key: Key) => void;
   onDelete?: (key: Key) => void;
   editingKey?: string | null;
+  isShowDeleteBtn?: boolean;
 }
 
 const TableActions = <T extends TTableKey>({
@@ -30,6 +31,7 @@ const TableActions = <T extends TTableKey>({
   onView,
   onDelete,
   editingKey,
+  isShowDeleteBtn = true,
 }: ITableActionsProps<T>) => {
   if (editable) {
     return (
@@ -69,7 +71,7 @@ const TableActions = <T extends TTableKey>({
           className="w-22 action-btn"
         />
       )}
-      {Boolean(onDelete) && (
+      {isShowDeleteBtn && (
         <AButton
           type="link"
           icon={<TrashIcon className="action-btn-icon" />}

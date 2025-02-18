@@ -29,6 +29,7 @@ export interface ITable<T>
   onEdit?: (record: T) => void;
   confirmProps?: IModalConfirm;
   isCheckboxHidden?: boolean;
+  isShowDeleteBtn?: boolean;
 }
 
 const OTable = <T extends object & TTableKey>({
@@ -44,6 +45,7 @@ const OTable = <T extends object & TTableKey>({
   onDeleteRow,
   onView,
   setSelectedRowKeys,
+  isShowDeleteBtn,
   ...props
 }: ITable<T>) => {
   const [showModal, setShowModal] = useState(false);
@@ -89,6 +91,7 @@ const OTable = <T extends object & TTableKey>({
                         setRecordKey(key);
                       }}
                       editingKey={null}
+                      isShowDeleteBtn={isShowDeleteBtn}
                     />
                   </div>
                 ),
@@ -99,7 +102,7 @@ const OTable = <T extends object & TTableKey>({
       if (i?.render) return i;
       return { ellipsis: true, ...i };
     });
-  }, [columns, hideActions, sortDirection, onEdit, onView]);
+  }, [columns, hideActions, sortDirection, onEdit, onView, isShowDeleteBtn]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys?.(newSelectedRowKeys as string[]);

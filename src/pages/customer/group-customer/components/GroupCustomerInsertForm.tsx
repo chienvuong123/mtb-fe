@@ -1,7 +1,11 @@
 import { OBaseForm } from '@components/organisms';
 import { GROUP_CUSTOMER_KEY } from '@hooks/queries/useGroupCustomerQueries';
+import {
+  MOCK_CAMPAIGN_OPTIONS,
+  MOCK_CATEGORY_CAMPAIGN_OPTIONS,
+} from '@mocks/group-customer';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { useForm } from 'antd/es/form/Form';
+import { useForm, useWatch } from 'antd/es/form/Form';
 import clsx from 'clsx';
 import { useEffect, useMemo, type FC } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
@@ -21,6 +25,10 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
 }) => {
   const [form] = useForm();
 
+  const categoryId = useWatch('categoryId', form);
+
+  const unselectedCategory = !categoryId;
+
   const items = useMemo(
     () =>
       (
@@ -30,8 +38,13 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
             label: 'Mã Category',
             name: 'categoryId',
             inputProps: {
-              options: [],
-              allowClear: false,
+              placeholder: 'Chọn...',
+              showSearch: true,
+              filterOption: true,
+              options: MOCK_CATEGORY_CAMPAIGN_OPTIONS.map((item) => ({
+                value: item.id,
+                label: item.id,
+              })),
             },
           },
 
@@ -40,9 +53,14 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
             label: 'Mã campaign',
             name: 'campaignId',
             inputProps: {
-              options: [],
-              allowClear: false,
-              colProps: { span: 24, flex: 1 },
+              placeholder: 'Chọn...',
+              showSearch: true,
+              filterOption: true,
+              disabled: unselectedCategory,
+              options: MOCK_CAMPAIGN_OPTIONS.map((item) => ({
+                value: item.id,
+                label: item.id,
+              })),
             },
           },
 
@@ -50,11 +68,13 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
             type: INPUT_TYPE.TEXT,
             label: 'Mã nhóm',
             name: 'code',
+            maxLength: 100,
           },
           {
             type: INPUT_TYPE.TEXT,
             label: 'Tên nhóm',
             name: 'name',
+            maxLength: 100,
           },
         ] as TFormItem[]
       ).map((i) => {
@@ -71,7 +91,7 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
         }
         return item;
       }),
-    [mode],
+    [mode, unselectedCategory],
   ) as TFormItem[];
 
   useEffect(() => {

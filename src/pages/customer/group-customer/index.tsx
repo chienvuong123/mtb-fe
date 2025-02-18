@@ -57,6 +57,7 @@ const GroupCustomerPage = () => {
           type: 'success',
         });
         handleCloseForm();
+        setInitialValuesForm(null);
       });
   };
 

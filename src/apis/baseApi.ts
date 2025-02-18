@@ -16,14 +16,6 @@ export class BaseApi<T, SearchParams extends BaseSearchParams> {
     });
   }
 
-  async searchMasterData(params: BaseSearchParams) {
-    return apiRequest<BaseResponse<BaseSearchResponse<T>>>({
-      url: `${this.endpoint}/list`,
-      method: 'GET',
-      params,
-    });
-  }
-
   async view(id: string) {
     return apiRequest<BaseResponse<T>>({
       url: `${this.endpoint}/view`,
