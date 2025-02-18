@@ -1,17 +1,17 @@
-import React, { useMemo, useState, type Key } from 'react';
 import { Table } from 'antd';
 import type { TableRowSelection } from 'antd/es/table/interface';
+import React, { useMemo, useState, type Key } from 'react';
 
-import './styles.scss';
-import type { TableProps, ColumnType } from 'antd/es/table';
 import { MPagination } from '@components/molecules';
-import clsx from 'clsx';
-import type { OrderDTO } from '@dtos';
 import { SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
-import type { FixedType, ITableForm, TTableKey } from './OTableForm.type';
-import TableActions from './TableActions';
+import type { OrderDTO } from '@dtos';
+import type { ColumnType, TableProps } from 'antd/es/table';
+import clsx from 'clsx';
 import { OModalConfirm } from '../o-modal';
 import type { IModalConfirm } from '../o-modal/OModalConfirm';
+import type { FixedType, ITableForm, TTableKey } from './OTableForm.type';
+import './styles.scss';
+import TableActions from './TableActions';
 
 export interface ITable<T>
   extends Omit<TableProps<T>, 'columns'>,
@@ -28,6 +28,7 @@ export interface ITable<T>
   sortDirection?: OrderDTO;
   onEdit?: (record: T) => void;
   confirmProps?: IModalConfirm;
+  isCheckboxHidden?: boolean;
 }
 
 const OTable = <T extends object & TTableKey>({
@@ -38,11 +39,11 @@ const OTable = <T extends object & TTableKey>({
   paginations,
   sortDirection,
   confirmProps,
+  isCheckboxHidden,
   onEdit,
   onDeleteRow,
   onView,
   setSelectedRowKeys,
-  isShowDeleteBtn,
   ...props
 }: ITable<T>) => {
   const [showModal, setShowModal] = useState(false);
@@ -88,7 +89,6 @@ const OTable = <T extends object & TTableKey>({
                         setRecordKey(key);
                       }}
                       editingKey={null}
-                      isShowDeleteBtn={isShowDeleteBtn}
                     />
                   </div>
                 ),
@@ -99,7 +99,7 @@ const OTable = <T extends object & TTableKey>({
       if (i?.render) return i;
       return { ellipsis: true, ...i };
     });
-  }, [columns, hideActions, isShowDeleteBtn, sortDirection, onEdit, onView]);
+  }, [columns, hideActions, sortDirection, onEdit, onView]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys?.(newSelectedRowKeys as string[]);
@@ -142,7 +142,7 @@ const OTable = <T extends object & TTableKey>({
         columns={transformColumns}
         rowClassName="editable-row"
         pagination={false}
-        rowSelection={rowSelection}
+        rowSelection={!isCheckboxHidden ? rowSelection : undefined}
         scroll={{ x: 'max-content' }}
         locale={{ emptyText: 'Không có dữ liệu' }}
         {...props}

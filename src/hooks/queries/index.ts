@@ -5,4 +5,6 @@ export * from './authQueries';
 export * from './userQueries';
 export * from './useProductCategoryQueries';
 export * from './useCustomerQueries';
+export * from './useCampaign';
 export * from './scenarioQueries';
+export * from './useCampaign';

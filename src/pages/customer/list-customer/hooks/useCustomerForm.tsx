@@ -6,6 +6,7 @@ import { dayjsToString, stringToDayjs } from '@utils/dateHelper';
 import { INPUT_TYPE, type TFormItem, type IFormType } from '@types';
 import clsx from 'clsx';
 import { useCallback, useEffect, useMemo } from 'react';
+import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
 import type { ICustomerForm, TCustomerForm } from '../customer.type';
 
 const useCustomerForm = ({
@@ -140,10 +141,7 @@ const useCustomerForm = ({
             name: 'cusGroup',
             inputProps: {
               disabled: !hasCategory || !campaignId,
-              options: [
-                { value: '1', label: 'Selection 1' },
-                { value: '2', label: 'Selection 2' },
-              ],
+              options: MOCK_CUSTOMER_OPTIONS,
               placeholder: 'Chọn...',
             },
           },
@@ -152,10 +150,7 @@ const useCustomerForm = ({
             label: 'Phân khúc khách hàng',
             name: 'cusSegment',
             inputProps: {
-              options: [
-                { value: '1', label: 'Selection 1' },
-                { value: '2', label: 'Selection 2' },
-              ],
+              options: MOCK_CUSTOMER_OPTIONS,
               placeholder: 'Chọn...',
             },
           },
@@ -164,10 +159,7 @@ const useCustomerForm = ({
             label: 'Nghề nghiệp',
             name: 'job',
             inputProps: {
-              options: [
-                { value: '1', label: 'Selection 1' },
-                { value: '2', label: 'Selection 2' },
-              ],
+              options: MOCK_CUSTOMER_OPTIONS,
               placeholder: 'Chọn...',
             },
           },
@@ -176,10 +168,7 @@ const useCustomerForm = ({
             label: 'Định danh khách hàng',
             name: 'identification',
             inputProps: {
-              options: [
-                { value: '1', label: 'Selection 1' },
-                { value: '2', label: 'Selection 2' },
-              ],
+              options: MOCK_CUSTOMER_OPTIONS,
               mode: 'multiple',
               placeholder: 'Chọn...',
             },
@@ -201,10 +190,7 @@ const useCustomerForm = ({
             label: 'Sở thích',
             name: 'hobbies',
             inputProps: {
-              options: [
-                { value: '1', label: 'Selection 1' },
-                { value: '2', label: 'Selection 2' },
-              ],
+              options: MOCK_CUSTOMER_OPTIONS,
               mode: 'multiple',
               placeholder: 'Chọn...',
             },
@@ -214,10 +200,7 @@ const useCustomerForm = ({
             label: 'Chi nhánh quản lý',
             name: 'branch',
             inputProps: {
-              options: [
-                { value: '1', label: 'Selection 1' },
-                { value: '2', label: 'Selection 2' },
-              ],
+              options: MOCK_CUSTOMER_OPTIONS,
               placeholder: 'Chọn...',
             },
           },
@@ -228,10 +211,7 @@ const useCustomerForm = ({
             required: true,
             rules: [{ required: true }],
             inputProps: {
-              options: [
-                { value: '1', label: 'Selection 1' },
-                { value: '2', label: 'Selection 2' },
-              ],
+              options: MOCK_CUSTOMER_OPTIONS,
               placeholder: 'Chọn...',
             },
           },

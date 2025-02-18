@@ -13,6 +13,7 @@ import React, { useMemo } from 'react';
 
 import clsx from 'clsx';
 import {
+  AButton,
   AInputArea,
   AInputOtp,
   AInputPassword,
@@ -25,6 +26,7 @@ import {
   type TPasswordProps,
 } from '@types';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
+import { PlusIcon } from '@assets/icons';
 
 interface IFormItemsProps {
   formItems?: TFormItem[];
@@ -57,7 +59,12 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
     />
   ),
   [INPUT_TYPE.SELECT]: (props: GetProps<typeof ASelect>) => (
-    <ASelect allowClear {...props} />
+    <ASelect
+      allowClear
+      notFoundContent="Không có dữ liệu"
+      maxTagCount="responsive"
+      {...props}
+    />
   ),
   [INPUT_TYPE.DATE_PICKER]: ({
     className,
@@ -84,6 +91,7 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
       <p className="ant-upload-hint">Support for a single or bulk upload.</p>
     </Upload.Dragger>
   ),
+  [INPUT_TYPE.BLANK]: () => <div />,
 };
 
 const useFormItems = ({ formItems, rowProps }: IFormItemsProps = {}) => {
@@ -106,21 +114,47 @@ const useFormItems = ({ formItems, rowProps }: IFormItemsProps = {}) => {
       formItems ? (
         <Row {...rowProps}>
           {formItems.map(
-            ({ type, inputProps, colProps, className, ...formItemProps }) => {
-              const { span, flex, ...otherColProps } = colProps ?? {};
+            ({
+              type,
+              inputProps,
+              colProps,
+              className,
+              onAddClick,
+              ...formItemProps
+            }) => {
+              const {
+                span,
+                flex,
+                className: colClassName,
+                ...otherColProps
+              } = colProps ?? {};
+              const showAddBtn = Boolean(onAddClick);
+
               return (
                 <Col
                   span={span ?? 6}
                   flex={flex ?? (span ? undefined : '20%')}
+                  className={clsx(
+                    { 'dis-flex gap-14 ai-flex-end': showAddBtn },
+                    colClassName,
+                  )}
                   {...otherColProps}
                   key={formItemProps.name}
                 >
                   <Form.Item
                     {...formItemProps}
-                    className={clsx('mb-0', className)}
+                    className={clsx('mb-0 w-full', className)}
                   >
                     {getFormItem(type, inputProps)}
                   </Form.Item>
+                  {showAddBtn && (
+                    <AButton
+                      type="primary"
+                      icon={<PlusIcon />}
+                      className="min-w-40 h-40"
+                      onClick={() => onAddClick?.(formItemProps.name)}
+                    />
+                  )}
                 </Col>
               );
             },
