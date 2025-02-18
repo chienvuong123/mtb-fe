@@ -58,7 +58,7 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
           },
         ] as TFormItem[]
       ).map((i) => {
-        const item: TFormItem = { ...i, colProps: { flex: '20%' } };
+        const item: TFormItem = { ...i, colProps: { flex: '50%' } };
         if (mode === 'view') {
           return {
             ...item,
@@ -75,16 +75,19 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
   ) as TFormItem[];
 
   useEffect(() => {
-    if (initialValues) {
+    if (initialValues && mode === 'view') {
       form.setFieldsValue({ ...initialValues });
+      return;
     }
-  }, [initialValues, form]);
+    form.resetFields();
+  }, [initialValues, form, mode]);
 
   return (
     <div>
       <OBaseForm<GroupCustomerDTO>
         mutationKey={GROUP_CUSTOMER_KEY}
         items={items}
+        isViewMode={mode === 'view'}
         form={form}
         onSubmit={onSubmit}
         onClose={() => {

@@ -1,5 +1,4 @@
 import { OSearchBaseForm } from '@components/organisms';
-import { STATUS_OPTIONS } from '@constants/masterData';
 import { useCampaignSearchMasterDataQuery } from '@hooks/queries/useCampaignQueries';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
@@ -27,9 +26,26 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       label: 'Mã Category',
       name: 'categoryId',
       inputProps: {
+        allowClear: false,
+        placeholder: 'Chọn...',
+      },
+    },
+    {
+      type: INPUT_TYPE.SELECT,
+      label: 'Tên Category',
+      name: 'nameCategory',
+      inputProps: {
         showSearch: true,
         placeholder: 'Chọn...',
-        fetchHook: useCampaignSearchMasterDataQuery,
+      },
+    },
+    {
+      type: INPUT_TYPE.SELECT,
+      label: 'Mã campaign',
+      name: 'campaignId',
+      inputProps: {
+        optionsQuery: { value: 'id', label: 'id' },
+        getListOptions: useCampaignSearchMasterDataQuery,
         getQueryParams: (searchText: string, page: number) => {
           return {
             page: { pageNum: page, pageSize: 10 },
@@ -40,32 +56,17 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
     },
     {
       type: INPUT_TYPE.SELECT,
-      label: 'Tên Category',
-      name: 'nameCategory',
-      inputProps: {
-        // TODO
-        options: STATUS_OPTIONS,
-        allowClear: false,
-      },
-    },
-    {
-      type: INPUT_TYPE.SELECT,
-      label: 'Mã campaign',
-      name: 'campaignId',
-      inputProps: {
-        // TODO
-        options: STATUS_OPTIONS,
-        allowClear: false,
-      },
-    },
-    {
-      type: INPUT_TYPE.SELECT,
       label: 'Tên campaign',
       name: 'nameCampaign',
       inputProps: {
-        // TODO
-        options: STATUS_OPTIONS,
-        allowClear: false,
+        optionsQuery: { value: 'name', label: 'name' },
+        getListOptions: useCampaignSearchMasterDataQuery,
+        getQueryParams: (searchText: string, page: number) => {
+          return {
+            page: { pageNum: page, pageSize: 10 },
+            name: searchText,
+          };
+        },
       },
     },
     {

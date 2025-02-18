@@ -46,6 +46,7 @@ const GroupCustomerPage = () => {
 
   const handleCloseForm = () => {
     setDrawerMode(undefined);
+    setInitialValuesForm(null);
   };
 
   const handleInvalidate = (data?: BaseResponse<boolean>) => {
@@ -211,7 +212,7 @@ const GroupCustomerPage = () => {
         alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
         <GroupCustomerInsertForm
-          mode={drawerMode ? 'view' : 'add'}
+          mode={drawerMode === 'view' ? 'view' : 'add'}
           initialValues={initialValuesForm}
           onClose={handleCloseForm}
           onSubmit={handleSubmitInsert}

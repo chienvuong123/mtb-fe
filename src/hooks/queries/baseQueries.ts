@@ -30,7 +30,7 @@ export const createBaseQueryHooks = <
     all: baseKey,
     list: [baseKey, 'list'] as const,
     search: (params: SearchParams) => [baseKey, 'list', params] as const,
-    searchMasterData: (params: SearchParams) =>
+    searchMasterData: (params: BaseSearchParams) =>
       [baseKey, 'listMasterData', params] as const,
     detail: (id: string) => [baseKey, 'detail', id] as const,
   };
@@ -133,13 +133,9 @@ export const createBaseQueryHooks = <
   };
 
   const useSearchMasterDataQuery = (
-    params: SearchParams,
+    params: BaseSearchParams,
     options: Partial<
-      UseQueryOptions<
-        BaseResponse<BaseSearchResponse<T>>,
-        Error,
-        SearchResponse
-      >
+      UseQueryOptions<BaseResponse<BaseSearchResponse<T>>, Error>
     > = {},
   ) => {
     return useQuery({

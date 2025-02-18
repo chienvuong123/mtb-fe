@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowDown01Icon, VectorIcon } from '@assets/icons';
 import type { SelectProps } from 'antd';
 import { Select as AntdSelect, Spin } from 'antd';
@@ -6,20 +5,28 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 
 import useDebounce from '@hooks/useDebounce';
+import {
+  type GetListOptionsType,
+  type GetQueryParamsType,
+  type ListMasterDataResponse,
+  type OptionsQueryType,
+} from '@types';
 import './ASelect.scss';
 
 interface IASelect extends SelectProps {
   className?: string;
-  fetchHook?: any;
-  getQueryParams?: (searchText: string, page: number) => any;
+  getListOptions?: GetListOptionsType;
+  getQueryParams?: GetQueryParamsType;
+  optionsQuery?: OptionsQueryType;
 }
 
 const ASelect: React.FC<IASelect> = ({
   className,
   size,
   popupClassName,
-  fetchHook,
+  getListOptions,
   getQueryParams,
+  optionsQuery = { value: 'id', label: 'name' },
   ...props
 }) => {
   const [searchText, setSearchText] = useState('');
@@ -30,8 +37,8 @@ const ASelect: React.FC<IASelect> = ({
   const debouncedSearchText = useDebounce(searchText, 500);
 
   const { data: listMasterData, isFetching } =
-    fetchHook && getQueryParams
-      ? fetchHook(getQueryParams(debouncedSearchText, page))
+    getListOptions && getQueryParams
+      ? getListOptions(getQueryParams(debouncedSearchText, page))
       : { data: null, isFetching: false };
 
   const handleSearch = (text: string) => {
@@ -53,20 +60,22 @@ const ASelect: React.FC<IASelect> = ({
     if (listMasterData?.data?.content) {
       setOptions((prev) =>
         page === 1
-          ? listMasterData.data.content.map((item: any) => ({
-              value: item.id,
-              label: item.name,
+          ? listMasterData.data.content.map((item: ListMasterDataResponse) => ({
+              value: item[optionsQuery?.value],
+              label: item[optionsQuery?.label],
             }))
           : [
               ...prev,
-              ...listMasterData.data.content.map((item: any) => ({
-                value: item.id,
-                label: item.name,
-              })),
+              ...listMasterData.data.content.map(
+                (item: ListMasterDataResponse) => ({
+                  value: item[optionsQuery?.value],
+                  label: item[optionsQuery?.label],
+                }),
+              ),
             ],
       );
     }
-  }, [listMasterData, page]);
+  }, [listMasterData, page, optionsQuery]);
 
   return (
     <AntdSelect
