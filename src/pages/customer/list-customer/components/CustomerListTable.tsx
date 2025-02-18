@@ -44,7 +44,7 @@ const columns: ColumnType<TCustomerRecord>[] = [
   },
   {
     title: 'Năm sinh',
-    dataIndex: 'birthDay',
+    dataIndex: 'birthday',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,

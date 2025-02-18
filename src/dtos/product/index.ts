@@ -1,15 +1,10 @@
 import type { CategoryType } from '../category';
+import type { BaseEntity } from '../common';
 
-export type ProductCategoryDTO = {
-  createdDate: string;
-  createdBy: string;
-  updatedDate: string;
-  updatedBy: string;
-  id: string;
+export interface ProductCategoryDTO extends BaseEntity {
   code: string;
   name: string;
-  status: string;
   categoryTypeCode?: CategoryType;
-};
+}
 
 export type TProductSearchForm = { code: string; name: string; status: string };

@@ -125,7 +125,7 @@ const useCustomerForm = ({
           {
             type: INPUT_TYPE.DATE_PICKER,
             label: 'Năm sinh',
-            name: 'birthDay',
+            name: 'birthday',
             inputProps: { placeholder: 'Nhập...' },
           },
           {
@@ -255,19 +255,19 @@ const useCustomerForm = ({
 
   useEffect(() => {
     if (initialValues) {
-      const { birthDay, hobbies, identification, ...otherInit } =
+      const { birthday, hobbies, identification, ...otherInit } =
         initialValues ?? {};
       form.setFieldsValue({
         ...otherInit,
-        birthDay: birthDay ? stringToDayjs(birthDay) : undefined,
-        hobbies: hobbies ? JSON.parse(hobbies) : [],
-        identification: identification ? JSON.parse(identification) : [],
+        birthday: birthday ? stringToDayjs(birthday) : undefined,
+        hobbies: hobbies?.split(',') ?? [],
+        identification: identification?.split(',') ?? [],
       } as TCustomerForm);
     }
   }, [initialValues, form]);
 
   const handleSubmit = ({
-    birthDay,
+    birthday,
     hobbies,
     identification,
     ...values
@@ -275,11 +275,9 @@ const useCustomerForm = ({
     onSubmit?.(
       {
         ...values,
-        birthDay: dayjsToString(birthDay),
-        hobbies: hobbies ? JSON.stringify(hobbies) : undefined,
-        identification: identification
-          ? JSON.stringify(identification)
-          : undefined,
+        birthday: dayjsToString(birthday),
+        hobbies: hobbies?.join(','),
+        identification: identification?.join(','),
       },
       form,
     );
