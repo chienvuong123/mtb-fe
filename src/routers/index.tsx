@@ -54,12 +54,8 @@ const routes = createBrowserRouter(
     },
     {
       path: CHANGE_PASSWORD,
-      element: (
-        <AuthGuard>
-          {createLazyElement(
-            () => import('@pages/authentication/change-password'),
-          )}
-        </AuthGuard>
+      element: createLazyElement(
+        () => import('@pages/authentication/change-password'),
       ),
     },
     {

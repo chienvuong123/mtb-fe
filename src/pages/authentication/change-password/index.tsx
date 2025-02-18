@@ -5,8 +5,8 @@ import useFormItems from '@hooks/useFormItems';
 import { HOME } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { Flex, Form, Typography } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useMemo, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FooterAuth } from '../components/footer';
 
 import './index.scss';
@@ -18,36 +18,57 @@ const BUTTON_TEXT = {
   CONFIRM: 'Xác nhận',
 };
 
-const items: TFormItem[] = [
-  {
-    type: INPUT_TYPE.PASSWORD,
-    label: 'Mật khẩu mới',
-    name: 'newPassword',
-    inputProps: {
-      title: 'Tên đăng nhập',
-      placeholder: 'Nhập...',
-      maxLength: 50,
-    },
-    colProps: { span: 24, className: 'fw-500' },
-    rules: [{ required: true }],
-  },
-  {
-    type: INPUT_TYPE.PASSWORD,
-    label: 'Nhập lại mật khẩu mới',
-    name: 'confirmNewPassword',
-    inputProps: { placeholder: 'Nhập...', maxLength: 50 },
-    colProps: { span: 24, className: 'fw-500' },
-    rules: [{ required: true }],
-  },
-];
-
 const ChangePassword = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token') ?? '';
   const [form] = Form.useForm();
   const [alertText, setAlertText] = useState('');
   const [typeAlert, setTypeAlert] = useState<'success' | 'error' | 'warning'>(
     'error',
   );
+
+  const items: TFormItem[] = useMemo(() => {
+    return [
+      {
+        type: INPUT_TYPE.PASSWORD,
+        label: 'Mật khẩu mới',
+        name: 'newPassword',
+        inputProps: {
+          title: 'Tên đăng nhập',
+          placeholder: 'Nhập...',
+          maxLength: 50,
+        },
+        colProps: { span: 24, className: 'fw-500' },
+        rules: [
+          { required: true },
+          { min: 8, message: 'Mật khẩu phải dài hơn 8 ký tự' },
+        ],
+      },
+      {
+        type: INPUT_TYPE.PASSWORD,
+        label: 'Nhập lại mật khẩu mới',
+        name: 'confirmNewPassword',
+        inputProps: { placeholder: 'Nhập...', maxLength: 50 },
+        colProps: { span: 24, className: 'fw-500' },
+        dependencies: ['newPassword'],
+        rules: [
+          { required: true },
+          { min: 8, message: 'Mật khẩu phải dài hơn 8 ký tự' },
+          {
+            validator: async (_: unknown, value: string) => {
+              if (!value || form.getFieldValue('newPassword') === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(
+                new Error('Mật khẩu không khớp, vui lòng nhập lại'),
+              );
+            },
+          },
+        ],
+      },
+    ];
+  }, [form]);
 
   const { mutate: mutationChangePassword, isPending } = useChangePassword();
 
@@ -62,19 +83,30 @@ const ChangePassword = () => {
 
   const handleVerifyInfoUser = (values: ChangePasswordRequest) => {
     form.validateFields();
+    if (!values.confirmNewPassword || !values.newPassword) return;
     if (values.newPassword !== values.confirmNewPassword) {
+      setTypeAlert('error');
+      setAlertText('Mật khẩu không khớp, vui lòng nhập lại');
+      return;
+    }
+    if (values.newPassword.length < 8 || values.confirmNewPassword.length < 8) {
       setTypeAlert('error');
       setAlertText('Mật khẩu không khớp, vui lòng nhập lại');
       return;
     }
     const result = {
       newPassword: values.newPassword,
+      token,
     };
     mutationChangePassword(result, {
-      onSuccess: (data) => {
-        console.log(data);
-        setTypeAlert('success');
-        setAlertText('Thay đổi mật khẩu thành công');
+      onSuccess: (response) => {
+        if (response.data) {
+          setTypeAlert('success');
+          setAlertText('Thay đổi mật khẩu thành công');
+          return;
+        }
+        setTypeAlert('error');
+        setAlertText(response.errorDesc);
       },
     });
   };

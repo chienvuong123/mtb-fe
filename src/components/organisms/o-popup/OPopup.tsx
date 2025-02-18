@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, type ReactNode } from 'react';
 import { AButton, AModal } from '@components/atoms';
 import { Flex, Typography } from 'antd';
 
@@ -6,34 +6,49 @@ import './OPopup.scss';
 
 interface IOPopup {
   title: string;
-  description: string;
-  cancelText: string;
+  description: string | ReactNode;
+  cancelText?: string;
   okText: string;
+  isOpen: boolean;
+  onClose: () => void;
   onOkModal?: () => void;
+  isShowCancelBtn?: boolean;
   children: React.ReactElement;
 }
 
 const OPopup: React.FC<IOPopup> = ({
   title,
   description,
-  cancelText,
+  cancelText = 'Đóng',
   okText,
+  isOpen,
+  onClose,
   onOkModal,
+  isShowCancelBtn = true,
   children,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleCancel = () => {
-    setOpen(false);
+    onClose();
+    setIsClicked(false);
   };
 
   const handleOk = () => {
     onOkModal?.();
+    handleCancel();
   };
+
+  const handleClickChildren = () => {
+    setIsClicked(true);
+  };
+
+  const open = isOpen || isClicked;
 
   return (
     <>
-      {React.cloneElement(children, { onClick: () => setOpen(true) })}
+      {React.cloneElement(children, { onClick: handleClickChildren })}
+
       <AModal
         open={open}
         onCancel={handleCancel}
@@ -50,14 +65,16 @@ const OPopup: React.FC<IOPopup> = ({
             {description}
           </Typography.Title>
           <Flex justify="center" align="center" gap={16}>
-            <AButton
-              className="w-183"
-              variant="filled"
-              color="geekblue"
-              onClick={handleCancel}
-            >
-              {cancelText}
-            </AButton>
+            {isShowCancelBtn && (
+              <AButton
+                className="w-183"
+                variant="filled"
+                color="geekblue"
+                onClick={handleCancel}
+              >
+                {cancelText}
+              </AButton>
+            )}
             <AButton
               className="w-183"
               color="purple"

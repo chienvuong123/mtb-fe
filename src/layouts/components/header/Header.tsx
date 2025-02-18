@@ -1,17 +1,23 @@
+import { OPopup } from '@components/organisms';
 import { useRequestChangePassword } from '@hooks/queries';
 import useMenuList from '@layouts/hooks/useMenuList';
+import { useProfile } from '@stores';
 import { Divider, Flex, Layout } from 'antd';
+import { useState } from 'react';
 import HeaderInfo from './HeaderInfo';
 import HeaderNotify from './HeaderNotify';
 
 const Header = () => {
   const { mutate: mutateRequestChangePassword } = useRequestChangePassword();
+  const { user } = useProfile();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleRequestChangePw = () => {
-    console.log('cp');
     mutateRequestChangePassword(undefined, {
-      onSuccess: (data) => {
-        console.log(data, 'success');
+      onSuccess: (res) => {
+        if (res.data) {
+          setIsPopupOpen(true);
+        }
       },
     });
   };
@@ -26,6 +32,25 @@ const Header = () => {
 
         <HeaderInfo itemsDropdown={dropdownList} />
       </Flex>
+
+      <OPopup
+        title="Thông báo"
+        description={
+          <div>
+            Một đường dẫn đổi mật khẩu đã được gửi tới mail: <br />
+            <strong>{user?.email}</strong>, vui lòng truy cập vào mail để tiếp
+            tục.
+          </div>
+        }
+        cancelText="Đóng"
+        okText="Đóng"
+        isShowCancelBtn={false}
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        onOkModal={() => setIsPopupOpen(false)}
+      >
+        <div />
+      </OPopup>
     </Layout.Header>
   );
 };

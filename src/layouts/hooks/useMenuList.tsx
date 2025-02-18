@@ -22,10 +22,11 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import OPopup from '@components/organisms/o-popup/OPopup';
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 const useMenuList = (onLogout?: () => void, onRequestChangePw?: () => void) => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
   const menuList = useMemo(() => {
     const menu: ItemType<MenuItemType>[] = [
       {
@@ -165,6 +166,8 @@ const useMenuList = (onLogout?: () => void, onRequestChangePw?: () => void) => {
             cancelText="Huỷ"
             okText="Xác nhận"
             onOkModal={onLogout}
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
           >
             <span>Đăng xuất</span>
           </OPopup>
