@@ -1,0 +1,74 @@
+.form-change-password {
+  background: var(--Background, #f5f6fa);
+  padding-top: 114.5px;
+  padding-bottom: 152.5px;
+  .form-container {
+    max-width: 448px;
+    border-radius: 12px;
+    padding: 40px 32px 32px;
+    background: linear-gradient(
+      93.19deg,
+      #ffffff 0.35%,
+      rgba(255, 255, 255, 0.5) 100.17%
+    );
+    backdrop-filter: blur(30px);
+    .sub-title {
+      overflow: hidden;
+      color: #5a5a5a;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 24px;
+    }
+    .mbb-form-item-label {
+      line-height: 19px;
+    }
+    .disable {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .group-button {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      align-self: stretch;
+      .cancel-button {
+        display: flex;
+        width: 182px;
+        height: 48px;
+        padding: 10px 14px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-radius: 8px;
+        background: #dedefa;
+        color: #5c59e8;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: 0.07px;
+      }
+
+      .confirm-button {
+        display: flex;
+        width: 182px;
+        height: 48px;
+        padding: 10px 14px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-radius: 8px;
+        background: #141ed2;
+        color: #fff;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px;
+      }
+    }
+  }
+}

@@ -1,10 +1,21 @@
-import { Divider, Flex, Layout } from 'antd';
+import { useRequestChangePassword } from '@hooks/queries';
 import useMenuList from '@layouts/hooks/useMenuList';
-import HeaderNotify from './HeaderNotify';
+import { Divider, Flex, Layout } from 'antd';
 import HeaderInfo from './HeaderInfo';
+import HeaderNotify from './HeaderNotify';
 
 const Header = () => {
-  const { dropdownList } = useMenuList();
+  const { mutate: mutateRequestChangePassword } = useRequestChangePassword();
+
+  const handleRequestChangePw = () => {
+    console.log('cp');
+    mutateRequestChangePassword(undefined, {
+      onSuccess: (data) => {
+        console.log(data, 'success');
+      },
+    });
+  };
+  const { dropdownList } = useMenuList(undefined, handleRequestChangePw);
 
   return (
     <Layout.Header className="bg-white h-75">

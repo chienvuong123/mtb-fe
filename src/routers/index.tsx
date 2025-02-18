@@ -9,6 +9,7 @@ import VerifyGuard from './guards/VerifyGuard';
 import {
   ACCOUNT,
   CATEGORY,
+  CHANGE_PASSWORD,
   CONFIRM_PASSWORD,
   CUSTOMER,
   EXAMPLE,
@@ -50,6 +51,16 @@ const routes = createBrowserRouter(
       ),
     },
     {
+      path: CHANGE_PASSWORD,
+      element: (
+        <AuthGuard>
+          {createLazyElement(
+            () => import('@pages/authentication/change-password'),
+          )}
+        </AuthGuard>
+      ),
+    },
+    {
       path: OTP,
       element: (
         <VerifyGuard>
@@ -69,6 +80,7 @@ const routes = createBrowserRouter(
           path: EXAMPLE,
           element: createLazyElement(() => import('../pages/example')),
         },
+
         {
           path: CATEGORY.ROOT,
           children: [

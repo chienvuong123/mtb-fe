@@ -2,6 +2,7 @@ import type {
   AuthOtpDTO,
   AuthOtpRequest,
   BaseResponse,
+  ChangePasswordRequest,
   UserInfoOtpRequest,
 } from '@dtos';
 import { BaseApi } from './baseApi';
@@ -31,6 +32,21 @@ export class AuthOTPApi extends BaseApi<AuthOtpDTO, AuthOtpRequest> {
   async resetForgotPassword(data: Partial<UserInfoOtpRequest>) {
     return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/reset-forgot-password`,
+      method: 'POST',
+      data,
+    });
+  }
+
+  async requestChangePassword() {
+    return apiRequest<BaseResponse<boolean>>({
+      url: `${this.endpoint}/request-change-password`,
+      method: 'POST',
+    });
+  }
+
+  async changePassword(data: Partial<ChangePasswordRequest>) {
+    return apiRequest<BaseResponse<boolean>>({
+      url: `${this.endpoint}/change-password`,
       method: 'POST',
       data,
     });

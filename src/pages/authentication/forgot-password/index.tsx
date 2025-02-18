@@ -1,15 +1,16 @@
 import { ArrowLeft01Icon, LogoOpenIcon } from '@assets/icons';
+import type { UserInfoOtpRequest } from '@dtos';
+import { useVerifyInfoUserForgotPassword } from '@hooks/queries';
 import useFormItems from '@hooks/useFormItems';
-import { Link, useNavigate } from 'react-router-dom';
 import { LOGIN, OTP } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { useVerifyInfoUserForgotPassword } from '@hooks/queries';
-import type { UserInfoOtpRequest } from '@dtos';
-import { useState } from 'react';
 import { saveOTPCheck } from '@utils/otpHelper';
+import { Form } from 'antd';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { LayoutWrapper } from '../components';
-import { FormContentAuth } from '../components/form-content';
 import { FooterAuth } from '../components/footer';
+import { FormContentAuth } from '../components/form-content';
 
 const items: TFormItem[] = [
   {
@@ -19,29 +20,35 @@ const items: TFormItem[] = [
     inputProps: {
       title: 'Tên đăng nhập',
       placeholder: 'Nhập...',
-      maxLength: 20,
+      maxLength: 50,
     },
     colProps: { span: 24, className: 'fw-500' },
+    rules: [{ required: true }],
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Email',
     name: 'email',
-    inputProps: { placeholder: 'Nhập...', maxLength: 100, type: 'email' },
+    inputProps: { placeholder: 'Nhập...', maxLength: 50, type: 'email' },
     colProps: { span: 24, className: 'fw-500' },
+    rules: [
+      { required: true },
+      { type: 'email', message: 'Định dạng email không hợp lệ' },
+    ],
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Số điện thoại',
     name: 'phoneNumber',
-    inputProps: { placeholder: 'Nhập...', maxLength: 100, type: 'number' },
+    inputProps: { placeholder: 'Nhập...', maxLength: 10, type: 'number' },
     colProps: { span: 24, className: 'fw-500' },
+    rules: [{ required: true }],
   },
 ];
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-
+  const [form] = Form.useForm();
   const [alert, setAlert] = useState('');
   const { mutate: mutateVerifyInfoUser, isPending } =
     useVerifyInfoUserForgotPassword();
@@ -52,6 +59,7 @@ const ForgotPassword = () => {
   });
 
   const handleVerifyInfoUser = (values: UserInfoOtpRequest) => {
+    form.validateFields();
     setAlert('');
     const data = {
       email: values.email,
@@ -79,6 +87,8 @@ const ForgotPassword = () => {
         <LogoOpenIcon />
 
         <FormContentAuth
+          requiredMark="optional"
+          form={form}
           title="Quên mật khẩu"
           subTitle="Nhập thông tin phía dưới để lấy lại mật khẩu"
           textButton="Tiếp tục"

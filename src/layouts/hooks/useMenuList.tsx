@@ -17,7 +17,7 @@ import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
 import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const useMenuList = (onLogout?: () => void) => {
+const useMenuList = (onLogout?: () => void, onRequestChangePw?: () => void) => {
   const navigate = useNavigate();
   const menuList = useMemo(() => {
     const menu: ItemType<MenuItemType>[] = [
@@ -166,8 +166,11 @@ const useMenuList = (onLogout?: () => void) => {
 
     const dropdownList = [
       { label: 'Profile', key: 'profile', onClick: () => navigate(ACCOUNT) },
-      { label: 'Cài lại mật khẩu', key: 'reset-password' },
-      { label: 'Quên mật khẩu', key: 'forgot-password' },
+      {
+        label: 'Cài lại mật khẩu',
+        key: 'reset-password',
+        onClick: onRequestChangePw,
+      },
     ];
 
     return { menu, menuBottom, dropdownList };

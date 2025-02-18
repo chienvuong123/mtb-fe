@@ -3,6 +3,7 @@ import type {
   AuthRequest,
   AuthResponse,
   BaseResponse,
+  ChangePasswordRequest,
   UserInfoOtpRequest,
 } from '@dtos';
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
@@ -62,6 +63,29 @@ export const useResetForgotPassword = (
     mutationFn: (data: UserInfoOtpRequest) =>
       authOtpApi.resetForgotPassword(data),
     mutationKey: ['auth-reset-password'],
+    ...options,
+  });
+};
+
+export const useRequestChangePassword = (
+  options?: Partial<UseMutationOptions<BaseResponse<boolean>, Error>>,
+) => {
+  return useMutation({
+    mutationFn: () => authOtpApi.requestChangePassword(),
+    mutationKey: ['auth-request-change-password'],
+    ...options,
+  });
+};
+
+export const useChangePassword = (
+  options?: Partial<
+    UseMutationOptions<BaseResponse<boolean>, Error, ChangePasswordRequest>
+  >,
+) => {
+  return useMutation({
+    mutationFn: (data: ChangePasswordRequest) =>
+      authOtpApi.changePassword(data),
+    mutationKey: ['auth-change-password'],
     ...options,
   });
 };
