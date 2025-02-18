@@ -3,13 +3,10 @@ import { RouterProvider } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ConfigProvider, Skeleton } from 'antd';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import routes from './routers';
 import JotaiProvider from './libs/jotai';
 import ReactQueryProvider from './libs/react-query/ReactQueryProvider';
 import { formConfig, themeConfig } from './libs/antd';
-
-const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   return (
@@ -17,9 +14,7 @@ const App: React.FC = () => {
       <JotaiProvider>
         <ReactQueryProvider>
           <Suspense fallback={<Skeleton />}>
-            <QueryClientProvider client={queryClient}>
-              <RouterProvider router={routes} />
-            </QueryClientProvider>
+            <RouterProvider router={routes} />
           </Suspense>
           <ReactQueryDevtools initialIsOpen={false} />
         </ReactQueryProvider>
