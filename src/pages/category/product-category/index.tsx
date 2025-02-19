@@ -19,7 +19,7 @@ import {
   useProductCategoryEditMutation,
   useProductCategoryRemoveMutation,
   useProductCategorySearchQuery,
-} from '@hooks/queries/useProductCategoryQueries';
+} from '@hooks/queries/productCategoryQueries';
 import useUrlParams from '@hooks/useUrlParams';
 import { useProfile } from '@stores';
 import { filterObject } from '@utils/objectHelper';

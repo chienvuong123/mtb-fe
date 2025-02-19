@@ -122,3 +122,24 @@ export async function apiRequest<T>(config: AxiosRequestConfig): Promise<T> {
   const response = await apiClient(config);
   return response.data;
 }
+
+export async function apiRequestFile<T>({
+  headers,
+  signal,
+  ...config
+}: AxiosRequestConfig): Promise<T> {
+  const controller = new AbortController();
+  const abortSignal = signal || controller.signal;
+
+  const response = await apiClient({
+    ...config,
+    signal: abortSignal,
+    timeout: Infinity,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      ...headers,
+    },
+  });
+
+  return response.data;
+}

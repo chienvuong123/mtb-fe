@@ -65,3 +65,9 @@ export interface BaseSearchParams {
   page?: PageDTO;
   order?: OrderDTO;
 }
+
+export interface ListOptionDTO {
+  code: string;
+  name: string;
+  id: string;
+}

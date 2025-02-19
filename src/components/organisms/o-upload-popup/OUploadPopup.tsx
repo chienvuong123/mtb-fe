@@ -9,29 +9,44 @@ import {
   Form,
 } from 'antd';
 import clsx from 'clsx';
-import { useState, type FC } from 'react';
+import { type Dispatch, type FC, type SetStateAction } from 'react';
 
 import './style.scss';
 import { SheetIcon, UploadCloudIcon } from '@assets/icons';
 import type { DraggerProps, UploadFile } from 'antd/lib';
-import { useForm } from 'antd/es/form/Form';
+import { useForm, useWatch } from 'antd/es/form/Form';
 import type { UploadChangeParam } from 'antd/es/upload';
+import { MSingleFileProgress } from '@components/molecules';
 
 interface IUploadPopup {
   modalProps: ModalProps;
   draggerProps?: DraggerProps;
   children?: React.ReactNode;
   requiredText?: string | boolean;
-  onSubmit: (file: UploadFile) => void;
+  progress?: number;
+  showError?: boolean | string;
+  disabled?: boolean;
+  onSubmit: (file: UploadFile[]) => void;
   onDowloadEg?: () => void;
+  onCancelImport?: () => void;
+  setError?: Dispatch<SetStateAction<boolean>>;
+  setProgress?: Dispatch<SetStateAction<number>>;
 }
+
+type TUpload = { file: UploadFile[] };
 
 const OUploadPopup: FC<IUploadPopup> = ({
   requiredText = 'Yêu cầu định dạng .xlsx',
   modalProps,
   draggerProps,
+  progress,
+  showError,
+  disabled,
   onSubmit,
   onDowloadEg,
+  onCancelImport,
+  setError,
+  setProgress,
 }) => {
   const {
     className: modalClassName,
@@ -49,14 +64,32 @@ const OUploadPopup: FC<IUploadPopup> = ({
   const { ...otherDraggerProps } = draggerProps ?? {};
 
   const [form] = useForm();
-
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const fileList = useWatch('file', form);
 
   const handleChange = (info: UploadChangeParam<UploadFile>) => {
     const latestFile = info.fileList.slice(-1);
-    setFileList(latestFile);
 
     form.setFieldsValue({ file: latestFile });
+    setError?.(false);
+    setProgress?.(0);
+  };
+
+  const handleResetForm = () => {
+    setError?.(false);
+    onCancelImport?.();
+    form.resetFields();
+  };
+
+  const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+    onCancel?.(e);
+    onCancelImport?.();
+    handleResetForm();
+    setError?.(false);
+  };
+
+  const handleSubmit = (values: TUpload) => {
+    onSubmit(values?.file);
+    setError?.(false);
   };
 
   return (
@@ -71,7 +104,7 @@ const OUploadPopup: FC<IUploadPopup> = ({
       className={clsx('upload-popup', modalClassName)}
       {...otherModalProps}
     >
-      <Form form={form} onFinish={(value) => onSubmit(value?.file)}>
+      <Form<TUpload> form={form} onFinish={handleSubmit}>
         <Typography className="upload-title fs-16 dis-block w-full">
           {title}
         </Typography>
@@ -87,6 +120,8 @@ const OUploadPopup: FC<IUploadPopup> = ({
               beforeUpload={() => false}
               onChange={handleChange}
               accept=".xlsx"
+              showUploadList={false}
+              disabled={disabled}
               {...otherDraggerProps}
             >
               <UploadCloudIcon />
@@ -101,6 +136,18 @@ const OUploadPopup: FC<IUploadPopup> = ({
               <Typography.Text className="dis-block fs-16 my-20 required-text">
                 {requiredText}
               </Typography.Text>
+              {fileList?.length && (
+                <div className="mb-20">
+                  <MSingleFileProgress
+                    error={showError}
+                    percent={progress}
+                    file={fileList?.[0]}
+                    disabledRemove={disabled}
+                    onRemove={handleResetForm}
+                  />
+                </div>
+              )}
+
               <Divider className="ma-0" />
               <Typography.Text
                 color="#9D9D9D"
@@ -122,7 +169,7 @@ const OUploadPopup: FC<IUploadPopup> = ({
             className="w-115 fw-600 fs-14"
             variant="filled"
             color="primary"
-            onClick={onCancel}
+            onClick={handleCancel}
           >
             {cancelText}
           </AButton>
@@ -130,6 +177,7 @@ const OUploadPopup: FC<IUploadPopup> = ({
             type="primary"
             htmlType="submit"
             className="w-115 fw-600 fs-14"
+            disabled={!fileList?.length || disabled}
           >
             {okText}
           </AButton>

@@ -1,9 +1,10 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
-import { useEffect, type FC, useMemo } from 'react';
+import { useEffect, type FC, useMemo, useCallback } from 'react';
 import type { CustomerDTO } from '@dtos';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
+import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { parseCustomerObj } from '../customerHelper';
 import type { TCustomerSearchForm } from '../customer.type';
 
@@ -24,6 +25,19 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
 }) => {
   const [form] = useForm();
 
+  const { data: categoryList } = useQueryCategoryList();
+  const { data: campaignList } = useQueryCampaignList();
+
+  const { categoryListByCode, categoryListByName } = categoryList ?? {};
+  const { campaignListByCode, campaignListByName } = campaignList ?? {};
+
+  const onSelectChange = useCallback(
+    (fieldChange: keyof CustomerDTO, value: string) => {
+      form.setFieldValue(fieldChange, value);
+    },
+    [form],
+  );
+
   const items: TFormItem[] = useMemo(
     () =>
       [
@@ -35,7 +49,8 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: MOCK_CUSTOMER_OPTIONS,
+            options: categoryListByCode,
+            onChange: (value) => onSelectChange('categoryName', value),
           },
         },
         {
@@ -46,7 +61,8 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: MOCK_CUSTOMER_OPTIONS,
+            options: categoryListByName,
+            onChange: (value) => onSelectChange('categoryId', value),
           },
         },
         {
@@ -57,7 +73,8 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: MOCK_CUSTOMER_OPTIONS,
+            options: campaignListByCode,
+            onChange: (value) => onSelectChange('campaignName', value),
           },
         },
         {
@@ -68,7 +85,8 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: MOCK_CUSTOMER_OPTIONS,
+            options: campaignListByName,
+            onChange: (value) => onSelectChange('campaignId', value),
           },
         },
         {
@@ -130,7 +148,13 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
           },
         },
       ] as TFormItem[],
-    [],
+    [
+      categoryListByName,
+      categoryListByCode,
+      campaignListByCode,
+      campaignListByName,
+      onSelectChange,
+    ],
   );
 
   useEffect(() => {

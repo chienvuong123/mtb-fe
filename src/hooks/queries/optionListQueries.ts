@@ -1,6 +1,7 @@
-import { assetApi, categoryApi } from '@apis';
+import { assetApi, campaignApi, categoryApi } from '@apis';
 import type { CategoryType } from '@dtos';
 import { useQuery } from '@tanstack/react-query';
+import type { BaseOptionType } from 'antd/es/select';
 
 export const useCategoryOptionsListQuery = (categoryTypeCode: CategoryType) => {
   return useQuery({
@@ -126,5 +127,49 @@ export const useAssetNameOptionsListQuery = ({
         label: item.name,
         value: item.code,
       })) ?? [],
+  });
+};
+
+export const useQueryCategoryList = () => {
+  return useQuery({
+    queryKey: ['category', 'list'],
+    queryFn: () => categoryApi.categoryListOptions(),
+    select: ({ data }) => {
+      const categoryListByCode: BaseOptionType[] = [];
+      const categoryListByName: BaseOptionType[] = [];
+      data?.content?.forEach((item) => {
+        categoryListByName.push({
+          value: item?.id,
+          label: `${item?.code} - ${item?.name}`,
+        });
+        categoryListByCode.push({
+          value: item?.id,
+          label: item?.code,
+        });
+      });
+      return { categoryListByCode, categoryListByName };
+    },
+  });
+};
+
+export const useQueryCampaignList = () => {
+  return useQuery({
+    queryKey: ['campaign', 'list'],
+    queryFn: () => campaignApi.campaignListOptions(),
+    select: ({ data }) => {
+      const campaignListByCode: BaseOptionType[] = [];
+      const campaignListByName: BaseOptionType[] = [];
+      data?.content?.forEach((item) => {
+        campaignListByName.push({
+          value: item?.id,
+          label: `${item?.code} - ${item?.name}`,
+        });
+        campaignListByCode.push({
+          value: item?.id,
+          label: item?.code,
+        });
+      });
+      return { campaignListByCode, campaignListByName };
+    },
   });
 };

@@ -105,19 +105,19 @@ export const destructCustomerData = (
       };
 };
 
-export const validateInsertCustomer = (
-  { errorCode, errorDesc }: BaseResponse<boolean>,
-  form: FormInstance,
+export const validateInsertCustomer = <T>(
+  { errorCode, errorDesc }: BaseResponse<T>,
   setMsg: Dispatch<SetStateAction<TDrawerMsg>>,
-  callback: () => void,
+  onSuccess: () => void,
+  form?: FormInstance,
 ) => {
   if (errorCode === '0') {
-    callback();
+    onSuccess();
     return;
   }
   const fieldError = customerError[errorCode as keyof typeof customerError];
-  if (fieldError) {
-    form.setFields([{ name: fieldError, errors: [errorDesc] }]);
+  if (errorDesc !== 'SUCCESS') {
+    form?.setFields([{ name: fieldError, errors: [errorDesc] }]);
     setMsg({ type: 'error', message: errorDesc });
     return;
   }
