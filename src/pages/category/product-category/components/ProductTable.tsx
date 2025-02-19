@@ -3,6 +3,7 @@ import type { IMPagination } from '@components/molecules/m-pagination/MPaginatio
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
 import type { OrderDTO, ProductCategoryDTO } from '@dtos';
+import { useProfile } from '@stores';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
@@ -97,6 +98,7 @@ const ProductTable: FC<IProductTable> = ({
   onSort,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  const { isAdmin, isCampaignManager } = useProfile();
 
   const deleteRecord = (key: Key) => {
     onDelete(key as string);
@@ -107,10 +109,8 @@ const ProductTable: FC<IProductTable> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onDeleteRow={(key) => {
-        deleteRecord(key);
-      }}
-      onEdit={onEdit}
+      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
+      onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}

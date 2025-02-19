@@ -5,6 +5,7 @@ import { useEffect, type FC, useMemo, useCallback } from 'react';
 import type { CustomerDTO } from '@dtos';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
+import { useProfile } from '@stores';
 import { parseCustomerObj } from '../customerHelper';
 import type { TCustomerSearchForm } from '../customer.type';
 
@@ -24,6 +25,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
   onDeleteAll,
 }) => {
   const [form] = useForm();
+  const { isAdmin, isCampaignManager } = useProfile();
 
   const { data: categoryList } = useQueryCategoryList();
   const { data: campaignList } = useQueryCampaignList();
@@ -170,7 +172,11 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
         form={form}
         onSearch={onSearch}
         onClearAll={onClearAll}
-        onCreate={() => onCreate(form.getFieldsValue())}
+        onCreate={
+          isAdmin || isCampaignManager
+            ? () => onCreate(form.getFieldsValue())
+            : undefined
+        }
         onDeleteAll={onDeleteAll}
       />
     </div>

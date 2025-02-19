@@ -4,6 +4,7 @@ import { useForm } from 'antd/es/form/Form';
 import { useEffect, type FC } from 'react';
 import type { TProductSearchForm } from '@dtos';
 import { STATUS_OPTIONS } from '@constants/masterData';
+import { useProfile } from '@stores';
 
 interface IProductSearchForm {
   initialValues?: TProductSearchForm;
@@ -43,6 +44,7 @@ const ProductSearchForm: FC<IProductSearchForm> = ({
   onCreate,
 }) => {
   const [form] = useForm();
+  const { isAdmin, isCampaignManager } = useProfile();
 
   useEffect(() => {
     if (initialValues) {
@@ -57,7 +59,7 @@ const ProductSearchForm: FC<IProductSearchForm> = ({
         form={form}
         onSearch={onSearch}
         onClearAll={onClearAll}
-        onCreate={onCreate}
+        onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
       />
     </div>
   );
