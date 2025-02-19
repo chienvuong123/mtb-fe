@@ -44,6 +44,7 @@ $colors: (
   // color text
   'text1': #667085,
   'text-main1': #141ed2,
+  'file-name-color': #6d6d6d,
 );
 
 $font-sizes: generate-array(9, 32, 1);
@@ -90,6 +91,7 @@ $space-amount-default: (
   12,
   14,
   16,
+  18,
   20,
   22,
   24,

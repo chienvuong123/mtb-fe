@@ -1,6 +1,6 @@
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { type CustomerDTO, type CustomerSearchRequest } from '@dtos';
-import { Flex, type FormInstance } from 'antd';
+import { Flex, type FormInstance, type UploadFile } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { type FC, useMemo, useState } from 'react';
 
@@ -16,6 +16,7 @@ import {
   useCustomerDownloadTemplete,
   useCustomerEditMutation,
   useCustomerExport,
+  useCustomerImportMutation,
   useCustomerRemoveMutation,
   useCustomerSearchQuery,
 } from '@hooks/queries';
@@ -24,6 +25,7 @@ import { filterObject } from '@utils/objectHelper';
 
 import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import type { SortOrder } from 'antd/es/table/interface';
+import { downloadBase64File } from '@utils/fileHelper';
 import CustomerGroupForm from '../group-customer/components/CustomerGroupForm';
 import {
   CustomerForm,
@@ -46,6 +48,8 @@ const DRAWER_WIDTH = {
   list: 1643,
 };
 
+let abortController = new AbortController();
+
 const ListCustomerPage: FC = () => {
   const [drawerMode, setDrawerMode] = useState<TDrawerMode>(false);
   const [drawerWidth, setDrawerWidth] = useState<number>(DRAWER_WIDTH.list);
@@ -53,8 +57,9 @@ const ListCustomerPage: FC = () => {
     null,
   );
   const [showExport, setShowImport] = useState<boolean>(false);
-
   const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
+  const [progressPercent, setProgressPercent] = useState(0);
+  const [uploadError, setUploadError] = useState(false);
 
   const {
     pagination: { current, pageSize },
@@ -98,8 +103,14 @@ const ListCustomerPage: FC = () => {
   const { mutate: mutationCreateCustomer } = useCustomerAddMutation();
   const { mutate: mutationUpdateCustomer } = useCustomerEditMutation();
   const { mutate: mutationDeleteCustomer } = useCustomerRemoveMutation();
+  const { mutate: mutationImportCustomer, isPending: importCustomerLoading } =
+    useCustomerImportMutation();
   const { refetch: downloadTemplate } = useCustomerDownloadTemplete();
   const { refetch: customerExport } = useCustomerExport(searchParams);
+
+  const cancelImport = () => {
+    abortController?.abort();
+  };
 
   const handleOpenDrawer = () => {
     setDrawerWidth(DRAWER_WIDTH.list);
@@ -140,11 +151,15 @@ const ListCustomerPage: FC = () => {
         { ...dData, id: initValues.id },
         {
           onSuccess: (d) =>
-            validateInsertCustomer(d, form, setAlertMessage, () =>
-              handleReset({
-                type: 'success',
-                message: 'Cập nhật thông tin thành công',
-              }),
+            validateInsertCustomer(
+              d,
+              setAlertMessage,
+              () =>
+                handleReset({
+                  type: 'success',
+                  message: 'Cập nhật thông tin thành công',
+                }),
+              form,
             ),
         },
       );
@@ -153,11 +168,15 @@ const ListCustomerPage: FC = () => {
     // create new customer
     mutationCreateCustomer(dData, {
       onSuccess: (d) =>
-        validateInsertCustomer(d, form, setAlertMessage, () =>
-          handleReset({
-            type: 'success',
-            message: 'Tạo mới thành công',
-          }),
+        validateInsertCustomer(
+          d,
+          setAlertMessage,
+          () =>
+            handleReset({
+              type: 'success',
+              message: 'Tạo mới thành công',
+            }),
+          form,
         ),
     });
   };
@@ -176,6 +195,43 @@ const ListCustomerPage: FC = () => {
         },
       },
     );
+  };
+
+  const handleImportCustomer = (file: UploadFile[]) => {
+    abortController = new AbortController();
+    if (file?.[0]?.originFileObj) {
+      mutationImportCustomer(
+        {
+          file: file[0]?.originFileObj,
+          onUploadProgress: (progressEvent) => {
+            const percent = Math.round(
+              (progressEvent.loaded * 100) / (progressEvent.total || 1),
+            );
+            setProgressPercent(percent);
+          },
+          signal: abortController.signal,
+        },
+        {
+          onSuccess: (d) => {
+            validateInsertCustomer(d, setAlertMessage, () => {
+              setAlertMessage({
+                message: 'Import thành công',
+                type: 'success',
+              });
+              setShowImport(false);
+              setProgressPercent(0);
+            });
+            if (d?.errorCode === 'CUS0009') {
+              downloadBase64File(d.data as string, 'DSKH_error.xlsx');
+            }
+          },
+          onError: () => {
+            setProgressPercent(0);
+            setUploadError(true);
+          },
+        },
+      );
+    }
   };
 
   const paginations: IMPagination = {
@@ -253,17 +309,24 @@ const ListCustomerPage: FC = () => {
   return (
     <div className="pt-32">
       <OUploadPopup
+        progress={progressPercent}
+        setProgress={setProgressPercent}
         modalProps={{
           open: showExport,
           title: 'Tải lên danh sách khách hàng',
-          onCancel: () => setShowImport(false),
+          onCancel: () => {
+            setShowImport(false);
+            setProgressPercent(0);
+          },
         }}
-        onSubmit={(file) => {
-          console.log(file);
-        }}
+        onSubmit={handleImportCustomer}
         onDowloadEg={() =>
           downloadFileByGetMethod(downloadTemplate, 'DSKH_Template.xlsx')
         }
+        onCancelImport={cancelImport}
+        showError={uploadError}
+        setError={setUploadError}
+        disabled={importCustomerLoading}
       />
 
       <Flex justify="space-between" className="mb-14">

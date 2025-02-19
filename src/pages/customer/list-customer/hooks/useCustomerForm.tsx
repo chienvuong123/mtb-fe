@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import { useCallback, useEffect, useMemo } from 'react';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
 import dayjs from 'dayjs';
+import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import type { ICustomerForm, TCustomerForm } from '../customer.type';
 
 const useCustomerForm = ({
@@ -25,6 +26,12 @@ const useCustomerForm = ({
   const categoryId = Form.useWatch(['categoryId'], form);
   const categoryName = Form.useWatch(['categoryName'], form);
   const campaignId = Form.useWatch(['campaignId'], form);
+
+  const { data: categoryList } = useQueryCategoryList();
+  const { data: campaignList } = useQueryCampaignList();
+
+  const { categoryListByCode, categoryListByName } = categoryList ?? {};
+  const { campaignListByCode, campaignListByName } = campaignList ?? {};
 
   const hasCategory = categoryId && categoryName;
 
@@ -40,18 +47,28 @@ const useCustomerForm = ({
       (
         [
           {
-            type: INPUT_TYPE.TEXT,
+            type: INPUT_TYPE.SELECT,
             label: 'Mã Category',
             name: 'categoryId',
             required: true,
             rules: [{ required: true }],
+            inputProps: {
+              placeholder: 'Nhập...',
+              options: categoryListByCode,
+              onChange: (value) => onSelectChange('categoryName', value),
+            },
           },
           {
-            type: INPUT_TYPE.TEXT,
+            type: INPUT_TYPE.SELECT,
             label: 'Tên category',
             name: 'categoryName',
             required: true,
             rules: [{ required: true }],
+            inputProps: {
+              placeholder: 'Nhập...',
+              options: categoryListByName,
+              onChange: (value) => onSelectChange('categoryId', value),
+            },
           },
           {
             type: INPUT_TYPE.SELECT,
@@ -60,7 +77,7 @@ const useCustomerForm = ({
             required: true,
             rules: [{ required: true }],
             inputProps: {
-              options: [{ value: 'CMP001', label: 'CMP001' }],
+              options: campaignListByCode,
               placeholder: 'Chọn...',
               showSearch: true,
               filterOption: true,
@@ -75,7 +92,7 @@ const useCustomerForm = ({
             required: true,
             rules: [{ required: true }],
             inputProps: {
-              options: [{ value: 'CMP001', label: 'Campaign CMP001' }],
+              options: campaignListByName,
               placeholder: 'Chọn...',
               showSearch: true,
               filterOption: true,
@@ -247,7 +264,16 @@ const useCustomerForm = ({
         }
         return item;
       }),
-    [mode, hasCategory, campaignId, onSelectChange],
+    [
+      mode,
+      hasCategory,
+      campaignId,
+      categoryListByCode,
+      categoryListByName,
+      campaignListByCode,
+      campaignListByName,
+      onSelectChange,
+    ],
   ) as TFormItem[];
 
   useEffect(() => {

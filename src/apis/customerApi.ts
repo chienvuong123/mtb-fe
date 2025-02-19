@@ -1,6 +1,7 @@
-import type { CustomerDTO, CustomerSearchRequest } from '@dtos';
+import type { BaseResponse, CustomerDTO, CustomerSearchRequest } from '@dtos';
+import type { AxiosRequestConfig } from 'axios';
 import { BaseApi } from './baseApi';
-import { apiRequest } from './apiClient';
+import { apiRequest, apiRequestFile } from './apiClient';
 
 class CustomerApi extends BaseApi<CustomerDTO, CustomerSearchRequest> {
   constructor() {
@@ -21,6 +22,17 @@ class CustomerApi extends BaseApi<CustomerDTO, CustomerSearchRequest> {
       method: 'GET',
       params,
       responseType: 'blob',
+    });
+  }
+
+  async import(file: File, config?: AxiosRequestConfig) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return apiRequestFile<BaseResponse<string>>({
+      url: `${this.endpoint}/import`,
+      method: 'POST',
+      data: formData,
+      ...config,
     });
   }
 }

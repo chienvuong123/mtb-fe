@@ -1,3 +1,7 @@
+export const MIME_TYPE = {
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+};
+
 export const downloadFile = (data: Blob, filename: string = 'DSKH.xlsx') => {
   const url = URL.createObjectURL(data);
   const a = document.createElement('a');
@@ -7,4 +11,26 @@ export const downloadFile = (data: Blob, filename: string = 'DSKH.xlsx') => {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+};
+
+export const downloadBase64File = (
+  base64String: string,
+  fileName: string,
+  mimeType: string = MIME_TYPE.xlsx,
+): void => {
+  try {
+    // Convert Base64 to Blob
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Uint8Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i += 1) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const blob = new Blob([byteNumbers], { type: mimeType });
+
+    downloadFile(blob, fileName);
+  } catch (error) {
+    console.error('Lỗi khi tải xuống file:', error);
+  }
 };
