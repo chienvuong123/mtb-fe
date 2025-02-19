@@ -55,6 +55,8 @@ const useCustomerForm = ({
             inputProps: {
               placeholder: 'Nhập...',
               options: categoryListByCode,
+              showSearch: true,
+              filterOption: true,
               onChange: (value) => onSelectChange('categoryName', value),
             },
           },
@@ -67,6 +69,8 @@ const useCustomerForm = ({
             inputProps: {
               placeholder: 'Nhập...',
               options: categoryListByName,
+              showSearch: true,
+              filterOption: true,
               onChange: (value) => onSelectChange('categoryId', value),
             },
           },
