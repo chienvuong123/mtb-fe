@@ -120,6 +120,12 @@ const routes = createBrowserRouter(
                 () => import('@pages/campaign/campaign-detail'),
               ),
             },
+            {
+              path: `${MANAGER_CATEGORY.CREATE_CAMPAIGN}`,
+              element: createLazyElement(
+                () => import('@pages/campaign/campaign-detail'),
+              ),
+            },
           ],
         },
         {

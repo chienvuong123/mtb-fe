@@ -1,10 +1,14 @@
-import type { BaseResponse, BaseSearchResponse, ListOptionDTO } from '@dtos';
+import type {
+  BaseResponse,
+  BaseSearchResponse,
+  ListOptionDTO,
+  TId,
+} from '@dtos';
 import type { CampaignDTO, CampaignSearchRequest } from 'src/dtos/campaign';
 import type {
-  CampaignDetailRequest,
-  CampaignDetailResponse,
+  CampaignScriptDTO,
   CampaignScriptRequest,
-  CampaignScriptResponse,
+  TCampaignDetailDTO,
 } from 'src/dtos/campaign-detail';
 import { apiRequest } from './apiClient';
 import { BaseApi } from './baseApi';
@@ -15,17 +19,15 @@ class CampaignApi extends BaseApi<CampaignDTO, CampaignSearchRequest> {
   }
 
   async campaignScript(data: CampaignScriptRequest) {
-    const response = await apiRequest<BaseResponse<CampaignScriptResponse>>({
+    return apiRequest<BaseResponse<BaseSearchResponse<CampaignScriptDTO>>>({
       url: `${this.endpoint}/campaign-script`,
       method: 'GET',
       params: data,
     });
-
-    return response.data;
   }
 
-  async campaignDetail(data: CampaignDetailRequest) {
-    return apiRequest<BaseResponse<CampaignDetailResponse>>({
+  async campaignDetail(data: TId) {
+    return apiRequest<BaseResponse<TCampaignDetailDTO>>({
       url: `${this.endpoint}/view`,
       method: 'GET',
       params: data,

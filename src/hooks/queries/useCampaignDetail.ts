@@ -4,19 +4,20 @@ import type {
   CampaignSearchRequest,
   CampaignSearchResponse,
 } from 'src/dtos/campaign';
-import { useQuery, type UseMutationOptions } from '@tanstack/react-query';
+import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
 import type {
-  CampaignDetailRequest,
-  CampaignDetailResponse,
+  CampaignScriptDTO,
   CampaignScriptRequest,
-  CampaignScriptResponse,
+  TCampaignDetailDTO,
 } from 'src/dtos/campaign-detail';
+import type { BaseResponse, BaseSearchResponse, TId } from '@dtos';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const {
   useSearchQuery: useCampaignDetailSearchQuery,
   useRemoveMutation: useCampaignDetailRemoveMutation,
   useEditMutation: useCampaignDetailEditMutation,
+  useAddMutation: useCampaignDetailAddMutation,
 } = createBaseQueryHooks<
   CampaignDTO,
   CampaignSearchRequest,
@@ -27,28 +28,27 @@ export const {
 >('campaign-detail', campaignApi);
 
 // define other queries
-export const useCampaignScriptMutation = (
+export const useCampaignScriptQuery = (
   data: CampaignScriptRequest,
-  options?: Partial<
-    UseMutationOptions<CampaignScriptResponse, Error, CampaignScriptRequest>
+  options?: UseQueryOptions<
+    BaseResponse<BaseSearchResponse<CampaignScriptDTO>>,
+    Error
   >,
 ) => {
   return useQuery({
+    queryKey: ['campaign-script', data],
     queryFn: () => campaignApi.campaignScript(data),
-    queryKey: ['campaign-script'],
     ...options,
   });
 };
 
 export const useCampaignDetailViewQuery = (
-  data: CampaignDetailRequest,
-  options?: Partial<
-    UseMutationOptions<CampaignDetailResponse, Error, CampaignDetailRequest>
-  >,
+  data: TId,
+  options?: Partial<UseQueryOptions<BaseResponse<TCampaignDetailDTO>, Error>>,
 ) => {
   return useQuery({
     queryFn: () => campaignApi.campaignDetail(data),
-    queryKey: ['campaign-detail'],
+    queryKey: ['campaign-detail', data],
     ...options,
   });
 };

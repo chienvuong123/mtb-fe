@@ -21,6 +21,7 @@ const ROUTE_PATH = {
     ROOT: 'manager-category',
     CAMPAIGN: `campaign`,
     CAMPAIGN_DETAIL: `campaign-detail`,
+    CREATE_CAMPAIGN: `create`,
   },
 
   SETTING: {

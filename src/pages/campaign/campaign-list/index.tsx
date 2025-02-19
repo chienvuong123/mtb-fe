@@ -28,7 +28,6 @@ import CampaignTable, {
 import './index.scss';
 
 const Campaign: React.FC = () => {
-  const [showInsertForm, setShowInsertForm] = useState<boolean>(false);
   const [initValues, setInitValues] = useState<Partial<TCampaignRecord> | null>(
     null,
   );
@@ -77,7 +76,8 @@ const Campaign: React.FC = () => {
       startDate: dayjs().format(DATE_SLASH_FORMAT),
       endDate: dayjs().format(DATE_SLASH_FORMAT),
     });
-    setShowInsertForm(true);
+
+    navigate(`/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CREATE_CAMPAIGN}`);
   };
 
   const handleEdit = (data: TCampaignRecord) => {
@@ -86,7 +86,12 @@ const Campaign: React.FC = () => {
       startDate: dayjs(data.startDate).format(DATE_SLASH_FORMAT),
       endDate: dayjs().format(DATE_SLASH_FORMAT),
     });
-    setShowInsertForm(true);
+
+    if (data?.id) {
+      navigate(
+        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/${data.id}`,
+      );
+    }
   };
 
   const handleSearch = (searchObject: TCampaignSearchForm) => {
@@ -149,7 +154,7 @@ const Campaign: React.FC = () => {
     const item = campaignRes?.data.content.find((i) => i.id === id);
     if (item) {
       navigate(
-        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/${id}`,
+        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/${id}?isView=${true}`,
       );
       setInitValues({ ...item });
     }
@@ -164,7 +169,7 @@ const Campaign: React.FC = () => {
   };
 
   // TODO: will be removed
-  console.log(showInsertForm, handleSubmitInsert);
+  console.log(handleSubmitInsert);
 
   return (
     <div className="pt-32">
@@ -175,6 +180,7 @@ const Campaign: React.FC = () => {
         onSearch={handleSearch}
         onClearAll={handleClearAll}
         initialValues={filters}
+        onCreate={handleCreate}
       />
       <div className="mb-24" />
       <CampaignTable

@@ -1,12 +1,6 @@
-import type {
-  BaseEntity,
-  BaseResponse,
-  BaseSearchParams,
-  BaseSearchResponse,
-} from '../common';
+import type { BaseEntity, BaseSearchParams } from '../common';
 
 export interface CampaignTargetDTO extends BaseEntity {
-  id: string;
   campaignId: string;
   categoryId: string;
   name: string;
@@ -53,18 +47,6 @@ export interface CampaignScriptDTO extends BaseEntity {
 export interface CampaignScriptRequest extends BaseSearchParams {
   campaignId: string;
   createdDate?: string;
-  page?: {
-    pageNum: number;
-    pageSize: number;
-  };
   code?: string;
   name?: string;
 }
-
-export type CampaignDetailRequest = { id: string };
-
-export type CampaignDetailResponse = TCampaignDetailDTO;
-
-export type CampaignScriptResponse = BaseResponse<
-  BaseSearchResponse<CampaignScriptDTO>
->;

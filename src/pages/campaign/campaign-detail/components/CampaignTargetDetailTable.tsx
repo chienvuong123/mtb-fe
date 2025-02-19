@@ -1,9 +1,17 @@
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { AButton } from '@components/atoms';
+import { Flex } from 'antd';
 import type { TMediaRecord } from '@pages/category/media-category/components/MediaTable';
 import type { ColumnType } from 'antd/es/table';
 import Title from 'antd/lib/typography/Title';
 import React, { useMemo, type Key } from 'react';
 import type { CampaignTargetDTO } from 'src/dtos/campaign-detail';
+import { useParams } from 'react-router-dom';
+import type { TId } from '@dtos';
+
+const BUTTON_TEXT = {
+  ADD: 'Thêm mới',
+} as const;
 
 export type TCampaignTargetDetailTableRecord = TTableKey &
   Partial<CampaignTargetDTO>;
@@ -12,6 +20,7 @@ interface ICampaignTargetDetailTable {
   dataSource?: CampaignTargetDTO[];
   onEdit: ITable<TMediaRecord>['onEdit'];
   onDelete: (id: string) => void;
+  onShowTargetForm: () => void;
 }
 
 const columns: ColumnType<TCampaignTargetDetailTableRecord>[] = [
@@ -42,10 +51,13 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
   dataSource,
   onDelete,
   onEdit,
+  onShowTargetForm,
 }) => {
   const deleteRecord = (key: Key) => {
     onDelete(key as string);
   };
+
+  const { id: campaignId } = useParams<TId>();
 
   const mappedDataSource = useMemo(
     () =>
@@ -58,9 +70,21 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
 
   return (
     <div className="px-40 py-28">
-      <Title level={4} className="mb-24">
-        Mục tiêu
-      </Title>
+      <Flex justify="between" className=" items-center mb-4" gap="middle">
+        <Title level={4} className="mb-24">
+          Mục tiêu
+        </Title>
+        {!campaignId && (
+          <AButton
+            onClick={onShowTargetForm}
+            type="primary"
+            variant="filled"
+            className="ml-auto"
+          >
+            {BUTTON_TEXT.ADD}
+          </AButton>
+        )}
+      </Flex>
       <OTable<TCampaignTargetDetailTableRecord>
         columns={columns}
         data={mappedDataSource}
