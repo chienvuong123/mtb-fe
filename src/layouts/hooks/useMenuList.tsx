@@ -13,19 +13,17 @@ import {
 import { Divider } from 'antd';
 import {
   CATEGORY,
-  ACCOUNT,
   CUSTOMER,
   MANAGER_CATEGORY,
   SCENARIO,
   SETTING,
 } from '@routers/path';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import OPopup from '@components/organisms/o-popup/OPopup';
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
 import { useMemo, useState } from 'react';
 
-const useMenuList = (onLogout?: () => void, onRequestChangePw?: () => void) => {
-  const navigate = useNavigate();
+const useMenuList = (onLogout?: () => void) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuList = useMemo(() => {
     const menu: ItemType<MenuItemType>[] = [
@@ -177,16 +175,7 @@ const useMenuList = (onLogout?: () => void, onRequestChangePw?: () => void) => {
       },
     ];
 
-    const dropdownList = [
-      { label: 'Profile', key: 'profile', onClick: () => navigate(ACCOUNT) },
-      {
-        label: 'Cài lại mật khẩu',
-        key: 'reset-password',
-        onClick: onRequestChangePw,
-      },
-    ];
-
-    return { menu, menuBottom, dropdownList };
+    return { menu, menuBottom };
   }, []);
 
   return menuList;

@@ -1,36 +1,30 @@
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import { Flex, type FormInstance } from 'antd';
-import { type FC, useState, useMemo } from 'react';
-import Title from 'antd/lib/typography/Title';
 import { type CustomerDTO, type CustomerSearchRequest } from '@dtos';
+import { Flex, type FormInstance } from 'antd';
+import Title from 'antd/lib/typography/Title';
+import { type FC, useMemo, useState } from 'react';
 
+import { ExportIcon, ImportIcon, UserGroupIcon } from '@assets/icons';
+import { AButton } from '@components/atoms';
 import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
-import {
-  useCustomerSearchQuery,
-  useCustomerAddMutation,
-  useCustomerEditMutation,
-  useCustomerRemoveMutation,
-  useCustomerDownloadTemplete,
-  useCustomerExport,
-} from '@hooks/queries';
-import type { SortOrder } from 'antd/es/table/interface';
-import { AButton } from '@components/atoms';
-import { ExportIcon, ImportIcon, UserGroupIcon } from '@assets/icons';
 import { OUploadPopup } from '@components/organisms/o-upload-popup';
+import {
+  useCustomerAddMutation,
+  useCustomerDownloadTemplete,
+  useCustomerEditMutation,
+  useCustomerExport,
+  useCustomerRemoveMutation,
+  useCustomerSearchQuery,
+} from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
 import { filterObject } from '@utils/objectHelper';
 
 import { ODrawer, type TDrawerMsg } from '@components/organisms';
+import type { SortOrder } from 'antd/es/table/interface';
 import CustomerGroupForm from '../group-customer/components/CustomerGroupForm';
-import {
-  destructCustomerData,
-  downloadFileByGetMethod,
-  stringifyCustomerObj,
-  validateInsertCustomer,
-} from './customerHelper';
 import {
   CustomerForm,
   CustomerListTable,
@@ -38,6 +32,12 @@ import {
   CustomerViewForm,
 } from './components';
 import type { TCustomerRecord, TCustomerSearchForm } from './customer.type';
+import {
+  destructCustomerData,
+  downloadFileByGetMethod,
+  stringifyCustomerObj,
+  validateInsertCustomer,
+} from './customerHelper';
 
 type TDrawerMode = 'group' | 'list' | false;
 

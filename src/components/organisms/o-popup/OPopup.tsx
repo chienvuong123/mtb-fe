@@ -12,19 +12,17 @@ interface IOPopup {
   isOpen: boolean;
   onClose: () => void;
   onOkModal?: () => void;
-  isShowCancelBtn?: boolean;
   children: React.ReactElement;
 }
 
 const OPopup: React.FC<IOPopup> = ({
   title,
   description,
-  cancelText = 'Đóng',
+  cancelText,
   okText,
   isOpen,
   onClose,
   onOkModal,
-  isShowCancelBtn = true,
   children,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -65,7 +63,7 @@ const OPopup: React.FC<IOPopup> = ({
             {description}
           </Typography.Title>
           <Flex justify="center" align="center" gap={16}>
-            {isShowCancelBtn && (
+            {cancelText && (
               <AButton
                 className="w-183"
                 variant="filled"

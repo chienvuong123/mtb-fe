@@ -1,13 +1,16 @@
 import { OPopup } from '@components/organisms';
 import { useRequestChangePassword } from '@hooks/queries';
-import useMenuList from '@layouts/hooks/useMenuList';
+import { ACCOUNT } from '@routers/path';
 import { useProfile } from '@stores';
 import { Divider, Flex, Layout } from 'antd';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import HeaderInfo from './HeaderInfo';
 import HeaderNotify from './HeaderNotify';
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const { mutate: mutateRequestChangePassword } = useRequestChangePassword();
   const { user } = useProfile();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -21,7 +24,15 @@ const Header = () => {
       },
     });
   };
-  const { dropdownList } = useMenuList(undefined, handleRequestChangePw);
+
+  const dropdownList = [
+    { label: 'Profile', key: 'profile', onClick: () => navigate(ACCOUNT) },
+    {
+      label: 'Cài lại mật khẩu',
+      key: 'reset-password',
+      onClick: handleRequestChangePw,
+    },
+  ];
 
   return (
     <Layout.Header className="bg-white h-75">
@@ -43,7 +54,6 @@ const Header = () => {
           </div>
         }
         okText="Đóng"
-        isShowCancelBtn={false}
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
         onOkModal={() => setIsPopupOpen(false)}

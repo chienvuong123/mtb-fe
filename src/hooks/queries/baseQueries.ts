@@ -1,12 +1,12 @@
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  type UseQueryOptions,
-  type UseMutationOptions,
-} from '@tanstack/react-query';
-import type { BaseResponse, BaseSearchParams, BaseSearchResponse } from '@dtos';
 import type { BaseApi } from '@apis';
+import type { BaseResponse, BaseSearchParams, BaseSearchResponse } from '@dtos';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type UseMutationOptions,
+  type UseQueryOptions,
+} from '@tanstack/react-query';
 
 export const createBaseQueryHooks = <
   // dto type

@@ -1,17 +1,17 @@
-import React, { useMemo, useState, type Key } from 'react';
 import { Table } from 'antd';
 import type { TableRowSelection } from 'antd/es/table/interface';
+import React, { useMemo, useState, type Key } from 'react';
 
-import './styles.scss';
-import type { TableProps, ColumnType } from 'antd/es/table';
 import { MPagination } from '@components/molecules';
-import clsx from 'clsx';
-import type { OrderDTO } from '@dtos';
 import { SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
-import type { FixedType, ITableForm, TTableKey } from './OTableForm.type';
-import TableActions from './TableActions';
+import type { OrderDTO } from '@dtos';
+import type { ColumnType, TableProps } from 'antd/es/table';
+import clsx from 'clsx';
 import { OModalConfirm } from '../o-modal';
 import type { IModalConfirm } from '../o-modal/OModalConfirm';
+import type { FixedType, ITableForm, TTableKey } from './OTableForm.type';
+import './styles.scss';
+import TableActions from './TableActions';
 
 export interface ITable<T>
   extends Omit<TableProps<T>, 'columns'>,
@@ -78,17 +78,22 @@ const OTable = <T extends object & TTableKey>({
                 width: 120,
                 minWidth: 120,
                 render: (_: unknown, record: T) => (
-                  <TableActions
-                    record={record}
-                    editable={false}
-                    onEdit={onEdit}
-                    onView={onView}
-                    onDelete={(key) => {
-                      setShowModal(true);
-                      setRecordKey(key);
-                    }}
-                    editingKey={null}
-                  />
+                  <div className="dis-flex jc-center">
+                    <TableActions
+                      record={record}
+                      editable={false}
+                      onEdit={onEdit}
+                      onView={onView}
+                      onDelete={
+                        onDeleteRow &&
+                        ((key: Key) => {
+                          setRecordKey(key);
+                          setShowModal(true);
+                        })
+                      }
+                      editingKey={null}
+                    />
+                  </div>
                 ),
               },
             ]),
@@ -97,7 +102,7 @@ const OTable = <T extends object & TTableKey>({
       if (i?.render) return i;
       return { ellipsis: true, ...i };
     });
-  }, [columns, hideActions, sortDirection, onEdit, onView]);
+  }, [columns, hideActions, sortDirection, onDeleteRow, onEdit, onView]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys?.(newSelectedRowKeys as string[]);

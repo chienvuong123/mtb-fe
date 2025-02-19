@@ -96,6 +96,15 @@ const routes = createBrowserRouter(
             },
           ],
         },
+
+        {
+          path: SETTING.ROOT,
+          element: (
+            <RoleBasedGuard
+              accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
+            />
+          ),
+        },
         {
           path: MANAGER_CATEGORY.ROOT,
           children: [
@@ -125,6 +134,13 @@ const routes = createBrowserRouter(
               path: CUSTOMER.CUSTOMER_CAMPAIGN_LIST,
               element: createLazyElement(
                 () => import('@pages/customer/list-customer'),
+              ),
+            },
+
+            {
+              path: CUSTOMER.CUSTOMER_GROUP_CAMPAIGN_LIST,
+              element: createLazyElement(
+                () => import('@pages/customer/group-customer'),
               ),
             },
             {

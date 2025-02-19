@@ -6,8 +6,8 @@ import type {
   CampaignScriptRequest,
   CampaignScriptResponse,
 } from 'src/dtos/campaign-detail';
-import { BaseApi } from './baseApi';
 import { apiRequest } from './apiClient';
+import { BaseApi } from './baseApi';
 
 class CampaignApi extends BaseApi<CampaignDTO, CampaignSearchRequest> {
   constructor() {
