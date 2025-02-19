@@ -1,5 +1,9 @@
 import { GENDER_OPTIONS } from '@constants/masterData';
-import { ALLOWED_VN_CHARACTERS_PARTERN } from '@constants/regex';
+import {
+  ALLOWED_NUMBER_CHARACTERS_PARTERN,
+  ALLOWED_VN_CHARACTERS_PARTERN,
+  ALLOWED_VN_SPACE_CHARACTERS_PARTERN,
+} from '@constants/regex';
 import { Form } from 'antd';
 import type { CustomerDTO } from '@dtos';
 import { dayjsToString, stringToDayjs } from '@utils/dateHelper';
@@ -7,6 +11,7 @@ import { INPUT_TYPE, type TFormItem, type IFormType } from '@types';
 import clsx from 'clsx';
 import { useCallback, useEffect, useMemo } from 'react';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
+import dayjs from 'dayjs';
 import type { ICustomerForm, TCustomerForm } from '../customer.type';
 
 const useCustomerForm = ({
@@ -100,16 +105,22 @@ const useCustomerForm = ({
             rules: [
               { required: true },
               {
-                pattern: ALLOWED_VN_CHARACTERS_PARTERN,
+                pattern: ALLOWED_VN_SPACE_CHARACTERS_PARTERN,
                 message: 'Chỉ cho phép ký tự chữ và số',
               },
             ],
             inputProps: { maxLength: 30 },
           },
           {
-            type: INPUT_TYPE.NUMBER,
+            type: INPUT_TYPE.TEXT,
             label: 'Số điện thoại',
             name: 'phone',
+            rules: [
+              {
+                pattern: ALLOWED_NUMBER_CHARACTERS_PARTERN,
+                message: 'Chỉ cho phép nhập số',
+              },
+            ],
             inputProps: { maxLength: 12 },
           },
           {
@@ -127,7 +138,7 @@ const useCustomerForm = ({
             type: INPUT_TYPE.DATE_PICKER,
             label: 'Năm sinh',
             name: 'birthday',
-            inputProps: { placeholder: 'Nhập...' },
+            inputProps: { placeholder: 'Nhập...', maxDate: dayjs() },
           },
           {
             type: INPUT_TYPE.SELECT,
@@ -180,9 +191,15 @@ const useCustomerForm = ({
             inputProps: { maxLength: 200 },
           },
           {
-            type: INPUT_TYPE.NUMBER,
+            type: INPUT_TYPE.TEXT,
             label: 'CCCD',
             name: 'identityCard',
+            rules: [
+              {
+                pattern: ALLOWED_NUMBER_CHARACTERS_PARTERN,
+                message: 'Chỉ cho phép nhập số',
+              },
+            ],
             inputProps: { maxLength: 20, stringMode: true },
           },
           {

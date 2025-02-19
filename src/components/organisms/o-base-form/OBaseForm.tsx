@@ -53,6 +53,7 @@ const OBaseForm = <T extends object>({
   const { formContent } = useFormItems({
     formItems: transformItems,
     rowProps: { gutter: [14, 17] },
+    form,
   });
 
   const handleClear = () => {

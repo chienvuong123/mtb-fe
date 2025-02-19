@@ -115,10 +115,6 @@ export const GENDER_OPTIONS = [
     value: EGender.WOMEN,
     label: 'Nữ',
   },
-  {
-    value: EGender.OTHER,
-    label: 'Khác',
-  },
 ];
 
 const optionElementWrapper = (label: string, element: JSX.Element) => (
