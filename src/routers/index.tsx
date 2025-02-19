@@ -6,6 +6,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import {
   ACCOUNT,
   CATEGORY,
+  CHANGE_PASSWORD,
   CONFIRM_PASSWORD,
   CUSTOMER,
   EXAMPLE,
@@ -52,6 +53,12 @@ const routes = createBrowserRouter(
       ),
     },
     {
+      path: CHANGE_PASSWORD,
+      element: createLazyElement(
+        () => import('@pages/authentication/change-password'),
+      ),
+    },
+    {
       path: OTP,
       element: (
         <VerifyGuard>
@@ -71,6 +78,7 @@ const routes = createBrowserRouter(
           path: EXAMPLE,
           element: createLazyElement(() => import('../pages/example')),
         },
+
         {
           path: CATEGORY.ROOT,
           children: [

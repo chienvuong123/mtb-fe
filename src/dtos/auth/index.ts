@@ -69,4 +69,10 @@ export interface UserInfoOtpRequest {
   otp?: string;
 }
 
+export interface ChangePasswordRequest {
+  newPassword?: string;
+  confirmNewPassword?: string;
+  token?: string;
+}
+
 export type AuthResponse = AuthVerifyDTO;

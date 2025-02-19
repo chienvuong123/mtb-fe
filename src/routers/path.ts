@@ -5,6 +5,7 @@ const ROUTE_PATH = {
   FORGOT_PASSWORD: '/forgot-password',
   OTP: '/otp',
   CONFIRM_PASSWORD: '/confirm-password',
+  CHANGE_PASSWORD: '/change-password',
   REGISTER: '/register',
   ACCOUNT: '/account',
 
@@ -47,6 +48,7 @@ export const {
   LOGIN,
   FORGOT_PASSWORD,
   CONFIRM_PASSWORD,
+  CHANGE_PASSWORD,
   OTP,
   REGISTER,
   ACCOUNT,
