@@ -54,6 +54,19 @@ export const useVerifyOtpForgotPasswor = (
   });
 };
 
+export const useVerifyTokenChangePassword = (
+  options?: Partial<
+    UseMutationOptions<BaseResponse<boolean>, Error, ChangePasswordRequest>
+  >,
+) => {
+  return useMutation({
+    mutationFn: (data: ChangePasswordRequest) =>
+      authOtpApi.verifyInfoTokenChangePassword(data),
+    mutationKey: ['auth-verify-token-change-pass'],
+    ...options,
+  });
+};
+
 export const useResetForgotPassword = (
   options?: Partial<
     UseMutationOptions<BaseResponse<boolean>, Error, UserInfoOtpRequest>

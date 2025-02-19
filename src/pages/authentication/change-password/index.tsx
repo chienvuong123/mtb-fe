@@ -1,11 +1,14 @@
 import { AAlert, AButton } from '@components/atoms';
 import type { ChangePasswordRequest } from '@dtos';
-import { useChangePassword } from '@hooks/queries';
+import {
+  useChangePassword,
+  useVerifyTokenChangePassword,
+} from '@hooks/queries';
 import useFormItems from '@hooks/useFormItems';
-import { HOME } from '@routers/path';
+import { HOME, LOGIN } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { Flex, Form, Typography } from 'antd';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FooterAuth } from '../components/footer';
 
@@ -72,6 +75,9 @@ const ChangePassword = () => {
 
   const { mutate: mutationChangePassword, isPending } = useChangePassword();
 
+  const { mutate: mutationVerifyTokenChangePassword } =
+    useVerifyTokenChangePassword();
+
   const { formContent } = useFormItems({
     formItems: items,
     rowProps: { gutter: [0, 16] },
@@ -110,6 +116,24 @@ const ChangePassword = () => {
       },
     });
   };
+
+  useEffect(() => {
+    if (!token) {
+      navigate(LOGIN);
+      return;
+    }
+
+    mutationVerifyTokenChangePassword(
+      { token },
+      {
+        onSuccess: (res) => {
+          if (!res.data) {
+            navigate(LOGIN);
+          }
+        },
+      },
+    );
+  }, [token, mutationVerifyTokenChangePassword, navigate]);
 
   return (
     <div>
