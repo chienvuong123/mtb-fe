@@ -1,162 +1,92 @@
-import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import { Drawer, Flex } from 'antd';
-import { type FC, useState, useMemo } from 'react';
-import Title from 'antd/lib/typography/Title';
-import dayjs from 'dayjs';
-import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
-import { type CustomerDTO } from '@dtos';
-
 import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
+import { ODrawer, type TDrawerMsg } from '@components/organisms';
+import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
+import type { BaseResponse } from '@dtos';
 import {
-  useCustomerSearchQuery,
-  useProductCategoryAddMutation,
-  useProductCategoryEditMutation,
-  useProductCategoryRemoveMutation,
-  // useProductCategorySearchQuery,
-} from '@hooks/queries';
-import type { SortOrder } from 'antd/es/table/interface';
-import type { AnyObject } from 'antd/es/_util/type';
-import { AButton } from '@components/atoms';
-import { ExportIcon, ImportIcon, UserGroupIcon } from '@assets/icons';
-import { OUploadPopup } from '@components/organisms/o-upload-popup';
+  useGroupCustomerAddMutation,
+  useGroupCustomerSearchQuery,
+} from '@hooks/queries/groupCustomerQueries';
 import useUrlParams from '@hooks/useUrlParams';
-import { filterObject } from '@utils/objectHelper';
-import CustomerListSearchForm from './components/CustomerListSearchForm';
-import CustomerListTable, {
-  type TProductRecord,
-} from './components/CustomerListTable';
-import CustomerGroupForm from './components/CustomerGroupForm';
+import type { TFormType } from '@types';
 
-const ListCustomerPage: FC = () => {
-  const [showInsertForm, setShowInsertForm] = useState<boolean>(false);
-  const [initValues, setInitValues] = useState<Partial<TProductRecord> | null>(
-    null,
-  );
+import { validateInsertCategory } from '@pages/category/utils';
+import type { SortOrder } from 'antd/es/table/interface';
+import Title from 'antd/lib/typography/Title';
+import { useEffect, useMemo, useState } from 'react';
+import type { GroupCustomerDTO } from 'src/dtos/group-customer';
+import GroupCustomerInsertForm from './components/GroupCustomerInsertForm';
+import GroupCustomerSearchForm from './components/GroupCustomerSearchForm';
+import type { TGroupCustomerRecord } from './components/GroupCustomerTable';
+import GroupCustomerTable from './components/GroupCustomerTable';
 
-  const [showExport, setShowImport] = useState<boolean>(false);
+const GroupCustomerPage = () => {
+  const [drawerMode, setDrawerMode] = useState<TFormType>();
+  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
 
-  const {
-    pagination: { current, pageSize },
-    setPagination,
-    sort,
-    setSort,
-    filters,
-    setFilters,
-  } = useUrlParams<Partial<CustomerDTO>>();
+  const [initialValuesForm, setInitialValuesForm] =
+    useState<Partial<TGroupCustomerRecord> | null>(null);
 
-  const [isViewMode, setIsViewMode] = useState(false);
+  const { pagination, setPagination, sort, setSort, filters, setFilters } =
+    useUrlParams<Partial<GroupCustomerDTO>>();
 
-  const { data: productRes } = useCustomerSearchQuery({
-    page: {
-      pageNum: Number(current),
-      pageSize: Number(pageSize),
-    },
+  // search list group customer
+  const { data: groupCustomerRes, isLoading } = useGroupCustomerSearchQuery({
+    page: { pageNum: pagination.current, pageSize: pagination.pageSize },
     order: sort,
-    ...filterObject(filters),
+    campaignId: filters.campaignId,
+    nameCampaign: filters.nameCampaign,
+    categoryId: filters.categoryId,
+    nameCategory: filters.nameCategory,
+    code: filters.code,
+    name: filters.name,
   });
 
   const handleCloseForm = () => {
-    setShowInsertForm(false);
-    setIsViewMode(false);
+    setDrawerMode(undefined);
+    setInitialValuesForm(null);
   };
 
-  const handleReset = () => {
-    handleCloseForm();
-    setInitValues(null);
+  const handleInvalidate = (data?: BaseResponse<boolean>) => {
+    if (data)
+      validateInsertCategory(data, setAlertMessage, () => {
+        setAlertMessage({
+          message: 'Tạo mới thành công',
+          type: 'success',
+        });
+        handleCloseForm();
+        setInitialValuesForm(null);
+      });
   };
 
-  const { mutate: mutationCreateProducts } = useProductCategoryAddMutation(
+  const { mutate: mutationCreateGroupCustomer } = useGroupCustomerAddMutation(
     {},
-    handleReset,
+    (data) => handleInvalidate(data),
   );
-  const { mutate: mutationUpdateProducts } = useProductCategoryEditMutation(
-    {},
-    handleReset,
-  );
-  const { mutate: mutationDeleteProducts } = useProductCategoryRemoveMutation();
 
   const handleCreate = () => {
-    setInitValues({
-      name: '',
-      status: EStatus.ACTIVE,
-      createdDate: dayjs().format(DATE_SLASH_FORMAT),
-      updatedDate: dayjs().format(DATE_SLASH_FORMAT),
-    });
-    setShowInsertForm(true);
+    setDrawerMode('add');
   };
-
-  const handleEdit = (data: TProductRecord) => {
-    setInitValues({
-      ...data,
-      createdDate: dayjs(data.createdDate).format(DATE_SLASH_FORMAT),
-      updatedDate: dayjs().format(DATE_SLASH_FORMAT),
-    });
-    setShowInsertForm(true);
-  };
-
-  const handleSearch = (obj: object) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters(obj);
-  };
-  const handlePaginationChange = (data: TPagination) => {
-    setPagination(data);
-  };
-  const handleSubmitInsert = ({ name, code }: CustomerDTO) => {
-    const data: Partial<AnyObject> = {
-      category: {
-        code,
-        name,
-        id: initValues?.id,
-      },
-    };
-    // update product
-    if (data?.category?.id) {
-      mutationUpdateProducts(data);
-      return;
-    }
-    // create new product
-    mutationCreateProducts(data);
-  };
-
-  const handleDelete = (id: string) => {
-    mutationDeleteProducts({ id });
-  };
-
-  const paginations: IMPagination = {
-    pagination: {
-      current,
-      pageSize,
-      total: productRes?.data?.total ?? 1,
-    },
-    setPagination: handlePaginationChange,
-    optionPageSize: [10, 20, 50, 100],
-    className: 'flex-end',
-  };
-
-  const dataSources: TProductRecord[] =
-    useMemo(
-      () =>
-        productRes?.data?.content?.map((i) => ({
-          ...i,
-          key: i.id as string,
-        })),
-      [productRes],
-    ) ?? [];
 
   const handleClearAll = () => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({ code: undefined, name: undefined });
+    setFilters({
+      campaignId: '',
+      nameCampaign: '',
+      categoryId: '',
+      nameCategory: '',
+      code: '',
+      name: '',
+    });
   };
 
   const handleView = (id: string) => {
-    const item = productRes?.data.content.find((i) => i.id === id);
+    const item = groupCustomerRes?.data.content.find((i) => i.id === id);
     if (item) {
-      setIsViewMode(true);
-      setInitValues({ ...item });
-      setShowInsertForm(true);
+      setDrawerMode('view');
+      setInitialValuesForm({ ...item });
     }
   };
 
@@ -168,87 +98,129 @@ const ListCustomerPage: FC = () => {
     });
   };
 
-  const getDrawerTitle = useMemo(() => {
-    const title = '$ khách hàng';
-    if (isViewMode) return title.replace('$', 'Chi tiết');
-    if (initValues?.id) return title.replace('$', 'Chỉnh sửa');
-    return title.replace('$', 'Tạo mới');
-  }, [initValues?.id, isViewMode]);
+  const handleSearch = ({
+    campaignId,
+    nameCampaign,
+    categoryId,
+    nameCategory,
+    code,
+    name,
+  }: GroupCustomerDTO) => {
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setFilters({
+      campaignId,
+      nameCampaign,
+      categoryId,
+      nameCategory,
+      code,
+      name,
+    });
+  };
+
+  const handlePaginationChange = (data: TPagination) => {
+    setPagination(data);
+  };
+
+  const handleSubmitInsert = ({
+    campaignId,
+    categoryId,
+    code,
+    name,
+  }: Partial<GroupCustomerDTO>) => {
+    const data: Partial<GroupCustomerDTO> = {
+      campaignId,
+      categoryId,
+      code,
+      name,
+    };
+
+    // create new group customer
+    mutationCreateGroupCustomer(data);
+  };
+
+  const dataSources: TGroupCustomerRecord[] =
+    useMemo(
+      () =>
+        groupCustomerRes?.data?.content?.map((i) => ({
+          ...i,
+          key: i.id as string,
+          nameCampaign: i.campaign?.name ?? '',
+          nameCategory: i.category?.name ?? '',
+        })),
+      [groupCustomerRes],
+    ) ?? [];
+
+  const paginations: IMPagination = {
+    pagination: {
+      ...pagination,
+      total: groupCustomerRes?.data?.total ?? 1,
+    },
+    setPagination: handlePaginationChange,
+    optionPageSize: [10, 20, 50, 100],
+    className: 'flex-end',
+  };
+
+  useEffect(() => {
+    if (
+      !isLoading &&
+      !groupCustomerRes?.data?.content?.length &&
+      pagination.current > 1
+    ) {
+      setPagination((prev) => ({
+        ...prev,
+        current: prev.current - 1,
+        total: groupCustomerRes?.data?.total ?? 1,
+      }));
+    }
+  }, [groupCustomerRes, setPagination, pagination, isLoading]);
 
   return (
-    <div className="pt-32">
-      <OUploadPopup
-        modalProps={{
-          open: showExport,
-          title: 'Tải lên danh sách khách hàng',
-          onCancel: () => setShowImport(false),
-        }}
-        onSubmit={(file) => {
-          console.log(file);
-        }}
-        onDowloadEg={() => {
-          console.log('dowload clicked');
-        }}
-      />
+    <div className="pt-32 ">
+      <Title level={3} className="mb-24 group-customer">
+        Danh sách nhóm khách hàng
+      </Title>
 
-      <Flex justify="space-between" className="mb-14">
-        <Title level={3} className="mb-0">
-          Danh sách Campaign
-        </Title>
-        <Flex gap={16}>
-          <AButton
-            variant="filled"
-            color="primary"
-            icon={<ImportIcon />}
-            onClick={() => setShowImport(true)}
-          >
-            Import
-          </AButton>
-          <AButton variant="filled" color="primary" icon={<ExportIcon />}>
-            Export
-          </AButton>
-          <AButton variant="filled" color="primary" icon={<UserGroupIcon />}>
-            Tạo nhóm khách hàng
-          </AButton>
-        </Flex>
-      </Flex>
-
-      <CustomerListSearchForm
+      <GroupCustomerSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
-        initialValues={{ ...(filters as CustomerDTO) }}
         onCreate={handleCreate}
-        onDeleteAll={() => {
-          console.log('delete all');
+        initialValues={{
+          campaignId: filters?.campaignId ?? '',
+          nameCampaign: filters?.nameCampaign ?? '',
+          categoryId: filters?.categoryId ?? '',
+          nameCategory: filters?.nameCategory ?? '',
+          code: filters?.code ?? '',
+          name: filters?.name ?? '',
         }}
       />
       <div className="mt-24" />
-      <CustomerListTable
+      <GroupCustomerTable
         dataSource={dataSources}
         paginations={paginations}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        sortDirection={sort}
+        onCreate={handleCreate}
         onView={handleView}
         onSort={handleSort}
       />
 
-      <Drawer
-        title={getDrawerTitle}
+      <ODrawer
+        usePrefixTitle
+        title="nhóm khách hàng"
+        mode={drawerMode}
         onClose={handleCloseForm}
-        open={showInsertForm}
-        width={1643}
-        maskClosable={false}
-        classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
+        open={!!drawerMode}
+        width={1025}
+        alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
-        <CustomerGroupForm
-          isViewMode={isViewMode}
+        <GroupCustomerInsertForm
+          mode={drawerMode === 'view' ? 'view' : 'add'}
+          initialValues={initialValuesForm}
           onClose={handleCloseForm}
-          initialValues={initValues}
           onSubmit={handleSubmitInsert}
         />
-      </Drawer>
+      </ODrawer>
     </div>
   );
 };
 
-export default ListCustomerPage;
+export default GroupCustomerPage;

@@ -6,6 +6,7 @@ export * from './authOtpApi';
 export * from './userApi';
 export * from './baseApi';
 export * from './salesOpportunitiesApi';
+export * from './groupCustomerApi';
 export * from './customerApi';
 export * from './campaignApi';
 export * from './scenarioApi';
