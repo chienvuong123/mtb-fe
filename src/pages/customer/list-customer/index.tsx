@@ -26,6 +26,7 @@ import { filterObject } from '@utils/objectHelper';
 import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import type { SortOrder } from 'antd/es/table/interface';
 import { downloadBase64File } from '@utils/fileHelper';
+import { useProfile } from '@stores';
 import CustomerGroupForm from '../group-customer/components/CustomerGroupForm';
 import {
   CustomerForm,
@@ -71,6 +72,7 @@ const ListCustomerPage: FC = () => {
   } = useUrlParams<Partial<CustomerDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
+  const { isAdmin, isCampaignManager, isSaleManager } = useProfile();
 
   const searchParams: CustomerSearchRequest = useMemo(
     () => ({
@@ -84,7 +86,8 @@ const ListCustomerPage: FC = () => {
     [current, pageSize, sort, filters],
   );
 
-  const { data: customerRes } = useCustomerSearchQuery(searchParams);
+  const { data: customerRes, refetch: refetchCustomer } =
+    useCustomerSearchQuery(searchParams);
 
   const handleCloseForm = () => {
     setDrawerMode(false);
@@ -220,6 +223,11 @@ const ListCustomerPage: FC = () => {
               });
               setShowImport(false);
               setProgressPercent(0);
+              if (current !== 1) {
+                setPagination((pre) => ({ ...pre, current: 1 }));
+              } else {
+                refetchCustomer();
+              }
             });
             if (d?.errorCode === 'CUS0009') {
               downloadBase64File(d.data as string, 'DSKH_error.xlsx');
@@ -334,14 +342,16 @@ const ListCustomerPage: FC = () => {
           Danh sách khách hàng
         </Title>
         <Flex gap={16}>
-          <AButton
-            variant="filled"
-            color="primary"
-            icon={<ImportIcon />}
-            onClick={() => setShowImport(true)}
-          >
-            Import
-          </AButton>
+          {(isAdmin || isCampaignManager) && (
+            <AButton
+              variant="filled"
+              color="primary"
+              icon={<ImportIcon />}
+              onClick={() => setShowImport(true)}
+            >
+              Import
+            </AButton>
+          )}
           <AButton
             variant="filled"
             color="primary"
@@ -350,17 +360,19 @@ const ListCustomerPage: FC = () => {
           >
             Export
           </AButton>
-          <AButton
-            variant="filled"
-            color="primary"
-            icon={<UserGroupIcon />}
-            onClick={() => {
-              setDrawerMode('group');
-              setDrawerWidth(DRAWER_WIDTH.group);
-            }}
-          >
-            Tạo nhóm khách hàng
-          </AButton>
+          {(isAdmin || isCampaignManager || isSaleManager) && (
+            <AButton
+              variant="filled"
+              color="primary"
+              icon={<UserGroupIcon />}
+              onClick={() => {
+                setDrawerMode('group');
+                setDrawerWidth(DRAWER_WIDTH.group);
+              }}
+            >
+              Tạo nhóm khách hàng
+            </AButton>
+          )}
         </Flex>
       </Flex>
 

@@ -1,3 +1,4 @@
+import type { ERole } from '@constants/masterData';
 import type { CategoryType } from '../category';
 import type { BaseEntity, BaseResponse, BaseSearchParams } from '../common';
 
@@ -31,7 +32,7 @@ export interface UserDTO extends BaseEntity {
   updatedBy: string;
   id: string;
   username: string;
-  role: string;
+  role?: ERole;
   status: string;
   firstName: string;
   fullName: string;

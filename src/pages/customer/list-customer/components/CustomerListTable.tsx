@@ -3,6 +3,7 @@ import type { IModalConfirm } from '@components/organisms/o-modal/OModalConfirm'
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC, type Key } from 'react';
+import { useProfile } from '@stores';
 import type { ICustomerTable, TCustomerRecord } from '../customer.type';
 
 const columns: ColumnType<TCustomerRecord>[] = [
@@ -85,6 +86,7 @@ const CustomerListTable: FC<ICustomerTable> = ({
   onSort,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  const { isAdmin, isCampaignManager } = useProfile();
 
   const deleteRecord = (key: Key) => {
     onDelete(key as string);
@@ -95,8 +97,8 @@ const CustomerListTable: FC<ICustomerTable> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onDeleteRow={deleteRecord}
-      onEdit={onEdit}
+      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
+      onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       onView={(id) => onView(id as string)}

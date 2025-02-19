@@ -1,3 +1,4 @@
+import { ERole } from '@constants/masterData';
 import { useUserInfoQuery } from '@hooks/queries';
 
 const useProfile = () => {
@@ -12,6 +13,10 @@ const useProfile = () => {
     isPending,
     isAuthenticated: token ?? !!userData?.id,
     refreshToken,
+    isAdmin: userData?.role === ERole.ADMIN,
+    isCampaignManager: userData?.role === ERole.CAMPAIGN_MANAGER,
+    isSaleManager: userData?.role === ERole.SALE_LEADER,
+    isSeller: userData?.role === ERole.SELLER,
   };
 };
 

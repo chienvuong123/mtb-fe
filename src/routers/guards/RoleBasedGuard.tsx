@@ -12,7 +12,11 @@ const RoleBasedGuard: React.FC<RoleBasedGuardProps> = ({ accessibleRoles }) => {
   if (!isAuthenticated || !user) {
     return <Navigate to="/login" replace />;
   }
-  if (accessibleRoles.length && !accessibleRoles.includes(user.role)) {
+  if (
+    accessibleRoles.length &&
+    user?.role &&
+    !accessibleRoles.includes(user.role)
+  ) {
     return <Navigate to="/403" replace />;
   }
   return <Outlet />;
