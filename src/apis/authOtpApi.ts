@@ -29,6 +29,14 @@ export class AuthOTPApi extends BaseApi<AuthOtpDTO, AuthOtpRequest> {
     });
   }
 
+  async verifyInfoTokenChangePassword(data: ChangePasswordRequest) {
+    return apiRequest<BaseResponse<boolean>>({
+      url: `${this.endpoint}/verify-token-change-password`,
+      method: 'POST',
+      params: data,
+    });
+  }
+
   async resetForgotPassword(data: Partial<UserInfoOtpRequest>) {
     return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/reset-forgot-password`,
