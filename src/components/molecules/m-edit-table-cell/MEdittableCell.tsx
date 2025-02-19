@@ -26,7 +26,10 @@ const MEditableCell = <T extends object>({
 }: TEditableCell<T>) => {
   const { getFormItem } = useFormItems();
 
-  const inputNode = getFormItem(inputType ?? INPUT_TYPE.TEXT, inputProps);
+  const inputNode = getFormItem({
+    type: inputType ?? INPUT_TYPE.TEXT,
+    props: inputProps,
+  });
   return (
     <td {...restProps}>
       {editing ? (

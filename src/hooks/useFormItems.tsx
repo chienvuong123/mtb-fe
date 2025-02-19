@@ -8,8 +8,9 @@ import {
   TimePicker,
   Upload,
   type GetProps,
+  type FormInstance,
 } from 'antd';
-import React, { useMemo } from 'react';
+import React, { useMemo, type FocusEvent } from 'react';
 
 import clsx from 'clsx';
 import {
@@ -31,10 +32,15 @@ import { PlusIcon } from '@assets/icons';
 interface IFormItemsProps {
   formItems?: TFormItem[];
   rowProps?: GetProps<typeof Row> & React.RefAttributes<HTMLDivElement>;
+  form?: FormInstance;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FormItemComponent<P = any> = (props: P) => React.ReactElement;
+
+const trimField = (value?: string, fieldName?: string, form?: FormInstance) => {
+  form?.setFieldValue(fieldName, value?.trim());
+};
 
 const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
   [INPUT_TYPE.TEXT]: (props: GetProps<typeof Input>) => <Input {...props} />,
@@ -94,19 +100,36 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
   [INPUT_TYPE.BLANK]: () => <div />,
 };
 
-const useFormItems = ({ formItems, rowProps }: IFormItemsProps = {}) => {
+const useFormItems = ({ formItems, rowProps, form }: IFormItemsProps = {}) => {
   const getFormItem = useMemo(
     () =>
-      (
-        type: INPUT_TYPE,
-        { className, ...itemProps }: TFormItem['inputProps'] = {},
-      ) => {
+      ({
+        type,
+        fieldName,
+        props,
+      }: {
+        type: INPUT_TYPE;
+        fieldName?: string;
+        props: TFormItem['inputProps'];
+      }) => {
         const Component = formItemComponents[type] as FormItemComponent;
+        const { className, ...inputProps } = props ?? {};
+
+        const handleBlur = [INPUT_TYPE.TEXT, INPUT_TYPE.TEXT_AREA].includes(
+          type,
+        )
+          ? (e: FocusEvent<HTMLInputElement>) =>
+              trimField(e.target.value, fieldName, form)
+          : undefined;
         return Component ? (
-          <Component className={className} {...itemProps} />
+          <Component
+            className={className}
+            onBlur={handleBlur}
+            {...inputProps}
+          />
         ) : null;
       },
-    [],
+    [form],
   );
 
   const formContent = useMemo(
@@ -142,10 +165,14 @@ const useFormItems = ({ formItems, rowProps }: IFormItemsProps = {}) => {
                   key={formItemProps.name}
                 >
                   <Form.Item
-                    {...formItemProps}
                     className={clsx('mb-0 w-full', className)}
+                    {...formItemProps}
                   >
-                    {getFormItem(type, inputProps)}
+                    {getFormItem({
+                      type,
+                      props: inputProps,
+                      fieldName: formItemProps.name,
+                    })}
                   </Form.Item>
                   {showAddBtn && (
                     <AButton
