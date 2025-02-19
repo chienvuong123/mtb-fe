@@ -64,11 +64,22 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
       {...props}
     />
   ),
-  [INPUT_TYPE.SELECT]: (props: GetProps<typeof ASelect>) => (
+  [INPUT_TYPE.SELECT]: ({
+    filterOption,
+    ...props
+  }: GetProps<typeof ASelect>) => (
     <ASelect
       allowClear
       notFoundContent="Không có dữ liệu"
       maxTagCount="responsive"
+      filterOption={
+        filterOption === true
+          ? (input, option) =>
+              ((option?.label ?? '') as string)
+                .toLowerCase()
+                .includes(input.toLowerCase())
+          : filterOption
+      }
       {...props}
     />
   ),
