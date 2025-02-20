@@ -1,7 +1,6 @@
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
-import type { TMediaRecord } from '@pages/category/media-category/components/MediaTable';
 import type { ColumnType } from 'antd/es/table';
 import Title from 'antd/lib/typography/Title';
 import React, { useMemo, type Key } from 'react';
@@ -18,7 +17,7 @@ export type TCampaignTargetDetailTableRecord = TTableKey &
 
 interface ICampaignTargetDetailTable {
   dataSource?: CampaignTargetDTO[];
-  onEdit: ITable<TMediaRecord>['onEdit'];
+  onEdit: ITable<TCampaignTargetDetailTableRecord>['onEdit'];
   onDelete: (id: string) => void;
   onShowTargetForm: () => void;
 }

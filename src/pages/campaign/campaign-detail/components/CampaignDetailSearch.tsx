@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/no-unstable-nested-components */
 import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
 import React, { useEffect } from 'react';
 import type {
@@ -5,18 +7,18 @@ import type {
   TCampaignDetailDTO,
   TCampaignDetailSearchForm,
 } from 'src/dtos/campaign-detail';
-import type { TMediaRecord } from '@pages/category/media-category/components/MediaTable';
 import type { ITable } from '@components/organisms';
 import { dayjsToString } from '@utils/dateHelper';
 import type { FormInstance } from 'antd';
 import CampaignTargetDetailTable from './CampaignTargetDetailTable';
 import '../index.scss';
 import { useCampaignFormItems } from '../hook/CampaignDetailSearchFrom';
+import type { TCampaignDetaillRecord } from './CampaignDetailTable';
 
 interface ICampaignDetailSearch {
   initialValues?: Partial<TCampaignDetailDTO>;
   dataSource?: CampaignTargetDTO[];
-  onEdit: ITable<TMediaRecord>['onEdit'];
+  onEdit: ITable<TCampaignDetaillRecord>['onEdit'];
   onDelete: (id: string) => void;
   isDisabled: boolean;
   onShowForm: () => void;
@@ -51,7 +53,7 @@ const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
   }, [initialValues, form]);
 
   return (
-    <div className="border-2 rounded-8 border-gray-border bg-white">
+    <div className="campaign-detail-search border-2 rounded-8 border-gray-border bg-white">
       <OFormDetail<TCampaignDetailSearchForm>
         items={items}
         form={form}
