@@ -1,8 +1,8 @@
 import { GENDER_OPTIONS } from '@constants/masterData';
 import {
-  ALLOWED_NUMBER_CHARACTERS_PARTERN,
-  ALLOWED_VN_CHARACTERS_PARTERN,
-  ALLOWED_VN_SPACE_CHARACTERS_PARTERN,
+  BLOCKING_CHARACTERS_PARTERN,
+  BLOCKING_NUMBER_PARTERN,
+  BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
 } from '@constants/regex';
 import { Form } from 'antd';
 import type { CustomerDTO } from '@dtos';
@@ -109,40 +109,25 @@ const useCustomerForm = ({
             label: 'Mã khách hàng',
             name: 'code',
             required: true,
-            rules: [
-              { required: true },
-              {
-                pattern: ALLOWED_VN_CHARACTERS_PARTERN,
-                message: 'Chỉ cho phép ký tự chữ và số',
-              },
-            ],
+            rules: [{ required: true }],
             inputProps: { maxLength: 30, readOnly: mode !== 'add' },
+            blockingPattern: BLOCKING_CHARACTERS_PARTERN,
           },
           {
             type: INPUT_TYPE.TEXT,
             label: 'Họ và tên',
             name: 'name',
             required: true,
-            rules: [
-              { required: true },
-              {
-                pattern: ALLOWED_VN_SPACE_CHARACTERS_PARTERN,
-                message: 'Chỉ cho phép ký tự chữ và số',
-              },
-            ],
+            rules: [{ required: true }],
             inputProps: { maxLength: 30 },
+            blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
           },
           {
             type: INPUT_TYPE.TEXT,
             label: 'Số điện thoại',
             name: 'phone',
-            rules: [
-              {
-                pattern: ALLOWED_NUMBER_CHARACTERS_PARTERN,
-                message: 'Chỉ cho phép nhập số',
-              },
-            ],
             inputProps: { maxLength: 12 },
+            blockingPattern: BLOCKING_NUMBER_PARTERN,
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -215,13 +200,8 @@ const useCustomerForm = ({
             type: INPUT_TYPE.TEXT,
             label: 'CCCD',
             name: 'identityCard',
-            rules: [
-              {
-                pattern: ALLOWED_NUMBER_CHARACTERS_PARTERN,
-                message: 'Chỉ cho phép nhập số',
-              },
-            ],
             inputProps: { maxLength: 20, stringMode: true },
+            blockingPattern: BLOCKING_NUMBER_PARTERN,
           },
           {
             type: INPUT_TYPE.SELECT,
