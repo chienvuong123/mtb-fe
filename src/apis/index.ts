@@ -11,3 +11,4 @@ export * from './customerApi';
 export * from './campaignApi';
 export * from './scenarioApi';
 export * from './assetApi';
+export * from './locationApi';

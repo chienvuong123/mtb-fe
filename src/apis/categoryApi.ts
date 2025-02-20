@@ -4,7 +4,7 @@ import type {
   CategorySearchRequest,
   CategoryType,
   BaseSearchResponse,
-  ListOptionDTO,
+  BaseOptionListDTO,
 } from '@dtos';
 import { BaseApi } from './baseApi';
 import { apiRequest } from './apiClient';
@@ -23,7 +23,7 @@ class CategoryApi extends BaseApi<CategoryDTO, CategorySearchRequest> {
 
   // eslint-disable-next-line class-methods-use-this
   async categoryListOptions() {
-    return apiRequest<BaseResponse<BaseSearchResponse<ListOptionDTO>>>({
+    return apiRequest<BaseResponse<BaseSearchResponse<BaseOptionListDTO>>>({
       url: '/category-campaign/v1.0/list',
       method: 'GET',
     });

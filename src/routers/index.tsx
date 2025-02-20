@@ -1,5 +1,4 @@
 import { ERole } from '@constants/masterData';
-import LayoutWrapper from '@layouts/LayoutWrapper';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -18,10 +17,11 @@ import {
   SETTING,
   SCENARIO,
 } from './path';
-import GuestGuard from './guards/GuestGuard';
-import AuthGuard from './guards/AuthGuard';
-import VerifyGuard from './guards/VerifyGuard';
-import RoleBasedGuard from './guards/RoleBasedGuard';
+
+const GuestGuard = React.lazy(() => import('./guards/GuestGuard'));
+const AuthGuard = React.lazy(() => import('./guards/AuthGuard'));
+const VerifyGuard = React.lazy(() => import('./guards/VerifyGuard'));
+const RoleBasedGuard = React.lazy(() => import('./guards/RoleBasedGuard'));
 
 const createLazyElement = (
   importFn: () => Promise<{ default: React.ComponentType }>,
@@ -70,7 +70,7 @@ const routes = createBrowserRouter(
       path: '',
       element: (
         <AuthGuard>
-          <LayoutWrapper />
+          {createLazyElement(() => import('@layouts/LayoutWrapper'))}
         </AuthGuard>
       ),
       children: [

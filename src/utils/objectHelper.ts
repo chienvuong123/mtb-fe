@@ -1,4 +1,5 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
+import type { BaseAntdOptionType } from '@dtos';
 
 /**
  * Recursively trims all string values in an object.
@@ -44,4 +45,43 @@ function filterObject<T extends Record<string, any>>(obj: T): Partial<T> {
   }, {} as Partial<T>);
 }
 
-export { trimObjectValues, isNumberArray, filterObject };
+const transformToOptions = <T extends { name: string; code: string }>(
+  data: T[],
+): BaseAntdOptionType[] =>
+  data.map((item) => ({
+    label: item.name,
+    value: item.code,
+  })) ?? [];
+
+const transformToCodeNameOptions = <
+  T extends { id?: string | number; code: string; name: string },
+>(
+  data: T[],
+): {
+  byCode: BaseAntdOptionType[];
+  byName: BaseAntdOptionType[];
+} => {
+  const byCode: BaseAntdOptionType[] = [];
+  const byName: BaseAntdOptionType[] = [];
+
+  data?.forEach((item) => {
+    byName.push({
+      value: item.id ?? item.code,
+      label: `${item.code} - ${item.name}`,
+    });
+    byCode.push({
+      value: item.id ?? item.code,
+      label: item.code,
+    });
+  });
+
+  return { byCode, byName };
+};
+
+export {
+  trimObjectValues,
+  isNumberArray,
+  filterObject,
+  transformToOptions,
+  transformToCodeNameOptions,
+};
