@@ -66,10 +66,16 @@ export interface BaseSearchParams {
   order?: OrderDTO;
 }
 
-export interface ListOptionDTO {
+export interface BaseOptionListDTO {
   code: string;
   name: string;
-  id: string;
+  id?: string;
+  active?: boolean;
 }
 
 export type TId = { id: string };
+
+export type BaseAntdOptionType = {
+  label: string;
+  value: string | number;
+};

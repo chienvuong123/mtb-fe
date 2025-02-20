@@ -6,6 +6,7 @@ import {
   InputNumber,
   Row,
   TimePicker,
+  Typography,
   Upload,
   type GetProps,
   type FormInstance,
@@ -73,6 +74,41 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
       {...props}
     />
   ),
+  [INPUT_TYPE.CURRENCY]: ({
+    className,
+    controls,
+    size = 'large',
+    ...props
+  }: GetProps<typeof InputNumber>) => (
+    <InputNumber
+      className={clsx('a-input-number w-full fs-14 ', className)}
+      controls={
+        controls
+          ? {
+              upIcon: <ArrowUp01Icon />,
+              downIcon: <ArrowDown01Icon />,
+            }
+          : false
+      }
+      size={size}
+      formatter={(value) => {
+        if (!value) return '';
+        return new Intl.NumberFormat('vi-VN').format(Number(value));
+      }}
+      parser={(value) => {
+        if (!value) return '';
+        return value.replace(/[^0-9]/g, '');
+      }}
+      onKeyDown={(e) => {
+        const regex = /^[0-9]+$/;
+        const { key } = e;
+        if (key.length === 1 && !regex.test(key)) {
+          e.preventDefault();
+        }
+      }}
+      {...props}
+    />
+  ),
   [INPUT_TYPE.SELECT]: ({
     filterOption,
     ...props
@@ -118,6 +154,9 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
     </Upload.Dragger>
   ),
   [INPUT_TYPE.BLANK]: () => <div />,
+  [INPUT_TYPE.LABEL]: (props: GetProps<typeof Typography>) => (
+    <Typography {...props} />
+  ),
 };
 
 const useFormItems = ({ formItems, rowProps, form }: IFormItemsProps = {}) => {
@@ -184,16 +223,22 @@ const useFormItems = ({ formItems, rowProps, form }: IFormItemsProps = {}) => {
                   {...otherColProps}
                   key={formItemProps.name}
                 >
-                  <Form.Item
-                    className={clsx('mb-0 w-full', className)}
-                    {...formItemProps}
-                  >
-                    {getFormItem({
-                      type,
-                      props: inputProps,
-                      fieldName: formItemProps.name,
-                    })}
-                  </Form.Item>
+                  {type === INPUT_TYPE.LABEL ? (
+                    <Typography className="fw-500 fs-14">
+                      {inputProps?.label}
+                    </Typography>
+                  ) : (
+                    <Form.Item
+                      className={clsx('mb-0 w-full', className)}
+                      {...formItemProps}
+                    >
+                      {getFormItem({
+                        type,
+                        props: inputProps,
+                        fieldName: formItemProps.name,
+                      })}
+                    </Form.Item>
+                  )}
                   {showAddBtn && (
                     <AButton
                       type="primary"

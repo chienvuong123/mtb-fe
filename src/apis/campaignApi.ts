@@ -1,7 +1,7 @@
 import type {
   BaseResponse,
   BaseSearchResponse,
-  ListOptionDTO,
+  BaseOptionListDTO,
   TId,
 } from '@dtos';
 import type { CampaignDTO, CampaignSearchRequest } from 'src/dtos/campaign';
@@ -35,7 +35,7 @@ class CampaignApi extends BaseApi<CampaignDTO, CampaignSearchRequest> {
   }
 
   async campaignListOptions() {
-    return apiRequest<BaseResponse<BaseSearchResponse<ListOptionDTO>>>({
+    return apiRequest<BaseResponse<BaseSearchResponse<BaseOptionListDTO>>>({
       url: `${this.endpoint}/list`,
       method: 'GET',
     });

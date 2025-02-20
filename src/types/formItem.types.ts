@@ -27,10 +27,12 @@ export enum INPUT_TYPE {
   OTP,
   DATE_PICKER,
   NUMBER,
+  CURRENCY,
   TEXT_AREA,
   TIME_PICKER,
   FILE,
   BLANK,
+  LABEL,
 }
 
 export type TOTPProps = GetProps<typeof Input.OTP>;
@@ -60,6 +62,10 @@ export type TFormItem =
       inputProps?: InputNumberProps;
     })
   | (TBaseFormItem & {
+      type: INPUT_TYPE.CURRENCY;
+      inputProps?: InputNumberProps;
+    })
+  | (TBaseFormItem & {
       type: INPUT_TYPE.SELECT;
       inputProps?: SelectProps;
     })
@@ -79,4 +85,8 @@ export type TFormItem =
       type: INPUT_TYPE.FILE;
       inputProps?: UploadProps;
     })
-  | (TBaseFormItem & { type: INPUT_TYPE.BLANK; inputProps?: InputProps });
+  | (TBaseFormItem & { type: INPUT_TYPE.BLANK; inputProps?: InputProps })
+  | (TBaseFormItem & {
+      type: INPUT_TYPE.LABEL;
+      inputProps?: InputProps & { label: string };
+    });

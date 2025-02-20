@@ -1,17 +1,17 @@
-import { assetApi, campaignApi, categoryApi } from '@apis';
+import { assetApi, campaignApi, categoryApi, locationApi } from '@apis';
 import type { CategoryType } from '@dtos';
 import { useQuery } from '@tanstack/react-query';
-import type { BaseOptionType } from 'antd/es/select';
+import {
+  transformToCodeNameOptions,
+  transformToOptions,
+} from '@utils/objectHelper';
 
 export const useCategoryOptionsListQuery = (categoryTypeCode: CategoryType) => {
   return useQuery({
     queryKey: ['categoryList', categoryTypeCode],
     queryFn: () => categoryApi.getCategoryOptionsList(categoryTypeCode),
-    select: (data) =>
-      data.data.map((item) => ({
-        label: item.name,
-        value: item.code,
-      })) ?? [],
+    select: (data) => transformToOptions(data.data),
+    enabled: !!categoryTypeCode,
   });
 };
 
@@ -19,114 +19,102 @@ export const useAssetCategoryOptionsListQuery = () => {
   return useQuery({
     queryKey: ['assetCategoryList'],
     queryFn: () => assetApi.getCategoryOptionsList(),
-    select: (data) => {
-      return (
-        data.data.map((item) => ({
-          label: item.name,
-          value: item.code,
-        })) ?? []
-      );
-    },
+    select: (data) => transformToOptions(data.data),
   });
 };
 
 export const useAssetCompanyOptionsListQuery = ({
-  categoryAssetCode,
+  assetCategoryCode,
 }: {
-  categoryAssetCode: string;
+  assetCategoryCode: string;
 }) => {
   return useQuery({
-    queryKey: ['assetCompanyList', categoryAssetCode],
+    queryKey: ['assetCompanyList', assetCategoryCode],
     queryFn: () =>
-      assetApi.getCompanyOptionsList({ categoryCode: categoryAssetCode }),
-    select: (data) =>
-      data.data.map((item) => ({
-        label: item.name,
-        value: item.code,
-      })) ?? [],
+      assetApi.getCompanyOptionsList({ categoryCode: assetCategoryCode }),
+    select: (data) => transformToOptions(data.data),
+    enabled: !!assetCategoryCode,
   });
 };
 
 export const useAssetModelOptionsListQuery = ({
-  companyAssetCode,
-  categoryAssetCode,
+  assetCompanyCode,
+  assetCategoryCode,
 }: {
-  companyAssetCode: string;
-  categoryAssetCode: string;
+  assetCompanyCode: string;
+  assetCategoryCode: string;
 }) => {
   return useQuery({
-    queryKey: ['assetModelList', companyAssetCode, categoryAssetCode],
+    queryKey: ['assetModelList', assetCompanyCode, assetCategoryCode],
     queryFn: () =>
-      assetApi.getModelOptionsList({ companyAssetCode, categoryAssetCode }),
-    select: (data) =>
-      data.data.map((item) => ({
-        label: item.name,
-        value: item.code,
-      })) ?? [],
+      assetApi.getModelOptionsList({
+        companyAssetCode: assetCompanyCode,
+        categoryAssetCode: assetCategoryCode,
+      }),
+    select: (data) => transformToOptions(data.data),
+    enabled: !!assetCompanyCode && !!assetCategoryCode,
   });
 };
 
 export const useAssetYearOptionsListQuery = ({
-  companyAssetCode,
-  categoryAssetCode,
-  modelAssetCode,
+  assetCompanyCode,
+  assetCategoryCode,
+  assetModelCode,
 }: {
-  companyAssetCode: string;
-  categoryAssetCode: string;
-  modelAssetCode: string;
+  assetCompanyCode: string;
+  assetCategoryCode: string;
+  assetModelCode: string;
 }) => {
   return useQuery({
     queryKey: [
       'assetYearList',
-      companyAssetCode,
-      categoryAssetCode,
-      modelAssetCode,
+      assetCompanyCode,
+      assetCategoryCode,
+      assetModelCode,
     ],
     queryFn: () =>
       assetApi.getYearOptionsList({
-        companyAssetCode,
-        categoryAssetCode,
-        modelAssetCode,
+        companyAssetCode: assetCompanyCode,
+        categoryAssetCode: assetCategoryCode,
+        modelAssetCode: assetModelCode,
       }),
-    select: (data) =>
-      data.data.map((item) => ({
-        label: item.name,
-        value: item.code,
-      })) ?? [],
+    select: (data) => transformToOptions(data.data),
+    enabled: !!assetCompanyCode && !!assetCategoryCode && !!assetModelCode,
   });
 };
 
 export const useAssetNameOptionsListQuery = ({
-  companyAssetCode,
-  categoryAssetCode,
-  modelAssetCode,
-  yearAssetCode,
+  assetCompanyCode,
+  assetCategoryCode,
+  assetModelCode,
+  assetYear,
 }: {
-  companyAssetCode: string;
-  categoryAssetCode: string;
-  modelAssetCode: string;
-  yearAssetCode: string;
+  assetCompanyCode: string;
+  assetCategoryCode: string;
+  assetModelCode: string;
+  assetYear: string;
 }) => {
   return useQuery({
     queryKey: [
       'assetNameList',
-      companyAssetCode,
-      categoryAssetCode,
-      modelAssetCode,
-      yearAssetCode,
+      assetCompanyCode,
+      assetCategoryCode,
+      assetModelCode,
+      assetYear,
     ],
     queryFn: () =>
       assetApi.getNameOptionsList({
-        companyAssetCode,
-        categoryAssetCode,
-        modelAssetCode,
-        yearCode: yearAssetCode,
+        companyAssetCode: assetCompanyCode,
+        categoryAssetCode: assetCategoryCode,
+        modelAssetCode: assetModelCode,
+        yearCode: assetYear,
       }),
-    select: (data) =>
-      data.data.map((item) => ({
-        label: item.name,
-        value: item.code,
-      })) ?? [],
+    select: (data) => transformToOptions(data.data),
+    enabled:
+      !!assetCompanyCode &&
+      !!assetCategoryCode &&
+      !!assetModelCode &&
+      !!assetYear,
   });
 };
 
@@ -135,18 +123,8 @@ export const useQueryCategoryList = () => {
     queryKey: ['category', 'list'],
     queryFn: () => categoryApi.categoryListOptions(),
     select: ({ data }) => {
-      const categoryListByCode: BaseOptionType[] = [];
-      const categoryListByName: BaseOptionType[] = [];
-      data?.content?.forEach((item) => {
-        categoryListByName.push({
-          value: item?.id,
-          label: `${item?.code} - ${item?.name}`,
-        });
-        categoryListByCode.push({
-          value: item?.id,
-          label: item?.code,
-        });
-      });
+      const { byCode: categoryListByCode, byName: categoryListByName } =
+        transformToCodeNameOptions(data?.content ?? []);
       return { categoryListByCode, categoryListByName };
     },
   });
@@ -157,19 +135,18 @@ export const useQueryCampaignList = () => {
     queryKey: ['campaign', 'list'],
     queryFn: () => campaignApi.campaignListOptions(),
     select: ({ data }) => {
-      const campaignListByCode: BaseOptionType[] = [];
-      const campaignListByName: BaseOptionType[] = [];
-      data?.content?.forEach((item) => {
-        campaignListByName.push({
-          value: item?.id,
-          label: `${item?.code} - ${item?.name}`,
-        });
-        campaignListByCode.push({
-          value: item?.id,
-          label: item?.code,
-        });
-      });
+      const { byCode: campaignListByCode, byName: campaignListByName } =
+        transformToCodeNameOptions(data?.content ?? []);
       return { campaignListByCode, campaignListByName };
     },
+  });
+};
+
+export const useLocationOptionsListQuery = (parentCode = '0') => {
+  return useQuery({
+    queryKey: ['locationList', parentCode],
+    queryFn: () => locationApi.getLocationOptionsList({ parentCode }),
+    select: (data) => transformToOptions(data.data),
+    enabled: !!parentCode,
   });
 };
