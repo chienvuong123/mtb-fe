@@ -118,26 +118,26 @@ export const useAssetNameOptionsListQuery = ({
   });
 };
 
-export const useQueryCategoryList = () => {
+export const useQueryCategoryList = (getByCode?: boolean) => {
   return useQuery({
     queryKey: ['category', 'list'],
     queryFn: () => categoryApi.categoryListOptions(),
     select: ({ data }) => {
       const { byCode: categoryListByCode, byName: categoryListByName } =
         transformToCodeNameOptions(data?.content ?? []);
-      return { categoryListByCode, categoryListByName };
+      return getByCode ? categoryListByCode : categoryListByName;
     },
   });
 };
 
-export const useQueryCampaignList = () => {
+export const useQueryCampaignList = (getByCode?: boolean) => {
   return useQuery({
     queryKey: ['campaign', 'list'],
     queryFn: () => campaignApi.campaignListOptions(),
     select: ({ data }) => {
       const { byCode: campaignListByCode, byName: campaignListByName } =
         transformToCodeNameOptions(data?.content ?? []);
-      return { campaignListByCode, campaignListByName };
+      return getByCode ? campaignListByCode : campaignListByName;
     },
   });
 };

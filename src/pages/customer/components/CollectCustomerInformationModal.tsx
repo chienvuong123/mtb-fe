@@ -27,9 +27,12 @@ interface ICollectInfoForm {
 const CollectInfoForm = ({ form, items }: ICollectInfoForm) => {
   const transformItems = useMemo(
     () =>
-      items.map(({ label, colProps, ...others }) => ({
-        label: <Typography className="fw-600 fs-14">{label}</Typography>,
-        colProps: { span: 12, ...colProps },
+      items.map(({ label, ...others }) => ({
+        label: (
+          <Typography.Text ellipsis className="fw-600 fs-14">
+            {label}
+          </Typography.Text>
+        ),
         ...others,
       })),
     [items],

@@ -1,6 +1,7 @@
 import { OBaseDetailForm } from '@components/organisms/o-form-detail';
 import { GENDER_OPTIONS } from '@constants/masterData';
 import type { CustomerDTO } from '@dtos';
+import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { MOCK_BRANCHES, MOCK_JOBS } from '@mocks/customer';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
@@ -14,62 +15,27 @@ interface ICustomerDetailForm {
 const CustomerDetailForm: FC<ICustomerDetailForm> = ({ data }) => {
   const [form] = useForm();
 
+  const { data: categoryList } = useQueryCategoryList();
+  const { data: campaignList } = useQueryCampaignList();
+
   const items = useMemo(() => {
     const configItems: TFormItem[] = [
       {
         type: INPUT_TYPE.SELECT,
-        label: 'Mã Category',
+        label: 'Category',
         name: 'category[code]',
         inputProps: {
           placeholder: 'Chọn',
-          options: [
-            {
-              label: data.category?.code,
-              value: data.category?.code,
-            },
-          ],
+          options: categoryList,
         },
       },
       {
         type: INPUT_TYPE.SELECT,
-        label: 'Tên Category',
-        name: 'category[name]',
-        inputProps: {
-          placeholder: 'Chọn',
-          options: [
-            {
-              label: data.category?.name,
-              value: data.category?.name,
-            },
-          ],
-        },
-      },
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Mã Campaign',
+        label: 'Campaign',
         name: 'campaign.code',
         inputProps: {
           placeholder: 'Chọn',
-          options: [
-            {
-              label: data.campaign?.code,
-              value: data.campaign?.code,
-            },
-          ],
-        },
-      },
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Tên Campaign',
-        name: 'campaign.name',
-        inputProps: {
-          placeholder: 'Chọn',
-          options: [
-            {
-              label: data.campaign?.name,
-              value: data.campaign?.name,
-            },
-          ],
+          options: campaignList,
         },
       },
       {
@@ -212,7 +178,7 @@ const CustomerDetailForm: FC<ICustomerDetailForm> = ({ data }) => {
       },
     ];
     return configItems;
-  }, [data]);
+  }, [data, categoryList, campaignList]);
 
   useEffect(() => {
     if (data) {

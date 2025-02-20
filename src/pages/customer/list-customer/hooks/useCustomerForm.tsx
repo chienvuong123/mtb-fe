@@ -9,7 +9,7 @@ import type { CustomerDTO } from '@dtos';
 import { dayjsToString, stringToDayjs } from '@utils/dateHelper';
 import { INPUT_TYPE, type TFormItem, type IFormType } from '@types';
 import clsx from 'clsx';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
 import dayjs from 'dayjs';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
@@ -24,23 +24,10 @@ const useCustomerForm = ({
   const [form] = Form.useForm<Partial<TCustomerForm>>();
 
   const categoryId = Form.useWatch(['categoryId'], form);
-  const categoryName = Form.useWatch(['categoryName'], form);
   const campaignId = Form.useWatch(['campaignId'], form);
 
   const { data: categoryList } = useQueryCategoryList();
   const { data: campaignList } = useQueryCampaignList();
-
-  const { categoryListByCode, categoryListByName } = categoryList ?? {};
-  const { campaignListByCode, campaignListByName } = campaignList ?? {};
-
-  const hasCategory = categoryId && categoryName;
-
-  const onSelectChange = useCallback(
-    (fieldChange: keyof CustomerDTO, value: string) => {
-      form.setFieldValue(fieldChange, value);
-    },
-    [form],
-  );
 
   const items = useMemo(
     () =>
@@ -48,60 +35,29 @@ const useCustomerForm = ({
         [
           {
             type: INPUT_TYPE.SELECT,
-            label: 'Mã Category',
+            label: 'Category',
             name: 'categoryId',
             required: true,
             rules: [{ required: true }],
             inputProps: {
               placeholder: 'Nhập...',
-              options: categoryListByCode,
+              options: categoryList,
               showSearch: true,
               filterOption: true,
-              onChange: (value) => onSelectChange('categoryName', value),
             },
           },
           {
             type: INPUT_TYPE.SELECT,
-            label: 'Tên category',
-            name: 'categoryName',
-            required: true,
-            rules: [{ required: true }],
-            inputProps: {
-              placeholder: 'Nhập...',
-              options: categoryListByName,
-              showSearch: true,
-              filterOption: true,
-              onChange: (value) => onSelectChange('categoryId', value),
-            },
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Mã Campaign',
+            label: 'Campaign',
             name: 'campaignId',
             required: true,
             rules: [{ required: true }],
             inputProps: {
-              options: campaignListByCode,
+              options: campaignList,
               placeholder: 'Chọn...',
               showSearch: true,
               filterOption: true,
-              disabled: !hasCategory,
-              onChange: (value) => onSelectChange('campaignName', value),
-            },
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Tên Campaign',
-            name: 'campaignName',
-            required: true,
-            rules: [{ required: true }],
-            inputProps: {
-              options: campaignListByName,
-              placeholder: 'Chọn...',
-              showSearch: true,
-              filterOption: true,
-              disabled: !hasCategory,
-              onChange: (value) => onSelectChange('campaignId', value),
+              disabled: !categoryId,
             },
           },
           {
@@ -133,12 +89,8 @@ const useCustomerForm = ({
             type: INPUT_TYPE.TEXT,
             label: 'Email',
             name: 'email',
-            required: true,
             inputProps: { maxLength: 50 },
-            rules: [
-              { required: true },
-              { type: 'email', message: 'Định dạng email không hợp lệ' },
-            ],
+            rules: [{ type: 'email', message: 'Định dạng email không hợp lệ' }],
           },
           {
             type: INPUT_TYPE.DATE_PICKER,
@@ -157,7 +109,7 @@ const useCustomerForm = ({
             label: 'Nhóm khách hàng',
             name: 'cusGroup',
             inputProps: {
-              disabled: !hasCategory || !campaignId,
+              disabled: !categoryId || !campaignId,
               options: MOCK_CUSTOMER_OPTIONS,
               placeholder: 'Chọn...',
             },
@@ -248,16 +200,7 @@ const useCustomerForm = ({
         }
         return item;
       }),
-    [
-      mode,
-      hasCategory,
-      campaignId,
-      categoryListByCode,
-      categoryListByName,
-      campaignListByCode,
-      campaignListByName,
-      onSelectChange,
-    ],
+    [mode, categoryId, campaignId, categoryList, campaignList],
   ) as TFormItem[];
 
   useEffect(() => {

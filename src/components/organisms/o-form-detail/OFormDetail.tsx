@@ -28,7 +28,11 @@ const OFormDetail = <T extends object>({
   const transformItems = useMemo(
     () =>
       items.map(({ label, colProps, ...others }) => ({
-        label: <Typography className="fw-600 fs-14">{label}</Typography>,
+        label: (
+          <Typography.Text ellipsis className="fw-600 fs-14">
+            {label}
+          </Typography.Text>
+        ),
         colProps: {
           ...colProps,
         },

@@ -1,5 +1,9 @@
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import { type CustomerDTO, type CustomerSearchRequest } from '@dtos';
+import {
+  type CustomerDTO,
+  type CustomerSearchRequest,
+  type GroupCustomerDTO,
+} from '@dtos';
 import { Flex, type FormInstance, type UploadFile } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { type FC, useMemo, useState } from 'react';
@@ -19,6 +23,7 @@ import {
   useCustomerImportMutation,
   useCustomerRemoveMutation,
   useCustomerSearchQuery,
+  useGroupCustomerAddMutation,
 } from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
 import { filterObject } from '@utils/objectHelper';
@@ -27,7 +32,6 @@ import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import type { SortOrder } from 'antd/es/table/interface';
 import { downloadBase64File } from '@utils/fileHelper';
 import { useProfile } from '@stores';
-import CustomerGroupForm from '../group-customer/components/CustomerGroupForm';
 import {
   CustomerForm,
   CustomerListTable,
@@ -41,6 +45,7 @@ import {
   stringifyCustomerObj,
   validateInsertCustomer,
 } from './customerHelper';
+import { GroupCustomerInsertForm } from '../group-customer/components';
 
 type TDrawerMode = 'group' | 'list' | false;
 
@@ -110,6 +115,7 @@ const ListCustomerPage: FC = () => {
     useCustomerImportMutation();
   const { refetch: downloadTemplate } = useCustomerDownloadTemplete();
   const { refetch: customerExport } = useCustomerExport(searchParams);
+  const { mutate: mutationCreateGroupCustomer } = useGroupCustomerAddMutation();
 
   const cancelImport = () => {
     abortController?.abort();
@@ -131,6 +137,7 @@ const ListCustomerPage: FC = () => {
 
   const handleEdit = (data: TCustomerRecord) => {
     setInitValues({
+      ...destructCustomerData({}), // reset fields
       ...data,
     });
     handleOpenDrawer();
@@ -184,7 +191,19 @@ const ListCustomerPage: FC = () => {
     });
   };
 
-  const handleSubmitInsertCustomerGroup = () => {};
+  const handleSubmitInsertCustomerGroup = (
+    values: Partial<GroupCustomerDTO>,
+  ) => {
+    mutationCreateGroupCustomer(values, {
+      onSuccess: (d) =>
+        validateInsertCustomer(d, setAlertMessage, () =>
+          handleReset({
+            type: 'success',
+            message: 'Tạo mới thành công',
+          }),
+        ),
+    });
+  };
 
   const handleDelete = (id: string) => {
     mutationDeleteCustomer(
@@ -299,8 +318,9 @@ const ListCustomerPage: FC = () => {
     const props = { initialValues: initValues, onClose: handleCloseForm };
     if (drawerWidth === DRAWER_WIDTH.group)
       return (
-        <CustomerGroupForm
+        <GroupCustomerInsertForm
           {...props}
+          mode="add"
           onSubmit={handleSubmitInsertCustomerGroup}
         />
       );

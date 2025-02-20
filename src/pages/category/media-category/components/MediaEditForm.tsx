@@ -19,6 +19,7 @@ const items: TFormItem[] = [
     label: 'Mã',
     name: 'code',
     inputProps: { disabled: true },
+    colProps: { span: 12 },
   },
   {
     type: INPUT_TYPE.TEXT,
@@ -27,6 +28,7 @@ const items: TFormItem[] = [
     inputProps: { placeholder: 'Nhập...', maxLength: 100 },
     required: true,
     rules: [{ required: true }],
+    colProps: { span: 12 },
   },
   {
     type: INPUT_TYPE.SELECT,
@@ -36,30 +38,35 @@ const items: TFormItem[] = [
       options: STATUS_OPTIONS,
       allowClear: false,
     },
+    colProps: { span: 12 },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Ngày tạo',
     name: 'createdDate',
     inputProps: { disabled: true },
+    colProps: { span: 12 },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Người tạo',
     name: 'createdBy',
     inputProps: { disabled: true },
+    colProps: { span: 12 },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Ngày cập nhật',
     name: 'updatedDate',
     inputProps: { disabled: true },
+    colProps: { span: 12 },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Người cập nhật',
     name: 'updatedBy',
     inputProps: { disabled: true },
+    colProps: { span: 12 },
   },
 ];
 

@@ -1,7 +1,7 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
-import { useEffect, type FC, useMemo, useCallback } from 'react';
+import { useEffect, type FC, useMemo } from 'react';
 import type { CustomerDTO } from '@dtos';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
@@ -30,65 +30,29 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
   const { data: categoryList } = useQueryCategoryList();
   const { data: campaignList } = useQueryCampaignList();
 
-  const { categoryListByCode, categoryListByName } = categoryList ?? {};
-  const { campaignListByCode, campaignListByName } = campaignList ?? {};
-
-  const onSelectChange = useCallback(
-    (fieldChange: keyof CustomerDTO, value: string) => {
-      form.setFieldValue(fieldChange, value);
-    },
-    [form],
-  );
-
   const items: TFormItem[] = useMemo(
     () =>
       [
         {
           type: INPUT_TYPE.SELECT,
-          label: 'Mã Category',
+          label: 'Category',
           name: 'categoryId',
           inputProps: {
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: categoryListByCode,
-            onChange: (value) => onSelectChange('categoryName', value),
+            options: categoryList,
           },
         },
         {
           type: INPUT_TYPE.SELECT,
-          label: 'Tên Category',
-          name: 'categoryName',
-          inputProps: {
-            placeholder: 'Chọn...',
-            showSearch: true,
-            filterOption: true,
-            options: categoryListByName,
-            onChange: (value) => onSelectChange('categoryId', value),
-          },
-        },
-        {
-          type: INPUT_TYPE.SELECT,
-          label: 'Mã Campaign',
+          label: 'Campaign',
           name: 'campaignId',
           inputProps: {
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: campaignListByCode,
-            onChange: (value) => onSelectChange('campaignName', value),
-          },
-        },
-        {
-          type: INPUT_TYPE.SELECT,
-          label: 'Tên Campaign',
-          name: 'campaignName',
-          inputProps: {
-            placeholder: 'Chọn...',
-            showSearch: true,
-            filterOption: true,
-            options: campaignListByName,
-            onChange: (value) => onSelectChange('campaignId', value),
+            options: campaignList,
           },
         },
         {
@@ -150,13 +114,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
           },
         },
       ] as TFormItem[],
-    [
-      categoryListByName,
-      categoryListByCode,
-      campaignListByCode,
-      campaignListByName,
-      onSelectChange,
-    ],
+    [categoryList, campaignList],
   );
 
   useEffect(() => {

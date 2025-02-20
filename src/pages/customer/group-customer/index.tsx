@@ -17,10 +17,12 @@ import type { SortOrder } from 'antd/es/table/interface';
 import Title from 'antd/lib/typography/Title';
 import { useEffect, useMemo, useState } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
-import GroupCustomerInsertForm from './components/GroupCustomerInsertForm';
-import GroupCustomerSearchForm from './components/GroupCustomerSearchForm';
-import type { TGroupCustomerRecord } from './components/GroupCustomerTable';
-import GroupCustomerTable from './components/GroupCustomerTable';
+import {
+  GroupCustomerInsertForm,
+  GroupCustomerSearchForm,
+  GroupCustomerTable,
+  type TGroupCustomerRecord,
+} from './components';
 
 const GroupCustomerPage = () => {
   const [drawerMode, setDrawerMode] = useState<TFormType>();
