@@ -5,6 +5,7 @@ import {
   type CustomerApproachDTO,
   type CustomerDTO,
 } from '@dtos';
+import type { CustomerCollectInfoDTO } from 'src/dtos/customer-collect-info';
 import { MOCK_APPROACH_PLAN, MOCK_CAMPAIGN } from './campaign';
 import { getRandomDate, getRandomUser } from './common';
 import { USER_SELLER } from './user';
@@ -134,3 +135,28 @@ export const MOCK_CUSTOMER_OPTIONS = [
   { value: '3', label: 'Selection 3' },
   { value: '4', label: 'Selection 4' },
 ];
+
+export const MOCK_CUSTOMER_INFORMATION: Partial<CustomerCollectInfoDTO> = {
+  // Thông tin cơ bản
+  customerName: 'Nguyễn Văn A',
+  genderCode: '01',
+  dateOfBirth: '01/01/1990',
+  mobileNumber: '0909090909',
+  appDate: '2024-03-20',
+  personalId: '1234567890',
+
+  // Thông tin giao dịch
+  countOfTransaction: 12,
+  ekycLevel: 'Cấp 2',
+  averageTransaction: 25,
+  averageCreditAmt: 15000000,
+  averageCreditMonth: 12,
+  averageDebitAmt: 12000000,
+  averageDebitMonth: 12,
+  averageCasa: 20000000,
+  averageSalary: 25000000,
+  countOfSalary: 12,
+  customerId: MOCK_CUSTOMER.id,
+  orderId: '12',
+  campaignId: MOCK_CAMPAIGN.id,
+};

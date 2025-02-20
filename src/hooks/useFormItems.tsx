@@ -70,6 +70,17 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
             }
           : false
       }
+      parser={(value) => {
+        if (!value) return '';
+        return value.replace(/[^0-9]/g, '');
+      }}
+      onKeyDown={(e) => {
+        const regex = /^[0-9]+$/;
+        const { key } = e;
+        if (key.length === 1 && !regex.test(key)) {
+          e.preventDefault();
+        }
+      }}
       size={size}
       {...props}
     />

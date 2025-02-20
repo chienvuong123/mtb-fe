@@ -6,6 +6,7 @@ import {
   type UseMutationOptions,
 } from '@tanstack/react-query';
 import type { AxiosProgressEvent, GenericAbortSignal } from 'axios';
+import type { CustomerCollectInfoDTO } from 'src/dtos/customer-collect-info';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const CUSTOMER_KEY = 'customer-list';
@@ -56,5 +57,13 @@ export const useCustomerImportMutation = (
         signal,
       }),
     ...options,
+  });
+};
+
+export const useCustomerCheckLoanLimit = () => {
+  return useMutation({
+    mutationKey: [CUSTOMER_KEY, 'check-loan-limit'],
+    mutationFn: (data: CustomerCollectInfoDTO) =>
+      customerApi.checkLoanLimit(data),
   });
 };
