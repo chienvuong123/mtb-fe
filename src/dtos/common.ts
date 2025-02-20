@@ -71,3 +71,5 @@ export interface ListOptionDTO {
   name: string;
   id: string;
 }
+
+export type TId = { id: string };
