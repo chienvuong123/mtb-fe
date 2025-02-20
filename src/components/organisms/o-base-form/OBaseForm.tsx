@@ -39,8 +39,13 @@ const OBaseForm = <T extends object>({
 
   const transformItems = useMemo(
     () =>
-      items.map(({ label, colProps, ...others }) => ({
+      items.map(({ label, colProps, blockingPattern, ...others }) => ({
         label: <Typography className="fw-500 fs-14">{label}</Typography>,
+        getValueFromEvent: blockingPattern
+          ? ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+              return value.replace(blockingPattern, '');
+            }
+          : undefined,
         colProps: {
           span: colProps?.span ?? 12,
           ...colProps,
