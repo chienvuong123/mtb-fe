@@ -12,6 +12,7 @@ import type {
 } from 'antd';
 import type { GetProps } from 'antd/lib';
 import type { TextAreaProps } from 'antd/lib/input';
+import type { CSSProperties } from 'react';
 
 export type TFormType = 'add' | 'edit' | 'view';
 export interface IFormType<T, Init = T> {
@@ -39,7 +40,9 @@ export type TOTPProps = GetProps<typeof Input.OTP>;
 export type TPasswordProps = GetProps<typeof Input.Password>;
 
 export type TBaseFormItem = FormItemProps & {
-  colProps?: ColProps;
+  colProps?: ColProps & {
+    maxWidth?: CSSProperties['maxWidth']; // Only works without span prop
+  };
   onAddClick?: (field?: string) => void;
   blockingPattern?: RegExp;
 };

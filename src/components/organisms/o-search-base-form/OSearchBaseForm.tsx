@@ -36,7 +36,11 @@ const OSearchBaseForm = <T extends object>({
   const transformItems = useMemo(
     () =>
       items.map(({ label, ...others }) => ({
-        label: <Typography className="fw-600 fs-14">{label}</Typography>,
+        label: (
+          <Typography.Text ellipsis className="fw-600 fs-14">
+            {label}
+          </Typography.Text>
+        ),
         ...others,
       })),
     [items],

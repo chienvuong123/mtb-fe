@@ -1,9 +1,6 @@
 import { OBaseForm } from '@components/organisms';
+import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { GROUP_CUSTOMER_KEY } from '@hooks/queries/groupCustomerQueries';
-import {
-  MOCK_CAMPAIGN_OPTIONS,
-  MOCK_CATEGORY_CAMPAIGN_OPTIONS,
-} from '@mocks/group-customer';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import clsx from 'clsx';
@@ -27,6 +24,9 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
 
   const categoryId = useWatch('categoryId', form);
 
+  const { data: categoryList } = useQueryCategoryList();
+  const { data: campaignList } = useQueryCampaignList();
+
   const unselectedCategory = !categoryId;
 
   const items = useMemo(
@@ -35,53 +35,50 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
         [
           {
             type: INPUT_TYPE.SELECT,
-            label: 'Mã Category',
+            label: 'Category',
             name: 'categoryId',
+            rules: [{ required: true }],
             inputProps: {
               placeholder: 'Chọn...',
               showSearch: true,
               filterOption: true,
-              options: MOCK_CATEGORY_CAMPAIGN_OPTIONS.map((item) => ({
-                value: item.id,
-                label: item.id,
-              })),
+              options: categoryList,
             },
           },
-
           {
             type: INPUT_TYPE.SELECT,
-            label: 'Mã campaign',
+            label: 'Campaign',
             name: 'campaignId',
+            rules: [{ required: true }],
             inputProps: {
               placeholder: 'Chọn...',
               showSearch: true,
               filterOption: true,
               disabled: unselectedCategory,
-              options: MOCK_CAMPAIGN_OPTIONS.map((item) => ({
-                value: item.id,
-                label: item.id,
-              })),
+              options: campaignList,
             },
           },
-
           {
             type: INPUT_TYPE.TEXT,
             label: 'Mã nhóm',
             name: 'code',
             maxLength: 100,
+            rules: [{ required: true }],
           },
           {
             type: INPUT_TYPE.TEXT,
             label: 'Tên nhóm',
             name: 'name',
             maxLength: 100,
+            rules: [{ required: true }],
           },
         ] as TFormItem[]
       ).map((i) => {
-        const item: TFormItem = { ...i, colProps: { flex: '50%' } };
+        const item: TFormItem = { ...i, colProps: { span: 12 } };
         if (mode === 'view') {
           return {
             ...item,
+            colProps: { span: 12 },
             inputProps: {
               ...item.inputProps,
               className: clsx('pointer-events-none', item.className),
@@ -91,7 +88,7 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
         }
         return item;
       }),
-    [mode, unselectedCategory],
+    [mode, unselectedCategory, categoryList, campaignList],
   ) as TFormItem[];
 
   useEffect(() => {

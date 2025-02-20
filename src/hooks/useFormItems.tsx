@@ -208,14 +208,17 @@ const useFormItems = ({ formItems, rowProps, form }: IFormItemsProps = {}) => {
                 span,
                 flex,
                 className: colClassName,
+                style,
+                maxWidth = '20%',
                 ...otherColProps
               } = colProps ?? {};
               const showAddBtn = Boolean(onAddClick);
 
               return (
                 <Col
-                  span={span ?? 6}
+                  span={span}
                   flex={flex ?? (span ? undefined : '20%')}
+                  style={{ maxWidth: span ? undefined : maxWidth, ...style }}
                   className={clsx(
                     { 'dis-flex gap-14 ai-flex-end': showAddBtn },
                     colClassName,
