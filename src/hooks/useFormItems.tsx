@@ -27,7 +27,9 @@ import {
   type TPasswordProps,
 } from '@types';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
-import { PlusIcon } from '@assets/icons';
+import { PlusIcon, ArrowDown01Icon, ArrowUp01Icon } from '@assets/icons';
+
+import './style.scss';
 
 interface IFormItemsProps {
   formItems?: TFormItem[];
@@ -53,13 +55,20 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
   ),
   [INPUT_TYPE.NUMBER]: ({
     className,
-    controls = false,
+    controls,
     size = 'large',
     ...props
   }: GetProps<typeof InputNumber>) => (
     <InputNumber
-      className={clsx('w-full fs-14', className)}
-      controls={controls}
+      className={clsx('a-input-number w-full fs-14 ', className)}
+      controls={
+        controls
+          ? {
+              upIcon: <ArrowUp01Icon />,
+              downIcon: <ArrowDown01Icon />,
+            }
+          : false
+      }
       size={size}
       {...props}
     />

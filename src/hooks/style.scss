@@ -1,0 +1,16 @@
+.a-input-number {
+  .mbb-input-number-handler-wrap {
+    width: 30px !important;
+    opacity: 1;
+    .mbb-input-number-handler {
+      height: fit-content;
+      overflow: hidden;
+      border-inline-start: none;
+      border-block-start: none;
+      &:hover {
+        height: fit-content;
+        overflow: hidden;
+      }
+    }
+  }
+}
