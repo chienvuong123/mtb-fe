@@ -10,64 +10,73 @@ const columns: ColumnType<TCustomerRecord>[] = [
   {
     title: 'STT',
     dataIndex: 'index',
-    width: 68,
-    minWidth: 68,
+    width: 157,
+    minWidth: 157,
     align: 'center',
     render: (_: unknown, __: unknown, idx: number) => idx + 1,
   },
   {
+    title: 'Order ID',
+    dataIndex: 'orderId',
+    width: 157,
+    minWidth: 157,
+    sorter: true,
+    showSorterTooltip: false,
+    align: 'center',
+  },
+  {
+    title: 'Mã khách hàng',
+    dataIndex: 'code',
+    width: 157,
+    minWidth: 157,
+    sorter: true,
+    showSorterTooltip: false,
+  },
+  {
+    title: 'Họ và tên',
+    dataIndex: 'name',
+    width: 157,
+    minWidth: 157,
+    sorter: true,
+    showSorterTooltip: false,
+  },
+  {
     title: 'Nhóm khách hàng',
     dataIndex: 'cusGroup',
-    minWidth: 193,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Mã',
-    dataIndex: 'code',
-    minWidth: 213,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Tên',
-    dataIndex: 'name',
-    minWidth: 213,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Phân khúc khách hàng',
-    dataIndex: 'cusSegment',
-    minWidth: 213,
+    width: 157,
+    minWidth: 157,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Năm sinh',
     dataIndex: 'birthday',
-    minWidth: 164,
+    width: 157,
+    minWidth: 157,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Email',
     dataIndex: 'email',
-    minWidth: 164,
+    width: 157,
+    minWidth: 157,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Số điện thoại',
     dataIndex: 'phone',
-    minWidth: 164,
+    width: 157,
+    minWidth: 157,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Seller',
     dataIndex: 'seller',
-    minWidth: 164,
+    width: 157,
+    minWidth: 157,
     sorter: true,
     showSorterTooltip: false,
   },
@@ -94,6 +103,7 @@ const CustomerListTable: FC<ICustomerTable> = ({
 
   return (
     <OTable<TCustomerRecord>
+      isCheckboxHidden
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
@@ -102,7 +112,7 @@ const CustomerListTable: FC<ICustomerTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       onView={(id) => onView(id as string)}
-      scroll={{ x: 1800 }}
+      scroll={{ x: 1574 }}
       onChange={(_p, _f, s) => {
         const { field, order } = s as SorterResult<TCustomerRecord>;
         onSort(field as string, order as SortOrder);
