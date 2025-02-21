@@ -1,5 +1,6 @@
 import type { BaseResponse, CustomerDTO, CustomerSearchRequest } from '@dtos';
 import type { AxiosRequestConfig } from 'axios';
+import type { CustomerCollectInfoDTO } from 'src/dtos/customer-collect-info';
 import { BaseApi } from './baseApi';
 import { apiRequest, apiRequestFile } from './apiClient';
 
@@ -33,6 +34,14 @@ class CustomerApi extends BaseApi<CustomerDTO, CustomerSearchRequest> {
       method: 'POST',
       data: formData,
       ...config,
+    });
+  }
+
+  async checkLoanLimit(data: CustomerCollectInfoDTO) {
+    return apiRequest<BaseResponse<{ customerLimit: string }>>({
+      url: `${this.endpoint}/customer-limit`,
+      method: 'POST',
+      data,
     });
   }
 }

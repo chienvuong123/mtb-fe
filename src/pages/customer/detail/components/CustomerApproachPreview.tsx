@@ -3,6 +3,7 @@ import { ASegmented } from '@components/atoms/a-segmented';
 import { EApproachStatus, type CustomerApproachDTO } from '@dtos';
 import { Flex, Input } from 'antd';
 import { useState, type FC } from 'react';
+import { MOCK_CUSTOMER_INFORMATION } from '@mocks/customer';
 import ScenarioScriptContainer from './ScenarioScriptContainer';
 import CollectCustomerInformationModal from './CollectCustomerInformationModal';
 
@@ -62,6 +63,7 @@ const CustomerApproachPreview: FC<ICustomerApproachPreview> = ({ data }) => {
         open={openModal}
         onCancel={() => setOpenModal(false)}
         onOk={() => setOpenModal(false)}
+        data={MOCK_CUSTOMER_INFORMATION}
       />
     </div>
   );
