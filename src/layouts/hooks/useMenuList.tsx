@@ -54,11 +54,11 @@ const useMenuList = (onLogout?: () => void) => {
         children: [
           {
             key: `${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN}`,
-            label: 'DS khách hàng Campaign',
+            label: 'Danh sách Campaign',
           },
           {
-            key: 'category.2',
-            label: 'Danh sách nhóm khách hàng theo Campaign',
+            key: `${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CATEGORY}`,
+            label: 'Danh sách Category',
           },
           { key: 'category.3', label: 'Tạo nhóm khách hàng' },
         ],

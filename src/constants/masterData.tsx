@@ -1,4 +1,5 @@
 import { ControlImageIcon } from '@assets/icons';
+import { ATag } from '@components/atoms';
 import { EApproachStatus } from '@dtos';
 import {
   Checkbox,
@@ -13,6 +14,7 @@ import {
   Typography,
 } from 'antd';
 import type { SortOrder } from 'antd/es/table/interface';
+import type { ReactNode } from 'react';
 
 export enum EStatus {
   ACTIVE = 'ACTIVE',
@@ -123,6 +125,12 @@ const optionElementWrapper = (label: string, element: JSX.Element) => (
     <Flex className="pointer-events-none">{element}</Flex>
   </Space>
 );
+
+export const STATUS_CAMPAIGN_OBJECT: Record<ESalesCampaign, ReactNode> = {
+  [ESalesCampaign.DISBURSED]: <ATag color="green">Đang triển khai</ATag>,
+  [ESalesCampaign.OPPORTUNITY_TO_SELL]: <ATag color="blue">Chưa bắt đầu</ATag>,
+  [ESalesCampaign.CANCELED]: <ATag color="red">Kết thúc</ATag>,
+};
 
 export const CONTROL_ELEMENTS = {
   TEXT: <Input size="small" placeholder="Nhập..." />,

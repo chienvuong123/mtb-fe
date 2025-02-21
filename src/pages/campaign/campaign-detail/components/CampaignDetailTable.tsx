@@ -7,7 +7,6 @@ import type { ColumnType } from 'antd/es/table';
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import React, { useState } from 'react';
 import type { CampaignScriptDTO } from 'src/dtos/campaign-detail';
-import type { TMediaRecord } from '@pages/category/media-category/components/MediaTable';
 import Title from 'antd/lib/typography/Title';
 import { useParams } from 'react-router-dom';
 
@@ -21,7 +20,7 @@ interface ICampaignDetailTable {
   dataSource: TCampaignDetaillRecord[];
   paginations: IMPagination;
   sortDirection?: OrderDTO;
-  onEdit: ITable<TMediaRecord>['onEdit'];
+  onEdit: ITable<TCampaignDetaillRecord>['onEdit'];
   onSort: (field: string, direction: SortOrder) => void;
   onShowApproachForm: () => void;
 }

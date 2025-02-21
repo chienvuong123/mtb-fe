@@ -11,7 +11,7 @@ import type {
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import { useSalesOpportunitiesSearchQuery } from '@hooks/queries/userSalesOpportunitiesQueries';
+import { useSalesOpportunitiesSearchQuery } from '@hooks/queries/salesOpportunitiesQueries';
 import { Drawer } from 'antd';
 import { filterObject } from '@utils/objectHelper';
 import OpportunitySellTable, {

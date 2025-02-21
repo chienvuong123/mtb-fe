@@ -126,6 +126,24 @@ const routes = createBrowserRouter(
                 () => import('@pages/campaign/campaign-detail'),
               ),
             },
+            {
+              path: `${MANAGER_CATEGORY.CATEGORY}`,
+              element: createLazyElement(
+                () => import('@pages/campaign/category-list'),
+              ),
+            },
+            {
+              path: `${MANAGER_CATEGORY.CATEGORY_DETAIL}/:id`,
+              element: createLazyElement(
+                () => import('@pages/campaign/category-detail'),
+              ),
+            },
+            {
+              path: `${MANAGER_CATEGORY.CREATE_CATEGORY}`,
+              element: createLazyElement(
+                () => import('@pages/campaign/category-detail'),
+              ),
+            },
           ],
         },
         {

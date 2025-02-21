@@ -2,7 +2,7 @@
 import React, { useMemo, useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 import useUrlParams from '@hooks/useUrlParams';
-import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
+import { ESalesCampaign, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { SortOrder } from 'antd/es/table/interface';
 import type {
   IMPagination,
@@ -11,25 +11,22 @@ import type {
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import { filterObject } from '@utils/objectHelper';
 import dayjs from 'dayjs';
-import type { CampaignDTO, TCampaignSearchForm } from 'src/dtos/campaign';
 import {
-  useCampaignAddMutation,
-  useCampaignEditMutation,
-  useCampaignRemoveMutation,
-  useCampaignSearchQuery,
-} from '@hooks/queries';
+  useManageCategorySearchQuery,
+  useManagerCategoryRemoveMutation,
+} from '@hooks/queries/manageCategoryQueries';
+import type { TCampaignSearchForm } from 'src/dtos/campaign';
 import { useNavigate } from 'react-router-dom';
 import { MANAGER_CATEGORY } from '@routers/path';
-import CampaignSearch from './components/CampaignSearch';
-import CampaignTable, {
-  type TCampaignRecord,
-} from './components/CampaignTable';
+import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import type { TCategoryTableRecord } from './components/CategoryTable';
+import CategoryTable from './components/CategoryTable';
+import CategorySearch from './components/CategorySearch';
 import './index.scss';
 
-const Campaign: React.FC = () => {
-  const [initValues, setInitValues] = useState<Partial<TCampaignRecord> | null>(
-    null,
-  );
+const ManageCategoryPage: React.FC = () => {
+  const [initValues, setInitValues] =
+    useState<Partial<TCategoryTableRecord> | null>(null);
 
   const {
     pagination: { current, pageSize },
@@ -38,56 +35,45 @@ const Campaign: React.FC = () => {
     setSort,
     filters,
     setFilters,
-  } = useUrlParams<Partial<CampaignDTO>>();
+  } = useUrlParams<Partial<ManagerCategoryDTO>>();
 
   const navigate = useNavigate();
 
-  const { data: campaignRes } = useCampaignSearchQuery({
+  const { data: manageCategoryRes } = useManageCategorySearchQuery({
     page: {
       pageNum: Number(current),
       pageSize: Number(pageSize),
     },
     order: sort,
     ...filterObject(filters),
-    categoryCode: filters.categoryCode,
   });
 
-  const handleReset = () => {
-    setInitValues(null);
-  };
-
-  const { mutate: mutationCreateCampign } = useCampaignAddMutation(
-    {},
-    handleReset,
-  );
-  const { mutate: mutationUpdateCampaign } = useCampaignEditMutation(
-    {},
-    handleReset,
-  );
-  const { mutate: mutationDeleteProducts } = useCampaignRemoveMutation();
+  const { mutate: mutationDeleteCategory } = useManagerCategoryRemoveMutation();
 
   const handleCreate = () => {
     setInitValues({
       code: undefined,
       name: '',
-      status: EStatus.ACTIVE,
+      status: ESalesCampaign.OPPORTUNITY_TO_SELL,
       startDate: dayjs().format(DATE_SLASH_FORMAT),
       endDate: dayjs().format(DATE_SLASH_FORMAT),
     });
 
-    navigate(`/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CREATE_CAMPAIGN}`);
+    navigate(
+      `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CREATE_CATEGORY}?isCreate=${true}`,
+    );
   };
 
-  const handleEdit = (data: TCampaignRecord) => {
+  const handleEdit = (data: TCategoryTableRecord) => {
     setInitValues({
       ...data,
       startDate: dayjs(data.startDate).format(DATE_SLASH_FORMAT),
       endDate: dayjs().format(DATE_SLASH_FORMAT),
     });
 
-    if (data?.id) {
+    if (data) {
       navigate(
-        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/${data.id}`,
+        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CATEGORY_DETAIL}/${data.id}`,
       );
     }
   };
@@ -101,45 +87,29 @@ const Campaign: React.FC = () => {
     setPagination(data);
   };
 
-  const handleSubmitInsert = ({ name, code, status }: CampaignDTO) => {
-    const data: Partial<CampaignDTO> = {
-      code,
-      name,
-      status,
-      id: initValues?.id,
-    };
-    // update campaign
-    if (data?.id) {
-      mutationUpdateCampaign(data);
-      return;
-    }
-    // create new campaign
-    mutationCreateCampign(data);
-  };
-
   const handleDelete = (id: string) => {
-    mutationDeleteProducts({ id });
+    mutationDeleteCategory({ id });
   };
 
   const paginations: IMPagination = {
     pagination: {
       current,
       pageSize,
-      total: campaignRes?.data?.total ?? 1,
+      total: manageCategoryRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
     className: 'flex-end',
   };
 
-  const dataSources: TCampaignRecord[] =
+  const dataSources: TCategoryTableRecord[] =
     useMemo(
       () =>
-        campaignRes?.data?.content?.map((i) => ({
+        manageCategoryRes?.data?.content?.map((i) => ({
           ...i,
           key: i.id as string,
         })),
-      [campaignRes],
+      [manageCategoryRes],
     ) ?? [];
 
   const handleClearAll = () => {
@@ -148,10 +118,10 @@ const Campaign: React.FC = () => {
   };
 
   const handleView = (id: string) => {
-    const item = campaignRes?.data.content.find((i) => i.id === id);
+    const item = manageCategoryRes?.data.content.find((i) => i.id === id);
     if (item) {
       navigate(
-        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/${id}?isView=${true}`,
+        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CATEGORY_DETAIL}/${id}?isView=${true}`,
       );
       setInitValues({ ...item });
     }
@@ -166,21 +136,21 @@ const Campaign: React.FC = () => {
   };
 
   // TODO: will be removed
-  console.log(handleSubmitInsert);
+  console.log(initValues);
 
   return (
     <div className="pt-32">
       <Title level={3} className="mt-24">
-        Danh sách Campaign
+        Danh sách Category
       </Title>
-      <CampaignSearch
+      <CategorySearch
         onSearch={handleSearch}
         onClearAll={handleClearAll}
         initialValues={filters}
         onCreate={handleCreate}
       />
       <div className="mb-24" />
-      <CampaignTable
+      <CategoryTable
         dataSource={dataSources}
         paginations={paginations}
         sortDirection={sort}
@@ -194,4 +164,4 @@ const Campaign: React.FC = () => {
   );
 };
 
-export default Campaign;
+export default ManageCategoryPage;

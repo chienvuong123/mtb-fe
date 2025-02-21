@@ -17,7 +17,7 @@ import {
   useCampaignDetailRemoveMutation,
   useCampaignDetailViewQuery,
   useCampaignScriptQuery,
-} from '@hooks/queries/useCampaignDetail';
+} from '@hooks/queries/campaignDetailQueries';
 import type {
   IMPagination,
   TPagination,
@@ -100,6 +100,7 @@ const ManagerCampaignDetail: React.FC = () => {
   });
 
   const handleShowForm = () => {
+    navigate(`/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CREATE_CATEGORY}`);
     setShowInsertTargetForm('add');
   };
 
@@ -343,6 +344,7 @@ const ManagerCampaignDetail: React.FC = () => {
         width={1080}
         maskClosable={false}
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
+        alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
         <CampaignApproachForm
           isViewMode={isViewModeTarget}
