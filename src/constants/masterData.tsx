@@ -96,15 +96,15 @@ export const APPROACH_STATUS_OPTIONS = [
 export const STATUS_CAMPAIGN_OPTIONS = [
   {
     value: EStatusCampaign.INPROGRESS,
-    label: <Typography.Text className="green">Đang triển khai</Typography.Text>,
+    label: <Typography.Text className="green">Đang diễn ra</Typography.Text>,
   },
   {
     value: EStatusCampaign.PENDING,
-    label: <Typography.Text className="info">Chưa bắt đầu</Typography.Text>,
+    label: <Typography.Text className="info">Sắp diễn ra</Typography.Text>,
   },
   {
     value: EStatusCampaign.ENDED,
-    label: <Typography.Text className="red">Kết thúc</Typography.Text>,
+    label: <Typography.Text className="red">Đã diễn ra</Typography.Text>,
   },
 ];
 

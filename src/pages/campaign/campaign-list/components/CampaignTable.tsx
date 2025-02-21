@@ -38,16 +38,9 @@ const columns: ColumnType<TCampaignRecord>[] = [
     render: (_: unknown, __: unknown, idx: number) => idx + 1,
   },
   {
-    title: 'Mã',
+    title: 'Mã Campaign',
     dataIndex: 'code',
     minWidth: 76,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Loại chiến dịch',
-    dataIndex: 'typeCampaign',
-    minWidth: 193,
     sorter: true,
     showSorterTooltip: false,
   },
@@ -61,6 +54,13 @@ const columns: ColumnType<TCampaignRecord>[] = [
   {
     title: 'Mã Category',
     dataIndex: 'categoryCode',
+    minWidth: 107,
+    sorter: true,
+    showSorterTooltip: false,
+  },
+  {
+    title: 'Tên Category',
+    dataIndex: 'categoryName',
     minWidth: 107,
     sorter: true,
     showSorterTooltip: false,

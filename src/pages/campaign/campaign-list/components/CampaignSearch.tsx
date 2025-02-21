@@ -3,7 +3,8 @@ import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
-import React, { useEffect, useMemo } from 'react';
+import dayjs from 'dayjs';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { TCampaignSearchForm } from 'src/dtos/campaign';
 
 interface ICampaignSearch {
@@ -20,6 +21,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
   onCreate,
 }) => {
   const [form] = useForm();
+  const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(dayjs());
 
   const { data: categoryList } = useQueryCategoryList();
   const { data: campaignList } = useQueryCampaignList();
@@ -55,7 +57,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
         inputProps: {
           placeholder: 'Chọn...',
           options: STATUS_CAMPAIGN_OPTIONS,
-          allowClear: false,
+          allowClear: true,
         },
       },
       {
@@ -65,6 +67,8 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
         inputProps: {
           placeholder: 'Chọn ngày...',
           className: 'date-picker-campaign',
+          minDate: dayjs(),
+          onChange: (newValue) => setStartDate(newValue),
         },
       },
       {
@@ -74,11 +78,12 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
         inputProps: {
           placeholder: 'Chọn ngày...',
           className: 'date-picker-campaign',
+          minDate: startDate ? dayjs(startDate) : dayjs(),
         },
       },
     ];
     return formItems;
-  }, [categoryList, campaignList]);
+  }, [categoryList, campaignList, startDate]);
 
   useEffect(() => {
     if (initialValues) {

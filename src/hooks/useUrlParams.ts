@@ -8,7 +8,7 @@ const useUrlParams = <T>() => {
   const { search } = useLocation();
   const {
     current = 1,
-    pageSize = 20,
+    pageSize = 10,
     field,
     direction,
     ...initFilters
