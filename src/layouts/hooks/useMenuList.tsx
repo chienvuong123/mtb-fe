@@ -15,6 +15,7 @@ import {
   CATEGORY,
   CUSTOMER,
   MANAGER_CATEGORY,
+  SALES_OPPORTUNITIES,
   SCENARIO,
   SETTING,
 } from '@routers/path';
@@ -81,6 +82,11 @@ const useMenuList = (onLogout?: () => void) => {
             label: 'Chi tiết (CSKH)',
           },
         ],
+      },
+      {
+        key: SALES_OPPORTUNITIES,
+        label: 'Quản lý cơ hội bán',
+        icon: <MarketingIcon />,
       },
       {
         key: SCENARIO.ROOT,

@@ -1,5 +1,7 @@
 import { OSearchBaseForm } from '@components/organisms';
+import { STATUS_SALES_OPPORTUNITIES_OPTIONS } from '@constants/masterData';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
+import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import React, { useEffect, useMemo } from 'react';
@@ -32,47 +34,69 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
       {
         type: INPUT_TYPE.SELECT,
         label: 'Category',
-        name: 'codeCategory',
+        name: 'categoryCode',
         inputProps: {
           placeholder: 'Chọn...',
-          maxLength: 100,
-          disabled: true,
+          showSearch: true,
+          filterOption: true,
           options: categoryList,
         },
       },
       {
         type: INPUT_TYPE.SELECT,
         label: 'Campaign',
-        name: 'codeCampaign',
+        name: 'campaignCode',
         inputProps: {
           placeholder: 'Chọn...',
-          maxLength: 100,
-          disabled: true,
+          showSearch: true,
+          filterOption: true,
           options: campaignList,
+        },
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Nhóm khách hàng',
+        name: 'customerGroup',
+        inputProps: {
+          placeholder: 'Chọn...',
+          showSearch: true,
+          filterOption: true,
+          options: MOCK_CUSTOMER_OPTIONS,
+        },
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Phân khúc khách hàng',
+        name: 'cusSegment',
+        inputProps: {
+          placeholder: 'Chọn...',
+          showSearch: true,
+          filterOption: true,
+          options: MOCK_CUSTOMER_OPTIONS,
         },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Mã khách hàng',
-        name: 'codeCustomer',
-        inputProps: { title: 'Mã', placeholder: 'Chọn...', maxLength: 20 },
+        name: 'customerCode',
+        inputProps: { placeholder: 'Nhập...' },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Họ và tên',
-        name: 'fullName',
+        name: 'cusName',
         inputProps: { title: 'Mã', placeholder: 'Nhập...', maxLength: 20 },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Email',
-        name: 'email',
+        name: 'cusEmail',
         inputProps: { title: 'Email', placeholder: 'Nhập...', maxLength: 30 },
       },
       {
         type: INPUT_TYPE.NUMBER,
         label: 'Số điện thoại',
-        name: 'phone',
+        name: 'cusPhone',
         inputProps: {
           title: 'sdt',
           placeholder: 'Nhập...',
@@ -83,26 +107,18 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
       {
         type: INPUT_TYPE.SELECT,
         label: 'Nghề nghiệp',
-        name: 'profession',
+        name: 'cusJob',
         inputProps: { title: 'Nghề nghiệp', placeholder: 'Chọn...' },
-      },
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Hạng khách hàng',
-        name: 'rank',
-        inputProps: { title: 'Hạng khách hàng', placeholder: 'Chọn...' },
-      },
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Nhóm khách hàng',
-        name: 'group',
-        inputProps: { title: 'Nhóm khách hàng', placeholder: 'Chọn...' },
       },
       {
         type: INPUT_TYPE.SELECT,
         label: 'Trạng thái',
         name: 'status',
-        inputProps: { title: 'Trạng thái', placeholder: 'Chọn...' },
+        inputProps: {
+          title: 'Trạng thái',
+          placeholder: 'Chọn...',
+          options: STATUS_SALES_OPPORTUNITIES_OPTIONS,
+        },
       },
     ];
     return formItems;

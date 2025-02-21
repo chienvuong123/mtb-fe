@@ -181,18 +181,12 @@ const routes = createBrowserRouter(
           ],
         },
         {
-          path: MANAGER_CATEGORY.ROOT,
+          path: SALES_OPPORTUNITIES,
           children: [
             {
-              path: MANAGER_CATEGORY.CAMPAIGN,
+              path: SALES_OPPORTUNITIES,
               element: createLazyElement(
-                () => import('@pages/campaign/campaign-list'),
-              ),
-            },
-            {
-              path: `${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/:id`,
-              element: createLazyElement(
-                () => import('@pages/campaign/campaign-detail'),
+                () => import('@pages/sales-opportunities'),
               ),
             },
           ],

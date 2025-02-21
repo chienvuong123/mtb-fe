@@ -1,6 +1,14 @@
 import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
+import {
+  EGender,
+  GENDER_OBJECT,
+  STATUS_CUSTOMER_OBJECT,
+} from '@constants/masterData';
+import type { EApproachStatus } from '@dtos';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
+import dayjs from 'dayjs';
 import React, { useEffect, useMemo } from 'react';
 import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
 
@@ -14,32 +22,30 @@ const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Order Id',
-    name: 'orderID',
+    name: 'orderId',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Mã Category',
-    name: 'codeCategory',
+    name: 'categoryCode',
     inputProps: { placeholder: 'Nhập...', maxLength: 100 },
-    required: true,
-    rules: [{ required: true }],
   },
   {
-    type: INPUT_TYPE.SELECT,
+    type: INPUT_TYPE.TEXT,
     label: 'Tên Catagory',
-    name: 'nameCategory',
+    name: 'categoryName',
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Mã Campaign',
-    name: 'codeCampaign',
+    name: 'campaignCode',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Tên Campaign',
-    name: 'nameCampaign',
+    name: 'campaignName',
     inputProps: { disabled: true },
   },
   {
@@ -47,35 +53,38 @@ const items: TFormItem[] = [
     label: 'Ngày cập nhật',
     name: 'updatedDate',
     inputProps: { disabled: true },
+    getValueProps: (value) => ({
+      value: value ? dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY) : '',
+    }),
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Mã khách hàng',
-    name: 'codeCustomer',
+    name: 'customerCode',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Họ và tên',
-    name: 'fullName',
+    name: 'customerName',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.NUMBER,
     label: 'Số điện thoại',
-    name: 'phone',
+    name: 'customerPhone',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Email',
-    name: 'email',
+    name: 'customerEmail',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Năm sinh',
-    name: 'birthday',
+    name: 'birthDate',
     inputProps: { disabled: true },
   },
   {
@@ -83,6 +92,9 @@ const items: TFormItem[] = [
     label: 'Giới tính',
     name: 'gender',
     inputProps: { disabled: true },
+    getValueProps: (value) => ({
+      value: GENDER_OBJECT[value as EGender] || '',
+    }),
   },
   {
     type: INPUT_TYPE.TEXT,
@@ -93,7 +105,7 @@ const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Phân khúc khách hàng',
-    name: 'segmentCustomer',
+    name: 'customerSegment',
     inputProps: { disabled: true },
   },
   {
@@ -105,8 +117,7 @@ const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Nhóm khách hàng',
-    name: 'groupCustomer',
-    inputProps: { disabled: true },
+    name: 'cusGroupName',
   },
   {
     type: INPUT_TYPE.TEXT,
@@ -117,13 +128,13 @@ const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Chi nhánh quản lý',
-    name: 'branchManager',
+    name: 'branch',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Seller',
-    name: 'Seller',
+    name: 'seller',
     inputProps: { disabled: true },
   },
   {
@@ -134,8 +145,8 @@ const items: TFormItem[] = [
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'CCCD',
-    name: 'cccd',
+    label: 'Số giấy tờ định danh',
+    name: 'identityCard',
     inputProps: { disabled: true },
   },
   {
@@ -143,6 +154,9 @@ const items: TFormItem[] = [
     label: 'Trạng thái',
     name: 'status',
     inputProps: { disabled: true },
+    getValueProps: (value) => ({
+      value: STATUS_CUSTOMER_OBJECT[value as EApproachStatus] || '',
+    }),
   },
 ];
 
