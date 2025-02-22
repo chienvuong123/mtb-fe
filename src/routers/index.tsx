@@ -16,6 +16,7 @@ import {
   MANAGER_CATEGORY,
   SETTING,
   SCENARIO,
+  EXPRIED_CHANGE_PASSWORD,
 } from './path';
 
 const GuestGuard = React.lazy(() => import('./guards/GuestGuard'));
@@ -56,6 +57,12 @@ const routes = createBrowserRouter(
       path: CHANGE_PASSWORD,
       element: createLazyElement(
         () => import('@pages/authentication/change-password'),
+      ),
+    },
+    {
+      path: EXPRIED_CHANGE_PASSWORD,
+      element: createLazyElement(
+        () => import('@pages/authentication/expried-link'),
       ),
     },
     {

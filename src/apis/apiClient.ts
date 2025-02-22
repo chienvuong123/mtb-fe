@@ -9,6 +9,7 @@ import {
   CLIENT_ID,
   CLIENT_SECRET,
 } from '@constants/baseUrl';
+import { LOGIN } from '@routers/path';
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
@@ -83,7 +84,14 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem('refresh_token');
 
-      if (!refreshToken) throw new Error('Token are undefined');
+      if (!refreshToken) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refresh_token');
+        if (window.location.pathname !== LOGIN) {
+          window.location.href = LOGIN;
+        }
+        throw new Error('Token are undefined');
+      }
 
       try {
         if (originalRequest.headers) {
@@ -110,6 +118,7 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         localStorage.removeItem('token');
         localStorage.removeItem('refresh_token');
+        window.location.href = LOGIN;
         return Promise.reject(refreshError);
       }
     }
