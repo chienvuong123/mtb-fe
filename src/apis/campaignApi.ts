@@ -10,7 +10,8 @@ import type {
   CampaignScriptRequest,
   TCampaignDetailDTO,
 } from 'src/dtos/campaign-detail';
-import { apiRequest } from './apiClient';
+import type { AxiosRequestConfig } from 'axios';
+import { apiRequest, apiRequestFile } from './apiClient';
 import { BaseApi } from './baseApi';
 
 class CampaignApi extends BaseApi<CampaignDTO, CampaignSearchRequest> {
@@ -38,6 +39,34 @@ class CampaignApi extends BaseApi<CampaignDTO, CampaignSearchRequest> {
     return apiRequest<BaseResponse<BaseSearchResponse<BaseOptionListDTO>>>({
       url: `${this.endpoint}/list`,
       method: 'GET',
+    });
+  }
+
+  async downloadTemplate() {
+    return apiRequest({
+      url: `${this.endpoint}/download-template`,
+      method: 'GET',
+      responseType: 'blob',
+    });
+  }
+
+  async export(params: CampaignSearchRequest) {
+    return apiRequest({
+      url: `${this.endpoint}/export`,
+      method: 'GET',
+      params,
+      responseType: 'blob',
+    });
+  }
+
+  async import(file: File, config?: AxiosRequestConfig) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return apiRequestFile<BaseResponse<string>>({
+      url: `${this.endpoint}/import`,
+      method: 'POST',
+      data: formData,
+      ...config,
     });
   }
 }

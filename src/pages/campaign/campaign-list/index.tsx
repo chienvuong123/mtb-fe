@@ -11,25 +11,52 @@ import type {
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import { filterObject } from '@utils/objectHelper';
 import dayjs from 'dayjs';
-import type { CampaignDTO, TCampaignSearchForm } from 'src/dtos/campaign';
+import type {
+  CampaignDTO,
+  CampaignSearchRequest,
+  TCampaignSearchForm,
+} from 'src/dtos/campaign';
 import {
   useCampaignAddMutation,
+  useCampaignDownloadTemplete,
   useCampaignEditMutation,
+  useCampaignExport,
+  useCampaignImportMutation,
   useCampaignRemoveMutation,
   useCampaignSearchQuery,
 } from '@hooks/queries';
 import { useNavigate } from 'react-router-dom';
+import { useProfile } from '@stores';
 import { MANAGER_CATEGORY } from '@routers/path';
-import CampaignSearch from './components/CampaignSearch';
+import { ExportIcon, ImportIcon } from '@assets/icons';
+import { AButton } from '@components/atoms';
+import { Flex } from 'antd';
+import { OUploadPopup } from '@components/organisms/o-upload-popup';
+import type { UploadFile } from 'antd/lib';
+import { downloadBase64File } from '@utils/fileHelper';
+import type { TDrawerMsg } from '@components/organisms';
 import CampaignTable, {
   type TCampaignRecord,
 } from './components/CampaignTable';
+import CampaignSearch from './components/CampaignSearch';
+import {
+  downloadFileByGetMethod,
+  validateInsertCustomer,
+} from './hook/campaignHelper';
 import './index.scss';
+
+let abortController = new AbortController();
 
 const Campaign: React.FC = () => {
   const [initValues, setInitValues] = useState<Partial<TCampaignRecord> | null>(
     null,
   );
+
+  const { isAdmin, isCampaignManager } = useProfile();
+  const [showExport, setShowImport] = useState<boolean>(false);
+  const [progressPercent, setProgressPercent] = useState(0);
+  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
+  const [uploadError, setUploadError] = useState(false);
 
   const {
     pagination: { current, pageSize },
@@ -42,15 +69,20 @@ const Campaign: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const { data: campaignRes } = useCampaignSearchQuery({
-    page: {
-      pageNum: Number(current),
-      pageSize: Number(pageSize),
-    },
-    order: sort,
-    ...filterObject(filters),
-    categoryCode: filters.categoryCode,
-  });
+  const searchParams: CampaignSearchRequest = useMemo(
+    () => ({
+      page: {
+        pageNum: Number(current),
+        pageSize: Number(pageSize),
+      },
+      order: sort,
+      ...filterObject(filters),
+    }),
+    [current, pageSize, sort, filters],
+  );
+
+  const { data: campaignRes, refetch: refetchCampaign } =
+    useCampaignSearchQuery(searchParams);
 
   const handleReset = () => {
     setInitValues(null);
@@ -65,6 +97,14 @@ const Campaign: React.FC = () => {
     handleReset,
   );
   const { mutate: mutationDeleteProducts } = useCampaignRemoveMutation();
+  const { mutate: mutationImportCampaign, isPending: importCustomerLoading } =
+    useCampaignImportMutation();
+  const { refetch: downloadTemplate } = useCampaignDownloadTemplete();
+  const { refetch: customerExport } = useCampaignExport(searchParams);
+
+  const cancelImport = () => {
+    abortController?.abort();
+  };
 
   const handleCreate = () => {
     setInitValues({
@@ -121,6 +161,48 @@ const Campaign: React.FC = () => {
     mutationDeleteProducts({ id });
   };
 
+  const handleImportCustomer = (file: UploadFile[]) => {
+    abortController = new AbortController();
+    if (file?.[0]?.originFileObj) {
+      mutationImportCampaign(
+        {
+          file: file[0]?.originFileObj,
+          onUploadProgress: (progressEvent) => {
+            const percent = Math.round(
+              (progressEvent.loaded * 100) / (progressEvent.total || 1),
+            );
+            setProgressPercent(percent);
+          },
+          signal: abortController.signal,
+        },
+        {
+          onSuccess: (d) => {
+            validateInsertCustomer(d, setAlertMessage, () => {
+              setAlertMessage({
+                message: 'Import thành công',
+                type: 'success',
+              });
+              setShowImport(false);
+              setProgressPercent(0);
+              if (current !== 1) {
+                setPagination((pre) => ({ ...pre, current: 1 }));
+              } else {
+                refetchCampaign();
+              }
+            });
+            if (d?.errorCode === 'CUS0009') {
+              downloadBase64File(d.data as string, 'DSKH_error.xlsx');
+            }
+          },
+          onError: () => {
+            setProgressPercent(0);
+            setUploadError(true);
+          },
+        },
+      );
+    }
+  };
+
   const paginations: IMPagination = {
     pagination: {
       current,
@@ -166,13 +248,55 @@ const Campaign: React.FC = () => {
   };
 
   // TODO: will be removed
-  console.log(handleSubmitInsert);
+  console.log(handleSubmitInsert, alertMessage);
 
   return (
     <div className="pt-32">
-      <Title level={3} className="mt-24">
-        Danh sách Campaign
-      </Title>
+      <OUploadPopup
+        progress={progressPercent}
+        setProgress={setProgressPercent}
+        modalProps={{
+          open: showExport,
+          title: 'Tải lên danh sách khách hàng',
+          onCancel: () => {
+            setShowImport(false);
+            setProgressPercent(0);
+          },
+        }}
+        onSubmit={handleImportCustomer}
+        onDowloadEg={() =>
+          downloadFileByGetMethod(downloadTemplate, 'DSKH_Template.xlsx')
+        }
+        onCancelImport={cancelImport}
+        showError={uploadError}
+        setError={setUploadError}
+        disabled={importCustomerLoading}
+      />
+      <Flex justify="space-between" className="mb-14">
+        <Title level={3} className="mb-0">
+          Danh sách Campaign
+        </Title>
+        <Flex gap={16}>
+          {(isAdmin || isCampaignManager) && (
+            <AButton
+              variant="filled"
+              color="primary"
+              icon={<ImportIcon />}
+              onClick={() => setShowImport(true)}
+            >
+              Import
+            </AButton>
+          )}
+          <AButton
+            variant="filled"
+            color="primary"
+            icon={<ExportIcon />}
+            onClick={() => downloadFileByGetMethod(customerExport, 'DSKH.xlsx')}
+          >
+            Export
+          </AButton>
+        </Flex>
+      </Flex>
       <CampaignSearch
         onSearch={handleSearch}
         onClearAll={handleClearAll}
