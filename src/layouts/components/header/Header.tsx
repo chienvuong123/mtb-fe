@@ -28,7 +28,7 @@ const Header = () => {
   const dropdownList = [
     { label: 'Profile', key: 'profile', onClick: () => navigate(ACCOUNT) },
     {
-      label: 'Cài lại mật khẩu',
+      label: 'Đổi mật khẩu',
       key: 'reset-password',
       onClick: handleRequestChangePw,
     },
