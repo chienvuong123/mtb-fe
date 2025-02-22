@@ -6,6 +6,7 @@ import { AButton } from '@components/atoms';
 import { EStatus } from '@constants/masterData';
 import { useUserEditMutation } from '@hooks/queries';
 import type { UserDTO } from '@dtos';
+import accountHeader from '@assets/images/account_header.png';
 import { useProfile } from '../../stores';
 import useFieldRender from './hooks/useFieldRender';
 
@@ -42,11 +43,7 @@ const AccountPage = () => {
 
   return (
     <Flex className="account-page bg-white h-full rounded-8" vertical>
-      <img
-        src="src/assets/images/account_header.png"
-        className="h-75 w-full"
-        alt=""
-      />
+      <img src={accountHeader} className="h-75 w-full" alt="" />
 
       <Flex align="center" className="h-full" vertical>
         {/* BE not work */}
