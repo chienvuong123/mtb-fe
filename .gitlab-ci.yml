@@ -14,10 +14,14 @@ build:
         paths:
             - dist/
         expire_in: 1 week
+        reports:
+            dotenv: build_status.env
     tags:
         - cm-fe
     rules:
-        - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "release/sit" 
+        - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "release/sit"
+    after_script:
+        - echo "BUILD_STATUS=$CI_JOB_STATUS" > build_status.env    
 deploy:
     stage: deploy
     script:
@@ -37,22 +41,46 @@ deploy:
         - cm-fe
     rules:
         - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "release/sit"
+    after_script:
+        - echo "DEPLOY_STATUS=$CI_JOB_STATUS" > deploy_status.env
+    artifacts:
+        reports:
+            dotenv: deploy_status.env        
 notify:
     stage: notify
     rules:
         - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "release/sit"
     script:
         - echo "Gửi thông báo đến Telegram"
+        - pwd
         - |
-            MESSAGE="🚀 [FrontEnd] Đã được deploy thành công!.%0A"
-            MESSAGE="${MESSAGE}MR title: $CI_MERGE_REQUEST_TITLE %0A"
-            MESSAGE="${MESSAGE}MR ID: $CI_MERGE_REQUEST_ID %0A"
-            MESSAGE="${MESSAGE}Source Branch: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME %0A"
-            MESSAGE="${MESSAGE}Target Branch: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME %0A"
-            MESSAGE="${MESSAGE}Người merge: $GITLAB_USER_LOGIN"
+            # Load the statuses from previous jobs
+            if [ -f build_status.env ]; then
+            source build_status.env
+            fi
+            if [ -f deploy_status.env ]; then
+            source deploy_status.env
+            fi
+
+            printenv | sort
+
+            # Kiểm tra trạng thái của pipeline
+            if [ "$BUILD_STATUS" = "success" ] && [ "$DEPLOY_STATUS" = "success" ]; then
+            MESSAGE="✅ [FrontEnd] Đã được deploy thành công!.%0A"
+            MESSAGE="${MESSAGE}Service: $CI_PROJECT_NAME %0A"
+            MESSAGE="${MESSAGE}Branch: $CI_COMMIT_BRANCH %0A"
+            MESSAGE="${MESSAGE}Merged By: $GITLAB_USER_LOGIN %0A"
+            MESSAGE="${MESSAGE}Title: $CI_COMMIT_TITLE"
+            else
+            MESSAGE="❌ [FrontEnd] deploy thất bại!.%0A"
+            MESSAGE="${MESSAGE}Service: $CI_PROJECT_NAME %0A"
+            MESSAGE="${MESSAGE}Branch: $CI_COMMIT_BRANCH %0A"
+            MESSAGE="${MESSAGE}Merged By: $GITLAB_USER_LOGIN %0A"
+            MESSAGE="${MESSAGE}Title: $CI_COMMIT_TITLE"
+            fi
 
             curl -s -X POST "https://api.telegram.org/bot${TELE_BOT_TOKEN}/sendMessage" \
-                -d chat_id="504675305" \
+                -d chat_id="-4637085760" \
                 -d text="$MESSAGE" \
                 -d parse_mode="Markdown"
     variables:
