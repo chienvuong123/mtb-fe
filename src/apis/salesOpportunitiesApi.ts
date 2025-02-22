@@ -9,7 +9,7 @@ class SalesOpportunities extends BaseApi<
   SalesOpportunitiesSearchRequest
 > {
   constructor() {
-    super('/opportunity/v1.0');
+    super('/sales-opportunity/v1.0');
   }
 }
 

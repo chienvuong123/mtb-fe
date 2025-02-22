@@ -12,20 +12,20 @@ import type {
 } from '@components/molecules/m-pagination/MPagination.type';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { useSalesOpportunitiesSearchQuery } from '@hooks/queries/salesOpportunitiesQueries';
-import { Drawer } from 'antd';
+import { ODrawer } from '@components/organisms';
+import type { TFormType } from '@types';
 import { filterObject } from '@utils/objectHelper';
 import OpportunitySellTable, {
   type TSalesOpportunitiesRecord,
 } from './components/SalesOpportunitiesTable';
 import SalesOpportunitiesSearch from './components/SalesOpportunitiesSearch';
 import SalesOpportunitiesDetail from './components/SalesOpportunitiesDetail';
+import { convertInitValues } from './components/hook/salesOpportunitiesHelper';
 
 const ManageSalesOpportunities: React.FC = () => {
-  const [showInsertForm, setShowInsertForm] = useState<boolean>(false);
+  const [drawerMode, setDrawerMode] = useState<TFormType>();
   const [initValues, setInitValues] =
     useState<Partial<TSalesOpportunitiesRecord> | null>(null);
-
-  const [isViewMode, setIsViewMode] = useState(false);
 
   const { setPagination, setFilters, setSort, pagination, sort, filters } =
     useUrlParams<Partial<SalesOpportunitiesDTO>>();
@@ -66,9 +66,12 @@ const ManageSalesOpportunities: React.FC = () => {
   const handleView = (id: string) => {
     const item = opportunitySellRes?.data?.content.find((i) => i.id === id);
     if (item) {
-      setIsViewMode(true);
-      setInitValues({ ...item });
-      setShowInsertForm(true);
+      const recordItem: TSalesOpportunitiesRecord = {
+        ...item,
+        key: item.id,
+      };
+      setInitValues(convertInitValues(recordItem));
+      setDrawerMode('view');
     }
   };
 
@@ -79,7 +82,7 @@ const ManageSalesOpportunities: React.FC = () => {
 
   const handleClearAll = () => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({ code: undefined, name: undefined });
+    setFilters({});
   };
 
   const handleSort = (field: string, direction: SortOrder) => {
@@ -90,17 +93,9 @@ const ManageSalesOpportunities: React.FC = () => {
     });
   };
 
-  const handleCloseFormDetail = () => {
-    setShowInsertForm(false);
-    setIsViewMode(false);
+  const handleCloseForm = () => {
+    setDrawerMode(undefined);
   };
-
-  const getDrawerTitle = useMemo(() => {
-    const title = '$ Chi tiết cơ hội bán';
-    if (isViewMode) return title.replace('$', 'Chi tiết');
-    if (initValues?.id) return title.replace('$', 'Chỉnh sửa');
-    return title.replace('$', 'Tạo mới');
-  }, [initValues?.id, isViewMode]);
 
   return (
     <div className="pt-32">
@@ -118,20 +113,22 @@ const ManageSalesOpportunities: React.FC = () => {
         onSort={handleSort}
         paginations={paginations}
       />
-      <Drawer
-        title={getDrawerTitle}
-        onClose={handleCloseFormDetail}
-        open={showInsertForm}
+      <ODrawer
+        usePrefixTitle
+        title="cơ hội bán"
+        mode={drawerMode}
+        onClose={handleCloseForm}
+        open={!!drawerMode}
         width={1280}
         maskClosable={false}
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
       >
         <SalesOpportunitiesDetail
-          isViewMode={isViewMode}
-          onClose={handleCloseFormDetail}
+          isViewMode={drawerMode === 'view'}
+          onClose={handleCloseForm}
           initialValues={initValues}
         />
-      </Drawer>
+      </ODrawer>
     </div>
   );
 };

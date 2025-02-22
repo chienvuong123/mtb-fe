@@ -108,6 +108,23 @@ export const STATUS_CAMPAIGN_OPTIONS = [
   },
 ];
 
+export const STATUS_SALES_OPPORTUNITIES_OPTIONS = [
+  {
+    value: ESalesOpportunities.DISBURSED,
+    label: <Typography.Text className="green">Đã giải ngân</Typography.Text>,
+  },
+  {
+    value: ESalesOpportunities.OPPORTUNITY_TO_SELL,
+    label: (
+      <Typography.Text className="info">Đã tạo cơ hội bán</Typography.Text>
+    ),
+  },
+  {
+    value: ESalesOpportunities.CANCELED,
+    label: <Typography.Text className="red">Đã hủy</Typography.Text>,
+  },
+];
+
 export const GENDER_OPTIONS = [
   {
     value: EGender.MAN,
@@ -130,6 +147,18 @@ export const STATUS_CAMPAIGN_OBJECT: Record<ESalesCampaign, ReactNode> = {
   [ESalesCampaign.DISBURSED]: <ATag color="green">Đang triển khai</ATag>,
   [ESalesCampaign.OPPORTUNITY_TO_SELL]: <ATag color="blue">Chưa bắt đầu</ATag>,
   [ESalesCampaign.CANCELED]: <ATag color="red">Kết thúc</ATag>,
+};
+
+export const STATUS_CUSTOMER_OBJECT: Record<EApproachStatus, ReactNode> = {
+  [EApproachStatus.PENDING]: 'Chưa bắt đầu',
+  [EApproachStatus.INPROGRESS]: 'Đang triển khai',
+  [EApproachStatus.FINISHED]: 'Hoàn thành',
+};
+
+export const GENDER_OBJECT: Record<EGender, ReactNode> = {
+  [EGender.MAN]: 'Nam',
+  [EGender.WOMEN]: 'Nữ',
+  [EGender.OTHER]: 'Giới tính khác',
 };
 
 export const CONTROL_ELEMENTS = {

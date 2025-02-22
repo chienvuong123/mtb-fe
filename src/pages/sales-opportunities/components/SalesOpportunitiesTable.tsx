@@ -19,7 +19,10 @@ interface ISalesOpportunitiesTable {
   sortDirection?: OrderDTO;
 }
 
-const statusObject: Record<ESalesOpportunities, ReactNode> = {
+export const statusSalesOpportunitiesObject: Record<
+  ESalesOpportunities,
+  ReactNode
+> = {
   [ESalesOpportunities.DISBURSED]: <ATag color="green">Đã giải ngân</ATag>,
   [ESalesOpportunities.OPPORTUNITY_TO_SELL]: (
     <ATag color="blue">Đã tạo cơ hội bán</ATag>
@@ -37,14 +40,14 @@ const columns: ColumnType<TSalesOpportunitiesRecord>[] = [
   },
   {
     title: 'Mã khách hàng',
-    dataIndex: 'codeCustomer',
+    dataIndex: 'customerId',
     minWidth: 104,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Order ID',
-    dataIndex: 'OrderId',
+    dataIndex: 'orderId',
     minWidth: 104,
     sorter: true,
     showSorterTooltip: false,
@@ -55,46 +58,47 @@ const columns: ColumnType<TSalesOpportunitiesRecord>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: ESalesOpportunities) => statusObject[value] ?? null,
+    render: (value: ESalesOpportunities) =>
+      statusSalesOpportunitiesObject[value] ?? null,
   },
   {
     title: 'Nhóm khách hàng',
-    dataIndex: 'group',
+    dataIndex: 'customerGroupName',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Phân khúc khách hàng',
-    dataIndex: 'Segment',
+    dataIndex: 'customerSegment',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Họ và tên',
-    dataIndex: 'fullName',
+    dataIndex: 'customerName',
     minWidth: 184,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Năm sinh',
-    dataIndex: 'birthday',
+    dataIndex: 'birthDate',
     minWidth: 124,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Email',
-    dataIndex: 'email',
+    dataIndex: 'customerEmail',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Số điện thoại',
-    dataIndex: 'phone',
+    dataIndex: 'mobilePhone',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
@@ -119,6 +123,7 @@ const SalesOpportunitiesTable: React.FC<ISalesOpportunitiesTable> = ({
         setSelectedRowKeys={setSelectedRowKeys}
         paginations={paginations}
         sortDirection={sortDirection}
+        isCheckboxHidden
         onView={(id) => onView(id as string)}
         onChange={(_p, _f, s) => {
           const { field, order } = s as SorterResult<TSalesOpportunitiesRecord>;
