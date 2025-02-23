@@ -10,9 +10,9 @@ import {
   useCustomerCheckLoanLimit,
 } from '@hooks/queries';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type {
   CustomerCollectFormDTO,
   CustomerCollectInfoDTO,
@@ -28,6 +28,22 @@ interface FieldChangeInfo {
   validated?: boolean;
   value?: string | number | boolean;
 }
+
+const FIELD_DEPENDENCIES = {
+  assetCategoryCode: [
+    'assetCompanyCode',
+    'assetModelCode',
+    'assetYear',
+    'assetInfoCode',
+  ],
+  assetCompanyCode: ['assetModelCode', 'assetYear', 'assetInfoCode'],
+  assetModelCode: ['assetYear', 'assetInfoCode'],
+  assetYear: ['assetInfoCode'],
+  residenceProvinceCode: ['residenceDistrictCode', 'residenceWardCode'],
+  residenceDistrictCode: ['residenceWardCode'],
+  currentProvinceCode: ['currentDistrictCode', 'currentWardCode'],
+  currentDistrictCode: ['currentWardCode'],
+} as const;
 
 export const useCollectInforController = (
   data?: Partial<CustomerCollectInfoDTO>,
@@ -434,10 +450,6 @@ export const useCollectInforController = (
         inputProps: {
           placeholder: 'Nhập...',
         },
-        getValueFromEvent: (e: React.ChangeEvent<HTMLInputElement>) => {
-          const value = e.target.value.replace(/^0+|[^0-9]/g, '');
-          return value;
-        },
         rules: [{ required: true }],
       },
       {
@@ -536,72 +548,29 @@ export const useCollectInforController = (
     assetInfoCode,
   ]);
 
-  const handleFormValuesChange = (changedValues: FieldChangeInfo[]) => {
-    const changedField = changedValues[0].name[0];
+  const handleFormValuesChange = useCallback(
+    (changedValues: FieldChangeInfo[]) => {
+      const changedField = changedValues[0]?.name[0];
+      if (!changedField) return;
 
-    switch (changedField) {
-      case 'assetCategoryCode':
-        form.setFieldsValue({
-          assetCompanyCode: undefined,
-          assetModelCode: undefined,
-          assetYear: undefined,
-          assetInfoCode: undefined,
-        });
-        break;
+      const fieldsToReset =
+        FIELD_DEPENDENCIES[changedField as keyof typeof FIELD_DEPENDENCIES];
+      if (fieldsToReset) {
+        const resetValues = fieldsToReset.reduce(
+          (acc, field) => ({
+            ...acc,
+            [field]: undefined,
+          }),
+          {},
+        );
+        form.setFieldsValue(resetValues);
+      }
+    },
+    [form],
+  );
 
-      case 'assetCompanyCode':
-        form.setFieldsValue({
-          assetModelCode: undefined,
-          assetYear: undefined,
-          assetInfoCode: undefined,
-        });
-        break;
-
-      case 'assetModelCode':
-        form.setFieldsValue({
-          assetYear: undefined,
-          assetInfoCode: undefined,
-        });
-        break;
-
-      case 'assetYear':
-        form.setFieldsValue({
-          assetInfoCode: undefined,
-        });
-        break;
-
-      case 'residenceProvinceCode':
-        form.setFieldsValue({
-          residenceDistrictCode: undefined,
-          residenceWardCode: undefined,
-        });
-        break;
-
-      case 'residenceDistrictCode':
-        form.setFieldsValue({
-          residenceWardCode: undefined,
-        });
-        break;
-
-      case 'currentProvinceCode':
-        form.setFieldsValue({
-          currentDistrictCode: undefined,
-          currentWardCode: undefined,
-        });
-        break;
-
-      case 'currentDistrictCode':
-        form.setFieldsValue({
-          currentWardCode: undefined,
-        });
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  const { mutate: checkLoanLimitMutation } = useCustomerCheckLoanLimit();
+  const { mutate: checkLoanLimitMutation, isPending: loading } =
+    useCustomerCheckLoanLimit();
 
   const saveDraft = async () => {
     await form.validateFields();
@@ -627,6 +596,40 @@ export const useCollectInforController = (
     checkLoanLimitMutation(collectInfo);
   };
 
+  const [loanLimit, setLoanLimit] = useState<number | undefined>(undefined);
+
+  const checkLoanLimit = async () => {
+    await form.validateFields();
+    const formData = form.getFieldsValue();
+
+    const collectInfo = mapFormDataToDTO(formData, {
+      identityOptions,
+      jobOptions,
+      proofOptions,
+      maritalStatusOptions,
+      provinceOptions,
+      districtOptions,
+      wardOptions,
+      currentProvinceOptions,
+      currentDistrictOptions,
+      currentWardOptions,
+      assetCategoryOptions,
+      assetCompanyOptions,
+      assetModelOptions,
+      assetNameOptions,
+    });
+
+    checkLoanLimitMutation(collectInfo, {
+      onSuccess: (res) => {
+        setLoanLimit(Number(res.data.customerLimit));
+      },
+      onError: () => {
+        setLoanLimit(0);
+        message.error('Không tìm thấy thông tin khách hàng');
+      },
+    });
+  };
+
   useEffect(() => {
     if (data && genderOptions) {
       form.setFieldsValue({
@@ -644,7 +647,10 @@ export const useCollectInforController = (
     firstItems,
     secondItems,
     thirdItems,
+    loanLimit,
+    loading,
     handleFormValuesChange,
     saveDraft,
+    checkLoanLimit,
   };
 };

@@ -62,7 +62,8 @@ const CustomerApproachPreview: FC<ICustomerApproachPreview> = ({ data }) => {
       <CollectCustomerInformationModal
         open={openModal}
         onCancel={() => setOpenModal(false)}
-        onOk={() => setOpenModal(false)}
+        // TODO: Add onOk
+        // onOk={() => setOpenModal(false)}
         data={MOCK_CUSTOMER_INFORMATION}
       />
     </div>
