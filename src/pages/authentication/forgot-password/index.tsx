@@ -40,7 +40,14 @@ const items: TFormItem[] = [
     type: INPUT_TYPE.TEXT,
     label: 'Số điện thoại',
     name: 'phoneNumber',
-    inputProps: { placeholder: 'Nhập...', maxLength: 10, type: 'number' },
+    inputProps: {
+      placeholder: 'Nhập...',
+      maxLength: 10,
+      type: 'number',
+      onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+      },
+    },
     colProps: { span: 24, className: 'fw-500' },
     rules: [{ required: true }],
   },

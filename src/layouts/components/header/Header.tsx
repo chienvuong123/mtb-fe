@@ -2,7 +2,7 @@ import { OPopup } from '@components/organisms';
 import { useRequestChangePassword } from '@hooks/queries';
 import { ACCOUNT } from '@routers/path';
 import { useProfile } from '@stores';
-import { Divider, Flex, Layout } from 'antd';
+import { Divider, Flex, Layout, Spin } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderInfo from './HeaderInfo';
@@ -11,16 +11,21 @@ import HeaderNotify from './HeaderNotify';
 const Header = () => {
   const navigate = useNavigate();
 
-  const { mutate: mutateRequestChangePassword } = useRequestChangePassword();
+  const { mutate: mutateRequestChangePassword, isPending } =
+    useRequestChangePassword();
   const { user } = useProfile();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isRequestSuccess, setIsRequestSuccess] = useState(true);
 
   const handleRequestChangePw = () => {
     mutateRequestChangePassword(undefined, {
       onSuccess: (res) => {
+        setIsPopupOpen(true);
         if (res.data) {
-          setIsPopupOpen(true);
+          setIsRequestSuccess(true);
+          return;
         }
+        setIsRequestSuccess(false);
       },
     });
   };
@@ -44,22 +49,37 @@ const Header = () => {
         <HeaderInfo itemsDropdown={dropdownList} />
       </Flex>
 
-      <OPopup
-        title="Thông báo"
-        description={
-          <div style={{ textAlign: 'center' }}>
-            Một đường dẫn đổi mật khẩu đã được gửi tới mail: <br />
-            <strong>{user?.email}</strong>, vui lòng truy cập vào mail để tiếp
-            tục.
+      <div>
+        {isPending ? (
+          <div className="dis-flex jc-center ai-center mt-56">
+            <Spin size="large" />
           </div>
-        }
-        okText="Đóng"
-        isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
-        onOkModal={() => setIsPopupOpen(false)}
-      >
-        <div />
-      </OPopup>
+        ) : (
+          <OPopup
+            title="Thông báo"
+            description={
+              isRequestSuccess ? (
+                <div style={{ textAlign: 'center' }}>
+                  Một đường dẫn đổi mật khẩu đã được gửi tới mail: <br />
+                  <strong>{user?.email}</strong>, vui lòng truy cập vào mail để
+                  tiếp tục.
+                </div>
+              ) : (
+                <div style={{ textAlign: 'center' }}>
+                  Đường dẫn đổi mật khẩu đã được gửi, bạn vui lòng <br />
+                  kiểm tra hộp thư/Spam và làm theo hướng dẫn.
+                </div>
+              )
+            }
+            okText="Đóng"
+            isOpen={isPopupOpen}
+            onClose={() => setIsPopupOpen(false)}
+            onOkModal={() => setIsPopupOpen(false)}
+          >
+            <div />
+          </OPopup>
+        )}
+      </div>
     </Layout.Header>
   );
 };
