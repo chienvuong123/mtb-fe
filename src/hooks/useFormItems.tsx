@@ -17,6 +17,7 @@ import clsx from 'clsx';
 import {
   AButton,
   AInputArea,
+  AInputNumber,
   AInputOtp,
   AInputPassword,
   ASelect,
@@ -28,9 +29,7 @@ import {
   type TPasswordProps,
 } from '@types';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
-import { PlusIcon, ArrowDown01Icon, ArrowUp01Icon } from '@assets/icons';
-
-import './style.scss';
+import { PlusIcon } from '@assets/icons';
 
 interface IFormItemsProps {
   formItems?: TFormItem[];
@@ -54,68 +53,14 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
   [INPUT_TYPE.PASSWORD]: (props: TPasswordProps) => (
     <AInputPassword {...props} />
   ),
-  [INPUT_TYPE.NUMBER]: ({
-    className,
-    controls,
-    size = 'large',
-    ...props
-  }: GetProps<typeof InputNumber>) => (
-    <InputNumber
-      className={clsx('a-input-number w-full fs-14 ', className)}
-      controls={
-        controls
-          ? {
-              upIcon: <ArrowUp01Icon />,
-              downIcon: <ArrowDown01Icon />,
-            }
-          : false
-      }
-      parser={(value) => {
-        if (!value) return '';
-        return value.replace(/[^0-9]/g, '');
-      }}
-      onKeyDown={(e) => {
-        const regex = /^[0-9]+$/;
-        const { key } = e;
-        if (key.length === 1 && !regex.test(key)) {
-          e.preventDefault();
-        }
-      }}
-      size={size}
-      {...props}
-    />
+  [INPUT_TYPE.NUMBER]: (props: GetProps<typeof InputNumber>) => (
+    <AInputNumber {...props} />
   ),
-  [INPUT_TYPE.CURRENCY]: ({
-    className,
-    controls,
-    size = 'large',
-    ...props
-  }: GetProps<typeof InputNumber>) => (
-    <InputNumber
-      className={clsx('a-input-number w-full fs-14 ', className)}
-      controls={
-        controls
-          ? {
-              upIcon: <ArrowUp01Icon />,
-              downIcon: <ArrowDown01Icon />,
-            }
-          : false
-      }
-      size={size}
+  [INPUT_TYPE.CURRENCY]: (props: GetProps<typeof InputNumber>) => (
+    <AInputNumber
       formatter={(value) => {
         if (!value) return '';
         return new Intl.NumberFormat('vi-VN').format(Number(value));
-      }}
-      parser={(value) => {
-        if (!value) return '';
-        return value.replace(/[^0-9]/g, '');
-      }}
-      onKeyDown={(e) => {
-        const regex = /^[0-9]+$/;
-        const { key } = e;
-        if (key.length === 1 && !regex.test(key)) {
-          e.preventDefault();
-        }
       }}
       {...props}
     />
