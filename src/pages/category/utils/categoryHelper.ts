@@ -17,3 +17,11 @@ export const validateInsertCategory = (
   }
   setMsg({ type: 'error', message: 'Đã xảy ra lỗi!' });
 };
+
+export const getTableIndex = (
+  idx: number,
+  currentPage: number = 1,
+  pageSize: number = 10,
+): number => {
+  return (currentPage - 1) * pageSize + idx + 1;
+};

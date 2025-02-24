@@ -1,4 +1,7 @@
-import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
+import {
+  DATE_SLASH_FORMAT_DDMMYYYY,
+  DATE_SLASH_FORMAT_DDMMYYYY_HHMMSS,
+} from '@constants/dateFormat';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
@@ -8,7 +11,7 @@ export const formatDate = (
   date: string,
   format: string = DATE_SLASH_FORMAT_DDMMYYYY,
 ): string => {
-  return dayjs(date).format(format);
+  return dayjs(date, DATE_SLASH_FORMAT_DDMMYYYY_HHMMSS).format(format);
 };
 
 export const stringToDayjs = (

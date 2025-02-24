@@ -1,4 +1,4 @@
-import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import {
   CategoryType,
@@ -26,6 +26,7 @@ import type { SortOrder } from 'antd/es/table/interface';
 import { filterObject } from '@utils/objectHelper';
 import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import type { TFormType } from '@types';
+import { formatDate } from '@utils/dateHelper';
 import MediaEditForm from './components/MediaEditForm';
 import MediaInsertForm from './components/MediaInsertForm';
 import MediaSearchForm from './components/MediaSearchForm';
@@ -93,9 +94,10 @@ const MediaCategoryPage: FC = () => {
       code: undefined,
       name: '',
       status: EStatus.ACTIVE,
-      createdDate: dayjs().format(DATE_SLASH_FORMAT),
-      updatedDate: dayjs().format(DATE_SLASH_FORMAT),
+      createdDate: dayjs().format(DATE_SLASH_FORMAT_DDMMYYYY),
+      updatedDate: dayjs().format(DATE_SLASH_FORMAT_DDMMYYYY),
       createdBy: user?.username,
+      updatedBy: user?.username,
     });
     setDrawerMode('add');
   };
@@ -103,8 +105,8 @@ const MediaCategoryPage: FC = () => {
   const handleEdit = (data: TMediaRecord) => {
     setInitValuesEditForm({
       ...data,
-      createdDate: dayjs(data.createdDate).format(DATE_SLASH_FORMAT),
-      updatedDate: dayjs().format(DATE_SLASH_FORMAT),
+      createdDate: formatDate(data.createdDate ?? ''),
+      updatedDate: dayjs().format(DATE_SLASH_FORMAT_DDMMYYYY),
     });
     setDrawerMode('edit');
   };
@@ -180,7 +182,11 @@ const MediaCategoryPage: FC = () => {
     const item = mediaRes?.data.content.find((i) => i.id === id);
     if (item) {
       setDrawerMode('view');
-      setInitValuesEditForm({ ...item });
+      setInitValuesEditForm({
+        ...item,
+        createdDate: formatDate(item.createdDate),
+        updatedDate: formatDate(item.updatedDate),
+      });
     }
   };
 

@@ -3,9 +3,11 @@ import type { IMPagination } from '@components/molecules/m-pagination/MPaginatio
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
 import type { MediaCategoryDTO, OrderDTO } from '@dtos';
+import { getTableIndex } from '@pages/category/utils';
+import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
-import { useState, type FC, type Key, type ReactNode } from 'react';
+import { useMemo, useState, type FC, type Key, type ReactNode } from 'react';
 
 export type TMediaRecord = TTableKey & Partial<MediaCategoryDTO>;
 
@@ -24,66 +26,6 @@ const statusObject: Partial<Record<EStatus, ReactNode>> = {
   [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
 };
 
-const columns: ColumnType<TMediaRecord>[] = [
-  {
-    title: 'STT',
-    dataIndex: 'index',
-    minWidth: 76,
-    align: 'center',
-    render: (_: unknown, __: unknown, idx: number) => idx + 1,
-  },
-  {
-    title: 'Mã',
-    dataIndex: 'code',
-    minWidth: 104,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Tên',
-    dataIndex: 'name',
-    minWidth: 213,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Trạng thái',
-    dataIndex: 'status',
-    minWidth: 164,
-    sorter: true,
-    showSorterTooltip: false,
-    render: (value: EStatus) => statusObject[value] ?? null,
-  },
-  {
-    title: 'Ngày tạo',
-    dataIndex: 'createdDate',
-    minWidth: 164,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Người tạo',
-    dataIndex: 'createdBy',
-    minWidth: 164,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Ngày cập nhật',
-    dataIndex: 'updatedDate',
-    minWidth: 164,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Người cập nhật',
-    dataIndex: 'updatedBy',
-    minWidth: 164,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-];
-
 const MediaTable: FC<IMediaTable> = ({
   dataSource,
   paginations,
@@ -95,6 +37,77 @@ const MediaTable: FC<IMediaTable> = ({
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
+  const columns: ColumnType<TMediaRecord>[] = useMemo(
+    () => [
+      {
+        title: 'STT',
+        dataIndex: 'index',
+        minWidth: 76,
+        align: 'center',
+        render: (_: unknown, __: unknown, idx: number) => {
+          return getTableIndex(
+            idx,
+            paginations.pagination.current,
+            paginations.pagination.pageSize,
+          );
+        },
+      },
+      {
+        title: 'Mã',
+        dataIndex: 'code',
+        minWidth: 104,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
+        title: 'Tên',
+        dataIndex: 'name',
+        minWidth: 213,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
+        title: 'Trạng thái',
+        dataIndex: 'status',
+        minWidth: 164,
+        sorter: true,
+        showSorterTooltip: false,
+        render: (value: EStatus) => statusObject[value] ?? null,
+      },
+      {
+        title: 'Ngày tạo',
+        dataIndex: 'createdDate',
+        minWidth: 164,
+        sorter: true,
+        showSorterTooltip: false,
+        render: (text) => formatDate(text),
+      },
+      {
+        title: 'Người tạo',
+        dataIndex: 'createdBy',
+        minWidth: 164,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
+        title: 'Ngày cập nhật',
+        dataIndex: 'updatedDate',
+        minWidth: 164,
+        sorter: true,
+        showSorterTooltip: false,
+        render: (text) => formatDate(text),
+      },
+      {
+        title: 'Người cập nhật',
+        dataIndex: 'updatedBy',
+        minWidth: 164,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+    ],
+    [paginations],
+  );
+
   const deleteRecord = (key: Key) => {
     onDelete(key as string);
   };
@@ -104,9 +117,7 @@ const MediaTable: FC<IMediaTable> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onDeleteRow={(key) => {
-        deleteRecord(key);
-      }}
+      onDeleteRow={deleteRecord}
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
