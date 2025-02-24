@@ -1,4 +1,3 @@
-import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import {
   CategoryType,
@@ -7,13 +6,13 @@ import {
   type TProductSearchForm,
 } from '@dtos';
 import Title from 'antd/lib/typography/Title';
-import dayjs from 'dayjs';
 import { useEffect, useMemo, useState, type FC } from 'react';
 
 import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
+import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import {
   useProductCategoryAddMutation,
   useProductCategoryEditMutation,
@@ -22,10 +21,11 @@ import {
 } from '@hooks/queries/productCategoryQueries';
 import useUrlParams from '@hooks/useUrlParams';
 import { useProfile } from '@stores';
+import type { TFormType } from '@types';
+import { formatDate } from '@utils/dateHelper';
 import { filterObject } from '@utils/objectHelper';
 import type { SortOrder } from 'antd/es/table/interface';
-import { ODrawer, type TDrawerMsg } from '@components/organisms';
-import type { TFormType } from '@types';
+import { validateInsertCategory } from '../utils';
 import {
   ProductEditForm,
   ProductInsertForm,
@@ -33,7 +33,6 @@ import {
   ProductTable,
   type TProductRecord,
 } from './components';
-import { validateInsertCategory } from '../utils';
 
 const ProductCategoryPage: FC = () => {
   const [initValuesInsertForm, setInitValuesInsertForm] =
@@ -96,9 +95,10 @@ const ProductCategoryPage: FC = () => {
       code: undefined,
       name: '',
       status: EStatus.ACTIVE,
-      createdDate: dayjs().format(DATE_SLASH_FORMAT),
-      updatedDate: dayjs().format(DATE_SLASH_FORMAT),
+      createdDate: formatDate(),
+      updatedDate: formatDate(),
       createdBy: user?.username,
+      updatedBy: user?.username,
     });
     setDrawerMode('add');
   };
@@ -106,8 +106,8 @@ const ProductCategoryPage: FC = () => {
   const handleEdit = (data: TProductRecord) => {
     setInitValuesEditForm({
       ...data,
-      createdDate: dayjs(data.createdDate).format(DATE_SLASH_FORMAT),
-      updatedDate: dayjs().format(DATE_SLASH_FORMAT),
+      createdDate: formatDate(data.createdDate ?? ''),
+      updatedDate: formatDate(),
     });
     setDrawerMode('edit');
   };
@@ -183,7 +183,11 @@ const ProductCategoryPage: FC = () => {
     const item = productRes?.data.content.find((i) => i.id === id);
     if (item) {
       setDrawerMode('view');
-      setInitValuesEditForm({ ...item });
+      setInitValuesEditForm({
+        ...item,
+        createdDate: formatDate(item.createdDate),
+        updatedDate: formatDate(item.updatedDate),
+      });
     }
   };
 

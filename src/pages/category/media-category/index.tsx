@@ -1,4 +1,3 @@
-import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import {
   CategoryType,
@@ -7,13 +6,13 @@ import {
   type TMediaSearchForm,
 } from '@dtos';
 import Title from 'antd/lib/typography/Title';
-import dayjs from 'dayjs';
 import { useEffect, useMemo, useState, type FC } from 'react';
 
 import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
+import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import {
   useMediaCategoryAddMutation,
   useMediaCategoryEditMutation,
@@ -22,15 +21,15 @@ import {
 } from '@hooks/queries/useMediaCategoryQueries';
 import useUrlParams from '@hooks/useUrlParams';
 import { useProfile } from '@stores';
-import type { SortOrder } from 'antd/es/table/interface';
-import { filterObject } from '@utils/objectHelper';
-import { ODrawer, type TDrawerMsg } from '@components/organisms';
 import type { TFormType } from '@types';
+import { formatDate } from '@utils/dateHelper';
+import { filterObject } from '@utils/objectHelper';
+import type { SortOrder } from 'antd/es/table/interface';
+import { validateInsertCategory } from '../utils';
 import MediaEditForm from './components/MediaEditForm';
 import MediaInsertForm from './components/MediaInsertForm';
 import MediaSearchForm from './components/MediaSearchForm';
 import MediaTable, { type TMediaRecord } from './components/MediaTable';
-import { validateInsertCategory } from '../utils';
 
 const MediaCategoryPage: FC = () => {
   const [initValuesInsertForm, setInitValuesInsertForm] =
@@ -93,9 +92,10 @@ const MediaCategoryPage: FC = () => {
       code: undefined,
       name: '',
       status: EStatus.ACTIVE,
-      createdDate: dayjs().format(DATE_SLASH_FORMAT),
-      updatedDate: dayjs().format(DATE_SLASH_FORMAT),
+      createdDate: formatDate(),
+      updatedDate: formatDate(),
       createdBy: user?.username,
+      updatedBy: user?.username,
     });
     setDrawerMode('add');
   };
@@ -103,8 +103,8 @@ const MediaCategoryPage: FC = () => {
   const handleEdit = (data: TMediaRecord) => {
     setInitValuesEditForm({
       ...data,
-      createdDate: dayjs(data.createdDate).format(DATE_SLASH_FORMAT),
-      updatedDate: dayjs().format(DATE_SLASH_FORMAT),
+      createdDate: formatDate(data.createdDate ?? ''),
+      updatedDate: formatDate(),
     });
     setDrawerMode('edit');
   };
@@ -180,7 +180,11 @@ const MediaCategoryPage: FC = () => {
     const item = mediaRes?.data.content.find((i) => i.id === id);
     if (item) {
       setDrawerMode('view');
-      setInitValuesEditForm({ ...item });
+      setInitValuesEditForm({
+        ...item,
+        createdDate: formatDate(item.createdDate),
+        updatedDate: formatDate(item.updatedDate),
+      });
     }
   };
 
