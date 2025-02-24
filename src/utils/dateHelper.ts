@@ -8,10 +8,11 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 
 export const formatDate = (
-  date: string,
-  format: string = DATE_SLASH_FORMAT_DDMMYYYY,
+  date: string = dayjs().format(DATE_SLASH_FORMAT_DDMMYYYY_HHMMSS),
+  outputFormat: string = DATE_SLASH_FORMAT_DDMMYYYY,
+  inputFormat: string = DATE_SLASH_FORMAT_DDMMYYYY_HHMMSS,
 ): string => {
-  return dayjs(date, DATE_SLASH_FORMAT_DDMMYYYY_HHMMSS).format(format);
+  return dayjs(date, inputFormat).format(outputFormat);
 };
 
 export const stringToDayjs = (

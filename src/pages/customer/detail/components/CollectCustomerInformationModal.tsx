@@ -1,7 +1,7 @@
 import { AButton } from '@components/atoms';
 import { ACollapseForm } from '@components/atoms/a-collapse-form';
 import { Form, Modal } from 'antd';
-import { useState, type FC } from 'react';
+import { type FC } from 'react';
 import type { CustomerCollectInfoDTO } from 'src/dtos/customer-collect-info';
 import './CollectCustomerInformationModal.scss';
 import { CollectInfoForm } from './CollectInfoForm';
@@ -12,45 +12,28 @@ interface ICollectCustomerInformationForm {
   data?: Partial<CustomerCollectInfoDTO>;
   open: boolean;
   onCancel: () => void;
-  onOk: () => void;
+  // TODO: Add onOk
+  // onOk: () => void;
 }
 
 const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
   data,
   open,
   onCancel,
-  onOk,
+  // TODO: Add onOk
+  // onOk,
 }) => {
   const {
     form,
     firstItems,
     secondItems,
     thirdItems,
+    loanLimit,
+    loading,
     handleFormValuesChange,
     saveDraft,
+    checkLoanLimit,
   } = useCollectInforController(data);
-
-  const [loanLimit, setLoanLimit] = useState<number | undefined>(undefined);
-  const [loading, setLoading] = useState(false);
-
-  const checkLoanLimit = async () => {
-    setLoading(true);
-    try {
-      // Call API to check loan limit
-      // const res = await checkLoanLimitAPI(form.getFieldsValue());
-      // setLoanLimit(res.data.loanLimit);
-      // Delay 3s to test
-      await new Promise((resolve) => {
-        setTimeout(resolve, 3000);
-      });
-      setLoanLimit(100000000);
-    } catch (error) {
-      console.error(error);
-      // TODO: handle error
-      onOk();
-    }
-    setLoading(false);
-  };
 
   return (
     <Modal
