@@ -17,7 +17,8 @@ import './index.scss';
 type TInValidate = {
   typeAlertValue?: 'success' | 'error' | 'warning';
   alertTextValue: string;
-  pathRedirect: string;
+  pathRedirect?: string;
+  isRedirect?: boolean;
 };
 
 const { Title } = Typography;
@@ -74,6 +75,7 @@ const ChangePassword = () => {
         inputProps: { placeholder: 'Nhập...', maxLength: 50 },
         colProps: { span: 24, className: 'fw-500' },
         dependencies: ['newPassword'],
+        validateTrigger: 'onBlur',
         rules: [
           { required: true },
           { min: 8, message: 'Mật khẩu phải dài hơn 8 ký tự' },
@@ -109,14 +111,17 @@ const ChangePassword = () => {
 
   const handleInValidate = ({
     alertTextValue,
-    pathRedirect,
+    pathRedirect = HOME,
     typeAlertValue = 'success',
+    isRedirect = true,
   }: TInValidate) => {
     setTypeAlert(typeAlertValue);
     setAlertText(alertTextValue);
-    setTimeout(() => {
-      navigate(pathRedirect);
-    }, 2000);
+    if (isRedirect) {
+      setTimeout(() => {
+        navigate(pathRedirect);
+      }, 2000);
+    }
   };
 
   const handleVerifyInfoUser = (values: ChangePasswordRequest) => {
@@ -141,7 +146,14 @@ const ChangePassword = () => {
         if (response.data) {
           handleInValidate({
             alertTextValue: 'Thay đổi mật khẩu thành công',
-            pathRedirect: HOME,
+          });
+          return;
+        }
+        if (response.errorCode === 'AUTH0006') {
+          handleInValidate({
+            typeAlertValue: 'error',
+            alertTextValue: response.errorDesc,
+            isRedirect: false,
           });
           return;
         }
@@ -176,7 +188,9 @@ const ChangePassword = () => {
   return (
     <div>
       {isChecking ? (
-        <Spin size="large" spinning />
+        <div className="dis-flex jc-center ai-center mt-56">
+          <Spin size="large" spinning />
+        </div>
       ) : (
         <div>
           <Flex

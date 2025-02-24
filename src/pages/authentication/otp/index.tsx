@@ -25,6 +25,11 @@ const items: TFormItem[] = [
       type: 'number',
     },
     colProps: { span: 24, className: 'fw-500' },
+    rules: [
+      {
+        required: true,
+      },
+    ],
   },
 ];
 
@@ -99,7 +104,7 @@ const OTP = () => {
         <LogoOpenIcon />
 
         <FormContentAuth
-          title="Nhâp OTP"
+          title="Nhập OTP"
           subTitle={
             <>
               Một mã OTP đã được gửi vào email: <br />
