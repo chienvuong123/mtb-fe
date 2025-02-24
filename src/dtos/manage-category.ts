@@ -25,6 +25,26 @@ export interface ManagerCategoryDTO extends BaseEntity {
   endDate?: string;
   mainProduct: string;
   subProduct: string;
+  branch: string;
+  branchCode: string;
+  branchName: string;
+  department: string;
+  departmentCode: string;
+  departmentName: string;
+  supervisor: string;
+  supervisorCode: string;
+  supervisorName: string;
+  mainProductCode: string;
+  mainProductName: string;
+  subProductCode: string;
+  subProductName: string;
+  customer: string;
+  deploymentMethod: string;
+  note: string;
+  scope: string;
+  status: string;
+  totalCustomers: number;
+  participatingCustomers: number;
 }
 
 export interface ManageCategorySearchRequest extends BaseSearchParams {

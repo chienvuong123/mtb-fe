@@ -9,10 +9,9 @@ import React from 'react';
 import Title from 'antd/lib/typography/Title';
 import { useParams } from 'react-router-dom';
 import type { CategoryScriptDTO } from 'src/dtos/manage-category-detail';
-import {
-  STATUS_CAMPAIGN_OBJECT,
-  type ESalesCampaign,
-} from '@constants/masterData';
+import { EStatusCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
+import dayjs from 'dayjs';
 
 const BUTTON_TEXT = {
   ADD: 'Thêm mới',
@@ -29,29 +28,22 @@ interface ICategoryDetailTable {
 
 const columns: ColumnType<TCategoryDetaillRecord>[] = [
   {
-    title: 'Mã',
-    dataIndex: 'code',
-    minWidth: 150,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Category',
+    title: 'Mã Campaign',
     dataIndex: 'name',
     minWidth: 150,
     sorter: true,
     showSorterTooltip: false,
   },
   {
-    title: 'Main Product',
-    dataIndex: 'mainProdcut',
+    title: 'Tên Campaign',
+    dataIndex: 'code',
     minWidth: 150,
     sorter: true,
     showSorterTooltip: false,
   },
   {
-    title: 'Sub Product',
-    dataIndex: 'subProduct',
+    title: 'Chi nhánh triển khai',
+    dataIndex: 'branches',
     minWidth: 150,
     sorter: true,
     showSorterTooltip: false,
@@ -62,7 +54,7 @@ const columns: ColumnType<TCategoryDetaillRecord>[] = [
     minWidth: 150,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: ESalesCampaign) => STATUS_CAMPAIGN_OBJECT[value] ?? null,
+    render: (value: EStatusCampaign) => STATUS_CAMPAIGN_OBJECT[value] ?? null,
   },
   {
     title: 'Thời gian bắt đầu',
@@ -70,6 +62,7 @@ const columns: ColumnType<TCategoryDetaillRecord>[] = [
     minWidth: 150,
     sorter: true,
     showSorterTooltip: false,
+    render: (value: string) => dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY),
   },
   {
     title: 'Thời gian kết thúc',
@@ -77,16 +70,10 @@ const columns: ColumnType<TCategoryDetaillRecord>[] = [
     minWidth: 150,
     sorter: true,
     showSorterTooltip: false,
+    render: (value: string) => dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY),
   },
   {
-    title: 'KH tiếp cận',
-    dataIndex: 'totalCustomerApproach',
-    minWidth: 150,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'KH tham gia',
+    title: 'Tổng số khách hàng',
     dataIndex: 'totalCustomerParticipating',
     minWidth: 150,
     sorter: true,
@@ -106,7 +93,7 @@ const CampaignDetailTable: React.FC<ICategoryDetailTable> = ({
     <div>
       <Flex justify="between" className=" items-center mb-4" gap="middle">
         <Title level={4} className="mb-24">
-          Category
+          Campaign
         </Title>
         {!campaignId && (
           <AButton type="primary" variant="filled" className="ml-auto">

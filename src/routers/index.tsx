@@ -141,7 +141,7 @@ const routes = createBrowserRouter(
             {
               path: `${MANAGER_CAMPAIGN.CREATE_CAMPAIGN}`,
               element: createLazyElement(
-                () => import('@pages/campaign/campaign-detail'),
+                () => import('@pages/campaign/campaign-create'),
               ),
             },
             {

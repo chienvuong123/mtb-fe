@@ -24,14 +24,16 @@ export interface CampaignDTO extends BaseEntity {
   startDate?: string;
   endDate?: string;
   categoryCode?: string;
+  campaignCode?: string;
 }
 
 export interface CampaignSearchRequest extends BaseSearchParams {
   code?: string;
   name?: string;
   status?: string;
-  categoryCode?: string;
+  campaignCode?: string;
   categoryType?: string;
+  categoryCode?: string;
 }
 
 export type CampaignSearchResponse = BaseResponse<

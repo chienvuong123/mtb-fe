@@ -1,6 +1,7 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
+import { useQueryCategoryList } from '@hooks/queries';
 
 interface ICampaignFormItemsProps {
   isDisabled: boolean;
@@ -11,19 +12,9 @@ export const useCampaignFormItems = ({
   isDisabled,
   onShowForm,
 }: ICampaignFormItemsProps): TFormItem[] => {
+  const { data: categoryList } = useQueryCategoryList(true);
+
   return [
-    {
-      type: INPUT_TYPE.SELECT,
-      label: 'Mã Campaign',
-      name: 'codeCampaign',
-      inputProps: {
-        placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        disabled: isDisabled,
-        options: MOCK_CUSTOMER_OPTIONS,
-      },
-    },
     {
       type: INPUT_TYPE.SELECT,
       label: 'Category',
@@ -34,19 +25,25 @@ export const useCampaignFormItems = ({
         showSearch: true,
         disabled: isDisabled,
         filterOption: true,
-        options: MOCK_CUSTOMER_OPTIONS,
+        options: categoryList,
       },
     },
     {
-      type: INPUT_TYPE.SELECT,
+      type: INPUT_TYPE.TEXT,
+      label: 'Mã Campaign',
+      name: 'codeCampaign',
+      inputProps: {
+        placeholder: 'Chọn...',
+        disabled: isDisabled,
+      },
+    },
+    {
+      type: INPUT_TYPE.TEXT,
       label: 'Tên Campaign',
       name: 'nameCampaign',
       inputProps: {
         placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
         disabled: isDisabled,
-        options: MOCK_CUSTOMER_OPTIONS,
       },
     },
     {

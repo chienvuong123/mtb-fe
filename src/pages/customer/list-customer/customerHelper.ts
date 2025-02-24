@@ -1,15 +1,10 @@
-import type { BaseResponse, CustomerDTO } from '@dtos';
+import type { CustomerDTO } from '@dtos';
 import type {
   QueryObserverResult,
   RefetchOptions,
 } from '@tanstack/react-query';
 import { downloadFile } from '@utils/fileHelper';
-import type { FormInstance, NotificationArgsProps } from 'antd';
 import type { TCustomerSearchForm } from './customer.type';
-
-const customerError = {
-  CUS0003: 'code',
-};
 
 export const parseCustomerObj = ({
   cusSegment,
@@ -101,25 +96,6 @@ export const destructCustomerData = (
         hobbies,
         identification,
       };
-};
-
-export const validateInsertCustomer = <T>(
-  { errorCode, errorDesc }: BaseResponse<T>,
-  setMsg: (props: NotificationArgsProps) => void,
-  onSuccess: () => void,
-  form?: FormInstance,
-) => {
-  if (errorCode === '0') {
-    onSuccess();
-    return;
-  }
-  const fieldError = customerError[errorCode as keyof typeof customerError];
-  if (errorDesc !== 'SUCCESS') {
-    form?.setFields([{ name: fieldError, errors: [errorDesc] }]);
-    setMsg({ type: 'error', message: errorDesc });
-    return;
-  }
-  setMsg({ type: 'error', message: 'Đã xảy ra lỗi!' });
 };
 
 export const downloadFileByGetMethod = async (

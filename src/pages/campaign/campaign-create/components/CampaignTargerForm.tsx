@@ -9,7 +9,7 @@ interface ICampaignTargetForm {
   isViewMode?: boolean;
   initialValues?: Partial<CampaignTargetDTO> | null;
   onClose: () => void;
-  onSubmit: (values: CampaignTargetDTO) => void;
+  onSubmit?: (values: CampaignTargetDTO) => void;
 }
 
 const items: TFormItem[] = [

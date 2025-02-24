@@ -16,7 +16,7 @@ class ManageCategory extends BaseApi<
   ManageCategorySearchRequest
 > {
   constructor() {
-    super('/manage-category/v1.0');
+    super('/category-campaign/v1.0');
   }
 
   async manageCategoryScript(data: CategoryScriptRequest) {
@@ -32,6 +32,15 @@ class ManageCategory extends BaseApi<
       url: `${this.endpoint}/view`,
       method: 'GET',
       params: data,
+    });
+  }
+
+  async export(params: ManageCategorySearchRequest) {
+    return apiRequest({
+      url: `${this.endpoint}/export`,
+      method: 'GET',
+      params,
+      responseType: 'blob',
     });
   }
 }

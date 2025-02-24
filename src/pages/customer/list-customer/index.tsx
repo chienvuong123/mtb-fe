@@ -4,11 +4,7 @@ import {
   type CustomerSearchRequest,
   type GroupCustomerDTO,
 } from '@dtos';
-import {
-  type FormInstance,
-  type NotificationArgsProps,
-  type UploadFile,
-} from 'antd';
+import { type NotificationArgsProps, type UploadFile } from 'antd';
 import { type FC, type SetStateAction, useMemo, useState } from 'react';
 
 import { UserGroupIcon } from '@assets/icons';
@@ -37,6 +33,7 @@ import { useProfile } from '@stores';
 import { useNotification } from '@libs/antd';
 import { CUSTOMER } from '@routers/path';
 import { useNavigate } from 'react-router-dom';
+import { validationHelper } from '@utils/validationHelper';
 import {
   CustomerForm,
   CustomerListTable,
@@ -48,7 +45,6 @@ import {
   destructCustomerData,
   downloadFileByGetMethod,
   stringifyCustomerObj,
-  validateInsertCustomer,
 } from './customerHelper';
 import { GroupCustomerInsertForm } from '../group-customer/components';
 
@@ -151,10 +147,7 @@ const ListCustomerPage: FC = () => {
   const handlePaginationChange = (data: TPagination) => {
     setPagination(data);
   };
-  const handleSubmitInsert = (
-    data: Partial<CustomerDTO>,
-    form: FormInstance,
-  ) => {
+  const handleSubmitInsert = (data: Partial<CustomerDTO>) => {
     const dData = destructCustomerData(data);
     // update customer
     if (initValues?.id) {
@@ -162,15 +155,11 @@ const ListCustomerPage: FC = () => {
         { ...dData, id: initValues.id },
         {
           onSuccess: (d) =>
-            validateInsertCustomer(
-              d,
-              notify,
-              () =>
-                handleReset({
-                  type: 'success',
-                  message: 'Cập nhật thông tin thành công',
-                }),
-              form,
+            validationHelper(d, notify, () =>
+              handleReset({
+                type: 'success',
+                message: 'Cập nhật thông tin thành công',
+              }),
             ),
         },
       );
@@ -179,15 +168,11 @@ const ListCustomerPage: FC = () => {
     // create new customer
     mutationCreateCustomer(dData, {
       onSuccess: (d) =>
-        validateInsertCustomer(
-          d,
-          notify,
-          () =>
-            handleReset({
-              type: 'success',
-              message: 'Tạo mới thành công',
-            }),
-          form,
+        validationHelper(d, notify, () =>
+          handleReset({
+            type: 'success',
+            message: 'Tạo mới thành công',
+          }),
         ),
     });
   };
@@ -197,7 +182,7 @@ const ListCustomerPage: FC = () => {
   ) => {
     mutationCreateGroupCustomer(values, {
       onSuccess: (d) =>
-        validateInsertCustomer(d, notify, () =>
+        validationHelper(d, notify, () =>
           handleReset({
             type: 'success',
             message: 'Tạo mới thành công',
@@ -242,7 +227,7 @@ const ListCustomerPage: FC = () => {
         },
         {
           onSuccess: (d) => {
-            validateInsertCustomer(d, notify, () => {
+            validationHelper(d, notify, () => {
               resetField?.();
               notify({
                 message: 'Import thành công',

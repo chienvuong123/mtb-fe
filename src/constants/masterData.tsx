@@ -100,7 +100,7 @@ export const STATUS_CAMPAIGN_OPTIONS = [
   },
   {
     value: EStatusCampaign.PENDING,
-    label: <Typography.Text className="info">Sắp diễn ra</Typography.Text>,
+    label: <Typography.Text className="info">Chưa diễn ra</Typography.Text>,
   },
   {
     value: EStatusCampaign.ENDED,
@@ -143,10 +143,10 @@ const optionElementWrapper = (label: string, element: JSX.Element) => (
   </Space>
 );
 
-export const STATUS_CAMPAIGN_OBJECT: Record<ESalesCampaign, ReactNode> = {
-  [ESalesCampaign.DISBURSED]: <ATag color="green">Đang triển khai</ATag>,
-  [ESalesCampaign.OPPORTUNITY_TO_SELL]: <ATag color="blue">Chưa bắt đầu</ATag>,
-  [ESalesCampaign.CANCELED]: <ATag color="red">Kết thúc</ATag>,
+export const STATUS_CAMPAIGN_OBJECT: Record<EStatusCampaign, ReactNode> = {
+  [EStatusCampaign.INPROGRESS]: <ATag color="green">Đang diễn ra</ATag>,
+  [EStatusCampaign.PENDING]: <ATag color="blue">Chưa diễn ra</ATag>,
+  [EStatusCampaign.ENDED]: <ATag color="red">Đã diễn ra</ATag>,
 };
 
 export const STATUS_CUSTOMER_OBJECT: Record<EApproachStatus, ReactNode> = {

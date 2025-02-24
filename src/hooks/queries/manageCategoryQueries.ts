@@ -4,14 +4,12 @@ import type {
   ManageCategorySearchResponse,
   ManagerCategoryDTO,
 } from 'src/dtos/manage-category';
-import type { BaseResponse, BaseSearchResponse, TId } from '@dtos';
+import type { BaseResponse, TId } from '@dtos';
 import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
-import type {
-  CategoryScriptDTO,
-  CategoryScriptRequest,
-  TCategoryDetailDTO,
-} from 'src/dtos/manage-category-detail';
+import type { TCategoryDetailDTO } from 'src/dtos/manage-category-detail';
 import { createBaseQueryHooks } from './baseQueries';
+
+export const MANAGE_CATEGORY = 'manager-category';
 
 export const {
   useSearchQuery: useManageCategorySearchQuery,
@@ -26,22 +24,9 @@ export const {
   // ExampleViewResponse,
   // if you need to transform the search response
   ManageCategorySearchResponse
->('campaign', manageCategoryApi);
+>(MANAGE_CATEGORY, manageCategoryApi);
 
 // define other queries
-export const useCategoryScriptQuery = (
-  data: CategoryScriptRequest,
-  options?: UseQueryOptions<
-    BaseResponse<BaseSearchResponse<CategoryScriptDTO>>,
-    Error
-  >,
-) => {
-  return useQuery({
-    queryKey: ['campaign-script', data],
-    queryFn: () => manageCategoryApi.manageCategoryScript(data),
-    ...options,
-  });
-};
 
 export const useCategoryDetailViewQuery = (
   data: TId,
@@ -49,7 +34,15 @@ export const useCategoryDetailViewQuery = (
 ) => {
   return useQuery({
     queryFn: () => manageCategoryApi.manageCategoryDetail(data),
-    queryKey: ['campaign-detail', data],
+    queryKey: [MANAGE_CATEGORY, 'detail', data],
     ...options,
+  });
+};
+
+export const useCategoryExport = (params: ManageCategorySearchRequest) => {
+  return useQuery({
+    queryKey: [MANAGE_CATEGORY, 'export'],
+    queryFn: () => manageCategoryApi.export(params),
+    enabled: false,
   });
 };

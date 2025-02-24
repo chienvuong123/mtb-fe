@@ -1,36 +1,35 @@
 import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
 import React, { useEffect } from 'react';
-import { dayjsToString } from '@utils/dateHelper';
-import type { FormInstance } from 'antd';
+import { useForm } from 'antd/lib/form/Form';
 import type {
   TCategoryDetailDTO,
   TCategoryDetailSearchForm,
 } from 'src/dtos/manage-category-detail';
-import '../index.scss';
+import dayjs from 'dayjs';
 import { useCategoryFormItems } from '../hook/CategoryDetailSearchForm';
+import '../index.scss';
 
 interface ICategoryDetailSearch {
   initialValues?: Partial<TCategoryDetailDTO>;
   isDisabled: boolean;
-  form: FormInstance;
 }
 
 const CampaignDetailSearch: React.FC<ICategoryDetailSearch> = ({
   initialValues,
   isDisabled,
-  form,
 }) => {
-  const items = useCategoryFormItems({ isDisabled });
+  const [form] = useForm();
+  const items = useCategoryFormItems({ isDisabled, form });
 
   useEffect(() => {
     if (initialValues) {
       form.setFieldsValue({
         ...initialValues,
         startDate: initialValues?.startDate
-          ? dayjsToString(initialValues.startDate)
+          ? dayjs(initialValues.startDate)
           : undefined,
         endDate: initialValues?.endDate
-          ? dayjsToString(initialValues.endDate)
+          ? dayjs(initialValues.endDate)
           : undefined,
       });
     }

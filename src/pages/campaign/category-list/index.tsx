@@ -1,33 +1,49 @@
-/* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 import useUrlParams from '@hooks/useUrlParams';
-import { ESalesCampaign, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
+import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
+import { ODrawer } from '@components/organisms';
 import type { SortOrder } from 'antd/es/table/interface';
 import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
-import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
-import { filterObject } from '@utils/objectHelper';
-import dayjs from 'dayjs';
+import { downloadFileByGetMethod, filterObject } from '@utils/objectHelper';
 import {
+  useCategoryExport,
+  useManageCategoryAddMutation,
+  useManageCategoryEditMutation,
   useManageCategorySearchQuery,
   useManagerCategoryRemoveMutation,
 } from '@hooks/queries/manageCategoryQueries';
 import type { TCampaignSearchForm } from 'src/dtos/campaign';
 import { useNavigate } from 'react-router-dom';
 import { MANAGER_CAMPAIGN } from '@routers/path';
-import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import { Flex, type NotificationArgsProps } from 'antd';
+import { AButton } from '@components/atoms';
+import { useForm } from 'antd/lib/form/Form';
+import { ExportIcon } from '@assets/icons';
+import { dayjsToString } from '@utils/dateHelper';
+import type {
+  ManageCategorySearchRequest,
+  ManagerCategoryDTO,
+} from 'src/dtos/manage-category';
+import { useNotification } from '@libs/antd';
+import type { TFormType } from '@types';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
+import dayjs from 'dayjs';
+import { validationHelper } from '@utils/validationHelper';
 import type { TCategoryTableRecord } from './components/CategoryTable';
 import CategoryTable from './components/CategoryTable';
 import CategorySearch from './components/CategorySearch';
 import './index.scss';
+import CategoryInsert from './components/CategoryInsert';
+import type { TCategoryDetaillRecord } from '../category-detail/components/CategoryDetailTable';
 
 const ManageCategoryPage: React.FC = () => {
-  const [initValues, setInitValues] =
-    useState<Partial<TCategoryTableRecord> | null>(null);
-
+  const [drawerMode, setDrawerMode] = useState<TFormType>();
+  const [initialValuesForm, setInitialValuesForm] =
+    useState<Partial<TCategoryDetaillRecord> | null>(null);
   const {
     pagination: { current, pageSize },
     setPagination,
@@ -38,44 +54,97 @@ const ManageCategoryPage: React.FC = () => {
   } = useUrlParams<Partial<ManagerCategoryDTO>>();
 
   const navigate = useNavigate();
+  const notify = useNotification();
+  const [form] = useForm();
 
-  const { data: manageCategoryRes } = useManageCategorySearchQuery({
-    page: {
-      pageNum: Number(current),
-      pageSize: Number(pageSize),
-    },
-    order: sort,
-    ...filterObject(filters),
-  });
+  const searchParams: ManageCategorySearchRequest = useMemo(
+    () => ({
+      page: {
+        pageNum: Number(current),
+        pageSize: Number(pageSize),
+      },
+      order: sort,
+      ...filterObject(filters),
+      startDate: dayjsToString(filters?.startDate),
+      endDate: dayjsToString(filters?.endDate),
+    }),
+    [current, pageSize, sort, filters],
+  );
 
+  const { data: manageCategoryRes } =
+    useManageCategorySearchQuery(searchParams);
+
+  const handleReset = ({ message, type }: NotificationArgsProps) => {
+    form.resetFields();
+    notify({ message, type });
+  };
+
+  const { mutate: mutationCreateCategory } = useManageCategoryAddMutation();
+  const { mutate: mutationUpdateCategory } = useManageCategoryEditMutation();
   const { mutate: mutationDeleteCategory } = useManagerCategoryRemoveMutation();
+  const { refetch: categoryExport } = useCategoryExport(searchParams);
+
+  const handleCloseForm = () => {
+    setDrawerMode(undefined);
+    setInitialValuesForm(null);
+  };
+
+  const handleSubmitInsert = async () => {
+    const values = await form.validateFields();
+
+    const data: Partial<ManagerCategoryDTO> = {
+      name: values.name,
+      customer: values.customer,
+      deploymentMethod: values.deploymentMethod,
+      mainProduct: values.mainProduct,
+      subProduct: values.subProduct,
+      note: values.note,
+      scope: values.scope,
+      status: values.status,
+      startDate: dayjs(values.startDate).format(DATE_SLASH_FORMAT_DDMMYYYY),
+      endDate: dayjs(values.endDate).format(DATE_SLASH_FORMAT_DDMMYYYY),
+    };
+
+    // update category
+    if (initialValuesForm?.id) {
+      mutationUpdateCategory(
+        { ...data, id: initialValuesForm?.id },
+        {
+          onSuccess: (d) => {
+            validationHelper(d, notify, () => {
+              handleReset({
+                type: 'success',
+                message: 'Thay đổi thành công',
+              });
+              handleCloseForm();
+            });
+          },
+        },
+      );
+      return;
+    }
+
+    // create new category
+    mutationCreateCategory(data, {
+      onSuccess: (d) => {
+        validationHelper(d, notify, () => {
+          handleReset({
+            type: 'success',
+            message: 'Tạo mới thành công',
+          });
+          handleCloseForm();
+        });
+      },
+    });
+  };
 
   const handleCreate = () => {
-    setInitValues({
-      code: undefined,
-      name: '',
-      status: ESalesCampaign.OPPORTUNITY_TO_SELL,
-      startDate: dayjs().format(DATE_SLASH_FORMAT),
-      endDate: dayjs().format(DATE_SLASH_FORMAT),
-    });
-
-    navigate(
-      `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CREATE_CATEGORY}?isCreate=${true}`,
-    );
+    setDrawerMode('add');
   };
 
   const handleEdit = (data: TCategoryTableRecord) => {
-    setInitValues({
-      ...data,
-      startDate: dayjs(data.startDate).format(DATE_SLASH_FORMAT),
-      endDate: dayjs().format(DATE_SLASH_FORMAT),
-    });
-
-    if (data) {
-      navigate(
-        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/${data.id}`,
-      );
-    }
+    setInitialValuesForm(data);
+    setDrawerMode('edit');
   };
 
   const handleSearch = (searchObject: TCampaignSearchForm) => {
@@ -88,7 +157,17 @@ const ManageCategoryPage: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    mutationDeleteCategory({ id });
+    mutationDeleteCategory(
+      { id },
+      {
+        onSuccess: () => {
+          notify({
+            message: 'Xoá thành công',
+            type: 'success',
+          });
+        },
+      },
+    );
   };
 
   const paginations: IMPagination = {
@@ -113,7 +192,6 @@ const ManageCategoryPage: React.FC = () => {
       navigate(
         `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/${id}?isView=${true}`,
       );
-      setInitValues({ ...item });
     }
   };
 
@@ -125,18 +203,28 @@ const ManageCategoryPage: React.FC = () => {
     });
   };
 
-  // TODO: will be removed
-  console.log(initValues);
-
   return (
     <div className="pt-32">
-      <Title level={3} className="mt-24">
-        Danh sách Category
-      </Title>
+      <Flex justify="space-between" className="mb-14">
+        <Title level={3} className="mb-0">
+          Danh sách Category
+        </Title>
+        <Flex gap={16}>
+          <AButton
+            variant="filled"
+            color="primary"
+            icon={<ExportIcon />}
+            onClick={() =>
+              downloadFileByGetMethod(categoryExport, 'catgory-campaign.xlsx')
+            }
+          >
+            Export
+          </AButton>
+        </Flex>
+      </Flex>
       <CategorySearch
         onSearch={handleSearch}
         onClearAll={handleClearAll}
-        initialValues={filters}
         onCreate={handleCreate}
       />
       <div className="mb-24" />
@@ -150,6 +238,24 @@ const ManageCategoryPage: React.FC = () => {
         onView={handleView}
         onSort={handleSort}
       />
+      <ODrawer
+        usePrefixTitle
+        title="category"
+        mode={drawerMode}
+        onClose={handleCloseForm}
+        open={!!drawerMode}
+        width={1025}
+      >
+        <CategoryInsert
+          key={drawerMode ?? 'view'}
+          mode={drawerMode === 'view' ? 'view' : 'add'}
+          initialValues={initialValuesForm}
+          onClose={handleCloseForm}
+          onSubmit={handleSubmitInsert}
+          isDisabled={false}
+          form={form}
+        />
+      </ODrawer>
     </div>
   );
 };

@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/no-unstable-nested-components */
 import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
 import React, { useEffect } from 'react';
 import type {
@@ -9,7 +7,7 @@ import type {
 } from 'src/dtos/campaign-detail';
 import type { ITable } from '@components/organisms';
 import { dayjsToString } from '@utils/dateHelper';
-import type { FormInstance } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import CampaignTargetDetailTable from './CampaignTargetDetailTable';
 import '../index.scss';
 import { useCampaignFormItems } from '../hook/CampaignDetailSearchFrom';
@@ -18,12 +16,11 @@ import type { TCampaignDetaillRecord } from './CampaignDetailTable';
 interface ICampaignDetailSearch {
   initialValues?: Partial<TCampaignDetailDTO>;
   dataSource?: CampaignTargetDTO[];
-  onEdit: ITable<TCampaignDetaillRecord>['onEdit'];
-  onDelete: (id: string) => void;
+  onEdit?: ITable<TCampaignDetaillRecord>['onEdit'];
+  onDelete?: (id: string) => void;
   isDisabled: boolean;
-  onShowForm: () => void;
-  onShowTargetForm: () => void;
-  form: FormInstance;
+  onShowForm?: () => void;
+  onShowTargetForm?: () => void;
 }
 
 const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
@@ -34,9 +31,12 @@ const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
   isDisabled,
   onShowForm,
   onShowTargetForm,
-  form,
 }) => {
-  const items = useCampaignFormItems({ isDisabled, onShowForm });
+  const [form] = useForm();
+  const items = useCampaignFormItems({
+    isDisabled,
+    onShowForm: onShowForm || (() => {}),
+  });
 
   useEffect(() => {
     if (initialValues) {
@@ -54,11 +54,13 @@ const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
 
   return (
     <div className="campaign-detail-search border-2 rounded-8 border-gray-border bg-white">
-      <OFormDetail<TCampaignDetailSearchForm>
-        items={items}
-        form={form}
-        isViewMode
-      />
+      {form && (
+        <OFormDetail<TCampaignDetailSearchForm>
+          items={items}
+          form={form}
+          isViewMode
+        />
+      )}
       <hr className="border-t border-[#EAEAEA] mx-40" />
       <CampaignTargetDetailTable
         dataSource={dataSource || []}

@@ -1,5 +1,10 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import type { BaseAntdOptionType, BaseOptionListDTO } from '@dtos';
+import type {
+  QueryObserverResult,
+  RefetchOptions,
+} from '@tanstack/react-query';
+import { downloadFile } from './fileHelper';
 
 /**
  * Recursively trims all string values in an object.
@@ -93,6 +98,21 @@ function isEqual(value: unknown, other: unknown): boolean {
   return value === other;
 }
 
+const downloadFileByGetMethod = async (
+  promise: (
+    options?: RefetchOptions | undefined,
+  ) => Promise<QueryObserverResult<unknown, Error>>,
+  fileName?: string,
+  onError?: () => void,
+) => {
+  try {
+    const { data: resData } = await promise();
+    if (resData) downloadFile(resData as Blob, fileName);
+  } catch {
+    onError?.();
+  }
+};
+
 export {
   trimObjectValues,
   isNumberArray,
@@ -100,4 +120,5 @@ export {
   transformToOptions,
   getOptionLabel,
   isEqual,
+  downloadFileByGetMethod,
 };
