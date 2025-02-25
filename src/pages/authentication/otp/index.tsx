@@ -125,7 +125,7 @@ const OTP = () => {
                 className="remind-link cursor-pointer"
                 onClick={handleResendOtp}
               >
-                Bấm vào đây!
+                Gửi lại!
               </span>
             </>
           }

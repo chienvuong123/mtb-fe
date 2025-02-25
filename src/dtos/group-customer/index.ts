@@ -15,6 +15,7 @@ export interface GroupCustomerDTO extends BaseEntity {
   categoryId: string;
   nameCategory: string;
   customerQuantity: number;
+  categoryCode: string;
   code: string;
   name: string;
 }

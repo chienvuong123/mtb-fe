@@ -56,6 +56,7 @@ export interface ITableForm<T> {
   editingKey?: string | null;
   selectedRowKeys?: string[];
   hideActions?: boolean;
+  hideIndexColumn?: boolean;
   isShowDeleteBtn?: boolean;
   paginations?: IMPagination;
   setEditingKey?: React.Dispatch<React.SetStateAction<string | null>>;

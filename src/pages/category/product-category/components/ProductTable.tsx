@@ -3,7 +3,6 @@ import type { IMPagination } from '@components/molecules/m-pagination/MPaginatio
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
 import type { OrderDTO, ProductCategoryDTO } from '@dtos';
-import { getTableIndex } from '@pages/category/utils';
 import { useProfile } from '@stores';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
@@ -41,19 +40,6 @@ const ProductTable: FC<IProductTable> = ({
 
   const columns: ColumnType<TProductRecord>[] = useMemo(
     () => [
-      {
-        title: 'STT',
-        dataIndex: 'index',
-        minWidth: 76,
-        align: 'center',
-        render: (_: unknown, __: unknown, idx: number) => {
-          return getTableIndex(
-            idx,
-            paginations.pagination.current,
-            paginations.pagination.pageSize,
-          );
-        },
-      },
       {
         title: 'Mã',
         dataIndex: 'code',
@@ -107,7 +93,7 @@ const ProductTable: FC<IProductTable> = ({
         showSorterTooltip: false,
       },
     ],
-    [paginations],
+    [],
   );
 
   const deleteRecord = (key: Key) => {

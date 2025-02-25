@@ -60,22 +60,31 @@ const transformToCodeNameOptions = <
 ): {
   byCode: BaseAntdOptionType[];
   byName: BaseAntdOptionType[];
+  byId: BaseAntdOptionType[];
 } => {
   const byCode: BaseAntdOptionType[] = [];
   const byName: BaseAntdOptionType[] = [];
+  const byId: BaseAntdOptionType[] = [];
 
   data?.forEach((item) => {
     byName.push({
       value: item.id ?? item.code,
       label: `${item.code} - ${item.name}`,
+      code: item.code,
     });
     byCode.push({
       value: item.id ?? item.code,
       label: item.code,
+      code: item.code,
+    });
+    byId.push({
+      value: item.id ?? item.code,
+      label: String(item.id),
+      code: item.code,
     });
   });
 
-  return { byCode, byName };
+  return { byCode, byName, byId };
 };
 
 export {

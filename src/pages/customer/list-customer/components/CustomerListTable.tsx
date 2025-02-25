@@ -8,14 +8,6 @@ import type { ICustomerTable, TCustomerRecord } from '../customer.type';
 
 const columns: ColumnType<TCustomerRecord>[] = [
   {
-    title: 'STT',
-    dataIndex: 'index',
-    width: 157,
-    minWidth: 157,
-    align: 'center',
-    render: (_: unknown, __: unknown, idx: number) => idx + 1,
-  },
-  {
     title: 'Order ID',
     dataIndex: 'orderId',
     width: 157,

@@ -78,4 +78,5 @@ export type TId = { id: string };
 export type BaseAntdOptionType = {
   label: string;
   value: string | number;
+  code?: string;
 };

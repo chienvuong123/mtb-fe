@@ -63,10 +63,7 @@ const GroupCustomerPage = () => {
       });
   };
 
-  const { mutate: mutationCreateGroupCustomer } = useGroupCustomerAddMutation(
-    {},
-    (data) => handleInvalidate(data),
-  );
+  const { mutate: mutationCreateGroupCustomer } = useGroupCustomerAddMutation();
 
   const handleCreate = () => {
     setDrawerMode('add');
@@ -137,7 +134,9 @@ const GroupCustomerPage = () => {
     };
 
     // create new group customer
-    mutationCreateGroupCustomer(data);
+    mutationCreateGroupCustomer(data, {
+      onSuccess: (resData) => handleInvalidate(resData),
+    });
   };
 
   const dataSources: TGroupCustomerRecord[] =
@@ -148,6 +147,7 @@ const GroupCustomerPage = () => {
           key: i.id as string,
           nameCampaign: i.campaign?.name ?? '',
           nameCategory: i.category?.name ?? '',
+          categoryCode: i.category?.code ?? '',
         })),
       [groupCustomerRes],
     ) ?? [];
@@ -215,6 +215,7 @@ const GroupCustomerPage = () => {
         alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
         <GroupCustomerInsertForm
+          key={drawerMode ?? 'view'}
           mode={drawerMode === 'view' ? 'view' : 'add'}
           initialValues={initialValuesForm}
           onClose={handleCloseForm}

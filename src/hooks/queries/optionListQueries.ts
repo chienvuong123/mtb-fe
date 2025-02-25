@@ -5,6 +5,7 @@ import {
   transformToCodeNameOptions,
   transformToOptions,
 } from '@utils/objectHelper';
+import type { CampaignListRequest } from 'src/dtos/campaign-detail';
 
 export const useCategoryOptionsListQuery = (categoryTypeCode: CategoryType) => {
   return useQuery({
@@ -130,14 +131,17 @@ export const useQueryCategoryList = (getByCode?: boolean) => {
   });
 };
 
-export const useQueryCampaignList = (getByCode?: boolean) => {
+export const useQueryCampaignList = (
+  params?: CampaignListRequest,
+  getById?: boolean,
+) => {
   return useQuery({
-    queryKey: ['campaign', 'list'],
-    queryFn: () => campaignApi.campaignListOptions(),
+    queryKey: ['campaign', 'list', params],
+    queryFn: () => campaignApi.campaignListOptions(params),
     select: ({ data }) => {
-      const { byCode: campaignListByCode, byName: campaignListByName } =
+      const { byId: campaignListById, byName: campaignListByName } =
         transformToCodeNameOptions(data?.content ?? []);
-      return getByCode ? campaignListByCode : campaignListByName;
+      return getById ? campaignListById : campaignListByName;
     },
   });
 };
