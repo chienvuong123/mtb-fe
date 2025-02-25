@@ -1,4 +1,5 @@
 import { OBaseForm } from '@components/organisms';
+import { ACCEPTING_FULL_ALPHA_NUMERIC_SPACE_PATTERN } from '@constants/regex';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { GROUP_CUSTOMER_KEY } from '@hooks/queries/groupCustomerQueries';
 import { INPUT_TYPE, type TFormItem } from '@types';
@@ -78,7 +79,7 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
             rules: [
               { required: true },
               {
-                pattern: /^[a-zA-Z0-9\s]+$/,
+                pattern: ACCEPTING_FULL_ALPHA_NUMERIC_SPACE_PATTERN,
                 message: 'Không được nhập ký tự đặc biệt',
               },
             ],

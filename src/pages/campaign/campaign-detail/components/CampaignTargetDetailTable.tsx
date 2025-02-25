@@ -90,6 +90,7 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
         onEdit={onEdit}
         onDeleteRow={deleteRecord}
         isCheckboxHidden
+        hideIndexColumn
       />
     </div>
   );
