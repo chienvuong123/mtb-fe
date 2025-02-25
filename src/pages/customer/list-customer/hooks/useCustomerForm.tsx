@@ -181,7 +181,7 @@ const useCustomerForm = ({
             required: true,
             rules: [{ required: true }],
             inputProps: {
-              options: MOCK_CUSTOMER_OPTIONS,
+              options: [{ value: '013', label: '013 - Seller' }],
               placeholder: 'Chọn...',
             },
           },
