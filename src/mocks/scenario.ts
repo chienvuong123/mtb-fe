@@ -1,5 +1,6 @@
 import { EControlType, EStatus } from '@constants/masterData';
 import type { AttributeDTO } from '@dtos';
+import sampleScenario from '@assets/images/Scenario.png';
 import { getRandomDate, getRandomUser } from './common';
 
 const mockAttributes: AttributeDTO[] = [
@@ -154,7 +155,7 @@ const mockAttributes: AttributeDTO[] = [
     controlType: EControlType.IMAGE,
     content:
       '<p>1, Đối tượng áp dụng: Áp dụng cho chủ thẻ MB JCB nhận được tin nhắn/thông báo/email mời tham gia chương trình</p><p>2, Thời gian triển khai ưu đãi chia làm 2 giai đoạn</p><p>Giai đoạn 1: Từ ngày 01 tháng 02 đến ngày 28 tháng 02 năm 2025</p><p>Giai đoạn 2: Từ ngày 01 tháng 03 đến ngày 31 tháng 03 năm 2025</p><p>Số lượng giải thưởng/ mỗi giai đoạn: 1,000 giải thưởng hoặc cho đến khi hết ngân sách tùy điều kiện nào đến trước.</p><p>3, Nội dung ưu đãi: Hoàn 100,000 VND cho chủ thẻ MB JCB hợp lệ khi chi tiêu tích lũy đạt 300.000 VND trong từng giai đoạn</p>',
-    config: { title: 'Sample image', src: 'https://placehold.co/1400x800' },
+    config: { title: 'Sample image', src: sampleScenario },
     createdDate: getRandomDate(),
     createdBy: getRandomUser(),
     updatedDate: getRandomDate(),

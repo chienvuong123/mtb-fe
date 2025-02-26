@@ -14,3 +14,19 @@
     }
   }
 }
+
+.control-type-img-wrapper {
+  .control-type-img-content {
+    .mbb-image-preview-img {
+      max-width: 100vw;
+      max-height: none;
+      pointer-events: none;
+      transform: translate3d(0px, 42%, 0px) !important;
+    }
+  }
+  .control-type-img-body {
+    overflow: auto !important;
+    max-height: 100vh !important;
+    pointer-events: auto;
+  }
+}

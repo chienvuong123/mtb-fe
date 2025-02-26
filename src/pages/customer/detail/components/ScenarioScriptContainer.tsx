@@ -32,6 +32,8 @@ import {
 } from 'react';
 import ScenarioScriptFooter from './ScenarioScriptFooter';
 
+import './CollectCustomerInformationModal.scss';
+
 const AttributeItem: FC<{
   data: AttributeDTO;
   onChange?: (id: string, val: string | number | boolean | string[]) => void;
@@ -126,7 +128,26 @@ const AttributeItem: FC<{
       }
       case EControlType.IMAGE: {
         const image = data.config as ControlValue<EControlType.IMAGE>;
-        return <Image alt={image.title} src={image.src} height={300} />;
+        return (
+          <Image
+            alt={image.title}
+            src={image.src}
+            height={300}
+            preview={{
+              classNames: {
+                content: 'control-type-img-content',
+                body: 'control-type-img-body',
+                wrapper: 'control-type-img-wrapper',
+              },
+              movable: false,
+              // imageRender: (originalNode, { transform, image: img }) => { TODO: will be fixed
+              //   // eslint-disable-next-line no-param-reassign
+              //   console.log(transform);
+              //   return originalNode;
+              // },
+            }}
+          />
+        );
       }
       default:
         return data.config as string;
