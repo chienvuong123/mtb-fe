@@ -55,3 +55,6 @@ export { ReactComponent as UserGroupIcon } from './user-group.svg';
 export { ReactComponent as ArrowDown01RoundIcon } from './arrow-down-01-round.svg';
 export { ReactComponent as ArrowLeftBlue } from './arrow-left-blue.svg';
 export { ReactComponent as ForwardArrowIcon } from './forward-arrow.svg';
+export { ReactComponent as LockIcon } from './lock.svg';
+export { ReactComponent as UnlockIcon } from './unlock.svg';
+export { ReactComponent as SwitchIcon } from './switch.svg';
