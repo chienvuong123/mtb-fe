@@ -18,7 +18,7 @@ import { useForm, useWatch } from 'antd/es/form/Form';
 import type { UploadChangeParam } from 'antd/es/upload';
 import { MSingleFileProgress } from '@components/molecules';
 
-interface IUploadPopup {
+export interface IUploadPopup {
   modalProps: ModalProps;
   draggerProps?: DraggerProps;
   children?: React.ReactNode;
@@ -26,10 +26,10 @@ interface IUploadPopup {
   progress?: number;
   showError?: boolean | string;
   disabled?: boolean;
-  onSubmit: (file: UploadFile[]) => void;
-  onDowloadEg?: () => void;
+  onSubmit?: (file: UploadFile[], resetField?: () => void) => void;
+  onDownloadEg?: () => void;
   onCancelImport?: () => void;
-  setError?: Dispatch<SetStateAction<boolean>>;
+  setError?: Dispatch<SetStateAction<boolean | string>>;
   setProgress?: Dispatch<SetStateAction<number>>;
 }
 
@@ -43,7 +43,7 @@ const OUploadPopup: FC<IUploadPopup> = ({
   showError,
   disabled,
   onSubmit,
-  onDowloadEg,
+  onDownloadEg,
   onCancelImport,
   setError,
   setProgress,
@@ -88,7 +88,7 @@ const OUploadPopup: FC<IUploadPopup> = ({
   };
 
   const handleSubmit = (values: TUpload) => {
-    onSubmit(values?.file);
+    onSubmit?.(values?.file, form.resetFields);
     setError?.(false);
   };
 
@@ -155,7 +155,7 @@ const OUploadPopup: FC<IUploadPopup> = ({
               >
                 Tải template
               </Typography.Text>
-              <AButton icon={<SheetIcon />} onClick={onDowloadEg}>
+              <AButton icon={<SheetIcon />} onClick={onDownloadEg}>
                 Tải về
               </AButton>
             </>

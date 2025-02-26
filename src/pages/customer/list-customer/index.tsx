@@ -4,17 +4,15 @@ import {
   type CustomerSearchRequest,
   type GroupCustomerDTO,
 } from '@dtos';
-import { Flex, type FormInstance, type UploadFile } from 'antd';
-import Title from 'antd/lib/typography/Title';
-import { type FC, useMemo, useState } from 'react';
+import { type FormInstance, type UploadFile } from 'antd';
+import { type FC, type SetStateAction, useMemo, useState } from 'react';
 
-import { ExportIcon, ImportIcon, UserGroupIcon } from '@assets/icons';
+import { UserGroupIcon } from '@assets/icons';
 import { AButton } from '@components/atoms';
 import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
-import { OUploadPopup } from '@components/organisms/o-upload-popup';
 import {
   useCustomerAddMutation,
   useCustomerDownloadTemplete,
@@ -28,7 +26,7 @@ import {
 import useUrlParams from '@hooks/useUrlParams';
 import { filterObject } from '@utils/objectHelper';
 
-import { ODrawer, type TDrawerMsg } from '@components/organisms';
+import { ODrawer, OTitleBlock, type TDrawerMsg } from '@components/organisms';
 import type { SortOrder } from 'antd/es/table/interface';
 import { downloadBase64File } from '@utils/fileHelper';
 import { useProfile } from '@stores';
@@ -62,10 +60,7 @@ const ListCustomerPage: FC = () => {
   const [initValues, setInitValues] = useState<Partial<CustomerDTO> | null>(
     null,
   );
-  const [showExport, setShowImport] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
-  const [progressPercent, setProgressPercent] = useState(0);
-  const [uploadError, setUploadError] = useState(false);
 
   const {
     pagination: { current, pageSize },
@@ -219,7 +214,13 @@ const ListCustomerPage: FC = () => {
     );
   };
 
-  const handleImportCustomer = (file: UploadFile[]) => {
+  const handleImportCustomer = (
+    file: UploadFile[],
+    setProgressPercent?: React.Dispatch<SetStateAction<number>>,
+    setError?: React.Dispatch<SetStateAction<boolean | string>>,
+    resetPopup?: () => void,
+    resetField?: () => void,
+  ) => {
     abortController = new AbortController();
     if (file?.[0]?.originFileObj) {
       mutationImportCustomer(
@@ -229,19 +230,19 @@ const ListCustomerPage: FC = () => {
             const percent = Math.round(
               (progressEvent.loaded * 100) / (progressEvent.total || 1),
             );
-            setProgressPercent(percent);
+            setProgressPercent?.(percent);
           },
           signal: abortController.signal,
         },
         {
           onSuccess: (d) => {
             validateInsertCustomer(d, setAlertMessage, () => {
+              resetField?.();
               setAlertMessage({
                 message: 'Import thành công',
                 type: 'success',
               });
-              setShowImport(false);
-              setProgressPercent(0);
+              resetPopup?.();
               if (current !== 1) {
                 setPagination((pre) => ({ ...pre, current: 1 }));
               } else {
@@ -253,8 +254,8 @@ const ListCustomerPage: FC = () => {
             }
           },
           onError: () => {
-            setProgressPercent(0);
-            setUploadError(true);
+            setError?.(true);
+            setProgressPercent?.(0);
           },
         },
       );
@@ -336,65 +337,36 @@ const ListCustomerPage: FC = () => {
 
   return (
     <div className="pt-32">
-      <OUploadPopup
-        progress={progressPercent}
-        setProgress={setProgressPercent}
-        modalProps={{
-          open: showExport,
-          title: 'Tải lên danh sách khách hàng',
-          onCancel: () => {
-            setShowImport(false);
-            setProgressPercent(0);
-          },
-        }}
-        onSubmit={handleImportCustomer}
-        onDowloadEg={() =>
+      <OTitleBlock
+        title="Danh sách khách hàng"
+        showImport={isAdmin || isCampaignManager}
+        onExport={() => downloadFileByGetMethod(customerExport, 'DSKH.xlsx')}
+        onImport={handleImportCustomer}
+        onDownloadEg={() =>
           downloadFileByGetMethod(downloadTemplate, 'DSKH_Template.xlsx')
         }
-        onCancelImport={cancelImport}
-        showError={uploadError}
-        setError={setUploadError}
-        disabled={importCustomerLoading}
-      />
-
-      <Flex justify="space-between" className="mb-14">
-        <Title level={3} className="mb-0">
-          Danh sách khách hàng
-        </Title>
-        <Flex gap={16}>
-          {(isAdmin || isCampaignManager) && (
-            <AButton
-              variant="filled"
-              color="primary"
-              icon={<ImportIcon />}
-              onClick={() => setShowImport(true)}
-            >
-              Import
-            </AButton>
-          )}
+        popupProps={{
+          disabled: importCustomerLoading,
+          modalProps: {
+            title: 'Tải lên danh sách khách hàng',
+          },
+          onCancelImport: cancelImport,
+        }}
+      >
+        {(isAdmin || isCampaignManager || isSaleManager) && (
           <AButton
             variant="filled"
             color="primary"
-            icon={<ExportIcon />}
-            onClick={() => downloadFileByGetMethod(customerExport, 'DSKH.xlsx')}
+            icon={<UserGroupIcon />}
+            onClick={() => {
+              setDrawerMode('group');
+              setDrawerWidth(DRAWER_WIDTH.group);
+            }}
           >
-            Export
+            Tạo nhóm khách hàng
           </AButton>
-          {(isAdmin || isCampaignManager || isSaleManager) && (
-            <AButton
-              variant="filled"
-              color="primary"
-              icon={<UserGroupIcon />}
-              onClick={() => {
-                setDrawerMode('group');
-                setDrawerWidth(DRAWER_WIDTH.group);
-              }}
-            >
-              Tạo nhóm khách hàng
-            </AButton>
-          )}
-        </Flex>
-      </Flex>
+        )}
+      </OTitleBlock>
 
       <CustomerSearchForm
         onSearch={handleSearch}

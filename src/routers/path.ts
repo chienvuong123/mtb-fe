@@ -46,6 +46,12 @@ const ROUTE_PATH = {
     CREATE: 'create',
     DETAIL: ':id',
   },
+  SELLER: {
+    ROOT: '/seller',
+    LIST: 'list',
+    ASSIGNMENT: 'assignment',
+    DETAIL: ':id',
+  },
 };
 
 export const {
@@ -65,4 +71,5 @@ export const {
   CUSTOMER,
   MANAGER_CATEGORY,
   SCENARIO,
+  SELLER,
 } = ROUTE_PATH;

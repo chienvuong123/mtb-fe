@@ -55,6 +55,28 @@ export type SellerDTO = {
 };
 
 // seller details
+interface SellerCampaign extends BaseEntity {
+  campaignManagerId: string;
+  categoryId: string;
+  code: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  supervisor: string;
+  customerCatalog: string;
+  note: string;
+  branches: string;
+  implementationMethod: string;
+  scopeImplementation: string;
+}
+
+type CampaignData = {
+  campaign: SellerCampaign;
+  customerCount: number;
+  approachedCount: number;
+  notApproachedCount: number;
+};
+
 export type SellerDetailsDTO = {
   code: string;
   name: string;
@@ -64,7 +86,7 @@ export type SellerDetailsDTO = {
   department: string;
   position: string;
   totalCampaign: number;
-  campaigns: [];
+  campaigns: CampaignData[];
 };
 
 // assignment

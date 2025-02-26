@@ -56,7 +56,7 @@ const Campaign: React.FC = () => {
   const [showExport, setShowImport] = useState<boolean>(false);
   const [progressPercent, setProgressPercent] = useState(0);
   const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
-  const [uploadError, setUploadError] = useState(false);
+  const [uploadError, setUploadError] = useState<string | boolean>(false);
 
   const {
     pagination: { current, pageSize },
@@ -264,7 +264,7 @@ const Campaign: React.FC = () => {
           },
         }}
         onSubmit={handleImportCustomer}
-        onDowloadEg={() =>
+        onDownloadEg={() =>
           downloadFileByGetMethod(downloadTemplate, 'DSKH_Template.xlsx')
         }
         onCancelImport={cancelImport}

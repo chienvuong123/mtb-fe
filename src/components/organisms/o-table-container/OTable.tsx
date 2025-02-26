@@ -54,13 +54,22 @@ const OTable = <T extends object & TTableKey>({
   const transformColumns: ColumnType<T>[] = useMemo(() => {
     const columnsWithSort: ColumnType<T>[] = sortDirection
       ? columns.map((col) => {
+          const transformDirection =
+            sortDirection && sortDirection.field?.includes('.')
+              ? {
+                  field: sortDirection.field.split('.'),
+                  direction: sortDirection.direction,
+                }
+              : sortDirection;
           if (
-            col.dataIndex === sortDirection.field &&
-            sortDirection.direction
+            JSON.stringify(col.dataIndex) ===
+              JSON.stringify(transformDirection.field) &&
+            transformDirection.direction
           ) {
             return {
               ...col,
-              sortOrder: SORT_ORDER_FOR_CLIENT[sortDirection.direction] ?? null,
+              sortOrder:
+                SORT_ORDER_FOR_CLIENT[transformDirection.direction] ?? null,
             };
           }
           return col;
