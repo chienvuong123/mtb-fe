@@ -31,13 +31,6 @@ const statusObject: Record<ESalesCampaign, ReactNode> = {
 
 const columns: ColumnType<TCampaignRecord>[] = [
   {
-    title: 'STT',
-    dataIndex: 'index',
-    minWidth: 59,
-    align: 'center',
-    render: (_: unknown, __: unknown, idx: number) => idx + 1,
-  },
-  {
     title: 'Mã Campaign',
     dataIndex: 'code',
     minWidth: 76,

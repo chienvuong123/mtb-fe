@@ -7,6 +7,7 @@ import { SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
 import type { OrderDTO } from '@dtos';
 import type { ColumnType, TableProps } from 'antd/es/table';
 import clsx from 'clsx';
+import { getTableIndex } from '@pages/category/utils';
 import { OModalConfirm } from '../o-modal';
 import type { IModalConfirm } from '../o-modal/OModalConfirm';
 import type { FixedType, ITableForm, TTableKey } from './OTableForm.type';
@@ -36,6 +37,7 @@ const OTable = <T extends object & TTableKey>({
   columns,
   selectedRowKeys,
   hideActions,
+  hideIndexColumn,
   paginations,
   sortDirection,
   confirmProps,
@@ -67,6 +69,23 @@ const OTable = <T extends object & TTableKey>({
 
     return (
       [
+        ...(hideIndexColumn
+          ? []
+          : [
+              {
+                title: 'STT',
+                dataIndex: 'index',
+                minWidth: 76,
+                align: 'center',
+                render: (_: unknown, __: unknown, idx: number) => {
+                  return getTableIndex(
+                    idx,
+                    paginations?.pagination.current,
+                    paginations?.pagination.pageSize,
+                  );
+                },
+              },
+            ]),
         ...columnsWithSort,
         ...(hideActions
           ? []
@@ -102,7 +121,16 @@ const OTable = <T extends object & TTableKey>({
       if (i?.render) return i;
       return { ellipsis: true, ...i };
     });
-  }, [columns, hideActions, sortDirection, onDeleteRow, onEdit, onView]);
+  }, [
+    columns,
+    hideActions,
+    sortDirection,
+    paginations,
+    hideIndexColumn,
+    onDeleteRow,
+    onEdit,
+    onView,
+  ]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys?.(newSelectedRowKeys as string[]);

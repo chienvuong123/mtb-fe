@@ -6,6 +6,7 @@ import type {
 } from '@dtos';
 import type { CampaignDTO, CampaignSearchRequest } from 'src/dtos/campaign';
 import type {
+  CampaignListRequest,
   CampaignScriptDTO,
   CampaignScriptRequest,
   TCampaignDetailDTO,
@@ -35,10 +36,11 @@ class CampaignApi extends BaseApi<CampaignDTO, CampaignSearchRequest> {
     });
   }
 
-  async campaignListOptions() {
+  async campaignListOptions(data?: CampaignListRequest) {
     return apiRequest<BaseResponse<BaseSearchResponse<BaseOptionListDTO>>>({
       url: `${this.endpoint}/list`,
       method: 'GET',
+      params: data,
     });
   }
 

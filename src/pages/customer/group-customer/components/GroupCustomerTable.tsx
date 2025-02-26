@@ -19,15 +19,8 @@ interface IGroupCustomerTable {
 
 const columns: ColumnType<TGroupCustomerRecord>[] = [
   {
-    title: 'STT',
-    dataIndex: 'index',
-    minWidth: 76,
-    align: 'center',
-    render: (_: unknown, __: unknown, idx: number) => idx + 1,
-  },
-  {
     title: 'Mã Category',
-    dataIndex: 'categoryId',
+    dataIndex: 'categoryCode',
     minWidth: 104,
     showSorterTooltip: false,
   },

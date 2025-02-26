@@ -25,13 +25,6 @@ interface ICategoryTable {
 
 const columns: ColumnType<TCategoryTableRecord>[] = [
   {
-    title: 'STT',
-    dataIndex: 'index',
-    minWidth: 59,
-    align: 'center',
-    render: (_: unknown, __: unknown, idx: number) => idx + 1,
-  },
-  {
     title: 'Mã',
     dataIndex: 'code',
     minWidth: 76,

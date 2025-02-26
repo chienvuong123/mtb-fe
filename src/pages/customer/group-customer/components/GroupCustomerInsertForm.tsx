@@ -1,4 +1,5 @@
 import { OBaseForm } from '@components/organisms';
+import { ACCEPTING_FULL_ALPHA_NUMERIC_SPACE_PATTERN } from '@constants/regex';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { GROUP_CUSTOMER_KEY } from '@hooks/queries/groupCustomerQueries';
 import { INPUT_TYPE, type TFormItem } from '@types';
@@ -25,7 +26,17 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
   const categoryId = useWatch('categoryId', form);
 
   const { data: categoryList } = useQueryCategoryList();
-  const { data: campaignList } = useQueryCampaignList();
+
+  const categoryCode = categoryList?.find((i) => {
+    return i.value === categoryId;
+  })?.code;
+
+  const { data: campaignList } = useQueryCampaignList(
+    {
+      categoryCode,
+    },
+    true,
+  );
 
   const unselectedCategory = !categoryId;
 
@@ -62,14 +73,25 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
             type: INPUT_TYPE.TEXT,
             label: 'Mã nhóm',
             name: 'code',
-            maxLength: 100,
-            rules: [{ required: true }],
+            inputProps: {
+              maxLength: 30,
+            },
+            rules: [
+              { required: true },
+              {
+                pattern: ACCEPTING_FULL_ALPHA_NUMERIC_SPACE_PATTERN,
+                message: 'Không được nhập ký tự đặc biệt',
+              },
+            ],
+            normalize: (value: string) => value.trim(),
           },
           {
             type: INPUT_TYPE.TEXT,
             label: 'Tên nhóm',
             name: 'name',
-            maxLength: 100,
+            inputProps: {
+              maxLength: 100,
+            },
             rules: [{ required: true }],
           },
         ] as TFormItem[]
@@ -98,6 +120,12 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
     }
     form.resetFields();
   }, [initialValues, form, mode]);
+
+  useEffect(() => {
+    if (unselectedCategory || !campaignList?.length) {
+      form.resetFields(['campaignId']);
+    }
+  }, [unselectedCategory, form, campaignList]);
 
   return (
     <div>

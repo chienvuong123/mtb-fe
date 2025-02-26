@@ -3,7 +3,6 @@ import type { IMPagination } from '@components/molecules/m-pagination/MPaginatio
 import { OTable, type ITable, type TTableKey } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
 import type { MediaCategoryDTO, OrderDTO } from '@dtos';
-import { getTableIndex } from '@pages/category/utils';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
@@ -39,19 +38,6 @@ const MediaTable: FC<IMediaTable> = ({
 
   const columns: ColumnType<TMediaRecord>[] = useMemo(
     () => [
-      {
-        title: 'STT',
-        dataIndex: 'index',
-        minWidth: 76,
-        align: 'center',
-        render: (_: unknown, __: unknown, idx: number) => {
-          return getTableIndex(
-            idx,
-            paginations.pagination.current,
-            paginations.pagination.pageSize,
-          );
-        },
-      },
       {
         title: 'Mã',
         dataIndex: 'code',
@@ -105,7 +91,7 @@ const MediaTable: FC<IMediaTable> = ({
         showSorterTooltip: false,
       },
     ],
-    [paginations],
+    [],
   );
 
   const deleteRecord = (key: Key) => {

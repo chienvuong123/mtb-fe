@@ -26,13 +26,6 @@ const statusObject: Record<EApproachStatus, ReactNode> = {
 
 const columns: ColumnType<TCustomerApproachRecord>[] = [
   {
-    title: 'STT',
-    dataIndex: 'index',
-    minWidth: 50,
-    align: 'center',
-    render: (_: unknown, __: unknown, idx: number) => idx + 1,
-  },
-  {
     title: 'Lần tiếp cận số',
     dataIndex: ['approachPlan', 'code'],
     minWidth: 80,

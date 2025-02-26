@@ -50,3 +50,9 @@ export interface CampaignScriptRequest extends BaseSearchParams {
   code?: string;
   name?: string;
 }
+
+export interface CampaignListRequest extends BaseSearchParams {
+  code?: string;
+  name?: string;
+  categoryCode?: string;
+}

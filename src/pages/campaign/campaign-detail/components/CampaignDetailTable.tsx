@@ -27,13 +27,6 @@ interface ICampaignDetailTable {
 
 const columns: ColumnType<TCampaignDetaillRecord>[] = [
   {
-    title: 'STT',
-    dataIndex: 'index',
-    minWidth: 76,
-    align: 'center',
-    render: (_: unknown, __: unknown, idx: number) => idx + 1,
-  },
-  {
     title: 'Phương thức tiếp cận',
     dataIndex: 'name',
     minWidth: 326,

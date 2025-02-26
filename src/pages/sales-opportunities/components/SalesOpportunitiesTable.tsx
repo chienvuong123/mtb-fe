@@ -32,13 +32,6 @@ export const statusSalesOpportunitiesObject: Record<
 
 const columns: ColumnType<TSalesOpportunitiesRecord>[] = [
   {
-    title: 'STT',
-    dataIndex: 'index',
-    minWidth: 76,
-    align: 'center',
-    render: (_: unknown, __: unknown, idx: number) => idx + 1,
-  },
-  {
     title: 'Mã khách hàng',
     dataIndex: 'customerId',
     minWidth: 104,
