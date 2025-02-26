@@ -10,3 +10,4 @@ export * from './scenarioQueries';
 export * from './campaignQueries';
 export * from './optionListQueries';
 export * from './groupCustomerQueries';
+export * from './sellerQueries';
