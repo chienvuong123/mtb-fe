@@ -192,15 +192,30 @@ const SellerTable: FC<ISellerTable> = ({
   };
 
   const handleSubmit = () => {
+    if (!campaignId) return;
     const data: AssignmentSellerRequestDTO = {
-      campaignId: 'campaingId',
+      campaignId,
       totalQuantity: totalCustomer,
       dataSplitSellerDtos: getDataSplitSeller(
         form.getFieldsValue(),
         tableRecords,
       ),
     };
-    assignCustomerMutate(data);
+    assignCustomerMutate(data, {
+      onSuccess: ({ errorCode, errorDesc }) => {
+        if (errorCode !== '0') {
+          // if error
+          setAlertMessage({ message: errorDesc, type: 'error' });
+          return;
+        }
+        // if success
+        setAlertMessage({
+          message: 'Lưu thành công',
+          type: 'success',
+        });
+        refetchSellerList?.();
+      },
+    });
   };
 
   const handleAddSeller = (sellerIds: string[]) => {
