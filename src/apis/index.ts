@@ -13,3 +13,4 @@ export * from './scenarioApi';
 export * from './assetApi';
 export * from './locationApi';
 export * from './manageCategoryApi';
+export * from './sellerApi';
