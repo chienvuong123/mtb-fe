@@ -22,7 +22,7 @@ class SellerApiImpl
   }
 
   async assignCustomer(data: AssignmentSellerRequestDTO) {
-    return apiRequest({
+    return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/assign-customer-to-seller`,
       method: 'POST',
       data,
