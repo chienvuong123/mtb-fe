@@ -11,6 +11,7 @@ interface ISearchBaseForm<T> {
   items: TFormItem[];
   form: FormInstance<T>;
   disabledCreate?: boolean;
+  searchText?: string;
   onSearch: (values: T) => void;
   onClearAll?: () => void;
   onDeleteAll?: () => void;
@@ -28,6 +29,7 @@ const OSearchBaseForm = <T extends object>({
   form,
   items,
   disabledCreate,
+  searchText = BUTTON_TEXT.SEARCH,
   onSearch,
   onClearAll,
   onDeleteAll,
@@ -92,7 +94,7 @@ const OSearchBaseForm = <T extends object>({
             htmlType="submit"
             data-testid="search-button"
           >
-            {BUTTON_TEXT.SEARCH}
+            {searchText}
           </AButton>
           {Boolean(onCreate) && (
             <AButton

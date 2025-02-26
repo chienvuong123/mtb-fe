@@ -1,0 +1,140 @@
+import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
+import { type SellerSearchRequest } from '@dtos';
+import { useEffect, useMemo, type FC } from 'react';
+
+import type {
+  IMPagination,
+  TPagination,
+} from '@components/molecules/m-pagination/MPagination.type';
+import useUrlParams from '@hooks/useUrlParams';
+import { filterObject } from '@utils/objectHelper';
+import type { SortOrder } from 'antd/es/table/interface';
+import { OTitleBlock } from '@components/organisms';
+import { useNavigate } from 'react-router-dom';
+import { useSellerSearchQuery } from '@hooks/queries';
+import {
+  SellerSearchForm,
+  SellerTable,
+  type TSellerRecord,
+} from './components';
+
+const SellerPage: FC = () => {
+  const {
+    pagination: { current, pageSize },
+    setPagination,
+    sort,
+    setSort,
+    filters,
+    setFilters,
+  } = useUrlParams<Partial<SellerSearchRequest>>();
+
+  const navigate = useNavigate();
+
+  const { data: productRes, isLoading } = useSellerSearchQuery({
+    page: {
+      pageNum: Number(current),
+      pageSize: Number(pageSize),
+    },
+    order: sort,
+    ...filterObject(filters),
+  });
+
+  const handleCreate = () => {
+    // navigate here
+  };
+
+  const handleEdit = () => {
+    // navigate here
+  };
+
+  const handleSearch = (data: SellerSearchRequest) => {
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setFilters(data);
+  };
+
+  const handlePaginationChange = (data: TPagination) => {
+    setPagination(data);
+  };
+
+  const dataSources: TSellerRecord[] =
+    useMemo(
+      () =>
+        productRes?.data?.content?.map((i) => ({
+          ...i,
+          key: i.id,
+        })),
+      [productRes],
+    ) ?? [];
+
+  const paginations: IMPagination = {
+    pagination: {
+      current,
+      pageSize,
+      total: productRes?.data?.total ?? 1,
+    },
+    setPagination: handlePaginationChange,
+    optionPageSize: [10, 20, 50, 100],
+    className: 'flex-end',
+  };
+
+  const handleClearAll = () => {
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setFilters({});
+  };
+
+  const handleView = (id: string) => {
+    navigate(`${id}`);
+  };
+
+  const handleSort = (field: string | string[], direction: SortOrder) => {
+    const orderField = Array.isArray(field) ? field.join('.') : field;
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setSort({
+      field: orderField,
+      direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+    });
+  };
+
+  useEffect(() => {
+    if (!isLoading && !productRes?.data?.content?.length && current > 1) {
+      setPagination((prev) => ({
+        ...prev,
+        current: prev.current - 1,
+        total: productRes?.data?.total ?? 1,
+      }));
+    }
+  }, [productRes, setPagination, current, isLoading]);
+
+  return (
+    <div className="pt-32 category-product">
+      <OTitleBlock
+        title="Danh sách Seller"
+        showImport={false}
+        showExport={false}
+        popupProps={{
+          modalProps: {
+            title: 'Tải lên danh sách Seller',
+          },
+        }}
+      />
+
+      <SellerSearchForm
+        onSearch={handleSearch}
+        onClearAll={handleClearAll}
+        initialValues={filterObject(filters)}
+        onCreate={handleCreate}
+      />
+      <div className="mt-24" />
+      <SellerTable
+        dataSource={dataSources}
+        paginations={paginations}
+        sortDirection={sort}
+        onEdit={handleEdit}
+        onView={handleView}
+        onSort={handleSort}
+      />
+    </div>
+  );
+};
+
+export default SellerPage;

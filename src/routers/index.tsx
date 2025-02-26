@@ -14,9 +14,10 @@ import {
   OTP,
   SALES_OPPORTUNITIES,
   MANAGER_CATEGORY,
-  SETTING,
   SCENARIO,
   EXPRIED_CHANGE_PASSWORD,
+  SELLER,
+  SETTING,
 } from './path';
 
 const GuestGuard = React.lazy(() => import('./guards/GuestGuard'));
@@ -245,6 +246,34 @@ const routes = createBrowserRouter(
           element: createLazyElement(
             () => import('@pages/sales-opportunities'),
           ),
+        },
+        {
+          path: SELLER.ROOT,
+          element: (
+            <RoleBasedGuard
+              accessibleRoles={[
+                ERole.ADMIN,
+                ERole.CAMPAIGN_MANAGER,
+                ERole.SALE_LEADER,
+              ]}
+            />
+          ),
+          children: [
+            {
+              path: '',
+              element: createLazyElement(() => import('@pages/seller/list')),
+            },
+            {
+              path: SELLER.DETAIL,
+              element: createLazyElement(() => import('@pages/seller/details')),
+            },
+            {
+              path: SELLER.ASSIGNMENT,
+              element: createLazyElement(
+                () => import('@pages/seller/assignment'),
+              ),
+            },
+          ],
         },
       ],
     },

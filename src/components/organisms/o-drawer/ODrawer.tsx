@@ -14,7 +14,7 @@ import './index.scss';
 
 export type TDrawerMsg = Pick<IAAlert, 'message' | 'type'>;
 
-interface IDrawer extends DrawerProps {
+export interface IDrawer extends DrawerProps {
   usePrefixTitle?: boolean;
   mode?: TFormType;
   alertProps?: IAAlert & {

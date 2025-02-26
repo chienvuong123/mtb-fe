@@ -1,6 +1,12 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import type { BaseAntdOptionType } from '@dtos';
 
+export type TConvertField = 'id' | 'code' | 'name';
+export type TConvertFieldObj = {
+  label: TConvertField;
+  value: TConvertField;
+};
+
 /**
  * Recursively trims all string values in an object.
  * @param obj - The object to trim.
@@ -57,14 +63,17 @@ const transformToCodeNameOptions = <
   T extends { id?: string | number; code: string; name: string },
 >(
   data: T[],
+  customField?: TConvertFieldObj,
 ): {
   byCode: BaseAntdOptionType[];
   byName: BaseAntdOptionType[];
   byId: BaseAntdOptionType[];
+  customOptions: BaseAntdOptionType[];
 } => {
   const byCode: BaseAntdOptionType[] = [];
   const byName: BaseAntdOptionType[] = [];
   const byId: BaseAntdOptionType[] = [];
+  const customOptions: BaseAntdOptionType[] = [];
 
   data?.forEach((item) => {
     byName.push({
@@ -82,9 +91,19 @@ const transformToCodeNameOptions = <
       label: String(item.id),
       code: item.code,
     });
+
+    if (customField) {
+      const value = item[customField.value];
+      const label = item[customField.label];
+      if (value === undefined || label === undefined) return;
+      customOptions.push({
+        value,
+        label: String(label),
+      });
+    }
   });
 
-  return { byCode, byName, byId };
+  return { byCode, byName, byId, customOptions };
 };
 
 export {

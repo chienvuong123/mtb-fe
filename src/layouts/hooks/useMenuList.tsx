@@ -17,6 +17,7 @@ import {
   MANAGER_CATEGORY,
   SALES_OPPORTUNITIES,
   SCENARIO,
+  SELLER,
   SETTING,
 } from '@routers/path';
 import { Link } from 'react-router-dom';
@@ -104,6 +105,21 @@ const useMenuList = (onLogout?: () => void) => {
           {
             key: `${SCENARIO.ROOT}/abcs-1234`,
             label: 'Chi tiết kịch bản',
+          },
+        ],
+      },
+      {
+        key: SELLER.ROOT,
+        label: 'Quản lý Seller',
+        icon: <MuslimIcon />,
+        children: [
+          {
+            key: SELLER.ROOT,
+            label: 'Danh sách Seller',
+          },
+          {
+            key: `${SELLER.ROOT}/${SELLER.ASSIGNMENT}`,
+            label: 'Phân công Seller',
           },
         ],
       },

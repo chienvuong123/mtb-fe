@@ -1,4 +1,11 @@
-import { Divider, Flex, Form, type FormInstance, Typography } from 'antd';
+import {
+  type ButtonProps,
+  Divider,
+  Flex,
+  Form,
+  type FormInstance,
+  Typography,
+} from 'antd';
 import { trimObjectValues } from '@utils/objectHelper';
 import { AButton } from '@components/atoms';
 import { useFormItems } from '@hooks';
@@ -23,6 +30,8 @@ interface IOBaseForm<T> {
   isViewMode?: boolean;
   mutationKey: string;
   disabledSubmit?: boolean;
+  children?: React.ReactNode;
+  saveBtnProps?: ButtonProps;
 }
 
 const OBaseForm = <T extends object>({
@@ -34,6 +43,8 @@ const OBaseForm = <T extends object>({
   isViewMode,
   mutationKey,
   disabledSubmit,
+  children,
+  saveBtnProps,
 }: IOBaseForm<T>) => {
   const isMutating = useDebouncedMutating({ mutationKey: [mutationKey] });
 
@@ -81,9 +92,10 @@ const OBaseForm = <T extends object>({
       <div className="o-base-form pos-relative">
         <div className="form-wrapper px-40 py-28" data-testid="form-content">
           {formContent}
+          {children}
         </div>
 
-        <div className="w-full btn-group" hidden={isViewMode}>
+        <div className="w-full btn-group bg-white" hidden={isViewMode}>
           <Divider className="ma-0" />
           <Flex justify="center" className="py-16 w-full" gap="middle">
             <AButton
@@ -99,6 +111,7 @@ const OBaseForm = <T extends object>({
               htmlType="submit"
               data-testid="submit-button"
               disabled={disabledSubmit ?? isMutating}
+              {...saveBtnProps}
             >
               {BUTTON_TEXT.SAVE}
             </AButton>
