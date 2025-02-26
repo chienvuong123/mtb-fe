@@ -87,6 +87,7 @@ const SellerAddFormDrawer: FC<ISellerAddFormDrawer> = ({
         }}
       >
         <OTable
+          hideIndexColumn
           columns={columns}
           data={dataList}
           hideActions
