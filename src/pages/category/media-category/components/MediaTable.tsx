@@ -1,6 +1,6 @@
 import { ATag } from '@components/atoms';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable, type ITable } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
 import type { MediaCategoryDTO, OrderDTO } from '@dtos';
 import { formatDate } from '@utils/dateHelper';
@@ -8,7 +8,7 @@ import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useMemo, useState, type FC, type Key, type ReactNode } from 'react';
 
-export type TMediaRecord = TTableKey & Partial<MediaCategoryDTO>;
+export type TMediaRecord = Partial<MediaCategoryDTO>;
 
 interface IMediaTable {
   dataSource: TMediaRecord[];
@@ -100,6 +100,7 @@ const MediaTable: FC<IMediaTable> = ({
 
   return (
     <OTable<TMediaRecord>
+      rowKey="id"
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}

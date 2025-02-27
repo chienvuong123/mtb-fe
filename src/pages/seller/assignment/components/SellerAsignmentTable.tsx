@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { LockIcon, SwitchIcon, UnlockIcon } from '@assets/icons';
 import { AButton, AInputNumber } from '@components/atoms';
-import { OTable, type TDrawerMsg, type TTableKey } from '@components/organisms';
+import { OTable, type TDrawerMsg } from '@components/organisms';
 import type {
   AssignmentSellerRequestDTO,
   AssignmentSellerResponseDTO,
@@ -22,7 +22,7 @@ import {
   getMaxQuantity,
 } from '../sallerHelper';
 
-export type TSellerRecord = TTableKey & AssignmentSellerResponseDTO;
+export type TSellerRecord = AssignmentSellerResponseDTO;
 
 interface ISellerTable {
   campaignId?: string;
@@ -161,7 +161,6 @@ const SellerTable: FC<ISellerTable> = ({
         isTop: idx === 0,
         assignNumber: c?.assignNumber ?? 0,
         isLock: c?.isLock ?? false,
-        key: c.key,
       });
       return a;
     }, {} as AnyObject);
@@ -264,6 +263,7 @@ const SellerTable: FC<ISellerTable> = ({
 
       <Form form={form} onFinish={handleSubmit}>
         <OTable<TSellerRecord>
+          rowKey="sellerId"
           isCheckboxHidden
           hideActions
           columns={columns}

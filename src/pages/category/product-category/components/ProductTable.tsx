@@ -1,6 +1,6 @@
 import { ATag } from '@components/atoms';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable, type ITable } from '@components/organisms';
 import { EStatus } from '@constants/masterData';
 import type { OrderDTO, ProductCategoryDTO } from '@dtos';
 import { useProfile } from '@stores';
@@ -9,7 +9,7 @@ import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useMemo, useState, type FC, type Key, type ReactNode } from 'react';
 
-export type TProductRecord = TTableKey & Partial<ProductCategoryDTO>;
+export type TProductRecord = Partial<ProductCategoryDTO>;
 
 interface IProductTable {
   dataSource: TProductRecord[];
@@ -102,6 +102,7 @@ const ProductTable: FC<IProductTable> = ({
 
   return (
     <OTable<TProductRecord>
+      rowKey="id"
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}

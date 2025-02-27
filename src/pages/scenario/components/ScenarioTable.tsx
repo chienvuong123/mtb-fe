@@ -1,12 +1,12 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable, type ITable } from '@components/organisms';
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import type { ScenarioDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useState, type FC, type Key } from 'react';
 
-export type TScenarioRecord = TTableKey & ScenarioDTO;
+export type TScenarioRecord = ScenarioDTO;
 
 interface IScenarioTable {
   dataSource: TScenarioRecord[];
@@ -62,6 +62,7 @@ const ScenarioTable: FC<IScenarioTable> = ({
 
   return (
     <OTable<TScenarioRecord>
+      rowKey="id"
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}

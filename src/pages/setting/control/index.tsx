@@ -2,7 +2,7 @@ import type { ControlDTO, ControlSearchRequest } from '@dtos';
 import { Drawer } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
-import { type FC, useMemo, useState } from 'react';
+import { type FC, useState } from 'react';
 
 import type {
   IMPagination,
@@ -119,12 +119,6 @@ const SettingControlPage: FC = () => {
     className: 'flex-end',
   };
 
-  const dataSources: TControlRecord[] =
-    useMemo(
-      () => controlList?.data?.content?.map((i) => ({ ...i, key: i.id })),
-      [controlList],
-    ) ?? [];
-
   return (
     <div className="pt-32">
       <Title level={3} className="mb-24">
@@ -133,7 +127,7 @@ const SettingControlPage: FC = () => {
       <ControlSearchForm onSearch={handleSearch} />
       <div className="mt-24" />
       <ControlTable
-        dataSource={dataSources}
+        dataSource={controlList?.data?.content ?? []}
         pagination={paginationProps}
         onCreate={handleCreate}
         onEdit={handleEdit}

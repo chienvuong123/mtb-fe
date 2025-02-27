@@ -1,12 +1,12 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable, type ITable } from '@components/organisms';
 import type { OrderDTO } from '@dtos';
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import type { ColumnType } from 'antd/lib/table';
 import { useState, type FC } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
 
-export type TGroupCustomerRecord = TTableKey & Partial<GroupCustomerDTO>;
+export type TGroupCustomerRecord = Partial<GroupCustomerDTO>;
 
 interface IGroupCustomerTable {
   dataSource: TGroupCustomerRecord[];
@@ -74,6 +74,7 @@ const GroupCustomerTable: FC<IGroupCustomerTable> = ({
 
   return (
     <OTable<TGroupCustomerRecord>
+      rowKey="id"
       columns={columns}
       data={dataSource}
       isShowDeleteBtn={false}

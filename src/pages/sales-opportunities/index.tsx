@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 import useUrlParams from '@hooks/useUrlParams';
 import type {
@@ -39,16 +39,6 @@ const ManageSalesOpportunities: React.FC = () => {
     ...filterObject(filters),
   });
 
-  const dataSources: TSalesOpportunitiesRecord[] =
-    useMemo(
-      () =>
-        opportunitySellRes?.data?.content?.map((i) => ({
-          ...i,
-          key: i.id as string,
-        })),
-      [opportunitySellRes],
-    ) ?? [];
-
   const handlePaginationChange = (data: TPagination) => {
     setPagination(data);
   };
@@ -68,7 +58,6 @@ const ManageSalesOpportunities: React.FC = () => {
     if (item) {
       const recordItem: TSalesOpportunitiesRecord = {
         ...item,
-        key: item.id,
       };
       setInitValues(convertInitValues(recordItem));
       setDrawerMode('view');
@@ -108,7 +97,7 @@ const ManageSalesOpportunities: React.FC = () => {
       />
       <div className="mt-24" />
       <OpportunitySellTable
-        dataSource={dataSources}
+        dataSource={opportunitySellRes?.data?.content ?? []}
         onView={handleView}
         onSort={handleSort}
         paginations={paginations}

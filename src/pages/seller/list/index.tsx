@@ -1,6 +1,6 @@
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { type SellerSearchRequest } from '@dtos';
-import { useEffect, useMemo, type FC } from 'react';
+import { useEffect, type FC } from 'react';
 
 import type {
   IMPagination,
@@ -12,11 +12,7 @@ import type { SortOrder } from 'antd/es/table/interface';
 import { OTitleBlock } from '@components/organisms';
 import { useNavigate } from 'react-router-dom';
 import { useSellerSearchQuery } from '@hooks/queries';
-import {
-  SellerSearchForm,
-  SellerTable,
-  type TSellerRecord,
-} from './components';
+import { SellerSearchForm, SellerTable } from './components';
 
 const SellerPage: FC = () => {
   const {
@@ -30,7 +26,7 @@ const SellerPage: FC = () => {
 
   const navigate = useNavigate();
 
-  const { data: productRes, isLoading } = useSellerSearchQuery({
+  const { data: sellerRes, isLoading } = useSellerSearchQuery({
     page: {
       pageNum: Number(current),
       pageSize: Number(pageSize),
@@ -56,21 +52,11 @@ const SellerPage: FC = () => {
     setPagination(data);
   };
 
-  const dataSources: TSellerRecord[] =
-    useMemo(
-      () =>
-        productRes?.data?.content?.map((i) => ({
-          ...i,
-          key: i.id,
-        })),
-      [productRes],
-    ) ?? [];
-
   const paginations: IMPagination = {
     pagination: {
       current,
       pageSize,
-      total: productRes?.data?.total ?? 1,
+      total: sellerRes?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
@@ -96,14 +82,14 @@ const SellerPage: FC = () => {
   };
 
   useEffect(() => {
-    if (!isLoading && !productRes?.data?.content?.length && current > 1) {
+    if (!isLoading && !sellerRes?.data?.content?.length && current > 1) {
       setPagination((prev) => ({
         ...prev,
         current: prev.current - 1,
-        total: productRes?.data?.total ?? 1,
+        total: sellerRes?.data?.total ?? 1,
       }));
     }
-  }, [productRes, setPagination, current, isLoading]);
+  }, [sellerRes, setPagination, current, isLoading]);
 
   return (
     <div className="pt-32 category-product">
@@ -126,7 +112,7 @@ const SellerPage: FC = () => {
       />
       <div className="mt-24" />
       <SellerTable
-        dataSource={dataSources}
+        dataSource={sellerRes?.data?.content ?? []}
         paginations={paginations}
         sortDirection={sort}
         onEdit={handleEdit}

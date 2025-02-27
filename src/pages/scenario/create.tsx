@@ -1,5 +1,5 @@
 import Title from 'antd/lib/typography/Title';
-import { useMemo, useState, type FC } from 'react';
+import { useState, type FC } from 'react';
 
 import type {
   IMPagination,
@@ -56,16 +56,6 @@ const ScenarioCreatePage: FC = () => {
     handleCreate();
   };
 
-  const dataSources: TAttributeRecord[] =
-    useMemo(
-      () =>
-        (initValues?.attributes || []).map((i: AttributeDTO) => ({
-          ...i,
-          key: i.id,
-        })),
-      [initValues?.attributes],
-    ) ?? [];
-
   const handleEdit = (data: TAttributeRecord) => {
     console.log(data);
   };
@@ -80,7 +70,7 @@ const ScenarioCreatePage: FC = () => {
       </Title>
       <div className="mt-24" />
       <AttributeTable
-        dataSource={dataSources}
+        dataSource={initValues?.attributes ?? []}
         pagination={paginationProps}
         onEdit={handleEdit}
         onDelete={handleDelete}

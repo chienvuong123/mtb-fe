@@ -162,16 +162,12 @@ const ManagerCampaignDetail: React.FC = () => {
 
   const dataSources: TCampaignDetaillRecord[] = useMemo(() => {
     const safeData = Array.isArray(campaignScriptQuery?.data?.content)
-      ? campaignScriptQuery.data.content.map((i) => ({
-          ...i,
-          key: i.id as string,
-        }))
+      ? campaignScriptQuery.data.content
       : [];
 
     if (tempApproach) {
       safeData.push({
         ...tempApproach,
-        key: tempApproach.id as string,
       });
     }
 

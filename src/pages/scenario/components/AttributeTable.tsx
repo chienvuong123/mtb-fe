@@ -1,12 +1,12 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable, type ITable } from '@components/organisms';
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import type { AttributeDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useState, type FC, type Key } from 'react';
 
-export type TAttributeRecord = TTableKey & AttributeDTO;
+export type TAttributeRecord = AttributeDTO;
 
 interface IAttributeTable {
   dataSource: TAttributeRecord[];
@@ -62,6 +62,7 @@ const AttributeTable: FC<IAttributeTable> = ({
 
   return (
     <OTable<TAttributeRecord>
+      rowKey="id"
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}

@@ -1,5 +1,5 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type TTableKey } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import {
   EApproachStatus,
@@ -10,7 +10,7 @@ import type { ColumnType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useState, type FC, type ReactNode } from 'react';
 
-export type TCustomerApproachRecord = TTableKey & Partial<CustomerApproachDTO>;
+export type TCustomerApproachRecord = Partial<CustomerApproachDTO>;
 
 interface ICustomerApproachTable {
   dataSource: TCustomerApproachRecord[];
@@ -73,6 +73,7 @@ const CustomerApproachTable: FC<ICustomerApproachTable> = ({
 
   return (
     <OTable<TCustomerApproachRecord>
+      rowKey="id"
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}

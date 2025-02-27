@@ -9,36 +9,37 @@ import {
 import { AButton } from '@components/atoms';
 import { Space } from 'antd';
 import type { Key } from 'react';
-import type { TTableKey } from '.';
 
 interface ITableActionsProps<T> {
   record: T;
   editable: boolean;
+  editingKey?: string | null;
+  rowKey: keyof T;
   onSave?: (key: Key) => void;
   onCancel?: () => void;
   onEdit?: (record: T) => void;
   onView?: (key: Key) => void;
   onDelete?: (key: Key) => void;
   onCall?: (record: T) => void;
-  editingKey?: string | null;
 }
 
-const TableActions = <T extends TTableKey>({
+const TableActions = <T extends object>({
   record,
   editable,
+  rowKey,
+  editingKey,
   onSave,
   onCancel,
   onEdit,
   onView,
   onDelete,
   onCall,
-  editingKey,
 }: ITableActionsProps<T>) => {
   if (editable) {
     return (
       <Space>
         <AButton
-          onClick={() => onSave?.(record.key)}
+          onClick={() => onSave?.(record[rowKey] as Key)}
           type="link"
           icon={<FloppyDiskIcon />}
           className="w-24 action-btn"
@@ -67,7 +68,7 @@ const TableActions = <T extends TTableKey>({
           icon={<EyeIcon className="action-btn-icon" />}
           type="link"
           className="w-22 action-btn"
-          onClick={() => onView?.(record.key)}
+          onClick={() => onView?.(record[rowKey] as Key)}
         />
       )}
       {Boolean(onEdit) && (
@@ -84,7 +85,7 @@ const TableActions = <T extends TTableKey>({
           type="link"
           icon={<TrashIcon className="action-btn-icon" />}
           className="w-22 action-btn"
-          onClick={() => onDelete?.(record.key)}
+          onClick={() => onDelete?.(record[rowKey] as Key)}
         />
       )}
     </Space>

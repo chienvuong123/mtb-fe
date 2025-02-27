@@ -214,16 +214,6 @@ const Campaign: React.FC = () => {
     className: 'flex-end',
   };
 
-  const dataSources: TCampaignRecord[] =
-    useMemo(
-      () =>
-        campaignRes?.data?.content?.map((i) => ({
-          ...i,
-          key: i.id as string,
-        })),
-      [campaignRes],
-    ) ?? [];
-
   const handleClearAll = () => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setFilters({ code: undefined, name: undefined });
@@ -305,7 +295,7 @@ const Campaign: React.FC = () => {
       />
       <div className="mb-24" />
       <CampaignTable
-        dataSource={dataSources}
+        dataSource={campaignRes?.data?.content ?? []}
         paginations={paginations}
         sortDirection={sort}
         onCreate={handleCreate}

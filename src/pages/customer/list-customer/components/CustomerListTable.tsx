@@ -96,6 +96,7 @@ const CustomerListTable: FC<ICustomerTable> = ({
 
   return (
     <OTable<TCustomerRecord>
+      rowKey="id"
       isCheckboxHidden
       columns={columns}
       data={dataSource}

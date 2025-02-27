@@ -4,35 +4,15 @@ import React, { useMemo, useState, type Key } from 'react';
 
 import { MPagination } from '@components/molecules';
 import { SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
-import type { OrderDTO } from '@dtos';
-import type { ColumnType, TableProps } from 'antd/es/table';
+import type { ColumnType } from 'antd/es/table';
 import clsx from 'clsx';
 import { getTableIndex } from '@pages/category/utils';
 import { OModalConfirm } from '../o-modal';
-import type { IModalConfirm } from '../o-modal/OModalConfirm';
-import type { FixedType, ITableForm, TTableKey } from './OTableForm.type';
+import type { FixedType, ITable } from './OTabletype';
 import './styles.scss';
 import TableActions from './TableActions';
 
-export interface ITable<T>
-  extends Omit<TableProps<T>, 'columns'>,
-    Omit<
-      ITableForm<T>,
-      | 'form'
-      | 'editingKey'
-      | 'setEditingKey'
-      | 'onSubmitSave'
-      | 'onCancelSave'
-      | 'columns'
-    > {
-  columns: ColumnType<T>[];
-  sortDirection?: OrderDTO;
-  onEdit?: (record: T) => void;
-  confirmProps?: IModalConfirm;
-  isCheckboxHidden?: boolean;
-}
-
-const OTable = <T extends object & TTableKey>({
+const OTable = <T extends object>({
   data,
   columns,
   selectedRowKeys,
@@ -42,6 +22,8 @@ const OTable = <T extends object & TTableKey>({
   sortDirection,
   confirmProps,
   isCheckboxHidden,
+  rowKey,
+  tableRowKey,
   onEdit,
   onDeleteRow,
   onView,
@@ -110,6 +92,7 @@ const OTable = <T extends object & TTableKey>({
                 render: (_: unknown, record: T) => (
                   <div className="dis-flex jc-center">
                     <TableActions
+                      rowKey={rowKey}
                       record={record}
                       editable={false}
                       onEdit={onEdit}
@@ -139,6 +122,7 @@ const OTable = <T extends object & TTableKey>({
     sortDirection,
     paginations,
     hideIndexColumn,
+    rowKey,
     onDeleteRow,
     onEdit,
     onView,
@@ -189,6 +173,7 @@ const OTable = <T extends object & TTableKey>({
         rowSelection={!isCheckboxHidden ? rowSelection : undefined}
         scroll={{ x: 'max-content' }}
         locale={{ emptyText: 'Không có dữ liệu' }}
+        rowKey={tableRowKey || ((record) => record[rowKey] as Key)}
         {...props}
       />
       {paginations && <MPagination {...paginations} />}

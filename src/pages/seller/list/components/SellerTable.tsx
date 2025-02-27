@@ -1,12 +1,12 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable, type ITable } from '@components/organisms';
 import type { OrderDTO, SellerDTO } from '@dtos';
 import { useProfile } from '@stores';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC } from 'react';
 
-export type TSellerRecord = TTableKey & Partial<SellerDTO>;
+export type TSellerRecord = Partial<SellerDTO>;
 
 interface ISellerTable {
   dataSource: TSellerRecord[];
@@ -98,6 +98,7 @@ const SellerTable: FC<ISellerTable> = ({
 
   return (
     <OTable<TSellerRecord>
+      rowKey="id"
       isCheckboxHidden
       columns={columns}
       data={dataSource}

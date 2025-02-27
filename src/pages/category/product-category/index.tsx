@@ -6,7 +6,7 @@ import {
   type TProductSearchForm,
 } from '@dtos';
 import Title from 'antd/lib/typography/Title';
-import { useEffect, useMemo, useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 
 import type {
   IMPagination,
@@ -149,16 +149,6 @@ const ProductCategoryPage: FC = () => {
     });
   };
 
-  const dataSources: TProductRecord[] =
-    useMemo(
-      () =>
-        productRes?.data?.content?.map((i) => ({
-          ...i,
-          key: i.id as string,
-        })),
-      [productRes],
-    ) ?? [];
-
   const handleDelete = (id: string) => {
     mutationDeleteProduct({ id });
   };
@@ -226,7 +216,7 @@ const ProductCategoryPage: FC = () => {
       />
       <div className="mt-24" />
       <ProductTable
-        dataSource={dataSources}
+        dataSource={productRes?.data?.content ?? []}
         paginations={paginations}
         sortDirection={sort}
         onEdit={handleEdit}

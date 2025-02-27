@@ -1,6 +1,6 @@
 import { ATag } from '@components/atoms';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable, type ITable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { ESalesCampaign } from '@constants/masterData';
 import type { OrderDTO } from '@dtos';
@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import React, { useState, type Key, type ReactNode } from 'react';
 import type { CampaignDTO } from 'src/dtos/campaign';
 
-export type TCampaignRecord = TTableKey & Partial<CampaignDTO>;
+export type TCampaignRecord = Partial<CampaignDTO>;
 
 interface ICampaignTable {
   dataSource: TCampaignRecord[];
@@ -116,6 +116,7 @@ const CampaignTable: React.FC<ICampaignTable> = ({
 
   return (
     <OTable<TCampaignRecord>
+      rowKey="id"
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}

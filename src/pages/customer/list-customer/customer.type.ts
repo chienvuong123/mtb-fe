@@ -1,5 +1,5 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import type { ITable, TTableKey } from '@components/organisms';
+import type { ITable } from '@components/organisms';
 import type { CustomerDTO } from '@dtos';
 import type { TFormType } from '@types';
 import type { FormInstance } from 'antd';
@@ -29,7 +29,7 @@ export interface ICustomerForm {
   onSubmit: (values: Partial<CustomerDTO>, form: FormInstance) => void;
 }
 
-export type TCustomerRecord = TTableKey & Partial<CustomerDTO>;
+export type TCustomerRecord = Partial<CustomerDTO>;
 
 export interface ICustomerTable {
   dataSource: TCustomerRecord[];
