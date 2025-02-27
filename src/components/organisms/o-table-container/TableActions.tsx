@@ -4,6 +4,7 @@ import {
   EyeIcon,
   PenIcon,
   TrashIcon,
+  PhoneIcon,
 } from '@assets/icons';
 import { AButton } from '@components/atoms';
 import { Space } from 'antd';
@@ -18,6 +19,7 @@ interface ITableActionsProps<T> {
   onEdit?: (record: T) => void;
   onView?: (key: Key) => void;
   onDelete?: (key: Key) => void;
+  onCall?: (record: T) => void;
   editingKey?: string | null;
 }
 
@@ -29,6 +31,7 @@ const TableActions = <T extends TTableKey>({
   onEdit,
   onView,
   onDelete,
+  onCall,
   editingKey,
 }: ITableActionsProps<T>) => {
   if (editable) {
@@ -51,11 +54,18 @@ const TableActions = <T extends TTableKey>({
   }
   return (
     <Space>
+      {Boolean(onCall) && (
+        <AButton
+          icon={<PhoneIcon className="action-btn-icon" />}
+          type="link"
+          className="w-22 action-btn"
+          onClick={() => onCall?.(record)}
+        />
+      )}
       {Boolean(onView) && (
         <AButton
           icon={<EyeIcon className="action-btn-icon" />}
           type="link"
-          disabled={editingKey !== null}
           className="w-22 action-btn"
           onClick={() => onView?.(record.key)}
         />

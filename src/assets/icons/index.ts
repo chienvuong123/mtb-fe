@@ -58,3 +58,4 @@ export { ReactComponent as ForwardArrowIcon } from './forward-arrow.svg';
 export { ReactComponent as LockIcon } from './lock.svg';
 export { ReactComponent as UnlockIcon } from './unlock.svg';
 export { ReactComponent as SwitchIcon } from './switch.svg';
+export { ReactComponent as PhoneIcon } from './phone.svg';

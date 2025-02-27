@@ -25,18 +25,13 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
 
   const categoryId = useWatch('categoryId', form);
 
-  const { data: categoryList } = useQueryCategoryList();
-
-  const categoryCode = categoryList?.find((i) => {
-    return i.value === categoryId;
-  })?.code;
-
-  const { data: campaignList } = useQueryCampaignList(
-    {
-      categoryCode,
-    },
-    true,
-  );
+  const { data: categoryList } = useQueryCategoryList(false, {
+    label: 'combine',
+    value: 'code',
+  });
+  const { data: campaignList } = useQueryCampaignList({
+    categoryCode: categoryId,
+  });
 
   const unselectedCategory = !categoryId;
 

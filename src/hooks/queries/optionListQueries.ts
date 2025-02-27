@@ -4,6 +4,7 @@ import {
   categoryApi,
   groupCustomerApi,
   locationApi,
+  sellerApi,
 } from '@apis';
 import { CategoryType } from '@dtos';
 import { useQuery } from '@tanstack/react-query';
@@ -170,6 +171,7 @@ export const useQueryCampaignList = (
         transformToCodeNameOptions(data?.content ?? []);
       return getById ? campaignListById : campaignListByName;
     },
+    enabled: !!params?.categoryCode,
   });
 };
 
@@ -182,33 +184,17 @@ export const useLocationOptionsListQuery = (parentCode = '0') => {
   });
 };
 
-export const useDepartmentOptionsListQuery = (parentCode = '0') => {
+export const useSellerOptionsListQuery = () => {
   return useQuery({
-    queryKey: ['departmentList', parentCode],
-    queryFn: () =>
-      categoryApi.search({ categoryTypeCode: CategoryType.DEPARTMENT }),
-    select: (data) => transformToOptions(data.data.content),
-    enabled: !!parentCode,
-  });
-};
-
-export const useBranchOptionsListQuery = (parentCode = '0') => {
-  return useQuery({
-    queryKey: ['branchList', parentCode],
-    queryFn: () =>
-      categoryApi.search({ categoryTypeCode: CategoryType.BRANCHES }),
-    select: (data) => transformToOptions(data.data.content),
-    enabled: !!parentCode,
-  });
-};
-
-export const usePositionOptionsListQuery = (parentCode = '0') => {
-  return useQuery({
-    queryKey: ['positionList', parentCode],
-    queryFn: () =>
-      categoryApi.search({ categoryTypeCode: CategoryType.POSITION }),
-    select: (data) => transformToOptions(data.data.content),
-    enabled: !!parentCode,
+    queryKey: ['sellerList'],
+    queryFn: () => sellerApi.list(),
+    select: (data) => {
+      const { customOptions } = transformToCodeNameOptions(data.data, {
+        label: 'name',
+        value: 'id',
+      });
+      return customOptions;
+    },
   });
 };
 

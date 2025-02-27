@@ -34,7 +34,7 @@
       font-size: 10px;
       line-height: 10px !important;
       height: 100% !important;
-      padding: 0 !important;
+      padding: 0 0 0 12px !important;
       margin-bottom: 8px !important;
       border-radius: 0;
       .mbb-menu-title-content {
@@ -99,6 +99,7 @@
   & > .mbb-menu-item:not(.mbb-menu-item-only-child) {
     &.item-category {
       text-align: center;
+      padding: 0 !important;
     }
   }
   .mbb-menu-item-selected,

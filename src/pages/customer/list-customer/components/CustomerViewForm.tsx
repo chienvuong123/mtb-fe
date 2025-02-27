@@ -15,6 +15,7 @@ const CustomerAddForm: FC<Pick<ICustomerForm, 'initialValues' | 'onClose'>> = ({
 
   return (
     <OBaseForm<TCustomerForm>
+      isViewMode
       mutationKey={CUSTOMER_KEY}
       items={formItems}
       form={form}
