@@ -12,6 +12,11 @@ export enum CategoryType {
   DEPARTMENT = 'DEPARTMENT', // "Danh mục phòng"
   BRANCHES = 'BRANCHES', // "Danh mục chi nhánh"
   EXPERTISE = 'EXPERTISE', // "Danh mục chuyên môn"
+  HOBBY = 'HOBBY', // "Danh mục sở thích"
+  JOB = 'JOB', // Danh mục nghề nghiệp
+  MB_IDENTIFICATION = 'MB_IDENTIFICATION', // Danh mục định danh khách hàng
+  CUSTOMER_SEGMENT = 'CUSTOMER_SEGMENT', // Danh mục phân khúc KH
+
   F88_IDENTIFICATION = 'F88_IDENTIFICATION', // "Danh mục giấy tờ định Danh F88"
   F88_JOB = 'F88_JOB', // "Danh mục nghề nghiệp F88"
   F88_PROOF = 'F88_PROOF', // "Danh mục chứng minh thu nhập F88"

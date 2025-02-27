@@ -121,11 +121,9 @@ const ListCustomerPage: FC = () => {
     setDrawerMode('list');
   };
 
-  const handleCreate = ({ categoryId, categoryName }: CustomerDTO) => {
+  const handleCreate = () => {
     setInitValues({
       ...destructCustomerData({}),
-      categoryId,
-      categoryName,
     });
     handleOpenDrawer();
   };
@@ -299,6 +297,10 @@ const ListCustomerPage: FC = () => {
     }
   };
 
+  const handleCall = (record: TCustomerRecord) => {
+    console.log(record.id, record.campaignId);
+  };
+
   const handleSort = (field: string, direction: SortOrder) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
@@ -384,6 +386,7 @@ const ListCustomerPage: FC = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}
+        onCall={handleCall}
         onSort={handleSort}
       />
 

@@ -37,5 +37,6 @@ export interface ICustomerTable {
   onEdit: ITable<TCustomerRecord>['onEdit'];
   onDelete: (id: string) => void;
   onView: (id: string) => void;
+  onCall: (record: TCustomerRecord) => void;
   onSort: (field: string, direction: SortOrder) => void;
 }

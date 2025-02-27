@@ -3,7 +3,7 @@ import type { BaseAntdOptionType } from '@dtos';
 
 export type TConvertField = 'id' | 'code' | 'name';
 export type TConvertFieldObj = {
-  label: TConvertField;
+  label: TConvertField | 'combine';
   value: TConvertField;
 };
 
@@ -94,7 +94,10 @@ const transformToCodeNameOptions = <
 
     if (customField) {
       const value = item[customField.value];
-      const label = item[customField.label];
+      const label =
+        customField.label === 'combine'
+          ? `${item.code} - ${item.name}`
+          : item[customField.label];
       if (value === undefined || label === undefined) return;
       customOptions.push({
         value,

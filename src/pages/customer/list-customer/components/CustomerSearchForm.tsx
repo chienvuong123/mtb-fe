@@ -1,10 +1,14 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
-import { useForm } from 'antd/es/form/Form';
+import { useForm, useWatch } from 'antd/es/form/Form';
 import { useEffect, type FC, useMemo } from 'react';
-import type { CustomerDTO } from '@dtos';
-import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
-import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
+import { CategoryType, type CustomerDTO } from '@dtos';
+import {
+  useCategoryOptionsListQuery,
+  useGroupCustomerOptionsListQuery,
+  useQueryCampaignList,
+  useQueryCategoryList,
+} from '@hooks/queries';
 import { useProfile } from '@stores';
 import { parseCustomerObj } from '../customerHelper';
 import type { TCustomerSearchForm } from '../customer.type';
@@ -27,8 +31,23 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
   const [form] = useForm();
   const { isAdmin, isCampaignManager } = useProfile();
 
-  const { data: categoryList } = useQueryCategoryList();
-  const { data: campaignList } = useQueryCampaignList();
+  const categoryId = useWatch(['categoryId'], form);
+  const campaignId = useWatch(['campaignId'], form);
+
+  const { data: categoryList } = useQueryCategoryList(false, {
+    label: 'combine',
+    value: 'code',
+  });
+  const { data: campaignList } = useQueryCampaignList({
+    categoryCode: categoryId,
+  });
+  const { data: customerSegmentList } = useCategoryOptionsListQuery(
+    CategoryType.CUSTOMER_SEGMENT,
+  );
+  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.JOB);
+  const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
+    campaignId ?? '',
+  );
 
   const items: TFormItem[] = useMemo(
     () =>
@@ -82,7 +101,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             mode: 'multiple',
             showSearch: true,
             filterOption: true,
-            options: MOCK_CUSTOMER_OPTIONS,
+            options: customerSegmentList,
           },
         },
         {
@@ -98,7 +117,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
           inputProps: {
             placeholder: 'Chọn...',
             mode: 'multiple',
-            options: MOCK_CUSTOMER_OPTIONS,
+            options: jobList,
           },
         },
         {
@@ -110,11 +129,17 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             mode: 'multiple',
             showSearch: true,
             filterOption: true,
-            options: MOCK_CUSTOMER_OPTIONS,
+            options: groupCustomerList,
           },
         },
       ] as TFormItem[],
-    [categoryList, campaignList],
+    [
+      categoryList,
+      campaignList,
+      customerSegmentList,
+      jobList,
+      groupCustomerList,
+    ],
   );
 
   useEffect(() => {

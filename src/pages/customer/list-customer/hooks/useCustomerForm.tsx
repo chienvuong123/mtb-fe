@@ -5,14 +5,19 @@ import {
   BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
 } from '@constants/regex';
 import { Form } from 'antd';
-import type { CustomerDTO } from '@dtos';
+import { CategoryType, type CustomerDTO } from '@dtos';
 import { dayjsToString, stringToDayjs } from '@utils/dateHelper';
 import { INPUT_TYPE, type TFormItem, type IFormType } from '@types';
 import clsx from 'clsx';
 import { useEffect, useMemo } from 'react';
-import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
 import dayjs from 'dayjs';
-import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
+import {
+  useCategoryOptionsListQuery,
+  useGroupCustomerOptionsListQuery,
+  useQueryCampaignList,
+  useQueryCategoryList,
+  useSellerOptionsListQuery,
+} from '@hooks/queries';
 import type { ICustomerForm, TCustomerForm } from '../customer.type';
 
 const useCustomerForm = ({
@@ -26,8 +31,28 @@ const useCustomerForm = ({
   const categoryId = Form.useWatch(['categoryId'], form);
   const campaignId = Form.useWatch(['campaignId'], form);
 
-  const { data: categoryList } = useQueryCategoryList();
-  const { data: campaignList } = useQueryCampaignList();
+  const { data: categoryList } = useQueryCategoryList(false, {
+    label: 'combine',
+    value: 'code',
+  });
+  const { data: campaignList } = useQueryCampaignList({
+    categoryCode: categoryId,
+  });
+  const { data: sellerList } = useSellerOptionsListQuery();
+  const { data: hobbiesList } = useCategoryOptionsListQuery(CategoryType.HOBBY);
+  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.JOB);
+  const { data: identificationList } = useCategoryOptionsListQuery(
+    CategoryType.MB_IDENTIFICATION,
+  );
+  const { data: customerSegmentList } = useCategoryOptionsListQuery(
+    CategoryType.CUSTOMER_SEGMENT,
+  );
+  const { data: branchList } = useCategoryOptionsListQuery(
+    CategoryType.BRANCHES,
+  );
+  const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
+    campaignId ?? '',
+  );
 
   const items = useMemo(
     () =>
@@ -110,7 +135,7 @@ const useCustomerForm = ({
             name: 'cusGroup',
             inputProps: {
               disabled: !categoryId || !campaignId,
-              options: MOCK_CUSTOMER_OPTIONS,
+              options: groupCustomerList,
               placeholder: 'Chọn...',
             },
           },
@@ -119,7 +144,7 @@ const useCustomerForm = ({
             label: 'Phân khúc khách hàng',
             name: 'cusSegment',
             inputProps: {
-              options: MOCK_CUSTOMER_OPTIONS,
+              options: customerSegmentList,
               placeholder: 'Chọn...',
             },
           },
@@ -128,7 +153,7 @@ const useCustomerForm = ({
             label: 'Nghề nghiệp',
             name: 'job',
             inputProps: {
-              options: MOCK_CUSTOMER_OPTIONS,
+              options: jobList,
               placeholder: 'Chọn...',
             },
           },
@@ -137,7 +162,7 @@ const useCustomerForm = ({
             label: 'Định danh khách hàng',
             name: 'identification',
             inputProps: {
-              options: MOCK_CUSTOMER_OPTIONS,
+              options: identificationList,
               mode: 'multiple',
               placeholder: 'Chọn...',
             },
@@ -160,7 +185,7 @@ const useCustomerForm = ({
             label: 'Sở thích',
             name: 'hobbies',
             inputProps: {
-              options: MOCK_CUSTOMER_OPTIONS,
+              options: hobbiesList,
               mode: 'multiple',
               placeholder: 'Chọn...',
             },
@@ -170,7 +195,7 @@ const useCustomerForm = ({
             label: 'Chi nhánh quản lý',
             name: 'branch',
             inputProps: {
-              options: MOCK_CUSTOMER_OPTIONS,
+              options: branchList,
               placeholder: 'Chọn...',
             },
           },
@@ -181,7 +206,7 @@ const useCustomerForm = ({
             required: true,
             rules: [{ required: true }],
             inputProps: {
-              options: [{ value: '013', label: '013 - Seller' }],
+              options: sellerList,
               placeholder: 'Chọn...',
             },
           },
@@ -200,7 +225,20 @@ const useCustomerForm = ({
         }
         return item;
       }),
-    [mode, categoryId, campaignId, categoryList, campaignList],
+    [
+      mode,
+      categoryId,
+      campaignId,
+      categoryList,
+      campaignList,
+      sellerList,
+      hobbiesList,
+      jobList,
+      customerSegmentList,
+      identificationList,
+      branchList,
+      groupCustomerList,
+    ],
   ) as TFormItem[];
 
   useEffect(() => {

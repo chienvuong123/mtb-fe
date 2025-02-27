@@ -45,6 +45,7 @@ const OTable = <T extends object & TTableKey>({
   onEdit,
   onDeleteRow,
   onView,
+  onCall,
   setSelectedRowKeys,
   ...props
 }: ITable<T>) => {
@@ -103,7 +104,8 @@ const OTable = <T extends object & TTableKey>({
                 title: 'Thao tác',
                 dataIndex: 'actions',
                 fixed: 'right' as FixedType,
-                width: 120,
+                width: 'fit-content',
+                align: 'center',
                 minWidth: 120,
                 render: (_: unknown, record: T) => (
                   <div className="dis-flex jc-center">
@@ -112,6 +114,7 @@ const OTable = <T extends object & TTableKey>({
                       editable={false}
                       onEdit={onEdit}
                       onView={onView}
+                      onCall={onCall}
                       onDelete={
                         onDeleteRow &&
                         ((key: Key) => {
@@ -139,6 +142,7 @@ const OTable = <T extends object & TTableKey>({
     onDeleteRow,
     onEdit,
     onView,
+    onCall,
   ]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {

@@ -66,4 +66,5 @@ export interface ITableForm<T> {
   onCancelSave?: () => void;
   setSelectedRowKeys?: React.Dispatch<React.SetStateAction<string[]>>;
   onView?: (key: Key) => void;
+  onCall?: (record: T) => void;
 }

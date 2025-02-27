@@ -85,6 +85,7 @@ const CustomerListTable: FC<ICustomerTable> = ({
   onDelete,
   onView,
   onSort,
+  onCall,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const { isAdmin, isCampaignManager } = useProfile();
@@ -104,6 +105,7 @@ const CustomerListTable: FC<ICustomerTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       onView={(id) => onView(id as string)}
+      onCall={(record) => onCall(record)}
       scroll={{ x: 1574 }}
       onChange={(_p, _f, s) => {
         const { field, order } = s as SorterResult<TCustomerRecord>;

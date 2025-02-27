@@ -2,12 +2,10 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
-import { type SellerSearchRequest } from '@dtos';
+import { CategoryType, type SellerSearchRequest } from '@dtos';
 import { useProfile } from '@stores';
 import {
-  useBranchOptionsListQuery,
-  useDepartmentOptionsListQuery,
-  usePositionOptionsListQuery,
+  useCategoryOptionsListQuery,
   useQueryCampaignList,
   useQueryCategoryList,
 } from '@hooks/queries';
@@ -28,13 +26,24 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
   const [form] = useForm();
   const { isAdmin } = useProfile();
 
-  const { data: categoryList } = useQueryCategoryList();
-  const { data: campaignList } = useQueryCampaignList();
-  const { data: departmentList } = useDepartmentOptionsListQuery();
-  const { data: positionList } = usePositionOptionsListQuery();
-  const { data: branchList } = useBranchOptionsListQuery();
-
   const categoryId = useWatch(['categoryId'], form);
+
+  const { data: categoryList } = useQueryCategoryList(false, {
+    label: 'combine',
+    value: 'code',
+  });
+  const { data: campaignList } = useQueryCampaignList({
+    categoryCode: categoryId,
+  });
+  const { data: departmentList } = useCategoryOptionsListQuery(
+    CategoryType.DEPARTMENT,
+  );
+  const { data: positionList } = useCategoryOptionsListQuery(
+    CategoryType.POSITION,
+  );
+  const { data: branchList } = useCategoryOptionsListQuery(
+    CategoryType.BRANCHES,
+  );
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [

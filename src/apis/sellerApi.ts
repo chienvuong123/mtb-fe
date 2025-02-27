@@ -5,6 +5,7 @@ import type {
   SellerDTO,
   SellerSearchRequest,
   AssignmentSellerAssignItemDTO,
+  BaseOptionListDTO,
 } from '@dtos';
 import { BaseApi } from './baseApi';
 import { apiRequest } from './apiClient';
@@ -19,6 +20,13 @@ class SellerApiImpl
 {
   constructor() {
     super('/seller/v1.0');
+  }
+
+  async list() {
+    return apiRequest<BaseResponse<BaseOptionListDTO[]>>({
+      url: `${this.endpoint}/list`,
+      method: 'GET',
+    });
   }
 
   async assignCustomer(data: AssignmentSellerRequestDTO) {
