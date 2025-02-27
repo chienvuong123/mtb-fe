@@ -1,11 +1,21 @@
 import { OBaseDetailForm } from '@components/organisms/o-form-detail';
-import type { SellerDetailsDTO } from '@dtos';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
 
+export type TSellerDetailsForm = {
+  branch?: string;
+  code?: string;
+  department?: string;
+  email?: string;
+  name?: string;
+  phone?: string;
+  position?: string;
+  totalCampaign?: number;
+};
+
 interface ISellerDetailsForm {
-  initialValues?: Partial<SellerDetailsDTO> | null;
+  initialValues?: TSellerDetailsForm;
 }
 
 const SellerDetailsForm: FC<ISellerDetailsForm> = ({ initialValues }) => {
@@ -78,7 +88,7 @@ const SellerDetailsForm: FC<ISellerDetailsForm> = ({ initialValues }) => {
 
   return (
     <div>
-      <OBaseDetailForm<SellerDetailsDTO> items={items} form={form} />
+      <OBaseDetailForm<TSellerDetailsForm> items={items} form={form} />
     </div>
   );
 };

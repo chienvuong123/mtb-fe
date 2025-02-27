@@ -70,7 +70,7 @@ interface SellerCampaign extends BaseEntity {
   scopeImplementation: string;
 }
 
-type CampaignData = {
+export type SellerCampaignData = {
   campaign: SellerCampaign;
   customerCount: number;
   approachedCount: number;
@@ -78,15 +78,14 @@ type CampaignData = {
 };
 
 export type SellerDetailsDTO = {
-  code: string;
+  userId: string;
+  user: SellerUserDTO;
+  id: string;
   name: string;
-  email: string;
-  phone: string;
-  branch: string;
-  department: string;
-  position: string;
+  status: EStatus;
   totalCampaign: number;
-  campaigns: CampaignData[];
+  totalCustomer: number;
+  campaigns: SellerCampaignData[];
 };
 
 // assignment
