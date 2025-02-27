@@ -54,6 +54,11 @@ const SellerAsignmentSearchForm: FC<ISellerAssignmentForm> = ({
     [form],
   );
 
+  const handleClearAll = () => {
+    form.resetFields();
+    onClearAll();
+  };
+
   const items: TFormItem[] = useMemo(
     () => [
       {
@@ -112,7 +117,7 @@ const SellerAsignmentSearchForm: FC<ISellerAssignmentForm> = ({
         items={items}
         form={form}
         onSearch={onSearch}
-        onClearAll={onClearAll}
+        onClearAll={handleClearAll}
       />
     </div>
   );

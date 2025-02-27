@@ -55,4 +55,5 @@ export interface CampaignListRequest extends BaseSearchParams {
   code?: string;
   name?: string;
   categoryCode?: string;
+  categoryId?: string;
 }

@@ -15,11 +15,23 @@ import {
 } from '@utils/objectHelper';
 import type { CampaignListRequest } from 'src/dtos/campaign-detail';
 
-export const useCategoryOptionsListQuery = (categoryTypeCode: CategoryType) => {
+export const useCategoryOptionsListQuery = (
+  categoryTypeCode: CategoryType,
+  customFields?: TConvertFieldObj,
+) => {
   return useQuery({
     queryKey: ['categoryList', categoryTypeCode],
     queryFn: () => categoryApi.getCategoryOptionsList(categoryTypeCode),
-    select: (data) => transformToOptions(data.data),
+    select: ({ data }) => {
+      if (customFields) {
+        const { customOptions } = transformToCodeNameOptions(
+          data ?? [],
+          customFields,
+        );
+        return customOptions;
+      }
+      return transformToOptions(data);
+    },
     enabled: !!categoryTypeCode,
   });
 };
@@ -171,7 +183,7 @@ export const useQueryCampaignList = (
         transformToCodeNameOptions(data?.content ?? []);
       return getById ? campaignListById : campaignListByName;
     },
-    enabled: !!params?.categoryCode,
+    enabled: !!params?.categoryCode || !!params?.categoryId,
   });
 };
 
