@@ -1,5 +1,5 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type TTableKey } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
 import type { OrderDTO, TId } from '@dtos';
@@ -18,7 +18,7 @@ const BUTTON_TEXT = {
   ADD: 'Thêm mới',
 } as const;
 
-export type TCategoryDetaillRecord = TTableKey & Partial<CategoryScriptDTO>;
+export type TCategoryDetaillRecord = Partial<CategoryScriptDTO>;
 
 interface ICategoryDetailTable {
   dataSource: TCategoryDetaillRecord[];
@@ -115,6 +115,7 @@ const CampaignDetailTable: React.FC<ICategoryDetailTable> = ({
         )}
       </Flex>
       <OTable<TCategoryDetaillRecord>
+        rowKey="id"
         columns={columns}
         data={dataSource}
         isCheckboxHidden

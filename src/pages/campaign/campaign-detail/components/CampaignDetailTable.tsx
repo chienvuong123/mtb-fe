@@ -1,5 +1,5 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable, type ITable } from '@components/organisms';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
 import type { OrderDTO, TId } from '@dtos';
@@ -14,7 +14,7 @@ const BUTTON_TEXT = {
   ADD: 'Thêm mới',
 } as const;
 
-export type TCampaignDetaillRecord = TTableKey & Partial<CampaignScriptDTO>;
+export type TCampaignDetaillRecord = Partial<CampaignScriptDTO>;
 
 interface ICampaignDetailTable {
   dataSource: TCampaignDetaillRecord[];
@@ -78,6 +78,7 @@ const CampaignDetailTable: React.FC<ICampaignDetailTable> = ({
         )}
       </Flex>
       <OTable<TCampaignDetaillRecord>
+        rowKey="id"
         columns={columns}
         data={dataSource}
         selectedRowKeys={selectedRowKeys}

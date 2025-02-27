@@ -3,13 +3,12 @@ import {
   ODrawer,
   OTable,
   type IDrawer,
-  type TTableKey,
 } from '@components/organisms';
 import type { AssignmentSellerItemDTO } from '@dtos';
 import { SELLER_KEY, useSellerBlankQuery } from '@hooks/queries';
 import { Form } from 'antd';
 import type { ColumnType } from 'antd/es/table';
-import { useMemo, useState, type FC } from 'react';
+import { useState, type FC } from 'react';
 import { INPUT_TYPE } from '@types';
 
 interface ISellerAddFormDrawer {
@@ -19,7 +18,7 @@ interface ISellerAddFormDrawer {
   drawerProps?: IDrawer;
 }
 
-const columns: ColumnType<AssignmentSellerItemDTO & TTableKey>[] = [
+const columns: ColumnType<AssignmentSellerItemDTO>[] = [
   {
     title: 'Tài khoản seller',
     dataIndex: 'email',
@@ -44,11 +43,6 @@ const SellerAddFormDrawer: FC<ISellerAddFormDrawer> = ({
   const [keyword, setKeyword] = useState('');
 
   const { data: dataRes } = useSellerBlankQuery(keyword, open);
-  const dataList = useMemo(() => {
-    if (!dataRes?.data) return [];
-
-    return dataRes?.data?.map((i) => ({ ...i, key: i.sellerId }));
-  }, [dataRes?.data]);
 
   const handleCancel = () => {
     setSelectedRowKeys([]);
@@ -87,9 +81,10 @@ const SellerAddFormDrawer: FC<ISellerAddFormDrawer> = ({
         }}
       >
         <OTable
+          rowKey="sellerId"
           hideIndexColumn
           columns={columns}
-          data={dataList}
+          data={dataRes?.data ?? []}
           hideActions
           selectedRowKeys={selectedRowKeys}
           setSelectedRowKeys={setSelectedRowKeys}

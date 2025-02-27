@@ -1,5 +1,5 @@
 import Title from 'antd/lib/typography/Title';
-import { useMemo, type FC } from 'react';
+import { type FC } from 'react';
 
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import type { BaseSearchParams } from '@dtos';
@@ -7,9 +7,7 @@ import useUrlParams from '@hooks/useUrlParams';
 import { MOCK_CUSTOMER, MOCK_CUSTOMER_APPROACHES } from '@mocks/customer';
 import { useParams } from 'react-router-dom';
 import CustomerApproachPreview from './components/CustomerApproachPreview';
-import CustomerApproachTable, {
-  type TCustomerApproachRecord,
-} from './components/CustomerApproachTable';
+import CustomerApproachTable from './components/CustomerApproachTable';
 import CustomerDetailForm from './components/CustomerDetailForm';
 import './index.scss';
 
@@ -28,16 +26,6 @@ const CustomerDetailPage: FC = () => {
     className: 'flex-end',
   };
 
-  const dataSources: TCustomerApproachRecord[] =
-    useMemo(
-      () =>
-        MOCK_CUSTOMER_APPROACHES.map((i) => ({
-          ...i,
-          key: i.id,
-        })),
-      [],
-    ) ?? [];
-
   return (
     <div className="pt-32">
       <Title level={3} className="mb-16">
@@ -49,7 +37,7 @@ const CustomerDetailPage: FC = () => {
       </Title>
       <CustomerApproachTable
         paginations={paginationProps}
-        dataSource={dataSources}
+        dataSource={MOCK_CUSTOMER_APPROACHES}
       />
       <Title level={3} className="mt-32 mb-16">
         Thông tin tiếp cận

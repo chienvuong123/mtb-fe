@@ -6,7 +6,7 @@ import {
   type TMediaSearchForm,
 } from '@dtos';
 import Title from 'antd/lib/typography/Title';
-import { useEffect, useMemo, useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 
 import type {
   IMPagination,
@@ -146,16 +146,6 @@ const MediaCategoryPage: FC = () => {
     });
   };
 
-  const dataSources: TMediaRecord[] =
-    useMemo(
-      () =>
-        mediaRes?.data?.content?.map((i) => ({
-          ...i,
-          key: i.id as string,
-        })),
-      [mediaRes],
-    ) ?? [];
-
   const handleDelete = (id: string) => {
     mutationDeleteMedias({ id });
   };
@@ -223,7 +213,7 @@ const MediaCategoryPage: FC = () => {
       />
       <div className="mt-24" />
       <MediaTable
-        dataSource={dataSources}
+        dataSource={mediaRes?.data?.content ?? []}
         paginations={paginations}
         sortDirection={sort}
         onEdit={handleEdit}

@@ -1,5 +1,5 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable, type ITable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { ESalesCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
 import type { OrderDTO } from '@dtos';
@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import React, { useState, type Key } from 'react';
 import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
 
-export type TCategoryTableRecord = TTableKey & Partial<ManagerCategoryDTO>;
+export type TCategoryTableRecord = Partial<ManagerCategoryDTO>;
 
 interface ICategoryTable {
   dataSource: TCategoryTableRecord[];
@@ -111,6 +111,7 @@ const CategoryTable: React.FC<ICategoryTable> = ({
 
   return (
     <OTable<TCategoryTableRecord>
+      rowKey="id"
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}

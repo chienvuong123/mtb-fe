@@ -1,4 +1,5 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
+import type { OrderDTO } from '@dtos';
 import { INPUT_TYPE } from '@types';
 import type {
   DatePickerProps,
@@ -9,13 +10,13 @@ import type {
 } from 'antd';
 import type { Rule } from 'antd/es/form';
 import type { TextAreaProps } from 'antd/es/input';
-import type { ColumnsType } from 'antd/es/table';
-import type { FormInstance } from 'antd/lib';
+import type { ColumnsType, TableProps } from 'antd/es/table';
+import type { ColumnType } from 'antd/lib/table';
 import type { Key } from 'react';
+import type { GetRowKey } from 'antd/es/table/interface';
+import type { IModalConfirm } from '../o-modal';
 
 export type FixedType = 'left' | 'right' | boolean;
-
-export type TTableKey = { key: Key };
 
 export type EditableCellInputProps =
   | {
@@ -49,22 +50,23 @@ export type EditableColumnType<T> = ColumnsType<T>[number] & {
   rules?: Rule[];
 } & EditableCellInputProps;
 
-export interface ITableForm<T> {
+export interface ITable<T> extends TableProps<T> {
+  rowKey: keyof T;
   data: T[];
-  columns: EditableColumnType<T>[];
-  form: FormInstance<T>;
-  editingKey?: string | null;
   selectedRowKeys?: string[];
   hideActions?: boolean;
   hideIndexColumn?: boolean;
   isShowDeleteBtn?: boolean;
   paginations?: IMPagination;
-  setEditingKey?: React.Dispatch<React.SetStateAction<string | null>>;
+  columns: ColumnType<T>[];
+  sortDirection?: OrderDTO;
+  confirmProps?: IModalConfirm;
+  isCheckboxHidden?: boolean;
+  onEdit?: (record: T) => void;
   onCreate?: () => void;
   onDeleteRow?: (key: Key) => void;
-  onSubmitSave?: (values: T, data: T[]) => void;
-  onCancelSave?: () => void;
   setSelectedRowKeys?: React.Dispatch<React.SetStateAction<string[]>>;
   onView?: (key: Key) => void;
   onCall?: (record: T) => void;
+  tableRowKey?: GetRowKey<T>;
 }

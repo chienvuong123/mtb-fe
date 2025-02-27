@@ -1,9 +1,9 @@
-import { OTable, type TTableKey } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import type { SellerCampaignData } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
-import { type FC } from 'react';
+import { type FC, type Key } from 'react';
 
-export type TSellerRecord = TTableKey & Partial<SellerCampaignData>;
+export type TSellerRecord = Partial<SellerCampaignData>;
 
 interface ISellerTable {
   dataSource: TSellerRecord[];
@@ -50,11 +50,13 @@ const columns: ColumnType<TSellerRecord>[] = [
 const SellerTable: FC<ISellerTable> = ({ dataSource }) => {
   return (
     <OTable<TSellerRecord>
+      rowKey="campaign"
       isCheckboxHidden
       hideActions
       columns={columns}
       data={dataSource}
       scroll={{ x: 1575 }}
+      tableRowKey={(record) => record.campaign?.id as Key}
     />
   );
 };

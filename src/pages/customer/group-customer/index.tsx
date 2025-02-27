@@ -144,7 +144,6 @@ const GroupCustomerPage = () => {
       () =>
         groupCustomerRes?.data?.content?.map((i) => ({
           ...i,
-          key: i.id as string,
           nameCampaign: i.campaign?.name ?? '',
           nameCategory: i.category?.name ?? '',
           categoryCode: i.category?.code ?? '',

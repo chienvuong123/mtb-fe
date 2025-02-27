@@ -1,5 +1,5 @@
 import { ATag } from '@components/atoms';
-import { OTable, type TTableKey } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { ESalesOpportunities } from '@constants/masterData';
 import type { ColumnType } from 'antd/es/table';
 import React, { useState, type ReactNode } from 'react';
@@ -8,8 +8,7 @@ import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import type { OrderDTO } from '@dtos';
 
-export type TSalesOpportunitiesRecord = TTableKey &
-  Partial<SalesOpportunitiesDTO>;
+export type TSalesOpportunitiesRecord = Partial<SalesOpportunitiesDTO>;
 
 interface ISalesOpportunitiesTable {
   dataSource: TSalesOpportunitiesRecord[];
@@ -110,6 +109,7 @@ const SalesOpportunitiesTable: React.FC<ISalesOpportunitiesTable> = ({
   return (
     <div>
       <OTable<TSalesOpportunitiesRecord>
+        rowKey="id"
         columns={columns}
         data={dataSource}
         selectedRowKeys={selectedRowKeys}

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 import useUrlParams from '@hooks/useUrlParams';
 import { ESalesCampaign, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
@@ -102,16 +102,6 @@ const ManageCategoryPage: React.FC = () => {
     className: 'flex-end',
   };
 
-  const dataSources: TCategoryTableRecord[] =
-    useMemo(
-      () =>
-        manageCategoryRes?.data?.content?.map((i) => ({
-          ...i,
-          key: i.id as string,
-        })),
-      [manageCategoryRes],
-    ) ?? [];
-
   const handleClearAll = () => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setFilters({ code: undefined, name: undefined });
@@ -151,7 +141,7 @@ const ManageCategoryPage: React.FC = () => {
       />
       <div className="mb-24" />
       <CategoryTable
-        dataSource={dataSources}
+        dataSource={manageCategoryRes?.data?.content ?? []}
         paginations={paginations}
         sortDirection={sort}
         onCreate={handleCreate}

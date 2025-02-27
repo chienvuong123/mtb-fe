@@ -25,9 +25,7 @@ import {
 } from '@hooks/queries/manageCategoryQueries';
 import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
 import CategoryDetailSearch from './components/CategoryDetailSearch';
-import CategoryDetailTable, {
-  type TCategoryDetaillRecord,
-} from './components/CategoryDetailTable';
+import CategoryDetailTable from './components/CategoryDetailTable';
 import './index.scss';
 
 const BUTTON_TEXT = {
@@ -93,16 +91,6 @@ const ManagerCategoryDetail: React.FC = () => {
     [categoryDetailRes],
   );
 
-  const dataSources: TCategoryDetaillRecord[] =
-    useMemo(
-      () =>
-        categoryQuery?.data?.content?.map((i) => ({
-          ...i,
-          key: i.id as string,
-        })),
-      [categoryQuery],
-    ) ?? [];
-
   const handleSubmitInsert = () => {
     const { startDate, endDate, ...categoryFormData } = form.getFieldsValue();
     const data: Partial<ManagerCategoryDTO> = {
@@ -163,7 +151,7 @@ const ManagerCategoryDetail: React.FC = () => {
       {isView && (
         <CategoryDetailTable
           onSort={handleSort}
-          dataSource={dataSources}
+          dataSource={categoryQuery?.data?.content ?? []}
           paginations={paginations}
         />
       )}

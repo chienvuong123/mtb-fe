@@ -19,13 +19,13 @@ const SellerDetails: FC = () => {
 
     const { user, name, totalCampaign } = detailsData.data;
     return {
-      branch: user.branchDtl.name,
-      code: user.employeeCode,
-      department: user.departmentDtl.name,
-      email: user.email,
+      branch: user?.branchDtl?.name,
+      code: user?.employeeCode,
+      department: user?.departmentDtl?.name,
+      email: user?.email,
       name,
-      phone: user.phoneNum,
-      position: user.positionDtl.name,
+      phone: user?.phoneNum,
+      position: user?.positionDtl?.name,
       totalCampaign,
     } as TSellerDetailsForm;
   }, [detailsData?.data]);

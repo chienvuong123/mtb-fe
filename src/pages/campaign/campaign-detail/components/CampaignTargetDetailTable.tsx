@@ -1,9 +1,9 @@
-import { OTable, type ITable, type TTableKey } from '@components/organisms';
+import { OTable, type ITable } from '@components/organisms';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
 import type { ColumnType } from 'antd/es/table';
 import Title from 'antd/lib/typography/Title';
-import React, { useMemo, type Key } from 'react';
+import React, { type Key } from 'react';
 import type { CampaignTargetDTO } from 'src/dtos/campaign-detail';
 import { useParams } from 'react-router-dom';
 import type { TId } from '@dtos';
@@ -12,11 +12,10 @@ const BUTTON_TEXT = {
   ADD: 'Thêm mới',
 } as const;
 
-export type TCampaignTargetDetailTableRecord = TTableKey &
-  Partial<CampaignTargetDTO>;
+export type TCampaignTargetDetailTableRecord = Partial<CampaignTargetDTO>;
 
 interface ICampaignTargetDetailTable {
-  dataSource?: CampaignTargetDTO[];
+  dataSource: CampaignTargetDTO[];
   onEdit: ITable<TCampaignTargetDetailTableRecord>['onEdit'];
   onDelete: (id: string) => void;
   onShowTargetForm: () => void;
@@ -58,15 +57,6 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
 
   const { id: campaignId } = useParams<TId>();
 
-  const mappedDataSource = useMemo(
-    () =>
-      dataSource?.map((item) => ({
-        ...item,
-        key: item.id as string,
-      })) || [],
-    [dataSource],
-  );
-
   return (
     <div className="px-40 py-28">
       <Flex justify="between" className=" items-center mb-4" gap="middle">
@@ -85,8 +75,9 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
         )}
       </Flex>
       <OTable<TCampaignTargetDetailTableRecord>
+        rowKey="id"
         columns={columns}
-        data={mappedDataSource}
+        data={dataSource}
         onEdit={onEdit}
         onDeleteRow={deleteRecord}
         isCheckboxHidden

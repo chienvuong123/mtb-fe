@@ -1,6 +1,6 @@
-import type { ScenarioDTO, ScenarioSearchRequest } from '@dtos';
+import type { ScenarioSearchRequest } from '@dtos';
 import Title from 'antd/lib/typography/Title';
-import { type FC, useMemo } from 'react';
+import { type FC } from 'react';
 
 import type {
   IMPagination,
@@ -76,18 +76,6 @@ const ScenarioPage: FC = () => {
     className: 'flex-end',
   };
 
-  const dataSources: TScenarioRecord[] =
-    useMemo(
-      () =>
-        (scenarioList?.data?.content || MOCK_SCENARIOS).map(
-          (i: ScenarioDTO) => ({
-            ...i,
-            key: i.id,
-          }),
-        ),
-      [scenarioList],
-    ) ?? [];
-
   return (
     <div className="pt-32">
       <Title level={3} className="mb-24">
@@ -96,7 +84,7 @@ const ScenarioPage: FC = () => {
       <ScenarioSearchForm onCreate={handleCreate} onSearch={handleSearch} />
       <div className="mt-24" />
       <ScenarioTable
-        dataSource={dataSources}
+        dataSource={scenarioList?.data?.content ?? MOCK_SCENARIOS}
         pagination={paginationProps}
         onEdit={handleEdit}
         onDelete={handleDelete}

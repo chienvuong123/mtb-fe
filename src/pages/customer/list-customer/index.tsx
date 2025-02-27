@@ -271,16 +271,6 @@ const ListCustomerPage: FC = () => {
     className: 'flex-end',
   };
 
-  const dataSources: TCustomerRecord[] =
-    useMemo(
-      () =>
-        customerRes?.data?.content?.map((i) => ({
-          ...i,
-          key: i.id as string,
-        })),
-      [customerRes],
-    ) ?? [];
-
   const handleClearAll = () => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setFilters({});
@@ -381,7 +371,7 @@ const ListCustomerPage: FC = () => {
       />
       <div className="mt-24" />
       <CustomerListTable
-        dataSource={dataSources}
+        dataSource={customerRes?.data?.content ?? []}
         paginations={paginations}
         onEdit={handleEdit}
         onDelete={handleDelete}
