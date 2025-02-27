@@ -33,10 +33,10 @@ const useCustomerForm = ({
 
   const { data: categoryList } = useQueryCategoryList(false, {
     label: 'combine',
-    value: 'code',
+    value: 'id',
   });
   const { data: campaignList } = useQueryCampaignList({
-    categoryCode: categoryId,
+    categoryId,
   });
   const { data: sellerList } = useSellerOptionsListQuery();
   const { data: hobbiesList } = useCategoryOptionsListQuery(CategoryType.HOBBY);

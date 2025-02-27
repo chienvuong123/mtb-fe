@@ -26,23 +26,30 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
   const [form] = useForm();
   const { isAdmin } = useProfile();
 
-  const categoryId = useWatch(['categoryId'], form);
+  const categoryId = useWatch(['category'], form);
 
   const { data: categoryList } = useQueryCategoryList(false, {
     label: 'combine',
-    value: 'code',
+    value: 'id',
   });
-  const { data: campaignList } = useQueryCampaignList({
-    categoryCode: categoryId,
-  });
+  const { data: campaignList } = useQueryCampaignList(
+    {
+      categoryId,
+    },
+    false,
+    { label: 'combine', value: 'id' },
+  );
   const { data: departmentList } = useCategoryOptionsListQuery(
     CategoryType.DEPARTMENT,
+    { label: 'name', value: 'id' },
   );
   const { data: positionList } = useCategoryOptionsListQuery(
     CategoryType.POSITION,
+    { label: 'name', value: 'id' },
   );
   const { data: branchList } = useCategoryOptionsListQuery(
     CategoryType.BRANCHES,
+    { label: 'name', value: 'id' },
   );
 
   const items = useMemo(() => {
@@ -104,7 +111,7 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
       {
         type: INPUT_TYPE.SELECT,
         label: 'Mã Category',
-        name: 'categoryId',
+        name: 'category',
         inputProps: {
           placeholder: 'Chọn...',
           showSearch: true,
@@ -116,7 +123,7 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
       {
         type: INPUT_TYPE.SELECT,
         label: 'Mã Campaign',
-        name: 'campaignId',
+        name: 'campaign',
         inputProps: {
           placeholder: 'Chọn...',
           showSearch: true,

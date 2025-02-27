@@ -218,6 +218,13 @@ const SellerTable: FC<ISellerTable> = ({
   };
 
   const handleAddSeller = (sellerIds: string[]) => {
+    if (sellerIds.length === 0) {
+      setAlertMessage({
+        message: 'Chưa có seller nào được chọn',
+        type: 'error',
+      });
+      return;
+    }
     if (campaignId)
       addToCampaignMutate(
         { campaignId, data: sellerIds },
@@ -255,6 +262,8 @@ const SellerTable: FC<ISellerTable> = ({
       />
 
       <SellerAssignmentActions
+        disabledCreate={!campaignId}
+        disabledDivide={!campaignId}
         totalCustomer={totalCustomer}
         onCreateSeller={handleCreateSeller}
         onDivide={handleDivide}

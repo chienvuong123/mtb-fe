@@ -46,6 +46,7 @@ const SellerAddFormDrawer: FC<ISellerAddFormDrawer> = ({
 
   const handleCancel = () => {
     setSelectedRowKeys([]);
+    setKeyword('');
     form.resetFields();
     onClose();
   };
@@ -79,6 +80,7 @@ const SellerAddFormDrawer: FC<ISellerAddFormDrawer> = ({
           htmlType: 'button',
           onClick: () => onSubmit(selectedRowKeys),
         }}
+        onClose={handleCancel}
       >
         <OTable
           rowKey="sellerId"

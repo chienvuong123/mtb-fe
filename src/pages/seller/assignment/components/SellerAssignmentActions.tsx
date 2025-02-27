@@ -5,6 +5,8 @@ import type { FC } from 'react';
 
 interface ISellerAssignmentActions {
   totalCustomer: number;
+  disabledDivide?: boolean;
+  disabledCreate?: boolean;
   onUnlockAll: () => void;
   onDivide: () => void;
   onCreateSeller: () => void;
@@ -12,6 +14,8 @@ interface ISellerAssignmentActions {
 
 const SellerAsignmentActions: FC<ISellerAssignmentActions> = ({
   totalCustomer,
+  disabledCreate,
+  disabledDivide,
   onCreateSeller,
   onDivide,
   onUnlockAll,
@@ -38,10 +42,14 @@ const SellerAsignmentActions: FC<ISellerAssignmentActions> = ({
         <AButton variant="filled" color="primary" onClick={onUnlockAll}>
           Mở khóa tất cả
         </AButton>
-        <AButton type="primary" onClick={onDivide}>
+        <AButton type="primary" onClick={onDivide} disabled={disabledDivide}>
           Chia đều
         </AButton>
-        <AButton type="primary" onClick={onCreateSeller}>
+        <AButton
+          type="primary"
+          onClick={onCreateSeller}
+          disabled={disabledCreate}
+        >
           Thêm Seller
         </AButton>
       </Flex>

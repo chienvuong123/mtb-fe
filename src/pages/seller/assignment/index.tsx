@@ -16,6 +16,10 @@ const SellerAssignment: FC = () => {
     setFilters(values);
   };
 
+  const handleClearAll = () => {
+    setFilters({});
+  };
+
   const dataSource = useMemo(() => {
     if (!sellerRes?.data?.sellerInformations) return [];
     return sellerRes?.data?.sellerInformations?.map((i) => ({
@@ -25,14 +29,14 @@ const SellerAssignment: FC = () => {
   }, [sellerRes?.data?.sellerInformations]);
 
   return (
-    <div>
+    <div className="pt-32">
       <Title level={3} className="mb-24">
         Phân công Seller
       </Title>
       <SellerAsignmentSearchForm
         initialValues={filters}
         onSearch={handleSearch}
-        onClearAll={() => {}}
+        onClearAll={handleClearAll}
       />
 
       <SellerAsignmentTable
