@@ -3,6 +3,7 @@ import type {
   AssignmentSellerRequestDTO,
   BaseResponse,
   CategorySearchRequest,
+  SellerDetailsDTO,
   SellerDTO,
 } from '@dtos';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -16,7 +17,7 @@ export const {
 } = createBaseQueryHooks<
   SellerDTO,
   CategorySearchRequest,
-  BaseResponse<SellerDTO>
+  BaseResponse<SellerDetailsDTO>
 >(SELLER_KEY, sellerApi);
 
 export const useSellerAssignCustomerMutation = () => {

@@ -1,9 +1,9 @@
 import { OTable, type TTableKey } from '@components/organisms';
-import type { AnyObject } from 'antd/es/_util/type';
+import type { SellerCampaignData } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import { type FC } from 'react';
 
-export type TSellerRecord = TTableKey & Partial<AnyObject>;
+export type TSellerRecord = TTableKey & Partial<SellerCampaignData>;
 
 interface ISellerTable {
   dataSource: TSellerRecord[];
@@ -12,35 +12,35 @@ interface ISellerTable {
 const columns: ColumnType<TSellerRecord>[] = [
   {
     title: 'Mã Campaign',
-    dataIndex: 'code',
+    dataIndex: ['campaign', 'code'],
     width: 290,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Tên Campaign',
-    dataIndex: 'name',
+    dataIndex: ['campaign', 'name'],
     width: 290,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Số lượng khách phân công',
-    dataIndex: 'totalCampaign',
+    dataIndex: 'customerCount',
     width: 290,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Đã tiếp cận',
-    dataIndex: 'totalCustomer',
+    dataIndex: 'approachedCount',
     width: 290,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Chưa tiếp cận',
-    dataIndex: 'email',
+    dataIndex: 'notApproachedCount',
     width: 290,
     sorter: true,
     showSorterTooltip: false,
@@ -51,6 +51,7 @@ const SellerTable: FC<ISellerTable> = ({ dataSource }) => {
   return (
     <OTable<TSellerRecord>
       isCheckboxHidden
+      hideActions
       columns={columns}
       data={dataSource}
       scroll={{ x: 1575 }}

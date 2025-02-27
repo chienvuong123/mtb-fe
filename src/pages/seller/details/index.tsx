@@ -1,9 +1,13 @@
 import { useMemo, type FC } from 'react';
 import Title from 'antd/es/typography/Title';
 import { useSellerViewQuery } from '@hooks/queries';
-import type { SellerDetailsDTO, TId } from '@dtos';
+import type { TId } from '@dtos';
 import { useParams } from 'react-router-dom';
-import { SellerDetailsForm, SellerDetailsTable } from './components';
+import {
+  SellerDetailsForm,
+  SellerDetailsTable,
+  type TSellerDetailsForm,
+} from './components';
 
 const SellerDetails: FC = () => {
   const { id: sellerId } = useParams<TId>();
@@ -23,7 +27,16 @@ const SellerDetails: FC = () => {
       phone: user.phoneNum,
       position: user.positionDtl.name,
       totalCampaign,
-    } as SellerDetailsDTO;
+    } as TSellerDetailsForm;
+  }, [detailsData?.data]);
+
+  const dataSource = useMemo(() => {
+    return (
+      detailsData?.data?.campaigns?.map((i) => ({
+        ...i,
+        key: i.campaign.id,
+      })) ?? []
+    );
   }, [detailsData?.data]);
 
   return (
@@ -35,8 +48,7 @@ const SellerDetails: FC = () => {
       <Title level={3} className="mb-14 mt-20">
         Danh sách Campaign tham gia
       </Title>
-      {/* TODO: will be fixed dataSource */}
-      <SellerDetailsTable dataSource={[]} />
+      <SellerDetailsTable dataSource={dataSource} />
     </div>
   );
 };
