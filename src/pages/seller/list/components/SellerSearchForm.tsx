@@ -62,6 +62,7 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
           options: branchList,
           showSearch: true,
           filterOption: true,
+          placeholder: 'Chọn...',
         },
       },
       {
@@ -72,6 +73,7 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
           options: departmentList,
           showSearch: true,
           filterOption: true,
+          placeholder: 'Chọn...',
         },
       },
       {
@@ -82,6 +84,7 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
           options: positionList,
           showSearch: true,
           filterOption: true,
+          placeholder: 'Chọn...',
         },
       },
       {
@@ -110,7 +113,7 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
       },
       {
         type: INPUT_TYPE.SELECT,
-        label: 'Mã Category',
+        label: 'Category',
         name: 'category',
         inputProps: {
           placeholder: 'Chọn...',
@@ -122,9 +125,10 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
       },
       {
         type: INPUT_TYPE.SELECT,
-        label: 'Mã Campaign',
+        label: 'Campaign',
         name: 'campaign',
         inputProps: {
+          disabled: !categoryId,
           placeholder: 'Chọn...',
           showSearch: true,
           filterOption: true,

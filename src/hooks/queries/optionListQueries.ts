@@ -210,15 +210,17 @@ export const useSellerOptionsListQuery = () => {
   });
 };
 
-export const useGroupCustomerOptionsListQuery = (campaignId: string) => {
+export const useGroupCustomerOptionsListQuery = (
+  campaignId: string,
+  customFields?: TConvertFieldObj,
+) => {
   return useQuery({
     queryKey: ['customerGroupList', campaignId],
     queryFn: () => groupCustomerApi.list(campaignId),
     select: ({ data }) => {
-      const { byName: campaignListByName } = transformToCodeNameOptions(
-        data ?? [],
-      );
-      return campaignListByName;
+      const { byName: campaignListByName, customOptions } =
+        transformToCodeNameOptions(data ?? [], customFields);
+      return customFields ? customOptions : campaignListByName;
     },
     enabled: !!campaignId,
   });

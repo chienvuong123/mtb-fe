@@ -217,7 +217,7 @@ const SellerTable: FC<ISellerTable> = ({
     });
   };
 
-  const handleAddSeller = (sellerIds: string[]) => {
+  const handleAddSeller = (sellerIds: string[], reset: () => void) => {
     if (sellerIds.length === 0) {
       setAlertMessage({
         message: 'Chưa có seller nào được chọn',
@@ -240,7 +240,7 @@ const SellerTable: FC<ISellerTable> = ({
               message: 'Thêm seller vào campaign thành công',
               type: 'success',
             });
-            setShowDrawer(false);
+            reset();
             refetchSellerList?.();
           },
         },

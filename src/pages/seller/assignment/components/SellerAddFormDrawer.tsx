@@ -14,7 +14,7 @@ import { INPUT_TYPE } from '@types';
 interface ISellerAddFormDrawer {
   open: boolean;
   onClose: () => void;
-  onSubmit: (values: string[]) => void;
+  onSubmit: (values: string[], reset: () => void) => void;
   drawerProps?: IDrawer;
 }
 
@@ -78,7 +78,7 @@ const SellerAddFormDrawer: FC<ISellerAddFormDrawer> = ({
         ]}
         saveBtnProps={{
           htmlType: 'button',
-          onClick: () => onSubmit(selectedRowKeys),
+          onClick: () => onSubmit(selectedRowKeys, handleCancel),
         }}
         onClose={handleCancel}
       >
