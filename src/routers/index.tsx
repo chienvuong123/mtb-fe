@@ -13,7 +13,7 @@ import {
   LOGIN,
   OTP,
   SALES_OPPORTUNITIES,
-  MANAGER_CATEGORY,
+  MANAGER_CAMPAIGN,
   SCENARIO,
   EXPRIED_CHANGE_PASSWORD,
   SELLER,
@@ -24,6 +24,13 @@ const GuestGuard = React.lazy(() => import('./guards/GuestGuard'));
 const AuthGuard = React.lazy(() => import('./guards/AuthGuard'));
 const VerifyGuard = React.lazy(() => import('./guards/VerifyGuard'));
 const RoleBasedGuard = React.lazy(() => import('./guards/RoleBasedGuard'));
+
+const allRole = [
+  ERole.ADMIN,
+  ERole.CAMPAIGN_MANAGER,
+  ERole.SALE_LEADER,
+  ERole.SELLER,
+];
 
 const createLazyElement = (
   importFn: () => Promise<{ default: React.ComponentType }>,
@@ -89,6 +96,11 @@ const routes = createBrowserRouter(
 
         {
           path: CATEGORY.ROOT,
+          element: (
+            <RoleBasedGuard
+              accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
+            />
+          ),
           children: [
             {
               path: CATEGORY.PRODUCT_CATEGORY,
@@ -107,47 +119,45 @@ const routes = createBrowserRouter(
 
         {
           path: SETTING.ROOT,
-          element: (
-            <RoleBasedGuard
-              accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
-            />
-          ),
+          element: <RoleBasedGuard accessibleRoles={allRole} />,
         },
+
         {
-          path: MANAGER_CATEGORY.ROOT,
+          path: MANAGER_CAMPAIGN.ROOT,
+          element: <RoleBasedGuard accessibleRoles={allRole} />,
           children: [
             {
-              path: MANAGER_CATEGORY.CAMPAIGN,
+              path: MANAGER_CAMPAIGN.CAMPAIGN,
               element: createLazyElement(
                 () => import('@pages/campaign/campaign-list'),
               ),
             },
             {
-              path: `${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/:id`,
+              path: `${MANAGER_CAMPAIGN.CAMPAIGN_DETAIL}/:id`,
               element: createLazyElement(
                 () => import('@pages/campaign/campaign-detail'),
               ),
             },
             {
-              path: `${MANAGER_CATEGORY.CREATE_CAMPAIGN}`,
+              path: `${MANAGER_CAMPAIGN.CREATE_CAMPAIGN}`,
               element: createLazyElement(
                 () => import('@pages/campaign/campaign-detail'),
               ),
             },
             {
-              path: `${MANAGER_CATEGORY.CATEGORY}`,
+              path: `${MANAGER_CAMPAIGN.CATEGORY}`,
               element: createLazyElement(
                 () => import('@pages/campaign/category-list'),
               ),
             },
             {
-              path: `${MANAGER_CATEGORY.CATEGORY_DETAIL}/:id`,
+              path: `${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/:id`,
               element: createLazyElement(
                 () => import('@pages/campaign/category-detail'),
               ),
             },
             {
-              path: `${MANAGER_CATEGORY.CREATE_CATEGORY}`,
+              path: `${MANAGER_CAMPAIGN.CREATE_CATEGORY}`,
               element: createLazyElement(
                 () => import('@pages/campaign/category-detail'),
               ),
@@ -156,16 +166,7 @@ const routes = createBrowserRouter(
         },
         {
           path: CUSTOMER.ROOT,
-          element: (
-            <RoleBasedGuard
-              accessibleRoles={[
-                ERole.ADMIN,
-                ERole.CAMPAIGN_MANAGER,
-                ERole.SALE_LEADER,
-                ERole.SELLER,
-              ]}
-            />
-          ),
+          element: <RoleBasedGuard accessibleRoles={allRole} />,
           children: [
             {
               path: CUSTOMER.CUSTOMER_CAMPAIGN_LIST,
@@ -201,7 +202,7 @@ const routes = createBrowserRouter(
         },
         {
           path: SCENARIO.ROOT,
-          element: <RoleBasedGuard accessibleRoles={[ERole.ADMIN]} />,
+          element: <RoleBasedGuard accessibleRoles={allRole} />,
           children: [
             {
               path: '',
@@ -279,11 +280,15 @@ const routes = createBrowserRouter(
     },
     {
       path: '*',
-      element: <>not found</>,
+      element: createLazyElement(() => import('@pages/404')),
     },
     {
       path: '/403',
       element: <>Forbidden</>,
+    },
+    {
+      path: '/500',
+      element: createLazyElement(() => import('@pages/500')),
     },
   ],
   {

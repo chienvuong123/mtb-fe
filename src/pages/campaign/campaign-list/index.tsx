@@ -27,7 +27,7 @@ import {
 } from '@hooks/queries';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@stores';
-import { MANAGER_CATEGORY } from '@routers/path';
+import { MANAGER_CAMPAIGN } from '@routers/path';
 import { ExportIcon, ImportIcon } from '@assets/icons';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
@@ -116,7 +116,7 @@ const Campaign: React.FC = () => {
       endDate: dayjs().format(DATE_SLASH_FORMAT),
     });
 
-    navigate(`/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CREATE_CAMPAIGN}`);
+    navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CREATE_CAMPAIGN}`);
   };
 
   const handleEdit = (data: TCampaignRecord) => {
@@ -128,7 +128,7 @@ const Campaign: React.FC = () => {
 
     if (data?.id) {
       navigate(
-        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/${data.id}`,
+        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN_DETAIL}/${data.id}`,
       );
     }
   };
@@ -224,7 +224,7 @@ const Campaign: React.FC = () => {
     const item = campaignRes?.data.content.find((i) => i.id === id);
     if (item) {
       navigate(
-        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN_DETAIL}/${id}?isView=${true}`,
+        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN_DETAIL}/${id}?isView=${true}`,
       );
       setInitValues({ ...item });
     }

@@ -1,6 +1,7 @@
 import { OSearchBaseForm } from '@components/organisms';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
+import { useProfile } from '@stores';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
@@ -22,6 +23,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
 }) => {
   const [form] = useForm();
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(dayjs());
+  const { isAdmin, isCampaignManager } = useProfile();
 
   const { data: categoryList } = useQueryCategoryList();
   const { data: campaignList } = useQueryCampaignList();
@@ -97,7 +99,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
       form={form}
       onSearch={onSearch}
       onClearAll={onClearAll}
-      onCreate={onCreate}
+      onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
     />
   );
 };

@@ -17,7 +17,7 @@ import {
 } from '@hooks/queries/manageCategoryQueries';
 import type { TCampaignSearchForm } from 'src/dtos/campaign';
 import { useNavigate } from 'react-router-dom';
-import { MANAGER_CATEGORY } from '@routers/path';
+import { MANAGER_CAMPAIGN } from '@routers/path';
 import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
 import type { TCategoryTableRecord } from './components/CategoryTable';
 import CategoryTable from './components/CategoryTable';
@@ -60,7 +60,7 @@ const ManageCategoryPage: React.FC = () => {
     });
 
     navigate(
-      `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CREATE_CATEGORY}?isCreate=${true}`,
+      `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CREATE_CATEGORY}?isCreate=${true}`,
     );
   };
 
@@ -73,7 +73,7 @@ const ManageCategoryPage: React.FC = () => {
 
     if (data) {
       navigate(
-        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CATEGORY_DETAIL}/${data.id}`,
+        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/${data.id}`,
       );
     }
   };
@@ -111,7 +111,7 @@ const ManageCategoryPage: React.FC = () => {
     const item = manageCategoryRes?.data.content.find((i) => i.id === id);
     if (item) {
       navigate(
-        `/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CATEGORY_DETAIL}/${id}?isView=${true}`,
+        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/${id}?isView=${true}`,
       );
       setInitValues({ ...item });
     }

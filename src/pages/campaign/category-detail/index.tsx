@@ -14,7 +14,7 @@ import type {
 } from '@components/molecules/m-pagination/MPagination.type';
 import type { TCategoryDetailDTO } from 'src/dtos/manage-category-detail';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { MANAGER_CATEGORY } from '@routers/path';
+import { MANAGER_CAMPAIGN } from '@routers/path';
 import { filterObject } from '@utils/objectHelper';
 import { type TId } from '@dtos';
 import {
@@ -128,7 +128,7 @@ const ManagerCategoryDetail: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigate(`/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CATEGORY}`);
+    navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY}`);
   };
 
   const getTitle = useMemo(() => {

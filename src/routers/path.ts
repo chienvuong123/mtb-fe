@@ -18,7 +18,7 @@ const ROUTE_PATH = {
     MEDIA_CATEGORY: `media-category`,
   },
 
-  MANAGER_CATEGORY: {
+  MANAGER_CAMPAIGN: {
     ROOT: 'manager-category',
     CAMPAIGN: `campaign`,
     CAMPAIGN_DETAIL: `campaign-detail`,
@@ -52,6 +52,8 @@ const ROUTE_PATH = {
     ASSIGNMENT: 'assignment',
     DETAIL: ':id',
   },
+  MULTIMEDIA_WAREHOUSE: 'multimedia-warehouse',
+  ACCOUNT_MANAGEMENT: 'account-management',
 };
 
 export const {
@@ -69,7 +71,9 @@ export const {
   SETTING,
   SALES_OPPORTUNITIES,
   CUSTOMER,
-  MANAGER_CATEGORY,
+  MANAGER_CAMPAIGN,
   SCENARIO,
   SELLER,
+  MULTIMEDIA_WAREHOUSE,
+  ACCOUNT_MANAGEMENT,
 } = ROUTE_PATH;

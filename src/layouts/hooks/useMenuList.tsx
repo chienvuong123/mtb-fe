@@ -1,20 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  FloppyDiskIcon,
   FolderManagementIcon,
   HelpCircleIcon,
-  HotPriceIcon,
   LogoutIcon,
   MarketingIcon,
   MuslimIcon,
   PieChartIcon,
   Setting02Icon,
   Target02Icon,
+  UserSettingsIcon,
 } from '@assets/icons';
 import { Divider } from 'antd';
 import {
+  ACCOUNT_MANAGEMENT,
   CATEGORY,
   CUSTOMER,
-  MANAGER_CATEGORY,
+  MANAGER_CAMPAIGN,
+  MULTIMEDIA_WAREHOUSE,
   SALES_OPPORTUNITIES,
   SCENARIO,
   SELLER,
@@ -24,10 +27,15 @@ import { Link } from 'react-router-dom';
 import OPopup from '@components/organisms/o-popup/OPopup';
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
 import { useMemo, useState } from 'react';
+import { useProfile } from '@stores';
 
 const useMenuList = (onLogout?: () => void) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { isSaleManager, isSeller, isAuthenticated } = useProfile();
+
   const menuList = useMemo(() => {
+    if (!isAuthenticated) return { menu: [], menuBottom: [] };
+
     const menu: ItemType<MenuItemType>[] = [
       {
         key: 'main',
@@ -43,26 +51,22 @@ const useMenuList = (onLogout?: () => void) => {
         key: '/',
         label: 'Dashboard',
         icon: <PieChartIcon />,
-      },
-      {
-        key: 'report',
-        label: 'Báo cáo',
-        icon: <HotPriceIcon />,
+        disabled: true,
       },
       {
         key: 'category',
-        label: 'Quản lý Category',
+        label: 'Quản lý chiến dịch',
         icon: <FolderManagementIcon />,
         children: [
           {
-            key: `${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN}`,
+            key: `${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN}`,
             label: 'Danh sách Campaign',
           },
           {
-            key: `${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CATEGORY}`,
+            key: `${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY}`,
             label: 'Danh sách Category',
+            disabled: isSeller,
           },
-          { key: 'category.3', label: 'Tạo nhóm khách hàng' },
         ],
       },
       {
@@ -101,6 +105,7 @@ const useMenuList = (onLogout?: () => void) => {
           {
             key: `${SCENARIO.ROOT}/${SCENARIO.CREATE}`,
             label: 'Tạo kịch bản',
+            disabled: isSeller || isSaleManager,
           },
           {
             key: `${SCENARIO.ROOT}/${SCENARIO.DETAIL}`,
@@ -112,9 +117,10 @@ const useMenuList = (onLogout?: () => void) => {
         key: SELLER.ROOT,
         label: 'Quản lý Seller',
         icon: <MuslimIcon />,
+        disabled: isSeller,
         children: [
           {
-            key: SELLER.ROOT,
+            key: `${SELLER.ROOT}/${SELLER.LIST}`,
             label: 'Danh sách Seller',
           },
           {
@@ -124,9 +130,22 @@ const useMenuList = (onLogout?: () => void) => {
         ],
       },
       {
+        key: MULTIMEDIA_WAREHOUSE,
+        label: 'Kho đa phương tiện',
+        icon: <FloppyDiskIcon />,
+        disabled: isSaleManager || isSeller,
+      },
+      {
+        key: ACCOUNT_MANAGEMENT,
+        label: 'Quản lý tài khoản',
+        icon: <UserSettingsIcon />,
+        disabled: isSaleManager || isSeller,
+      },
+      {
         key: CATEGORY.ROOT,
         label: 'Quản lý danh mục',
         icon: <FolderManagementIcon />,
+        disabled: isSaleManager || isSeller,
         children: [
           {
             key: `${CATEGORY.ROOT}/${CATEGORY.PRODUCT_CATEGORY}`,
@@ -135,6 +154,7 @@ const useMenuList = (onLogout?: () => void) => {
           {
             key: `${CATEGORY.ROOT}/${CATEGORY.MEDIA_CATEGORY}`,
             label: 'Loại đa phương tiện',
+            disabled: isSeller,
           },
         ],
       },
@@ -142,6 +162,7 @@ const useMenuList = (onLogout?: () => void) => {
         key: 'help',
         label: 'Trợ giúp',
         icon: <MarketingIcon />,
+        disabled: true,
       },
       {
         key: 'settings',
@@ -152,11 +173,13 @@ const useMenuList = (onLogout?: () => void) => {
             <span>SETTINGS</span>
           </>
         ),
+        disabled: isSeller || isSaleManager,
       },
       {
         key: `${SETTING.ROOT}/${SETTING.CONTROL}`,
         label: 'Cài đặt',
         icon: <Setting02Icon />,
+        disabled: isSeller || isSaleManager,
       },
       {
         key: 'example',
@@ -167,6 +190,7 @@ const useMenuList = (onLogout?: () => void) => {
           </>
         ),
         icon: <HelpCircleIcon />,
+        disabled: true,
       },
     ];
 
@@ -176,6 +200,7 @@ const useMenuList = (onLogout?: () => void) => {
         label: 'Trợ giúp',
         className: 'item-help',
         icon: <HelpCircleIcon />,
+        disabled: true,
       },
       {
         key: 'logout',
@@ -198,7 +223,7 @@ const useMenuList = (onLogout?: () => void) => {
     ];
 
     return { menu, menuBottom };
-  }, []);
+  }, [isSeller, isSaleManager, isAuthenticated]);
 
   return menuList;
 };

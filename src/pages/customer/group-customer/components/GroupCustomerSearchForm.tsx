@@ -1,5 +1,6 @@
 import { OSearchBaseForm } from '@components/organisms';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
+import { useProfile } from '@stores';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
@@ -19,6 +20,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
   onCreate,
 }) => {
   const [form] = useForm();
+  const { isAdmin, isCampaignManager, isSaleManager } = useProfile();
 
   const categoryId = useWatch('categoryId', form);
 
@@ -61,11 +63,17 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
         type: INPUT_TYPE.TEXT,
         label: 'Mã nhóm',
         name: 'code',
+        inputProps: {
+          placeholder: 'Nhập...',
+        },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Tên nhóm',
         name: 'name',
+        inputProps: {
+          placeholder: 'Nhập...',
+        },
       },
     ];
     return formItems;
@@ -90,7 +98,11 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
         form={form}
         onSearch={onSearch}
         onClearAll={onClearAll}
-        onCreate={() => onCreate(form.getFieldsValue())}
+        onCreate={
+          isAdmin || isCampaignManager || isSaleManager
+            ? () => onCreate(form.getFieldsValue())
+            : undefined
+        }
       />
     </div>
   );
