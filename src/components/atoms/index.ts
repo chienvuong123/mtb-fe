@@ -9,3 +9,4 @@ export * from './a-tag';
 export * from './a-dropdown';
 export * from './a-modal';
 export * from './a-input-number';
+export * from './a-collapse';
