@@ -34,7 +34,7 @@ import { Flex } from 'antd';
 import { OUploadPopup } from '@components/organisms/o-upload-popup';
 import type { UploadFile } from 'antd/lib';
 import { downloadBase64File } from '@utils/fileHelper';
-import type { TDrawerMsg } from '@components/organisms';
+import { useNotification } from '@libs/antd';
 import CampaignTable, {
   type TCampaignRecord,
 } from './components/CampaignTable';
@@ -55,8 +55,9 @@ const Campaign: React.FC = () => {
   const { isAdmin, isCampaignManager } = useProfile();
   const [showExport, setShowImport] = useState<boolean>(false);
   const [progressPercent, setProgressPercent] = useState(0);
-  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
   const [uploadError, setUploadError] = useState<string | boolean>(false);
+
+  const notify = useNotification();
 
   const {
     pagination: { current, pageSize },
@@ -177,8 +178,8 @@ const Campaign: React.FC = () => {
         },
         {
           onSuccess: (d) => {
-            validateInsertCustomer(d, setAlertMessage, () => {
-              setAlertMessage({
+            validateInsertCustomer(d, notify, () => {
+              notify({
                 message: 'Import thành công',
                 type: 'success',
               });
@@ -238,7 +239,7 @@ const Campaign: React.FC = () => {
   };
 
   // TODO: will be removed
-  console.log(handleSubmitInsert, alertMessage);
+  console.log(handleSubmitInsert);
 
   return (
     <div className="pt-32">

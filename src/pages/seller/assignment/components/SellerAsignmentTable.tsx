@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { LockIcon, SwitchIcon, UnlockIcon } from '@assets/icons';
 import { AButton, AInputNumber } from '@components/atoms';
-import { OTable, type TDrawerMsg } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import type {
   AssignmentSellerRequestDTO,
   AssignmentSellerResponseDTO,
@@ -15,6 +15,7 @@ import {
   useSellerAddToCampaignMutation,
   useSellerAssignCustomerMutation,
 } from '@hooks/queries';
+import { useNotification } from '@libs/antd';
 import { SellerAddFormDrawer, SellerAssignmentActions } from '.';
 import {
   distributeCustomers,
@@ -38,12 +39,11 @@ const SellerTable: FC<ISellerTable> = ({
   refetchSellerList,
 }) => {
   const [form] = Form.useForm();
-
   const watchForm = Form.useWatch([], form);
+  const notify = useNotification();
 
   const [showDrawer, setShowDrawer] = useState(false);
   const [tableRecords, setTableRecords] = useState<TSellerRecord[]>([]);
-  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
 
   const { mutate: assignCustomerMutate } = useSellerAssignCustomerMutation();
   const { mutate: addToCampaignMutate } = useSellerAddToCampaignMutation();
@@ -204,11 +204,11 @@ const SellerTable: FC<ISellerTable> = ({
       onSuccess: ({ errorCode, errorDesc }) => {
         if (errorCode !== '0') {
           // if error
-          setAlertMessage({ message: errorDesc, type: 'error' });
+          notify({ message: errorDesc, type: 'error' });
           return;
         }
         // if success
-        setAlertMessage({
+        notify({
           message: 'Lưu thành công',
           type: 'success',
         });
@@ -219,7 +219,7 @@ const SellerTable: FC<ISellerTable> = ({
 
   const handleAddSeller = (sellerIds: string[], reset: () => void) => {
     if (sellerIds.length === 0) {
-      setAlertMessage({
+      notify({
         message: 'Chưa có seller nào được chọn',
         type: 'error',
       });
@@ -232,11 +232,11 @@ const SellerTable: FC<ISellerTable> = ({
           onSuccess: (data) => {
             if (data.errorCode !== '0') {
               // if error
-              setAlertMessage({ message: data.errorDesc, type: 'error' });
+              notify({ message: data.errorDesc, type: 'error' });
               return;
             }
             // if success
-            setAlertMessage({
+            notify({
               message: 'Thêm seller vào campaign thành công',
               type: 'success',
             });
@@ -253,12 +253,6 @@ const SellerTable: FC<ISellerTable> = ({
         open={showDrawer}
         onClose={handleCloseDrawer}
         onSubmit={handleAddSeller}
-        drawerProps={{
-          alertProps: {
-            ...alertMessage,
-            setMessage: setAlertMessage,
-          },
-        }}
       />
 
       <SellerAssignmentActions

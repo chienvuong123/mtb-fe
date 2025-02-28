@@ -2,7 +2,7 @@ import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
-import { ODrawer, type TDrawerMsg } from '@components/organisms';
+import { ODrawer } from '@components/organisms';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { BaseResponse } from '@dtos';
 import {
@@ -17,6 +17,7 @@ import type { SortOrder } from 'antd/es/table/interface';
 import Title from 'antd/lib/typography/Title';
 import { useEffect, useMemo, useState } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
+import { useNotification } from '@libs/antd';
 import {
   GroupCustomerInsertForm,
   GroupCustomerSearchForm,
@@ -26,7 +27,7 @@ import {
 
 const GroupCustomerPage = () => {
   const [drawerMode, setDrawerMode] = useState<TFormType>();
-  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
+  const notify = useNotification();
 
   const [initialValuesForm, setInitialValuesForm] =
     useState<Partial<TGroupCustomerRecord> | null>(null);
@@ -53,8 +54,8 @@ const GroupCustomerPage = () => {
 
   const handleInvalidate = (data?: BaseResponse<boolean>) => {
     if (data)
-      validateInsertCategory(data, setAlertMessage, () => {
-        setAlertMessage({
+      validateInsertCategory(data, notify, () => {
+        notify({
           message: 'Tạo mới thành công',
           type: 'success',
         });
@@ -211,7 +212,6 @@ const GroupCustomerPage = () => {
         onClose={handleCloseForm}
         open={!!drawerMode}
         width={1025}
-        alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
         <GroupCustomerInsertForm
           key={drawerMode ?? 'view'}

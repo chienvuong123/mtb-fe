@@ -12,7 +12,7 @@ import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
-import { ODrawer, type TDrawerMsg } from '@components/organisms';
+import { ODrawer } from '@components/organisms';
 import {
   useProductCategoryAddMutation,
   useProductCategoryEditMutation,
@@ -25,6 +25,7 @@ import type { TFormType } from '@types';
 import { formatDate } from '@utils/dateHelper';
 import { filterObject } from '@utils/objectHelper';
 import type { SortOrder } from 'antd/es/table/interface';
+import { useNotification } from '@libs/antd';
 import { validateInsertCategory } from '../utils';
 import {
   ProductEditForm,
@@ -40,6 +41,8 @@ const ProductCategoryPage: FC = () => {
   const [initValuesEditForm, setInitValuesEditForm] =
     useState<Partial<TProductRecord> | null>(null);
 
+  const notify = useNotification();
+
   const {
     pagination: { current, pageSize },
     setPagination,
@@ -52,8 +55,6 @@ const ProductCategoryPage: FC = () => {
   const [drawerMode, setDrawerMode] = useState<TFormType>();
 
   const { user } = useProfile();
-
-  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
 
   const { data: productRes, isLoading } = useProductCategorySearchQuery({
     categoryTypeCode: CategoryType.PRODUCT,
@@ -75,8 +76,8 @@ const ProductCategoryPage: FC = () => {
     isEdit: boolean = false,
   ) => {
     if (data)
-      validateInsertCategory(data, setAlertMessage, () => {
-        setAlertMessage({
+      validateInsertCategory(data, notify, () => {
+        notify({
           message: `${isEdit ? 'Chỉnh sửa' : 'Tạo mới'} thành công`,
           type: 'success',
         });
@@ -232,7 +233,6 @@ const ProductCategoryPage: FC = () => {
         onClose={handleCloseForm}
         open={!!drawerMode}
         width={1025}
-        alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
         {drawerMode === 'add' ? (
           <ProductInsertForm

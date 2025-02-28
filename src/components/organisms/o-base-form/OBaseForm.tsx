@@ -8,13 +8,12 @@ import {
 } from 'antd';
 import { trimObjectValues } from '@utils/objectHelper';
 import { AButton } from '@components/atoms';
-import { useFormItems } from '@hooks';
+import { useFormItems, useDebounceMutating } from '@hooks';
 import type { TFormItem } from '@types';
 import { useMemo } from 'react';
 import clsx from 'clsx';
 
 import './styles.scss';
-import useDebouncedMutating from '@hooks/useDebounceMutating';
 
 const BUTTON_TEXT = {
   CANCEL: 'Hủy',
@@ -46,7 +45,7 @@ const OBaseForm = <T extends object>({
   children,
   saveBtnProps,
 }: IOBaseForm<T>) => {
-  const isMutating = useDebouncedMutating({ mutationKey: [mutationKey] });
+  const isMutating = useDebounceMutating({ mutationKey: [mutationKey] });
 
   const transformItems = useMemo(
     () =>

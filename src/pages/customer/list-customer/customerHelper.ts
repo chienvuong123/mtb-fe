@@ -1,12 +1,10 @@
-import type { TDrawerMsg } from '@components/organisms';
 import type { BaseResponse, CustomerDTO } from '@dtos';
 import type {
   QueryObserverResult,
   RefetchOptions,
 } from '@tanstack/react-query';
 import { downloadFile } from '@utils/fileHelper';
-import type { FormInstance } from 'antd';
-import type { Dispatch, SetStateAction } from 'react';
+import type { FormInstance, NotificationArgsProps } from 'antd';
 import type { TCustomerSearchForm } from './customer.type';
 
 const customerError = {
@@ -107,7 +105,7 @@ export const destructCustomerData = (
 
 export const validateInsertCustomer = <T>(
   { errorCode, errorDesc }: BaseResponse<T>,
-  setMsg: Dispatch<SetStateAction<TDrawerMsg>>,
+  setMsg: (props: NotificationArgsProps) => void,
   onSuccess: () => void,
   form?: FormInstance,
 ) => {

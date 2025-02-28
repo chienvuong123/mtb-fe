@@ -18,12 +18,13 @@ import {
   useCampaignDetailViewQuery,
   useCampaignScriptQuery,
 } from '@hooks/queries/campaignDetailQueries';
+import { useNotification } from '@libs/antd';
 import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { ODrawer, type TDrawerMsg } from '@components/organisms';
+import { ODrawer } from '@components/organisms';
 import { MANAGER_CATEGORY } from '@routers/path';
 import type { TFormType } from '@types';
 import { filterObject } from '@utils/objectHelper';
@@ -52,10 +53,10 @@ const ManagerCampaignDetail: React.FC = () => {
   const [initApproachValues, setInitApproachValues] =
     useState<Partial<TCampaignDetaillRecord> | null>(null);
 
+  const notify = useNotification();
+
   const [isViewMode, setIsViewMode] = useState(false);
   const [isViewModeTarget, setIsViewModeTarget] = useState(false);
-
-  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
 
   const [tempTargets, setTempTargets] = useState<CampaignTargetDTO | null>(
     null,
@@ -190,8 +191,8 @@ const ManagerCampaignDetail: React.FC = () => {
     isEdit: boolean = false,
   ) => {
     if (data)
-      validateInsertCategory(data, setAlertMessage, () => {
-        setAlertMessage({
+      validateInsertCategory(data, notify, () => {
+        notify({
           message: `${isEdit ? 'Chỉnh sửa' : 'Tạo mới'} thành công`,
           type: 'success',
         });
@@ -322,7 +323,6 @@ const ManagerCampaignDetail: React.FC = () => {
         width={1080}
         maskClosable={false}
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
-        alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
         <CampaignTargetForm
           isViewMode={isViewMode}
@@ -340,7 +340,6 @@ const ManagerCampaignDetail: React.FC = () => {
         width={1080}
         maskClosable={false}
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
-        alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
         <CampaignApproachForm
           isViewMode={isViewModeTarget}

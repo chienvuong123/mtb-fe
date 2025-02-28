@@ -42,3 +42,33 @@ h6,
 .whitespace-nowrap {
   white-space: nowrap;
 }
+
+// notification
+.mbb-notification-notice {
+  border-radius: 8px;
+  padding: 16px !important;
+  &.mbb-notification-notice {
+    &-success {
+      padding: 0;
+      border-left: 5px solid #31c23f;
+      background-color: #cce6da;
+    }
+    &-error {
+      border-left: 5px solid #db3333;
+      background-color: #ffebe9;
+    }
+    &-warning {
+      border-left: 5px solid #ffe600;
+      background-color: #fff2d8;
+    }
+    .mbb-notification-notice-content {
+      .mbb-notification-notice-message {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .mbb-notification-notice-close {
+    top: 50% !important;
+    transform: translate(50%, -50%);
+  }
+}
