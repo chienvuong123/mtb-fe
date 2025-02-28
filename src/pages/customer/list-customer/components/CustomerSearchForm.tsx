@@ -10,6 +10,7 @@ import {
   useQueryCategoryList,
 } from '@hooks/queries';
 import { useProfile } from '@stores';
+import { handleResetFields } from '@utils/formHelper';
 import { parseCustomerObj } from '../customerHelper';
 import type { TCustomerSearchForm } from '../customer.type';
 
@@ -34,13 +35,8 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
   const categoryId = useWatch(['categoryId'], form);
   const campaignId = useWatch(['campaignId'], form);
 
-  const { data: categoryList } = useQueryCategoryList(false, {
-    label: 'combine',
-    value: 'code',
-  });
-  const { data: campaignList } = useQueryCampaignList({
-    categoryCode: categoryId,
-  });
+  const { data: categoryList } = useQueryCategoryList(true);
+  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
   const { data: customerSegmentList } = useCategoryOptionsListQuery(
     CategoryType.CUSTOMER_SEGMENT,
   );
@@ -61,6 +57,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             showSearch: true,
             filterOption: true,
             options: categoryList,
+            onChange: () => handleResetFields(['campaignId'], form),
           },
         },
         {
@@ -139,6 +136,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
       customerSegmentList,
       jobList,
       groupCustomerList,
+      form,
     ],
   );
 

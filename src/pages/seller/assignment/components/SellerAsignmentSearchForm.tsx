@@ -24,19 +24,11 @@ const SellerAsignmentSearchForm: FC<ISellerAssignmentForm> = ({
   const categoryId = useWatch(['categoryId'], form);
   const campaignId = useWatch(['campaignId'], form);
 
-  const { data: categoryList } = useQueryCategoryList(false, {
-    label: 'combine',
-    value: 'code',
-  });
-  const { data: campaignList } = useQueryCampaignList(
-    { categoryCode: categoryId },
-    false,
-  );
+  const { data: categoryList } = useQueryCategoryList(true);
+  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
 
-  const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
-    campaignId,
-    { label: 'name', value: 'id' },
-  );
+  const { data: groupCustomerList } =
+    useGroupCustomerOptionsListQuery(campaignId);
 
   useEffect(() => {
     if (initialValues) {

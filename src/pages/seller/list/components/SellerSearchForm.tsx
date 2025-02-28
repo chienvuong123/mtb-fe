@@ -9,6 +9,7 @@ import {
   useQueryCampaignList,
   useQueryCategoryList,
 } from '@hooks/queries';
+import { handleResetFields } from '@utils/formHelper';
 
 interface ISellerSearchForm {
   initialValues?: SellerSearchRequest;
@@ -28,28 +29,16 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
 
   const categoryId = useWatch(['category'], form);
 
-  const { data: categoryList } = useQueryCategoryList(false, {
-    label: 'combine',
-    value: 'id',
-  });
-  const { data: campaignList } = useQueryCampaignList(
-    {
-      categoryId,
-    },
-    false,
-    { label: 'combine', value: 'id' },
-  );
+  const { data: categoryList } = useQueryCategoryList(true);
+  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
   const { data: departmentList } = useCategoryOptionsListQuery(
     CategoryType.DEPARTMENT,
-    { label: 'name', value: 'id' },
   );
   const { data: positionList } = useCategoryOptionsListQuery(
     CategoryType.POSITION,
-    { label: 'name', value: 'id' },
   );
   const { data: branchList } = useCategoryOptionsListQuery(
     CategoryType.BRANCHES,
-    { label: 'name', value: 'id' },
   );
 
   const items = useMemo(() => {
@@ -120,7 +109,7 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
           showSearch: true,
           filterOption: true,
           options: categoryList,
-          onChange: () => form.setFieldValue('campaignId', undefined),
+          onChange: () => handleResetFields(['campaign'], form),
         },
       },
       {

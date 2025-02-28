@@ -3,7 +3,8 @@ import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { useProfile } from '@stores';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { useForm } from 'antd/es/form/Form';
+import { handleResetFields } from '@utils/formHelper';
+import { useForm, useWatch } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 import type { TCampaignSearchForm } from 'src/dtos/campaign';
@@ -25,8 +26,10 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(dayjs());
   const { isAdmin, isCampaignManager } = useProfile();
 
+  const categoryId = useWatch('categoryCode', form);
+
   const { data: categoryList } = useQueryCategoryList();
-  const { data: campaignList } = useQueryCampaignList();
+  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [
@@ -39,6 +42,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
           showSearch: true,
           filterOption: true,
           options: categoryList,
+          onChange: () => handleResetFields(['codeCampaign'], form),
         },
       },
       {
@@ -85,7 +89,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
       },
     ];
     return formItems;
-  }, [categoryList, campaignList, startDate]);
+  }, [categoryList, campaignList, startDate, form]);
 
   useEffect(() => {
     if (initialValues) {

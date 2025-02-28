@@ -8,30 +8,17 @@ import {
 } from '@apis';
 import { CategoryType } from '@dtos';
 import { useQuery } from '@tanstack/react-query';
-import {
-  transformToCodeNameOptions,
-  transformToOptions,
-  type TConvertFieldObj,
-} from '@utils/objectHelper';
+import { transformToOptions } from '@utils/objectHelper';
 import type { CampaignListRequest } from 'src/dtos/campaign-detail';
 
 export const useCategoryOptionsListQuery = (
   categoryTypeCode: CategoryType,
-  customFields?: TConvertFieldObj,
+  combine?: boolean,
 ) => {
   return useQuery({
     queryKey: ['categoryList', categoryTypeCode],
     queryFn: () => categoryApi.getCategoryOptionsList(categoryTypeCode),
-    select: ({ data }) => {
-      if (customFields) {
-        const { customOptions } = transformToCodeNameOptions(
-          data ?? [],
-          customFields,
-        );
-        return customOptions;
-      }
-      return transformToOptions(data);
-    },
+    select: ({ data }) => transformToOptions(data, combine),
     enabled: !!categoryTypeCode,
   });
 };
@@ -139,50 +126,22 @@ export const useAssetNameOptionsListQuery = ({
   });
 };
 
-export const useQueryCategoryList = (
-  getByCode?: boolean,
-  customFields?: TConvertFieldObj,
-) => {
+export const useQueryCategoryList = (combine?: boolean) => {
   return useQuery({
     queryKey: ['category', 'list'],
     queryFn: () => categoryApi.categoryListOptions(),
-    select: ({ data }) => {
-      if (customFields) {
-        const { customOptions } = transformToCodeNameOptions(
-          data?.content ?? [],
-          customFields,
-        );
-        return customOptions;
-      }
-
-      const { byCode: categoryListByCode, byName: categoryListByName } =
-        transformToCodeNameOptions(data?.content ?? []);
-      return getByCode ? categoryListByCode : categoryListByName;
-    },
+    select: ({ data }) => transformToOptions(data.content, combine),
   });
 };
 
 export const useQueryCampaignList = (
   params?: CampaignListRequest,
-  getById?: boolean,
-  customFields?: TConvertFieldObj,
+  combine?: boolean,
 ) => {
   return useQuery({
     queryKey: ['campaign', 'list', params],
     queryFn: () => campaignApi.campaignListOptions(params),
-    select: ({ data }) => {
-      if (customFields) {
-        const { customOptions } = transformToCodeNameOptions(
-          data?.content ?? [],
-          customFields,
-        );
-        return customOptions;
-      }
-
-      const { byId: campaignListById, byName: campaignListByName } =
-        transformToCodeNameOptions(data?.content ?? []);
-      return getById ? campaignListById : campaignListByName;
-    },
+    select: ({ data }) => transformToOptions(data.content, combine),
     enabled: !!params?.categoryCode || !!params?.categoryId,
   });
 };
@@ -196,32 +155,22 @@ export const useLocationOptionsListQuery = (parentCode = '0') => {
   });
 };
 
-export const useSellerOptionsListQuery = () => {
+export const useSellerOptionsListQuery = (combine?: boolean) => {
   return useQuery({
     queryKey: ['sellerList'],
     queryFn: () => sellerApi.list(),
-    select: (data) => {
-      const { customOptions } = transformToCodeNameOptions(data.data, {
-        label: 'name',
-        value: 'id',
-      });
-      return customOptions;
-    },
+    select: (data) => transformToOptions(data.data ?? [], combine),
   });
 };
 
 export const useGroupCustomerOptionsListQuery = (
   campaignId: string,
-  customFields?: TConvertFieldObj,
+  combine?: boolean,
 ) => {
   return useQuery({
     queryKey: ['customerGroupList', campaignId],
     queryFn: () => groupCustomerApi.list(campaignId),
-    select: ({ data }) => {
-      const { byName: campaignListByName, customOptions } =
-        transformToCodeNameOptions(data ?? [], customFields);
-      return customFields ? customOptions : campaignListByName;
-    },
+    select: ({ data }) => transformToOptions(data, combine),
     enabled: !!campaignId,
   });
 };

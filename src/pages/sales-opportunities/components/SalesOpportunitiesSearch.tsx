@@ -3,7 +3,8 @@ import { STATUS_SALES_OPPORTUNITIES_OPTIONS } from '@constants/masterData';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { useForm } from 'antd/es/form/Form';
+import { handleResetFields } from '@utils/formHelper';
+import { useForm, useWatch } from 'antd/es/form/Form';
 import React, { useEffect, useMemo } from 'react';
 import type { TSalesOpportunitiesSearchForm } from 'src/dtos/sales-opportunities';
 
@@ -19,9 +20,10 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
   onClearAll,
 }) => {
   const [form] = useForm();
+  const categoryId = useWatch('categoryCode', form);
 
-  const { data: categoryList } = useQueryCategoryList();
-  const { data: campaignList } = useQueryCampaignList();
+  const { data: categoryList } = useQueryCategoryList(true);
+  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [
@@ -40,6 +42,7 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
           showSearch: true,
           filterOption: true,
           options: categoryList,
+          onChange: () => handleResetFields(['campaignCode'], form),
         },
       },
       {
@@ -122,7 +125,7 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
       },
     ];
     return formItems;
-  }, [categoryList, campaignList]);
+  }, [categoryList, campaignList, form]);
 
   useEffect(() => {
     if (initialValues) {

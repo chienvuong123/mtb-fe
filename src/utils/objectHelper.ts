@@ -1,11 +1,5 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import type { BaseAntdOptionType } from '@dtos';
-
-export type TConvertField = 'id' | 'code' | 'name';
-export type TConvertFieldObj = {
-  label: TConvertField | 'combine';
-  value: TConvertField;
-};
+import type { BaseAntdOptionType, BaseOptionListDTO } from '@dtos';
 
 /**
  * Recursively trims all string values in an object.
@@ -51,63 +45,14 @@ function filterObject<T extends Record<string, any>>(obj: T): Partial<T> {
   }, {} as Partial<T>);
 }
 
-const transformToOptions = <T extends { name: string; code: string }>(
+const transformToOptions = <T extends Omit<BaseOptionListDTO, 'active'>>(
   data: T[],
+  combine?: boolean,
 ): BaseAntdOptionType[] =>
   data.map((item) => ({
-    label: item.name,
-    value: item.code,
+    label: combine ? `${item.code} - ${item.name}` : item.name,
+    value: item.id as string,
   })) ?? [];
-
-const transformToCodeNameOptions = <
-  T extends { id?: string | number; code: string; name: string },
->(
-  data: T[],
-  customField?: TConvertFieldObj,
-): {
-  byCode: BaseAntdOptionType[];
-  byName: BaseAntdOptionType[];
-  byId: BaseAntdOptionType[];
-  customOptions: BaseAntdOptionType[];
-} => {
-  const byCode: BaseAntdOptionType[] = [];
-  const byName: BaseAntdOptionType[] = [];
-  const byId: BaseAntdOptionType[] = [];
-  const customOptions: BaseAntdOptionType[] = [];
-
-  data?.forEach((item) => {
-    byName.push({
-      value: item.id ?? item.code,
-      label: `${item.code} - ${item.name}`,
-      code: item.code,
-    });
-    byCode.push({
-      value: item.id ?? item.code,
-      label: item.code,
-      code: item.code,
-    });
-    byId.push({
-      value: item.id ?? item.code,
-      label: String(item.id),
-      code: item.code,
-    });
-
-    if (customField) {
-      const value = item[customField.value];
-      const label =
-        customField.label === 'combine'
-          ? `${item.code} - ${item.name}`
-          : item[customField.label];
-      if (value === undefined || label === undefined) return;
-      customOptions.push({
-        value,
-        label: String(label),
-      });
-    }
-  });
-
-  return { byCode, byName, byId, customOptions };
-};
 
 const getOptionLabel = (
   options: BaseAntdOptionType[] | undefined,
@@ -153,7 +98,6 @@ export {
   isNumberArray,
   filterObject,
   transformToOptions,
-  transformToCodeNameOptions,
   getOptionLabel,
   isEqual,
 };

@@ -17,7 +17,7 @@ const ScenarioSearchForm: FC<IScenarioSearchForm> = ({
 }) => {
   const [form] = useForm();
 
-  const { data: categoryList } = useQueryCategoryList();
+  const { data: categoryList } = useQueryCategoryList(true);
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [

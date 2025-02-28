@@ -3,6 +3,7 @@ import { ACCEPTING_FULL_ALPHA_NUMERIC_SPACE_PATTERN } from '@constants/regex';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { GROUP_CUSTOMER_KEY } from '@hooks/queries/groupCustomerQueries';
 import { INPUT_TYPE, type TFormItem } from '@types';
+import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import clsx from 'clsx';
 import { useEffect, useMemo, type FC } from 'react';
@@ -25,13 +26,8 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
 
   const categoryId = useWatch('categoryId', form);
 
-  const { data: categoryList } = useQueryCategoryList(false, {
-    label: 'combine',
-    value: 'code',
-  });
-  const { data: campaignList } = useQueryCampaignList({
-    categoryCode: categoryId,
-  });
+  const { data: categoryList } = useQueryCategoryList(true);
+  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
 
   const unselectedCategory = !categoryId;
 
@@ -49,6 +45,7 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
               showSearch: true,
               filterOption: true,
               options: categoryList,
+              onChange: () => handleResetFields(['campaignId'], form),
             },
           },
           {
@@ -105,7 +102,7 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
         }
         return item;
       }),
-    [mode, unselectedCategory, categoryList, campaignList],
+    [mode, unselectedCategory, categoryList, campaignList, form],
   ) as TFormItem[];
 
   useEffect(() => {
