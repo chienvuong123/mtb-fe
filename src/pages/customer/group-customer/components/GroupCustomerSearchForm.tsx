@@ -2,6 +2,7 @@ import { OSearchBaseForm } from '@components/organisms';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { useProfile } from '@stores';
 import { INPUT_TYPE, type TFormItem } from '@types';
+import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
@@ -26,13 +27,8 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
 
   const unselectedCategory = !categoryId;
 
-  const { data: categoryList } = useQueryCategoryList(false, {
-    label: 'combine',
-    value: 'code',
-  });
-  const { data: campaignList } = useQueryCampaignList({
-    categoryCode: categoryId,
-  });
+  const { data: categoryList } = useQueryCategoryList(true);
+  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [
@@ -45,6 +41,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
           showSearch: true,
           filterOption: true,
           options: categoryList,
+          onChange: () => handleResetFields(['campaignId'], form),
         },
       },
       {
@@ -77,7 +74,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
       },
     ];
     return formItems;
-  }, [categoryList, campaignList, unselectedCategory]);
+  }, [categoryList, campaignList, unselectedCategory, form]);
 
   useEffect(() => {
     if (initialValues) {

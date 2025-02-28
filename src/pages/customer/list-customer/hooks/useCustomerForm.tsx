@@ -18,6 +18,7 @@ import {
   useQueryCategoryList,
   useSellerOptionsListQuery,
 } from '@hooks/queries';
+import { handleResetFields } from '@utils/formHelper';
 import type { ICustomerForm, TCustomerForm } from '../customer.type';
 
 const useCustomerForm = ({
@@ -31,13 +32,8 @@ const useCustomerForm = ({
   const categoryId = Form.useWatch(['categoryId'], form);
   const campaignId = Form.useWatch(['campaignId'], form);
 
-  const { data: categoryList } = useQueryCategoryList(false, {
-    label: 'combine',
-    value: 'id',
-  });
-  const { data: campaignList } = useQueryCampaignList({
-    categoryId,
-  });
+  const { data: categoryList } = useQueryCategoryList(true);
+  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
   const { data: sellerList } = useSellerOptionsListQuery();
   const { data: hobbiesList } = useCategoryOptionsListQuery(CategoryType.HOBBY);
   const { data: jobList } = useCategoryOptionsListQuery(CategoryType.JOB);
@@ -69,6 +65,8 @@ const useCustomerForm = ({
               options: categoryList,
               showSearch: true,
               filterOption: true,
+              onChange: () =>
+                handleResetFields(['campaignId', 'cusGroup'], form),
             },
           },
           {
@@ -83,6 +81,7 @@ const useCustomerForm = ({
               showSearch: true,
               filterOption: true,
               disabled: !categoryId,
+              onChange: () => handleResetFields(['cusGroup'], form),
             },
           },
           {
@@ -238,6 +237,7 @@ const useCustomerForm = ({
       identificationList,
       branchList,
       groupCustomerList,
+      form,
     ],
   ) as TFormItem[];
 
