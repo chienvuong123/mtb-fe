@@ -129,8 +129,8 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
               resultDetail: String(approachData.resultDetail ?? ''),
               rate: approachData.rate?.toString() || '',
               note: approachData.note?.toString() || '',
-              // status: 'COMPLETED',
-              // rateCampaign: '',
+              status: approachData.status?.toString() || '',
+              rateCampaign: approachData.rateCampaign?.toString() || '',
             },
             approachResultStep: changedSteps,
           };
