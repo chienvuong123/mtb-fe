@@ -186,14 +186,7 @@ const GroupCustomerPage = () => {
         onSearch={handleSearch}
         onClearAll={handleClearAll}
         onCreate={handleCreate}
-        initialValues={{
-          campaignId: filters?.campaignId ?? '',
-          nameCampaign: filters?.nameCampaign ?? '',
-          categoryId: filters?.categoryId ?? '',
-          nameCategory: filters?.nameCategory ?? '',
-          code: filters?.code ?? '',
-          name: filters?.name ?? '',
-        }}
+        initialValues={filters}
       />
       <div className="mt-24" />
       <GroupCustomerTable

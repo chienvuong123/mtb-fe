@@ -4,6 +4,7 @@ import { OTable, type ITable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { ESalesCampaign } from '@constants/masterData';
 import type { OrderDTO } from '@dtos';
+import { useProfile } from '@stores';
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import type { ColumnType } from 'antd/lib/table';
 import dayjs from 'dayjs';
@@ -110,6 +111,8 @@ const CampaignTable: React.FC<ICampaignTable> = ({
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
+  const { isAdmin, isCampaignManager } = useProfile();
+
   const deleteRecord = (key: Key) => {
     onDelete(key as string);
   };
@@ -121,8 +124,8 @@ const CampaignTable: React.FC<ICampaignTable> = ({
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
       onCreate={onCreate}
-      onDeleteRow={deleteRecord}
-      onEdit={onEdit}
+      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
+      onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}

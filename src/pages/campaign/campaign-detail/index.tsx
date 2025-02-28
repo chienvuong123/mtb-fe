@@ -25,7 +25,7 @@ import type {
 } from '@components/molecules/m-pagination/MPagination.type';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ODrawer } from '@components/organisms';
-import { MANAGER_CATEGORY } from '@routers/path';
+import { MANAGER_CAMPAIGN } from '@routers/path';
 import type { TFormType } from '@types';
 import { filterObject } from '@utils/objectHelper';
 import type { BaseResponse, TId } from '@dtos';
@@ -101,7 +101,7 @@ const ManagerCampaignDetail: React.FC = () => {
   });
 
   const handleShowForm = () => {
-    navigate(`/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CREATE_CATEGORY}`);
+    navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CREATE_CATEGORY}`);
     setShowInsertTargetForm('add');
   };
 
@@ -258,7 +258,7 @@ const ManagerCampaignDetail: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigate(`/${MANAGER_CATEGORY.ROOT}/${MANAGER_CATEGORY.CAMPAIGN}`);
+    navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN}`);
   };
 
   return (

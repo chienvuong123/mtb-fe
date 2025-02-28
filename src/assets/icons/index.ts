@@ -60,3 +60,5 @@ export { ReactComponent as UnlockIcon } from './unlock.svg';
 export { ReactComponent as SwitchIcon } from './switch.svg';
 export { ReactComponent as PhoneIcon } from './phone.svg';
 export { ReactComponent as CloseIcon } from './close.svg';
+export { ReactComponent as NotFound } from './not-found.svg';
+export { ReactComponent as ServerError } from './server-error.svg';

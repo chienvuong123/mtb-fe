@@ -14,6 +14,9 @@
 }
 
 .a-menu {
+  .mbb-menu-item-disabled {
+    display: none !important;
+  }
   & .mbb-menu-submenu {
     .mbb-menu-submenu-title {
       @extend %title;
@@ -21,6 +24,9 @@
       .mbb-menu-title-content {
         font-weight: 500;
       }
+    }
+    &-disabled {
+      display: none;
     }
   }
 
@@ -58,6 +64,9 @@
         position: relative;
         z-index: 1;
         font-size: 14px;
+      }
+      &-disabled {
+        display: none;
       }
     }
 
