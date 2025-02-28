@@ -1,4 +1,5 @@
 export interface CustomerCollectInfoDTO {
+  saveDraft?: boolean;
   customerId: string;
   orderId: string;
   campaignId: string;

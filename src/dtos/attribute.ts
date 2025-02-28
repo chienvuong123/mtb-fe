@@ -8,21 +8,21 @@ import type {
 
 export type ControlValue<T extends EControlType> = {
   TEXT: string;
-  EDITOR: string;
-  SELECT: {
-    options: { text: string; value: string }[];
+  BLOCK_OF_TEXT: string;
+  COMBO_BOX: {
+    options: string[];
   };
-  RADIO: {
-    options: { text: string; value: string }[];
+  RADIO_BUTTON_GROUP: {
+    options: string[];
   };
-  CHECKBOX: {
-    options: { text: string; value: string }[];
+  CHECKBOX_LIST: {
+    options: string[];
   };
   IMAGE: { title: string; src: string };
-  DATETIME: string;
-  NUMBER: number;
-  SWITCH: {
-    options: { text: string; value: string }[];
+  DATE_PICKER: string;
+  NUMBER_STEPPER: number;
+  ON_OFF_SWITCH: {
+    options: string[];
   };
   LINK: string;
   BUTTON: { title: string; link: string };
@@ -33,8 +33,8 @@ export type ControlValueType = ControlValue<EControlType>;
 export interface AttributeDTO extends BaseEntity {
   attributeName: string;
   controlType: EControlType;
-  content: string;
-  config: ControlValueType;
+  description: string;
+  content: string | null;
   haveNote?: boolean;
   controlName?: string;
 }

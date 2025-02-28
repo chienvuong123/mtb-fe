@@ -1,11 +1,9 @@
 import { OBaseDetailForm } from '@components/organisms/o-form-detail';
 import { GENDER_OPTIONS } from '@constants/masterData';
-import type { CustomerDTO } from '@dtos';
-import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
-import { MOCK_BRANCHES, MOCK_JOBS } from '@mocks/customer';
+import { type CustomerDTO } from '@dtos';
 import { INPUT_TYPE, type TFormItem } from '@types';
+import { getOptionLabel } from '@utils/objectHelper';
 import { useForm } from 'antd/es/form/Form';
-import dayjs from 'dayjs';
 import { useEffect, useMemo, type FC } from 'react';
 
 interface ICustomerDetailForm {
@@ -15,170 +13,168 @@ interface ICustomerDetailForm {
 const CustomerDetailForm: FC<ICustomerDetailForm> = ({ data }) => {
   const [form] = useForm();
 
-  const { data: categoryList } = useQueryCategoryList();
-  const { data: campaignList } = useQueryCampaignList();
-
   const items = useMemo(() => {
     const configItems: TFormItem[] = [
       {
-        type: INPUT_TYPE.SELECT,
-        label: 'Category',
-        name: 'category[code]',
+        type: INPUT_TYPE.TEXT,
+        label: 'Mã Category',
+        name: 'categoryCode',
         inputProps: {
-          placeholder: 'Chọn',
-          options: categoryList,
+          disabled: true,
         },
       },
       {
-        type: INPUT_TYPE.SELECT,
-        label: 'Campaign',
-        name: 'campaign.code',
+        type: INPUT_TYPE.TEXT,
+        label: 'Tên Category',
+        name: 'categoryName',
         inputProps: {
-          placeholder: 'Chọn',
-          options: campaignList,
+          disabled: true,
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Mã Campaign',
+        name: 'campaignCode',
+        inputProps: {
+          disabled: true,
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Tên Campaign',
+        name: 'campaignName',
+        inputProps: {
+          disabled: true,
         },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Mã khách hàng',
         name: 'code',
-        inputProps: { title: 'Mã', placeholder: 'Nhập...', maxLength: 20 },
-      },
-      {
-        type: INPUT_TYPE.TEXT,
-        label: 'Số điện thoại',
-        name: 'phone',
-        inputProps: { placeholder: 'Nhập...', maxLength: 10 },
-      },
-      {
-        type: INPUT_TYPE.TEXT,
-        label: 'Email',
-        name: 'email',
-        inputProps: { placeholder: 'Nhập...', maxLength: 100 },
-      },
-      {
-        type: INPUT_TYPE.DATE_PICKER,
-        label: 'Ngày sinh',
-        name: 'birthday',
-        getValueProps: (value: string) => ({
-          value: value ? dayjs(value) : dayjs(),
-        }),
         inputProps: {
-          placeholder: 'Chọn',
+          disabled: true,
         },
-      },
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Ngày sinh',
-        name: 'gender',
-        inputProps: { placeholder: 'Chọn', options: GENDER_OPTIONS },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Họ và tên',
         name: 'name',
-        inputProps: { placeholder: 'Nhập...', maxLength: 100 },
-      },
-
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Phân khúc khách hàng',
-        name: 'segment[id]',
         inputProps: {
-          placeholder: 'Chọn',
-          options: [
-            {
-              label: data.segment?.name,
-              value: data.segment?.id,
-            },
-          ],
+          disabled: true,
         },
       },
       {
-        type: INPUT_TYPE.SELECT,
+        type: INPUT_TYPE.TEXT,
+        label: 'Số điện thoại',
+        name: 'phone',
+        inputProps: {
+          disabled: true,
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Email',
+        name: 'email',
+        inputProps: {
+          disabled: true,
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Năm sinh',
+        name: 'birthday',
+        inputProps: {
+          disabled: true,
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Giới tính',
+        name: 'gender',
+        inputProps: {
+          disabled: true,
+        },
+        getValueProps: (value) => {
+          return {
+            value: getOptionLabel(GENDER_OPTIONS, value),
+          };
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Nhóm khách hàng',
+        name: 'cusGroup',
+        inputProps: {
+          disabled: true,
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Phân khúc khách hàng',
+        name: 'cusSegment',
+        inputProps: {
+          disabled: true,
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
         label: 'Nghề nghiệp',
         name: 'job',
         inputProps: {
-          placeholder: 'Chọn',
-          options: MOCK_JOBS.map((job) => ({
-            label: job,
-            value: job,
-          })),
+          disabled: true,
         },
       },
       {
-        type: INPUT_TYPE.SELECT,
-        label: 'Khách hàng định danh',
-        name: 'identityType',
+        type: INPUT_TYPE.TEXT,
+        label: 'Loại giấy tờ định danh',
+        name: 'identnDocType',
         inputProps: {
-          placeholder: 'Chọn',
-          options: ['CCCD', 'Hộ chiếu'].map((val) => ({
-            label: val,
-            value: val,
-          })),
+          disabled: true,
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Số giấy tờ định danh',
+        name: 'identityCard',
+        inputProps: {
+          disabled: true,
         },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Địa chỉ',
         name: 'address',
-        inputProps: { placeholder: 'Nhập...', maxLength: 200 },
-      },
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Nhóm khách hàng',
-        name: 'group.id',
         inputProps: {
-          placeholder: 'Chọn',
-          options: [
-            {
-              label: data.group?.name,
-              value: data.group?.id,
-            },
-          ],
+          disabled: true,
         },
-      },
-      {
-        type: INPUT_TYPE.TEXT,
-        label: 'CCCD',
-        name: 'identityNumber',
-        inputProps: { placeholder: 'Nhập...', maxLength: 20 },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Sở thích',
-        name: 'hobby',
-        inputProps: { placeholder: 'Nhập...', maxLength: 200 },
-      },
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Chi nhánh quản lý',
-        name: 'branch',
+        name: 'hobbies',
         inputProps: {
-          placeholder: 'Chọn',
-          options: MOCK_BRANCHES.map((branch) => ({
-            label: branch,
-            value: branch,
-          })),
+          disabled: true,
         },
       },
       {
-        type: INPUT_TYPE.SELECT,
-        label: 'Seller',
-        name: 'seller.id',
+        type: INPUT_TYPE.TEXT,
+        label: 'Chi nhánh quản lý',
+        name: 'branch',
         inputProps: {
-          placeholder: 'Chọn',
-          options: [
-            {
-              label: [data.seller?.lastName, data.seller?.firstName].join(' '),
-              value: data.seller?.id,
-            },
-          ],
+          disabled: true,
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Seller',
+        name: 'seller',
+        inputProps: {
+          disabled: true,
         },
       },
     ];
     return configItems;
-  }, [data, categoryList, campaignList]);
+  }, []);
 
   useEffect(() => {
     if (data) {

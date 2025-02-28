@@ -14,3 +14,4 @@ export * from './assetApi';
 export * from './locationApi';
 export * from './manageCategoryApi';
 export * from './sellerApi';
+export * from './approachScriptApi';

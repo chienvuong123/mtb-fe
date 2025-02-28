@@ -106,7 +106,7 @@ const CustomerListTable: FC<ICustomerTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       onView={(id) => onView(id as string)}
-      onCall={(record) => onCall(record)}
+      onCall={onCall}
       scroll={{ x: 1574 }}
       onChange={(_p, _f, s) => {
         const { field, order } = s as SorterResult<TCustomerRecord>;

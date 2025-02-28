@@ -8,6 +8,8 @@ import {
   useAssetNameOptionsListQuery,
   useLocationOptionsListQuery,
   useCustomerCheckLoanLimit,
+  useCustomerViewQuery,
+  useCustomerGetDraftLoanLimit,
 } from '@hooks/queries';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { Form, message } from 'antd';
@@ -17,7 +19,9 @@ import type {
   CustomerCollectFormDTO,
   CustomerCollectInfoDTO,
 } from 'src/dtos/customer-collect-info';
-import { mapFormDataToDTO } from '../utils';
+import { useParams } from 'react-router-dom';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
+import { mapDraftToFormData, mapFormDataToDTO } from '../utils';
 
 interface FieldChangeInfo {
   touched?: boolean;
@@ -246,6 +250,11 @@ export const useCollectInforController = (
           disabled: true,
         },
         colProps: { span: 8 },
+        getValueProps: (value) => {
+          return {
+            value: dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY),
+          };
+        },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -569,11 +578,18 @@ export const useCollectInforController = (
     [form],
   );
 
+  const { customerId } = useParams();
+  const [loanLimit, setLoanLimit] = useState<number | undefined>(undefined);
   const { mutate: checkLoanLimitMutation, isPending: loading } =
     useCustomerCheckLoanLimit();
 
+  // TODO: integrate with api
+  const { data: customerData } = useCustomerViewQuery({
+    id: 'cc3069d3-0bfc-4eb2-b2e7-f0b3a5197eae',
+  });
+  const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
+
   const saveDraft = async () => {
-    await form.validateFields();
     const formData = form.getFieldsValue();
 
     const collectInfo = mapFormDataToDTO(formData, {
@@ -593,10 +609,18 @@ export const useCollectInforController = (
       assetNameOptions,
     });
 
-    checkLoanLimitMutation(collectInfo);
+    checkLoanLimitMutation(
+      { ...collectInfo, saveDraft: true },
+      {
+        onSuccess: () => {
+          message.success('Save draft successfully');
+        },
+        onError: () => {
+          message.error('Save draft failed');
+        },
+      },
+    );
   };
-
-  const [loanLimit, setLoanLimit] = useState<number | undefined>(undefined);
 
   const checkLoanLimit = async () => {
     await form.validateFields();
@@ -631,16 +655,31 @@ export const useCollectInforController = (
   };
 
   useEffect(() => {
+    if (draftLoanLimit?.data) {
+      const formData = mapDraftToFormData(draftLoanLimit.data);
+      form.setFieldsValue(formData as unknown as CustomerCollectFormDTO);
+    }
     if (data && genderOptions) {
       form.setFieldsValue({
-        // TODO: fix type
-        ...(data as unknown as CustomerCollectFormDTO),
-        genderCode: genderOptions?.find(
-          (option) => option.value === data.genderCode,
-        )?.label,
+        customerName: customerData?.name,
+        genderCode: customerData?.genderCategory?.name,
+        dateOfBirth: customerData?.birthday,
+        mobileNumber: customerData?.phone,
+        appDate: customerData?.activeAppTime,
+        countOfTransaction: customerData?.transationTime?.toString(),
+        ekycLevel: customerData?.levelKyc?.toString(),
+        averageTransaction: customerData?.transationAverage?.toString(),
+        averageCreditAmt: customerData?.crAmountAverage,
+        averageCreditMonth: customerData?.crAmountTime?.toString(),
+        averageDebitAmt: customerData?.drAmountAverage,
+        averageDebitMonth: customerData?.drAmountTime?.toString(),
+        averageCasa: customerData?.casaAverage,
+        averageSalary: customerData?.salaryAverage,
+        countOfSalary: customerData?.salaryTime?.toString(),
+        personalId: customerData?.identityCard,
       });
     }
-  }, [data, form, genderOptions]);
+  }, [data, form, genderOptions, customerData, draftLoanLimit]);
 
   return {
     form,

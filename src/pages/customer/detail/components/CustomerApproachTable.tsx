@@ -1,86 +1,84 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable } from '@components/organisms';
-import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
-import {
-  EApproachStatus,
-  type CustomerApproachDTO,
-  type OrderDTO,
-} from '@dtos';
+import { CategoryType, type ApproachScriptDTO } from '@dtos';
+import { useCategoryOptionsListQuery } from '@hooks/queries';
+import { useApproachScriptViewByCustomerQuery } from '@hooks/queries/approachScriptQueries';
+import { getOptionLabel } from '@utils/objectHelper';
 import type { ColumnType } from 'antd/es/table';
-import dayjs from 'dayjs';
-import { useState, type FC, type ReactNode } from 'react';
+import { useState, type FC } from 'react';
+import { useParams } from 'react-router-dom';
 
-export type TCustomerApproachRecord = Partial<CustomerApproachDTO>;
+export type TApproachScriptRecord = Partial<ApproachScriptDTO>;
 
-interface ICustomerApproachTable {
-  dataSource: TCustomerApproachRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-}
+const CustomerApproachTable: FC = () => {
+  const { customerId } = useParams();
 
-const statusObject: Record<EApproachStatus, ReactNode> = {
-  [EApproachStatus.PENDING]: 'Chưa bắt đầu',
-  [EApproachStatus.INPROGRESS]: 'Đang triển khai',
-  [EApproachStatus.FINISHED]: 'Hoàn thành',
-};
-
-const columns: ColumnType<TCustomerApproachRecord>[] = [
-  {
-    title: 'Lần tiếp cận số',
-    dataIndex: ['approachPlan', 'code'],
-    minWidth: 80,
-  },
-  {
-    title: 'Ngày',
-    dataIndex: 'updatedDate',
-    minWidth: 120,
-    render: (value: string) => dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY),
-  },
-  {
-    title: 'Phương thức tiếp cận',
-    dataIndex: ['approachPlan', 'method'],
-    minWidth: 160,
-  },
-  {
-    title: 'Ghi chú',
-    dataIndex: 'note',
-    minWidth: 164,
-  },
-  {
-    title: 'Kịch bản tiếp cận',
-    dataIndex: ['scenario', 'name'],
-    minWidth: 164,
-  },
-  {
-    title: 'Kết quả tiếp cận',
-    dataIndex: 'status',
-    minWidth: 164,
-    render: (value: EApproachStatus) => statusObject[value] ?? null,
-  },
-  {
-    title: 'Seller',
-    dataIndex: ['seller', 'firstName'],
-    minWidth: 164,
-  },
-];
-
-const CustomerApproachTable: FC<ICustomerApproachTable> = ({
-  dataSource,
-  paginations,
-  sortDirection,
-}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
+  const { data: approachScriptData } =
+    useApproachScriptViewByCustomerQuery(customerId);
+
+  const { data: approachResultOptions } = useCategoryOptionsListQuery(
+    CategoryType.CUSTOMER_APPROACH_RESULT,
+  );
+
+  const { data: approachDetailOptions } = useCategoryOptionsListQuery(
+    CategoryType.CUSTOMER_APPROACH_DETAIL,
+  );
+
+  const columns: ColumnType<TApproachScriptRecord>[] = [
+    {
+      title: 'Lần tiếp cận số',
+      dataIndex: 'index',
+      minWidth: 80,
+      render: (_: unknown, __: unknown, idx: number) => idx + 1,
+    },
+    {
+      title: 'Ngày',
+      dataIndex: 'updatedDate',
+      minWidth: 120,
+    },
+    {
+      title: 'Phương thức tiếp cận',
+      dataIndex: 'approach',
+      minWidth: 160,
+    },
+    {
+      title: 'Ghi chú',
+      dataIndex: ['approachResult', 'note'],
+      minWidth: 164,
+    },
+    {
+      title: 'Kịch bản tiếp cận',
+      dataIndex: 'campaignName',
+      minWidth: 164,
+    },
+    {
+      title: 'Kết quả tiếp cận',
+      dataIndex: ['approachResult', 'result'],
+      minWidth: 164,
+      render: (value) => getOptionLabel(approachResultOptions, value),
+    },
+    {
+      title: 'Kết quả tiếp cận chi tiết',
+      dataIndex: ['approachResult', 'resultDetail'],
+      minWidth: 164,
+      render: (value) => getOptionLabel(approachDetailOptions, value),
+    },
+    {
+      title: 'Seller',
+      dataIndex: 'sellerName',
+      minWidth: 164,
+    },
+  ];
+
   return (
-    <OTable<TCustomerApproachRecord>
-      rowKey="id"
+    <OTable<TApproachScriptRecord>
       columns={columns}
-      data={dataSource}
+      data={approachScriptData || []}
       selectedRowKeys={selectedRowKeys}
       setSelectedRowKeys={setSelectedRowKeys}
-      paginations={paginations}
-      sortDirection={sortDirection}
       hideActions
+      rowKey="id"
     />
   );
 };

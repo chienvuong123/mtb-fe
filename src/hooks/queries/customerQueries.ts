@@ -67,3 +67,11 @@ export const useCustomerCheckLoanLimit = () => {
       customerApi.checkLoanLimit(data),
   });
 };
+
+export const useCustomerGetDraftLoanLimit = (customerId?: string) => {
+  return useQuery({
+    queryKey: [CUSTOMER_KEY, 'draft-loan-limit', customerId],
+    queryFn: () => customerApi.getDraftLoanLimit(customerId),
+    enabled: !!customerId,
+  });
+};

@@ -44,6 +44,14 @@ class CustomerApi extends BaseApi<CustomerDTO, CustomerSearchRequest> {
       data,
     });
   }
+
+  async getDraftLoanLimit(customerId?: string) {
+    return apiRequest<BaseResponse<CustomerCollectInfoDTO>>({
+      url: `${this.endpoint}/detail-sales-opportunity-his`,
+      method: 'GET',
+      params: { customerId },
+    });
+  }
 }
 
 export const customerApi = new CustomerApi();

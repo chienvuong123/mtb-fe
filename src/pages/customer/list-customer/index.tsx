@@ -35,6 +35,8 @@ import type { SortOrder } from 'antd/es/table/interface';
 import { downloadBase64File } from '@utils/fileHelper';
 import { useProfile } from '@stores';
 import { useNotification } from '@libs/antd';
+import { CUSTOMER } from '@routers/path';
+import { useNavigate } from 'react-router-dom';
 import {
   CustomerForm,
   CustomerListTable,
@@ -66,6 +68,7 @@ const ListCustomerPage: FC = () => {
     null,
   );
   const notify = useNotification();
+  const navigate = useNavigate();
 
   const {
     pagination: { current, pageSize },
@@ -293,7 +296,7 @@ const ListCustomerPage: FC = () => {
   };
 
   const handleCall = (record: TCustomerRecord) => {
-    console.log(record.id, record.campaignId);
+    navigate(`${CUSTOMER.ROOT}/${record.id}`);
   };
 
   const handleSort = (field: string, direction: SortOrder) => {
