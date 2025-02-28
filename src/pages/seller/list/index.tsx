@@ -12,6 +12,7 @@ import type { SortOrder } from 'antd/es/table/interface';
 import { OTitleBlock } from '@components/organisms';
 import { useNavigate } from 'react-router-dom';
 import { useSellerSearchQuery } from '@hooks/queries';
+import { SELLER } from '@routers/path';
 import { SellerSearchForm, SellerTable } from './components';
 
 const SellerPage: FC = () => {
@@ -69,7 +70,7 @@ const SellerPage: FC = () => {
   };
 
   const handleView = (id: string) => {
-    navigate(`${id}`);
+    navigate(`${SELLER.ROOT}/${id}`);
   };
 
   const handleSort = (field: string | string[], direction: SortOrder) => {
