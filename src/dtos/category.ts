@@ -23,6 +23,9 @@ export enum CategoryType {
   F88_MARITAL_STATUS = 'F88_MARITAL_STATUS', // "Danh Danh mục tình trạng hôn nhân F88"
   F88_DEBT_REPAYMENT_METHOD = 'F88_DEBT_REPAYMENT_METHOD', // "Danh mục phương thức trả nợ gốc F88"
   F88_GENDER = 'F88_GENDER', // "Danh mục giới tính"
+  CUSTOMER_APPROACH_STATUS = 'CUSTOMER_APPROACH_STATUS', // "Danh mục trạng thái tiếp cận"
+  CUSTOMER_APPROACH_RESULT = 'CUSTOMER_APPROACH_RESULT', // "Danh mục kết quả tiếp cận"
+  CUSTOMER_APPROACH_DETAIL = 'CUSTOMER_APPROACH_DETAIL', // "Danh mục chi tiết tiếp cận"
 }
 
 export interface CategoryDTO extends BaseEntity {

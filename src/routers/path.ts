@@ -38,7 +38,7 @@ const ROUTE_PATH = {
     ROOT: '/customer',
     CUSTOMER_CAMPAIGN_LIST: 'list',
     CUSTOMER_GROUP_CAMPAIGN_LIST: 'group-list',
-    DETAIL: ':id',
+    DETAIL: ':customerId',
   },
   SCENARIO: {
     LIST: 'list',

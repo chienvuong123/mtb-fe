@@ -79,7 +79,7 @@ const useMenuList = (onLogout?: () => void) => {
             label: 'Danh sách nhóm khách hàng theo Campaign',
           },
           {
-            key: `${CUSTOMER.ROOT}/customer-1234`,
+            key: `${CUSTOMER.ROOT}/f6225d34-0303-4965-bd4a-99f699c9d7a4`,
             label: 'Chi tiết (CSKH)',
           },
         ],
@@ -103,7 +103,7 @@ const useMenuList = (onLogout?: () => void) => {
             label: 'Tạo kịch bản',
           },
           {
-            key: `${SCENARIO.ROOT}/abcs-1234`,
+            key: `${SCENARIO.ROOT}/${SCENARIO.DETAIL}`,
             label: 'Chi tiết kịch bản',
           },
         ],

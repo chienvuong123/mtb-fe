@@ -16,7 +16,7 @@ export class BaseApi<T, SearchParams extends BaseSearchParams> {
     });
   }
 
-  async view(id: string) {
+  async view(id?: string) {
     return apiRequest<BaseResponse<T>>({
       url: `${this.endpoint}/view`,
       method: 'GET',

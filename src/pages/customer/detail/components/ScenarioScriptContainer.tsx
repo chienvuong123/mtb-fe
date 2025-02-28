@@ -2,19 +2,18 @@ import { ArrowDown01RoundIcon } from '@assets/icons';
 import { AButton, ASelect } from '@components/atoms';
 import { ACollapse } from '@components/atoms/a-collapse';
 import { ATextArea } from '@components/atoms/a-textarea';
-import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { EControlType } from '@constants/masterData';
 import {
-  type AttributeDTO,
+  type ApproachScriptAttributeDTO,
+  type ApproachScriptDTO,
   type ControlValue,
-  type CustomerApproachDTO,
-  type ScenarioDTO,
 } from '@dtos';
 import {
   Affix,
   Checkbox,
   DatePicker,
   Divider,
+  Form,
   Image,
   InputNumber,
   Radio,
@@ -30,91 +29,104 @@ import {
   type FC,
   type ReactNode,
 } from 'react';
+import type { FormInstance } from 'antd/lib';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import ScenarioScriptFooter from './ScenarioScriptFooter';
 
 import './CollectCustomerInformationModal.scss';
 
 const AttributeItem: FC<{
-  data: AttributeDTO;
-  onChange?: (id: string, val: string | number | boolean | string[]) => void;
-  onChangeNote?: (id: string, val: string) => void;
-}> = ({ data, onChange, onChangeNote }) => {
+  data: ApproachScriptAttributeDTO;
+  approachId: string;
+}> = ({ data, approachId }) => {
   const content = useMemo(() => {
+    let config: ControlValue<EControlType>;
+    try {
+      config = (
+        data.content ? JSON.parse(data.content || '') : ''
+      ) as ControlValue<EControlType>;
+    } catch (e) {
+      config = data.content || '';
+      console.warn(e);
+    }
+
     switch (data.controlType) {
       case EControlType.CHECKBOX:
         return (
-          <Checkbox.Group
-            options={(
-              data.config as ControlValue<EControlType.CHECKBOX>
-            ).options?.map((val) => ({
-              label: val.text,
-              value: val.value,
-            }))}
-            onChange={(value) => onChange?.(data.id, value)}
-          />
+          <Form.Item name={[approachId, data.id, 'attributes']} noStyle>
+            <Checkbox.Group
+              options={(
+                config as ControlValue<EControlType.CHECKBOX>
+              ).options?.map((val, idx) => ({
+                label: val,
+                value: String(idx),
+              }))}
+            />
+          </Form.Item>
         );
       case EControlType.SWITCH:
         return (
-          <Switch
-            checkedChildren={
-              (data.config as ControlValue<EControlType.SWITCH>).options?.[0]
-                .text ?? 'Có'
-            }
-            unCheckedChildren={
-              (data.config as ControlValue<EControlType.SWITCH>).options?.[1]
-                .text ?? 'Không'
-            }
-            onChange={(value) => onChange?.(data.id, value)}
-          />
+          <Form.Item name={[approachId, data.id, 'attributes']} noStyle>
+            <Switch
+              checkedChildren={
+                (config as ControlValue<EControlType.SWITCH>).options?.[0] ??
+                'Có'
+              }
+              unCheckedChildren={
+                (config as ControlValue<EControlType.SWITCH>).options?.[1] ??
+                'Không'
+              }
+            />
+          </Form.Item>
         );
       case EControlType.SELECT:
         return (
-          <ASelect
-            placeholder="Chọn"
-            style={{ maxWidth: '600px' }}
-            options={(
-              data.config as ControlValue<EControlType.SELECT>
-            ).options?.map((val) => ({
-              label: val.text,
-              value: val.value,
-            }))}
-            onChange={(value) => onChange?.(data.id, value)}
-          />
+          <Form.Item name={[approachId, data.id, 'attributes']} noStyle>
+            <ASelect
+              placeholder="Chọn"
+              style={{ maxWidth: '600px' }}
+              options={(
+                config as ControlValue<EControlType.SELECT>
+              ).options?.map((val, idx) => ({
+                label: val,
+                value: String(idx),
+              }))}
+            />
+          </Form.Item>
         );
       case EControlType.RADIO:
         return (
-          <Radio.Group
-            options={(
-              data.config as ControlValue<EControlType.RADIO>
-            ).options?.map((val) => ({
-              label: val.text,
-              value: val.value,
-            }))}
-            onChange={(e) => onChange?.(data.id, e.target.value)}
-          />
+          <Form.Item name={[approachId, data.id, 'attributes']} noStyle>
+            <Radio.Group
+              options={(
+                config as ControlValue<EControlType.RADIO>
+              ).options?.map((val, idx) => ({
+                label: val,
+                value: String(idx),
+              }))}
+            />
+          </Form.Item>
         );
       case EControlType.DATETIME:
         return (
-          <DatePicker
-            format={DATE_SLASH_FORMAT_DDMMYYYY}
-            onChange={(value) => onChange?.(data.id, value.toJSON())}
-          />
+          <Form.Item name={[approachId, data.id, 'attributes']} noStyle>
+            <DatePicker format={DATE_SLASH_FORMAT_DDMMYYYY} />
+          </Form.Item>
         );
       case EControlType.NUMBER:
         return (
-          <InputNumber
-            placeholder="Nhập số"
-            onChange={(value) => onChange?.(data.id, value as number)}
-          />
+          <Form.Item name={[approachId, data.id, 'attributes']} noStyle>
+            <InputNumber placeholder="Nhập số" />
+          </Form.Item>
         );
       case EControlType.LINK:
         return (
-          <a href={data.config.toString()} target="_blank" rel="noreferrer">
-            {data.config.toString()}
+          <a href={config.toString()} target="_blank" rel="noreferrer">
+            {config.toString()}
           </a>
         );
       case EControlType.BUTTON: {
-        const button = data.config as ControlValue<EControlType.BUTTON>;
+        const button = config as ControlValue<EControlType.BUTTON>;
         return (
           <AButton
             type="primary"
@@ -127,7 +139,7 @@ const AttributeItem: FC<{
         );
       }
       case EControlType.IMAGE: {
-        const image = data.config as ControlValue<EControlType.IMAGE>;
+        const image = config as ControlValue<EControlType.IMAGE>;
         return (
           <Image
             alt={image.title}
@@ -150,26 +162,27 @@ const AttributeItem: FC<{
         );
       }
       default:
-        return data.config as string;
+        return config as string;
     }
-  }, [data.controlType, data.id, data.config, onChange]);
+  }, [data.controlType, data.id, data.content, approachId]);
 
   return (
     <>
-      <div dangerouslySetInnerHTML={{ __html: data.content }} />
+      <div dangerouslySetInnerHTML={{ __html: data.description || '' }} />
       <div className="mt-8">{content}</div>
-      {data.haveNote && (
+      {data?.haveNote && (
         <div className="mt-8">
           <Typography.Text>Ghi chú</Typography.Text>
-          <ATextArea
-            placeholder="Nhập..."
-            maxLength={100}
-            showCount={{
-              formatter: ({ count, maxLength }) => `(${count}/${maxLength})`,
-            }}
-            autoSize={{ minRows: 2 }}
-            onChange={(e) => onChangeNote?.(data.id, e.target.value)}
-          />
+          <Form.Item name={[approachId, data.id, 'note']} noStyle>
+            <ATextArea
+              placeholder="Nhập..."
+              maxLength={100}
+              showCount={{
+                formatter: ({ count, maxLength }) => `(${count}/${maxLength})`,
+              }}
+              autoSize={{ minRows: 2 }}
+            />
+          </Form.Item>
         </div>
       )}
     </>
@@ -191,18 +204,18 @@ const AffixWrapper: FC<{ children: ReactNode; affix: boolean }> = ({
 };
 
 const ScenarioScriptContainer: FC<{
-  scenario: ScenarioDTO;
-  approach?: CustomerApproachDTO;
-}> = ({ scenario, approach }) => {
+  form: FormInstance;
+  approach?: ApproachScriptDTO;
+}> = ({ form, approach }) => {
   const { token } = theme.useToken();
   const [showAffixFooter, setShowAffixFooter] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const attributeItems = useMemo(() => {
-    return scenario.attributes?.map((attr, index) => ({
+    return approach?.approachStep?.map((attr, index) => ({
       key: attr.id,
       label: `${index + 1}. ${attr.attributeName}`,
-      children: <AttributeItem data={attr} />,
+      children: <AttributeItem data={attr} approachId={approach?.id} />,
       style: {
         marginBottom: 16,
         borderRadius: token.borderRadiusLG,
@@ -210,7 +223,7 @@ const ScenarioScriptContainer: FC<{
         border: 'none',
       },
     }));
-  }, [scenario.attributes, token]);
+  }, [approach?.approachStep, approach?.id, token]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -232,30 +245,36 @@ const ScenarioScriptContainer: FC<{
     };
   }, []);
 
-  return (
-    <div ref={ref}>
-      <Typography.Title level={4} className="mt-24 mb-16">
-        Kịch bản {scenario.name}
-      </Typography.Title>
-      <ACollapse
-        bordered={false}
-        defaultActiveKey={attributeItems?.map((x) => x.key)}
-        expandIconPosition="end"
-        expandIcon={ExpandIcon}
-        style={{ background: token.colorBgContainer }}
-        items={attributeItems}
-      />
+  if (!approach) {
+    return null;
+  }
 
-      <AffixWrapper affix={showAffixFooter}>
-        <div
-          className="bg-white"
-          style={{ paddingBottom: 24, marginBottom: -24 }}
-        >
-          <Divider />
-          <ScenarioScriptFooter approach={approach} />
-        </div>
-      </AffixWrapper>
-    </div>
+  return (
+    <Form form={form}>
+      <div ref={ref}>
+        <Typography.Title level={4} className="mt-24 mb-16">
+          Kịch bản {approach?.campaignName}
+        </Typography.Title>
+        <ACollapse
+          bordered={false}
+          defaultActiveKey={attributeItems?.map((x) => x.key)}
+          expandIconPosition="end"
+          expandIcon={ExpandIcon}
+          style={{ background: token.colorBgContainer }}
+          items={attributeItems}
+        />
+
+        <AffixWrapper affix={showAffixFooter}>
+          <div
+            className="bg-white"
+            style={{ paddingBottom: 24, marginBottom: -24 }}
+          >
+            <Divider />
+            <ScenarioScriptFooter form={form} approachId={approach?.id} />
+          </div>
+        </AffixWrapper>
+      </div>
+    </Form>
   );
 };
 

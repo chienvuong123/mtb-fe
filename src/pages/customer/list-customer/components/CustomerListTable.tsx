@@ -4,6 +4,8 @@ import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC, type Key } from 'react';
 import { useProfile } from '@stores';
+import { useNavigate } from 'react-router-dom';
+import { CUSTOMER } from '@routers/path';
 import type { ICustomerTable, TCustomerRecord } from '../customer.type';
 
 const columns: ColumnType<TCustomerRecord>[] = [
@@ -90,6 +92,8 @@ const CustomerListTable: FC<ICustomerTable> = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const { isAdmin, isCampaignManager } = useProfile();
 
+  const navigate = useNavigate();
+
   const deleteRecord = (key: Key) => {
     onDelete(key as string);
   };
@@ -113,6 +117,13 @@ const CustomerListTable: FC<ICustomerTable> = ({
         onSort(field as string, order as SortOrder);
       }}
       confirmProps={confirmProps}
+      onRow={(record) => {
+        return {
+          onClick: () => {
+            navigate(`${CUSTOMER.ROOT}/${record.id}`);
+          },
+        };
+      }}
     />
   );
 };

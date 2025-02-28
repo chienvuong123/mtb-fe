@@ -109,10 +109,51 @@ const transformToCodeNameOptions = <
   return { byCode, byName, byId, customOptions };
 };
 
+const getOptionLabel = (
+  options: BaseAntdOptionType[] | undefined,
+  value: string | number | undefined,
+) => {
+  return options?.find((option) => option.value === value)?.label || '';
+};
+
+function isEqual(value: unknown, other: unknown): boolean {
+  if (value === other) return true;
+  if (value == null || other == null) return value === other;
+
+  if (typeof value !== typeof other) return false;
+
+  if (Array.isArray(value) && Array.isArray(other)) {
+    if (value.length !== other.length) return false;
+    return value.every((val, index) => isEqual(val, other[index]));
+  }
+
+  if (typeof value === 'object' && typeof other === 'object') {
+    const valueKeys = Object.keys(value as object);
+    const otherKeys = Object.keys(other as object);
+
+    if (valueKeys.length !== otherKeys.length) return false;
+
+    return valueKeys.every((key) =>
+      isEqual(
+        (value as Record<string, unknown>)[key],
+        (other as Record<string, unknown>)[key],
+      ),
+    );
+  }
+
+  if (value instanceof Date && other instanceof Date) {
+    return value.getTime() === other.getTime();
+  }
+
+  return value === other;
+}
+
 export {
   trimObjectValues,
   isNumberArray,
   filterObject,
   transformToOptions,
   transformToCodeNameOptions,
+  getOptionLabel,
+  isEqual,
 };

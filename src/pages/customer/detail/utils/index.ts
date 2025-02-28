@@ -1,15 +1,11 @@
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import type {
   BaseAntdOptionType,
   CustomerCollectFormDTO,
   CustomerCollectInfoDTO,
 } from '@dtos';
-
-const getOptionLabel = (
-  options: BaseAntdOptionType[] | undefined,
-  value: string | number | undefined,
-) => {
-  return options?.find((option) => option.value === value)?.label || '';
-};
+import { getOptionLabel } from '@utils/objectHelper';
+import dayjs from 'dayjs';
 
 const formatAddressString = (
   province: string,
@@ -131,5 +127,37 @@ export const mapFormDataToDTO = (
       currentDistrictName,
       currentWardName,
     ),
+    issueDate: dayjs(formData.issueDate).format(DATE_SLASH_FORMAT_DDMMYYYY),
+    paperIssueDate: dayjs(formData.paperIssueDate).format(
+      DATE_SLASH_FORMAT_DDMMYYYY,
+    ),
+    appDate: dayjs(formData.appDate).format(DATE_SLASH_FORMAT_DDMMYYYY),
+  };
+};
+
+export const mapDraftToFormData = (dto: CustomerCollectInfoDTO) => {
+  return {
+    ...dto,
+    issueDate: dto.issueDate
+      ? dayjs(dto.issueDate, DATE_SLASH_FORMAT_DDMMYYYY)
+      : undefined,
+    paperIssueDate: dto.paperIssueDate
+      ? dayjs(dto.paperIssueDate, DATE_SLASH_FORMAT_DDMMYYYY)
+      : undefined,
+    appDate: dto.appDate
+      ? dayjs(dto.appDate, DATE_SLASH_FORMAT_DDMMYYYY)
+      : undefined,
+    assetYear: dto.assetYear?.toString(),
+    tenor: dto.tenor?.toString(),
+    averageTransaction: dto.averageTransaction?.toString(),
+    countOfTransaction: dto.countOfTransaction?.toString(),
+    averageCreditAmt: dto.averageCreditAmt?.toString(),
+    averageDebitAmt: dto.averageDebitAmt?.toString(),
+    averageCasa: dto.averageCasa?.toString(),
+    averageSalary: dto.averageSalary?.toString(),
+    countOfSalary: dto.countOfSalary?.toString(),
+    numberOfChildren: dto.numberOfChildren?.toString(),
+    averageCreditMonth: dto.averageCreditMonth?.toString(),
+    averageDebitMonth: dto.averageDebitMonth?.toString(),
   };
 };

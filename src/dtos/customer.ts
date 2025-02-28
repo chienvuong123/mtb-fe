@@ -1,4 +1,3 @@
-import type { EGender } from '@constants/masterData';
 import type { UserDTO } from './auth';
 import type { CampaignDTO } from './campaign';
 import type { CategoryDTO } from './category';
@@ -14,17 +13,14 @@ import type { CustomerSegmentDTO } from './customer-segment';
 export interface CustomerDTO extends BaseEntity {
   code: string;
   birthday?: string; // date-time
-  identityType?: string;
-  identityNumber?: string;
   description: string;
   campaignId: string;
   campaignName: string;
   name: string; // matches ^[a-zA-Z0-9]+$
   phone?: string; // matches ^[0-9]{10}$
   email?: string; // [0, 50] characters
-  gender?: EGender; // [0, 10] characters
+  gender?: string;
   address?: string; // [0, 200] characters
-  identityCard?: string; // [0, 20] characters, matches ^[0-9]+$
   categoryName?: string;
   branch?: string;
   cusGroup?: string;
@@ -37,7 +33,33 @@ export interface CustomerDTO extends BaseEntity {
   campaign?: CampaignDTO;
   group?: CustomerGroupDTO;
   segment?: CustomerSegmentDTO;
-  seller?: UserDTO;
+  seller?: string;
+
+  identnDocType?: string;
+  identnDocIssueDate?: string;
+  identityCard?: string; // [0, 20] characters, matches ^[0-9]+$
+
+  assetType?: string;
+  custLoanAmount?: number;
+  activeAppTime?: string;
+  transationAverage?: number;
+  transationTime?: number;
+  crAmountAverage?: number;
+  crAmountTime?: number;
+  drAmountAverage?: number;
+  drAmountTime?: number;
+  casaAverage?: number;
+  salaryAverage?: number;
+  salaryTime?: number;
+  levelKyc?: number;
+  orderDate?: string;
+  orderId?: string;
+
+  genderCategory?: CategoryDTO;
+  customerSegment?: CustomerSegmentDTO;
+  jobCategory?: CategoryDTO;
+  branchCategory?: CategoryDTO;
+  sellerEntity?: UserDTO;
 }
 
 export interface CustomerSearchRequest extends BaseSearchParams {
