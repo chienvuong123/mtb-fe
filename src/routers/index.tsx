@@ -261,7 +261,7 @@ const routes = createBrowserRouter(
           ),
           children: [
             {
-              path: '',
+              path: SELLER.LIST,
               element: createLazyElement(() => import('@pages/seller/list')),
             },
             {
