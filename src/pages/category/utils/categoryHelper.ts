@@ -1,10 +1,9 @@
-import type { TDrawerMsg } from '@components/organisms';
 import type { BaseResponse } from '@dtos';
-import type { Dispatch, SetStateAction } from 'react';
+import type { NotificationArgsProps } from 'antd';
 
 export const validateInsertCategory = (
   { errorCode, errorDesc }: BaseResponse<boolean>,
-  setMsg: Dispatch<SetStateAction<TDrawerMsg>>,
+  setMsg: (props: NotificationArgsProps) => void,
   onSuccess: () => void,
 ) => {
   if (errorCode === '0') {

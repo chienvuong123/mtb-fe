@@ -12,7 +12,7 @@ import type {
   IMPagination,
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
-import { ODrawer, type TDrawerMsg } from '@components/organisms';
+import { ODrawer } from '@components/organisms';
 import {
   useMediaCategoryAddMutation,
   useMediaCategoryEditMutation,
@@ -24,6 +24,7 @@ import { useProfile } from '@stores';
 import type { TFormType } from '@types';
 import { formatDate } from '@utils/dateHelper';
 import { filterObject } from '@utils/objectHelper';
+import { useNotification } from '@libs/antd';
 import type { SortOrder } from 'antd/es/table/interface';
 import { validateInsertCategory } from '../utils';
 import MediaEditForm from './components/MediaEditForm';
@@ -50,7 +51,7 @@ const MediaCategoryPage: FC = () => {
 
   const { user } = useProfile();
 
-  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
+  const notify = useNotification();
 
   const { data: mediaRes, isLoading } = useMediaCategorySearchQuery({
     categoryTypeCode: CategoryType.MEDIA,
@@ -72,8 +73,8 @@ const MediaCategoryPage: FC = () => {
     isEdit: boolean = false,
   ) => {
     if (data)
-      validateInsertCategory(data, setAlertMessage, () => {
-        setAlertMessage({
+      validateInsertCategory(data, notify, () => {
+        notify({
           message: `${isEdit ? 'Chỉnh sửa' : 'Tạo mới'} thành công`,
           type: 'success',
         });
@@ -229,7 +230,6 @@ const MediaCategoryPage: FC = () => {
         onClose={handleCloseForm}
         open={!!drawerMode}
         width={1025}
-        alertProps={{ ...alertMessage, setMessage: setAlertMessage }}
       >
         {drawerMode === 'add' ? (
           <MediaInsertForm

@@ -4,7 +4,11 @@ import {
   type CustomerSearchRequest,
   type GroupCustomerDTO,
 } from '@dtos';
-import { type FormInstance, type UploadFile } from 'antd';
+import {
+  type FormInstance,
+  type NotificationArgsProps,
+  type UploadFile,
+} from 'antd';
 import { type FC, type SetStateAction, useMemo, useState } from 'react';
 
 import { UserGroupIcon } from '@assets/icons';
@@ -26,10 +30,11 @@ import {
 import useUrlParams from '@hooks/useUrlParams';
 import { filterObject } from '@utils/objectHelper';
 
-import { ODrawer, OTitleBlock, type TDrawerMsg } from '@components/organisms';
+import { ODrawer, OTitleBlock } from '@components/organisms';
 import type { SortOrder } from 'antd/es/table/interface';
 import { downloadBase64File } from '@utils/fileHelper';
 import { useProfile } from '@stores';
+import { useNotification } from '@libs/antd';
 import {
   CustomerForm,
   CustomerListTable,
@@ -60,7 +65,7 @@ const ListCustomerPage: FC = () => {
   const [initValues, setInitValues] = useState<Partial<CustomerDTO> | null>(
     null,
   );
-  const [alertMessage, setAlertMessage] = useState<TDrawerMsg>({});
+  const notify = useNotification();
 
   const {
     pagination: { current, pageSize },
@@ -97,8 +102,8 @@ const ListCustomerPage: FC = () => {
     }, 100);
   };
 
-  const handleReset = (msg: TDrawerMsg) => {
-    setAlertMessage(msg);
+  const handleReset = ({ message, type }: NotificationArgsProps) => {
+    notify({ message, type });
     handleCloseForm();
     setInitValues(null);
   };
@@ -156,7 +161,7 @@ const ListCustomerPage: FC = () => {
           onSuccess: (d) =>
             validateInsertCustomer(
               d,
-              setAlertMessage,
+              notify,
               () =>
                 handleReset({
                   type: 'success',
@@ -173,7 +178,7 @@ const ListCustomerPage: FC = () => {
       onSuccess: (d) =>
         validateInsertCustomer(
           d,
-          setAlertMessage,
+          notify,
           () =>
             handleReset({
               type: 'success',
@@ -189,7 +194,7 @@ const ListCustomerPage: FC = () => {
   ) => {
     mutationCreateGroupCustomer(values, {
       onSuccess: (d) =>
-        validateInsertCustomer(d, setAlertMessage, () =>
+        validateInsertCustomer(d, notify, () =>
           handleReset({
             type: 'success',
             message: 'Tạo mới thành công',
@@ -203,7 +208,7 @@ const ListCustomerPage: FC = () => {
       { id },
       {
         onSuccess: () => {
-          setAlertMessage({
+          notify({
             message: 'Xoá khách hàng thành công',
             type: 'success',
           });
@@ -234,9 +239,9 @@ const ListCustomerPage: FC = () => {
         },
         {
           onSuccess: (d) => {
-            validateInsertCustomer(d, setAlertMessage, () => {
+            validateInsertCustomer(d, notify, () => {
               resetField?.();
-              setAlertMessage({
+              notify({
                 message: 'Import thành công',
                 type: 'success',
               });
@@ -385,10 +390,6 @@ const ListCustomerPage: FC = () => {
         onClose={handleCloseForm}
         open={!!drawerMode}
         width={drawerWidth}
-        alertProps={{
-          ...alertMessage,
-          setMessage: setAlertMessage,
-        }}
       >
         {getFormContent()}
       </ODrawer>

@@ -6,7 +6,7 @@ import { ConfigProvider, Skeleton } from 'antd';
 import routes from './routers';
 import JotaiProvider from './libs/jotai';
 import ReactQueryProvider from './libs/react-query/ReactQueryProvider';
-import { formConfig, themeConfig } from './libs/antd';
+import { formConfig, NotificationProvider, themeConfig } from './libs/antd';
 
 const App: React.FC = () => {
   return (
@@ -14,7 +14,9 @@ const App: React.FC = () => {
       <JotaiProvider>
         <ReactQueryProvider>
           <Suspense fallback={<Skeleton />}>
-            <RouterProvider router={routes} />
+            <NotificationProvider>
+              <RouterProvider router={routes} />
+            </NotificationProvider>
           </Suspense>
           <ReactQueryDevtools initialIsOpen={false} />
         </ReactQueryProvider>
