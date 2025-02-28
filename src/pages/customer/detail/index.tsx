@@ -1,7 +1,6 @@
 import Title from 'antd/lib/typography/Title';
 import { type FC } from 'react';
 
-import { MOCK_CUSTOMER } from '@mocks/customer';
 import CustomerApproachPreview from './components/CustomerApproachPreview';
 import CustomerApproachTable from './components/CustomerApproachTable';
 import CustomerDetailForm from './components/CustomerDetailForm';
@@ -13,7 +12,7 @@ const CustomerDetailPage: FC = () => {
       <Title level={3} className="mb-16">
         Thông tin khách hàng
       </Title>
-      <CustomerDetailForm data={MOCK_CUSTOMER} />
+      <CustomerDetailForm />
       <Title level={3} className="mt-32 mb-16">
         Kế hoạch tiếp cận
       </Title>

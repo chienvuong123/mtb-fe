@@ -15,10 +15,7 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import { Form, message } from 'antd';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type {
-  CustomerCollectFormDTO,
-  CustomerCollectInfoDTO,
-} from 'src/dtos/customer-collect-info';
+import type { CustomerCollectFormDTO } from 'src/dtos/customer-collect-info';
 import { useParams } from 'react-router-dom';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { mapDraftToFormData, mapFormDataToDTO } from '../utils';
@@ -49,9 +46,7 @@ const FIELD_DEPENDENCIES = {
   currentDistrictCode: ['currentWardCode'],
 } as const;
 
-export const useCollectInforController = (
-  data?: Partial<CustomerCollectInfoDTO>,
-) => {
+export const useCollectInforController = () => {
   const [form] = Form.useForm<CustomerCollectFormDTO>();
 
   // watch
@@ -660,7 +655,7 @@ export const useCollectInforController = (
       const formData = mapDraftToFormData(draftLoanLimit.data);
       form.setFieldsValue(formData as unknown as CustomerCollectFormDTO);
     }
-    if (data && genderOptions) {
+    if (genderOptions) {
       form.setFieldsValue({
         customerName: customerData?.name,
         genderCode: customerData?.genderCategory?.name,
@@ -680,7 +675,7 @@ export const useCollectInforController = (
         personalId: customerData?.identityCard,
       });
     }
-  }, [data, form, genderOptions, customerData, draftLoanLimit]);
+  }, [form, genderOptions, customerData, draftLoanLimit]);
 
   return {
     form,

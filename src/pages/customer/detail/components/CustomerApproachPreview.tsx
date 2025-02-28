@@ -3,7 +3,6 @@ import { ASegmented } from '@components/atoms/a-segmented';
 import { CategoryType, type ApproachScriptDTO } from '@dtos';
 import { Flex, Form, Input, Rate, Typography } from 'antd';
 import { useEffect, useState } from 'react';
-import { MOCK_CUSTOMER_INFORMATION } from '@mocks/customer';
 import { useApproachScriptViewByCustomerQuery } from '@hooks/queries/approachScriptQueries';
 import { EControlType } from '@constants/masterData';
 import { useParams } from 'react-router-dom';
@@ -129,9 +128,6 @@ const CustomerApproachPreview = () => {
       <CollectCustomerInformationModal
         open={openModal}
         onCancel={() => setOpenModal(false)}
-        // TODO: Add onOk
-        // onOk={() => setOpenModal(false)}
-        data={MOCK_CUSTOMER_INFORMATION}
       />
     </div>
   );
