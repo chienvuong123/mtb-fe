@@ -23,10 +23,11 @@ export const {
   useAddMutation: useCustomerAddMutation,
   useEditMutation: useCustomerEditMutation,
   useRemoveMutation: useCustomerRemoveMutation,
-} = createBaseQueryHooks<CustomerDTO, CustomerSearchRequest>(
-  CUSTOMER_KEY,
-  customerApi,
-);
+} = createBaseQueryHooks<
+  CustomerDTO,
+  CustomerSearchRequest,
+  BaseResponse<CustomerDTO>
+>(CUSTOMER_KEY, customerApi);
 
 export const useCustomerDownloadTemplete = () => {
   return useQuery({

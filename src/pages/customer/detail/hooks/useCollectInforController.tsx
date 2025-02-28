@@ -584,9 +584,10 @@ export const useCollectInforController = (
     useCustomerCheckLoanLimit();
 
   // TODO: integrate with api
-  const { data: customerData } = useCustomerViewQuery({
+  const { data: customerQueryData } = useCustomerViewQuery({
     id: 'cc3069d3-0bfc-4eb2-b2e7-f0b3a5197eae',
   });
+  const customerData = customerQueryData?.data;
   const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
 
   const saveDraft = async () => {
