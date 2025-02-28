@@ -1,7 +1,4 @@
 import { ArrowDown01RoundIcon } from '@assets/icons';
-import { AButton, ASelect } from '@components/atoms';
-import { ACollapse } from '@components/atoms/a-collapse';
-import { ATextArea } from '@components/atoms/a-textarea';
 import { EControlType } from '@constants/masterData';
 import {
   type ApproachScriptAttributeDTO,
@@ -9,7 +6,6 @@ import {
   type ControlValue,
 } from '@dtos';
 import {
-  Affix,
   Checkbox,
   DatePicker,
   Divider,
@@ -21,19 +17,13 @@ import {
   theme,
   Typography,
 } from 'antd';
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type FC,
-  type ReactNode,
-} from 'react';
+import { useMemo, useRef, type FC } from 'react';
 import type { FormInstance } from 'antd/lib';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
-import ScenarioScriptFooter from './ScenarioScriptFooter';
 
 import './CollectCustomerInformationModal.scss';
+import { AButton, ACollapse, ASelect, AInputArea } from '@components/atoms';
+import ScenarioScriptFooter from './ScenarioScriptFooter';
 
 const AttributeItem: FC<{
   data: ApproachScriptAttributeDTO;
@@ -174,7 +164,7 @@ const AttributeItem: FC<{
         <div className="mt-8">
           <Typography.Text>Ghi chú</Typography.Text>
           <Form.Item name={[approachId, data.id, 'note']} noStyle>
-            <ATextArea
+            <AInputArea
               placeholder="Nhập..."
               maxLength={100}
               showCount={{
@@ -193,22 +183,11 @@ const ExpandIcon: FC<{ isActive?: boolean }> = ({ isActive }) => (
   <ArrowDown01RoundIcon rotate={isActive ? '90deg' : 0} />
 );
 
-const AffixWrapper: FC<{ children: ReactNode; affix: boolean }> = ({
-  children,
-  affix,
-}) => {
-  if (!affix) {
-    return children;
-  }
-  return <Affix offsetBottom={24}>{children}</Affix>;
-};
-
 const ScenarioScriptContainer: FC<{
   form: FormInstance;
   approach?: ApproachScriptDTO;
 }> = ({ form, approach }) => {
   const { token } = theme.useToken();
-  const [showAffixFooter, setShowAffixFooter] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const attributeItems = useMemo(() => {
@@ -224,26 +203,6 @@ const ScenarioScriptContainer: FC<{
       },
     }));
   }, [approach?.approachStep, approach?.id, token]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setShowAffixFooter(entry.isIntersecting);
-      },
-      {
-        threshold: 0,
-        rootMargin: '0px',
-      },
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
 
   if (!approach) {
     return null;
@@ -263,16 +222,8 @@ const ScenarioScriptContainer: FC<{
           style={{ background: token.colorBgContainer }}
           items={attributeItems}
         />
-
-        <AffixWrapper affix={showAffixFooter}>
-          <div
-            className="bg-white"
-            style={{ paddingBottom: 24, marginBottom: -24 }}
-          >
-            <Divider />
-            <ScenarioScriptFooter form={form} approachId={approach?.id} />
-          </div>
-        </AffixWrapper>
+        <Divider />
+        <ScenarioScriptFooter form={form} approachId={approach?.id} />
       </div>
     </Form>
   );

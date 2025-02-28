@@ -1,5 +1,4 @@
-import { AButton, ASelect } from '@components/atoms';
-import { ATextArea } from '@components/atoms/a-textarea';
+import { AButton, AInputArea, ASelect } from '@components/atoms';
 import { CategoryType } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
 import {
@@ -172,7 +171,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
         <Flex gap={8} flex={1} vertical>
           <Typography.Text>Ghi chú</Typography.Text>
           <Form.Item name={[approachId, 'note']} noStyle>
-            <ATextArea
+            <AInputArea
               placeholder="Nhập..."
               maxLength={100}
               showCount={{
