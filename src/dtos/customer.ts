@@ -60,6 +60,9 @@ export interface CustomerDTO extends BaseEntity {
   jobCategory?: CategoryDTO;
   branchCategory?: CategoryDTO;
   sellerEntity?: UserDTO;
+  categoryCampaign?: CategoryDTO;
+  customerGroup?: CustomerGroupDTO;
+  identnDocTypeCategory?: CategoryDTO;
 }
 
 export interface CustomerSearchRequest extends BaseSearchParams {

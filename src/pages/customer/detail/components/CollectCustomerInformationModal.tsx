@@ -2,26 +2,19 @@ import { AButton } from '@components/atoms';
 import { ACollapseForm } from '@components/atoms/a-collapse-form';
 import { Form, Modal } from 'antd';
 import { type FC } from 'react';
-import type { CustomerCollectInfoDTO } from 'src/dtos/customer-collect-info';
 import './CollectCustomerInformationModal.scss';
 import { CollectInfoForm } from './CollectInfoForm';
 import { LimitLoanAmountCard } from './LimitLoanAmountCard';
 import { useCollectInforController } from '../hooks/useCollectInforController';
 
 interface ICollectCustomerInformationForm {
-  data?: Partial<CustomerCollectInfoDTO>;
   open: boolean;
   onCancel: () => void;
-  // TODO: Add onOk
-  // onOk: () => void;
 }
 
 const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
-  data,
   open,
   onCancel,
-  // TODO: Add onOk
-  // onOk,
 }) => {
   const {
     form,
@@ -33,7 +26,7 @@ const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
     handleFormValuesChange,
     saveDraft,
     checkLoanLimit,
-  } = useCollectInforController(data);
+  } = useCollectInforController();
 
   return (
     <Modal

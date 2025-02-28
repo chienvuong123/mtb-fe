@@ -43,6 +43,7 @@ export interface UserDTO extends BaseEntity {
   position: string;
   branch: string;
   expertise: string;
+  name?: string;
 }
 
 export interface UserRequest extends BaseSearchParams {

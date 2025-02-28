@@ -1,17 +1,26 @@
 import { OBaseDetailForm } from '@components/organisms/o-form-detail';
-import { GENDER_OPTIONS } from '@constants/masterData';
-import { type CustomerDTO } from '@dtos';
+import { CategoryType, type CustomerDTO } from '@dtos';
+import {
+  useCategoryOptionsListQuery,
+  useCustomerViewQuery,
+} from '@hooks/queries';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { getOptionLabel } from '@utils/objectHelper';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
+import { useParams } from 'react-router-dom';
 
-interface ICustomerDetailForm {
-  data: CustomerDTO;
-}
-
-const CustomerDetailForm: FC<ICustomerDetailForm> = ({ data }) => {
+const CustomerDetailForm: FC = () => {
   const [form] = useForm();
+  const { customerId } = useParams();
+
+  const { data: customerQueryData } = useCustomerViewQuery({
+    id: customerId as string,
+  });
+  const customerData = customerQueryData?.data;
+
+  const { data: hobbyOptions } = useCategoryOptionsListQuery(
+    CategoryType.HOBBY,
+  );
 
   const items = useMemo(() => {
     const configItems: TFormItem[] = [
@@ -94,11 +103,6 @@ const CustomerDetailForm: FC<ICustomerDetailForm> = ({ data }) => {
         inputProps: {
           disabled: true,
         },
-        getValueProps: (value) => {
-          return {
-            value: getOptionLabel(GENDER_OPTIONS, value),
-          };
-        },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -172,15 +176,54 @@ const CustomerDetailForm: FC<ICustomerDetailForm> = ({ data }) => {
           disabled: true,
         },
       },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Order ID',
+        name: 'orderId',
+        inputProps: {
+          disabled: true,
+        },
+      },
     ];
     return configItems;
   }, []);
 
   useEffect(() => {
-    if (data) {
-      form.setFieldsValue({ ...data });
+    if (customerData) {
+      const hobbiesArray = customerData?.hobbies?.split(',') || [];
+      const hobbiesName = hobbiesArray
+        .map(
+          (hobbyId) =>
+            hobbyOptions?.find((option) => option.value === hobbyId)?.label ||
+            '',
+        )
+        .filter(Boolean)
+        .join(', ');
+
+      form.setFieldsValue({
+        categoryCode: customerData?.categoryCampaign?.code,
+        categoryName: customerData?.categoryCampaign?.name,
+        campaignCode: customerData?.campaign?.code,
+        campaignName: customerData?.campaign?.name,
+        code: customerData?.code,
+        name: customerData?.name,
+        phone: customerData?.phone,
+        email: customerData?.email,
+        birthday: customerData?.birthday,
+        gender: customerData?.genderCategory?.name,
+        cusGroup: customerData?.customerGroup?.name,
+        cusSegment: customerData?.customerSegment?.name,
+        job: customerData?.jobCategory?.name,
+        identnDocType: customerData?.identnDocTypeCategory?.name,
+        identityCard: customerData?.identityCard,
+        address: customerData?.address,
+        hobbies: hobbiesName,
+        branch: customerData?.branchCategory?.name,
+        seller: customerData?.sellerEntity?.name,
+        orderId: customerData?.orderId,
+      });
     }
-  }, [data, form]);
+  }, [customerData, form, hobbyOptions]);
 
   return (
     <div>
