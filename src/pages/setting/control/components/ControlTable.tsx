@@ -12,7 +12,6 @@ export type TControlRecord = ControlDTO;
 interface IControlTable {
   dataSource: TControlRecord[];
   pagination: IMPagination;
-  onCreate: ITable<TControlRecord>['onCreate'];
   onEdit: ITable<TControlRecord>['onEdit'];
   onDelete: (id: string) => void;
 }
@@ -63,7 +62,6 @@ const columns: ColumnType<TControlRecord>[] = [
 const ControlTable: FC<IControlTable> = ({
   dataSource,
   pagination,
-  onCreate,
   onEdit,
   onDelete,
 }) => {
@@ -79,7 +77,6 @@ const ControlTable: FC<IControlTable> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onCreate={onCreate}
       onDeleteRow={deleteRecord}
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}

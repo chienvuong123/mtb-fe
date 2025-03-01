@@ -145,7 +145,10 @@ const ListCustomerPage: FC = () => {
     setFilters(filterObject(stringifyCustomerObj(values)));
   };
   const handlePaginationChange = (data: TPagination) => {
-    setPagination(data);
+    setPagination({
+      ...data,
+      current: data.pageSize !== pageSize ? 1 : data.current,
+    });
   };
   const handleSubmitInsert = (data: Partial<CustomerDTO>) => {
     const dData = destructCustomerData(data);
@@ -285,9 +288,11 @@ const ListCustomerPage: FC = () => {
   };
 
   const handleSort = (field: string, direction: SortOrder) => {
+    const orderField = Array.isArray(field) ? field.join('.') : field;
+
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
-      field,
+      field: orderField,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
     });
   };

@@ -16,7 +16,6 @@ interface ICategoryTable {
   dataSource: TCategoryTableRecord[];
   paginations: IMPagination;
   sortDirection?: OrderDTO;
-  onCreate: ITable<TCategoryTableRecord>['onCreate'];
   onEdit: ITable<TCategoryTableRecord>['onEdit'];
   onDelete: (id: string) => void;
   onView: (id: string) => void;
@@ -96,7 +95,6 @@ const CategoryTable: React.FC<ICategoryTable> = ({
   dataSource,
   paginations,
   sortDirection,
-  onCreate,
   onEdit,
   onDelete,
   onView,
@@ -111,11 +109,11 @@ const CategoryTable: React.FC<ICategoryTable> = ({
 
   return (
     <OTable<TCategoryTableRecord>
+      isCheckboxHidden
       rowKey="id"
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
       onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
       onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}

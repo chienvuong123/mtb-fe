@@ -40,7 +40,10 @@ const ManageSalesOpportunities: React.FC = () => {
   });
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination(data);
+    setPagination({
+      ...data,
+      current: data.pageSize !== pagination.pageSize ? 1 : data.current,
+    });
   };
 
   const paginations: IMPagination = {

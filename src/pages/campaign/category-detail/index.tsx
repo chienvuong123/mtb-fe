@@ -51,7 +51,10 @@ const ManagerCategoryDetail: React.FC = () => {
   });
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination(data);
+    setPagination({
+      ...data,
+      current: data.pageSize !== pageSize ? 1 : data.current,
+    });
   };
 
   const dataSourcesDetail: Partial<TCategoryDetailDTO> = useMemo(
