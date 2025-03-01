@@ -28,10 +28,12 @@ const ScenarioSearchForm: FC<IScenarioSearchForm> = ({
       {
         type: INPUT_TYPE.SELECT,
         label: 'Category',
-        name: 'categoryCode',
+        name: 'categoryId',
         inputProps: {
           placeholder: 'Chọn',
           options: categoryList,
+          showSearch: true,
+          filterOption: true,
         },
       },
       {
