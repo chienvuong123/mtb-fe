@@ -70,11 +70,15 @@ export enum ESalesOpportunities {
 export const STATUS_OPTIONS = [
   {
     value: EStatus.ACTIVE,
-    label: <Typography.Text className="green">Hoạt động</Typography.Text>,
+    label: <Typography.Text className="green">Đang hoạt động</Typography.Text>,
   },
   {
     value: EStatus.INACTIVE,
     label: <Typography.Text className="red">Không hoạt động</Typography.Text>,
+  },
+  {
+    value: EStatus.ALL,
+    label: <Typography.Text>Tất cả</Typography.Text>,
   },
 ];
 
