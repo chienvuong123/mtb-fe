@@ -37,12 +37,17 @@ const OSearchBaseForm = <T extends object>({
 }: ISearchBaseForm<T>) => {
   const transformItems = useMemo(
     () =>
-      items.map(({ label, ...others }) => ({
+      items.map(({ label, blockingPattern, ...others }) => ({
         label: (
           <Typography.Text ellipsis className="fw-600 fs-14">
             {label}
           </Typography.Text>
         ),
+        getValueFromEvent: blockingPattern
+          ? ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+              return value.replace(blockingPattern, '');
+            }
+          : undefined,
         ...others,
       })),
     [items],

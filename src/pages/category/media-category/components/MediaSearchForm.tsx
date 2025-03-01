@@ -4,7 +4,7 @@ import { useForm } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
 import type { TMediaSearchForm } from '@dtos';
 import { STATUS_OPTIONS } from '@constants/masterData';
-import { handleValidateNumberField } from '@utils/formHelper';
+import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 
 interface IMediaSearchForm {
   initialValues?: TMediaSearchForm;
@@ -31,8 +31,8 @@ const MediaSearchForm: FC<IMediaSearchForm> = ({
           title: 'Mã',
           placeholder: 'Nhập...',
           maxLength: 20,
-          onChange: (e) => handleValidateNumberField(e, form, ['code']),
         },
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -50,7 +50,7 @@ const MediaSearchForm: FC<IMediaSearchForm> = ({
         },
       },
     ],
-    [form],
+    [],
   );
 
   useEffect(() => {

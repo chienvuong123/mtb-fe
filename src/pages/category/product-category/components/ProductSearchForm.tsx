@@ -5,7 +5,7 @@ import { useEffect, useMemo, type FC } from 'react';
 import type { TProductSearchForm } from '@dtos';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import { useProfile } from '@stores';
-import { handleValidateNumberField } from '@utils/formHelper';
+import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 
 interface IProductSearchForm {
   initialValues?: TProductSearchForm;
@@ -33,8 +33,8 @@ const ProductSearchForm: FC<IProductSearchForm> = ({
           title: 'Mã',
           placeholder: 'Nhập...',
           maxLength: 20,
-          onChange: (e) => handleValidateNumberField(e, form, ['code']),
         },
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -52,7 +52,7 @@ const ProductSearchForm: FC<IProductSearchForm> = ({
         },
       },
     ],
-    [form],
+    [],
   );
 
   useEffect(() => {

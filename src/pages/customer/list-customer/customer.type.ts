@@ -7,11 +7,10 @@ import type { SortOrder } from 'antd/es/table/interface';
 import type { Dayjs } from 'dayjs';
 
 export type TCustomerForm = Partial<
-  Omit<CustomerDTO, 'birthday' | 'hobbies' | 'identnDocType'>
+  Omit<CustomerDTO, 'birthday' | 'hobbies'>
 > & {
   birthday?: Dayjs;
   hobbies?: string[];
-  identnDocType?: string[];
 };
 
 export type TCustomerSearchForm = Partial<
