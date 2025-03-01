@@ -248,29 +248,21 @@ const useCustomerForm = ({
 
   useEffect(() => {
     if (initialValues) {
-      const { birthday, hobbies, identnDocType, ...otherInit } =
-        initialValues ?? {};
+      const { birthday, hobbies, ...otherInit } = initialValues ?? {};
       form.setFieldsValue({
         ...otherInit,
         birthday: birthday ? stringToDayjs(birthday) : undefined,
         hobbies: hobbies?.split(',') ?? [],
-        identnDocType: identnDocType?.split(',') ?? [],
       } as TCustomerForm);
     }
   }, [initialValues, form]);
 
-  const handleSubmit = ({
-    birthday,
-    hobbies,
-    identnDocType,
-    ...values
-  }: TCustomerForm) => {
+  const handleSubmit = ({ birthday, hobbies, ...values }: TCustomerForm) => {
     onSubmit?.(
       {
         ...values,
         birthday: dayjsToString(birthday),
         hobbies: hobbies?.join(','),
-        identnDocType: identnDocType?.join(','),
       },
       form,
     );
