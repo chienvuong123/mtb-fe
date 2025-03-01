@@ -50,8 +50,11 @@ const ScenarioPage: FC = () => {
     setFilters(values);
   };
 
-  const handlePaginationChange = ({ pageSize, current }: TPagination) => {
-    setPagination({ pageSize, current });
+  const handlePaginationChange = (data: TPagination) => {
+    setPagination({
+      ...data,
+      current: data.pageSize !== pagination.pageSize ? 1 : data.current,
+    });
 
     // This for testing
     setSort({

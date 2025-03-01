@@ -1,8 +1,0 @@
-@use '../../../styles/variables' as *;
-@use 'sass:map';
-
-.confirm-page {
-  .button-back {
-    color: map.get($colors, 'text-main1');
-  }
-}

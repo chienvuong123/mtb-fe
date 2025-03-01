@@ -126,7 +126,7 @@ const ConfirmPassword = () => {
             <AButton
               onClick={handleRedirectOTP}
               type="link"
-              className="dis-flex ai-center fs-14 fw-400 gap-6 text-center pl-0 button-back"
+              className="dis-flex ai-center fs-14 fw-400 gap-6 text-center pl-0 text-main1"
             >
               <ArrowLeft01Icon className="w-16 h-16" />
               Quay lại

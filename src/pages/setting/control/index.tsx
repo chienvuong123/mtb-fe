@@ -49,11 +49,6 @@ const SettingControlPage: FC = () => {
   const editControlMutation = useControlEditMutation({}, handleReset);
   const removeControlMutation = useControlRemoveMutation({}, handleReset);
 
-  const handleCreate = () => {
-    setInitValues(null);
-    setShowInsertForm(true);
-  };
-
   const handleEdit = (data: TControlRecord) => {
     setInitValues(data);
     setShowInsertForm(true);
@@ -63,8 +58,11 @@ const SettingControlPage: FC = () => {
     setFilters(values);
   };
 
-  const handlePaginationChange = ({ pageSize, current }: TPagination) => {
-    setPagination({ pageSize, current });
+  const handlePaginationChange = (data: TPagination) => {
+    setPagination({
+      ...data,
+      current: data.pageSize !== pagination.pageSize ? 1 : data.current,
+    });
 
     // This for testing
     setSort({
@@ -129,7 +127,6 @@ const SettingControlPage: FC = () => {
       <ControlTable
         dataSource={controlList?.data?.content ?? []}
         pagination={paginationProps}
-        onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />

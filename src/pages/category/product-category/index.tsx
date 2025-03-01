@@ -119,7 +119,10 @@ const ProductCategoryPage: FC = () => {
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination(data);
+    setPagination({
+      ...data,
+      current: data.pageSize !== pageSize ? 1 : data.current,
+    });
   };
 
   const handleSubmitInsert = ({ name, code, status }: ProductCategoryDTO) => {

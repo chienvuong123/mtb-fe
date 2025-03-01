@@ -118,7 +118,10 @@ const GroupCustomerPage = () => {
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination(data);
+    setPagination({
+      ...data,
+      current: data.pageSize !== pagination.pageSize ? 1 : data.current,
+    });
   };
 
   const handleSubmitInsert = ({
@@ -193,7 +196,6 @@ const GroupCustomerPage = () => {
         dataSource={dataSources}
         paginations={paginations}
         sortDirection={sort}
-        onCreate={handleCreate}
         onView={handleView}
         onSort={handleSort}
       />

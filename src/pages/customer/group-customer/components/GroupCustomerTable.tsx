@@ -1,5 +1,5 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import type { OrderDTO } from '@dtos';
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import type { ColumnType } from 'antd/lib/table';
@@ -12,7 +12,6 @@ interface IGroupCustomerTable {
   dataSource: TGroupCustomerRecord[];
   paginations: IMPagination;
   sortDirection?: OrderDTO;
-  onCreate: ITable<TGroupCustomerRecord>['onCreate'];
   onView: (id: string) => void;
   onSort: (field: string, direction: SortOrder) => void;
 }
@@ -66,7 +65,6 @@ const GroupCustomerTable: FC<IGroupCustomerTable> = ({
   dataSource,
   paginations,
   sortDirection,
-  onCreate,
   onView,
   onSort,
 }) => {
@@ -79,7 +77,6 @@ const GroupCustomerTable: FC<IGroupCustomerTable> = ({
       data={dataSource}
       isShowDeleteBtn={false}
       selectedRowKeys={selectedRowKeys}
-      onCreate={onCreate}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}

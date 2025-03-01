@@ -17,7 +17,6 @@ interface ICampaignTable {
   dataSource: TCampaignRecord[];
   paginations: IMPagination;
   sortDirection?: OrderDTO;
-  onCreate: ITable<TCampaignRecord>['onCreate'];
   onEdit: ITable<TCampaignRecord>['onEdit'];
   onDelete: (id: string) => void;
   onView: (id: string) => void;
@@ -103,7 +102,6 @@ const CampaignTable: React.FC<ICampaignTable> = ({
   dataSource,
   paginations,
   sortDirection,
-  onCreate,
   onEdit,
   onDelete,
   onView,
@@ -123,7 +121,6 @@ const CampaignTable: React.FC<ICampaignTable> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onCreate={onCreate}
       onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
       onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}

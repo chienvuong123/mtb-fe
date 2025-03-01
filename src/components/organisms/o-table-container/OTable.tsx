@@ -68,6 +68,7 @@ const OTable = <T extends object>({
                 title: 'STT',
                 dataIndex: 'index',
                 minWidth: 76,
+                width: 112,
                 align: 'center',
                 render: (_: unknown, __: unknown, idx: number) => {
                   return getTableIndex(
@@ -86,7 +87,7 @@ const OTable = <T extends object>({
                 title: 'Thao tác',
                 dataIndex: 'actions',
                 fixed: 'right' as FixedType,
-                width: 'fit-content',
+                width: 134,
                 align: 'center',
                 minWidth: 120,
                 render: (_: unknown, record: T) => (

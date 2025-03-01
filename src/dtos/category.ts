@@ -16,6 +16,7 @@ export enum CategoryType {
   JOB = 'JOB', // Danh mục nghề nghiệp
   MB_IDENTIFICATION = 'MB_IDENTIFICATION', // Danh mục định danh khách hàng
   CUSTOMER_SEGMENT = 'CUSTOMER_SEGMENT', // Danh mục phân khúc KH
+  MB_GENDER = 'MB_GENDER', // Danh mục giới tính
 
   F88_IDENTIFICATION = 'F88_IDENTIFICATION', // "Danh mục giấy tờ định Danh F88"
   F88_JOB = 'F88_JOB', // "Danh mục nghề nghiệp F88"
