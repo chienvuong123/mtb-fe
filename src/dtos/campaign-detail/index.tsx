@@ -38,7 +38,7 @@ export type TCampaignDetailSearchForm = {
 
 export interface CampaignScriptDTO extends BaseEntity {
   order: string;
-  scrip: string;
+  script: string;
   status: string;
   approach: string;
   note: string;
