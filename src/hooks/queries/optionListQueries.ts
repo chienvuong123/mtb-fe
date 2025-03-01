@@ -8,7 +8,7 @@ import {
 } from '@apis';
 import { CategoryType } from '@dtos';
 import { useQuery } from '@tanstack/react-query';
-import { transformToOptions } from '@utils/objectHelper';
+import { transformToF88Options, transformToOptions } from '@utils/objectHelper';
 import type { CampaignListRequest } from 'src/dtos/campaign-detail';
 
 export const useCategoryOptionsListQuery = (
@@ -23,11 +23,20 @@ export const useCategoryOptionsListQuery = (
   });
 };
 
+export const useF88OptionsListQuery = (categoryTypeCode: CategoryType) => {
+  return useQuery({
+    queryKey: ['categoryList', categoryTypeCode],
+    queryFn: () => categoryApi.getCategoryOptionsList(categoryTypeCode),
+    select: ({ data }) => transformToF88Options(data),
+    enabled: !!categoryTypeCode,
+  });
+};
+
 export const useAssetCategoryOptionsListQuery = () => {
   return useQuery({
     queryKey: ['assetCategoryList'],
     queryFn: () => assetApi.getCategoryOptionsList(),
-    select: (data) => transformToOptions(data.data),
+    select: (data) => transformToF88Options(data.data),
   });
 };
 
@@ -40,7 +49,7 @@ export const useAssetCompanyOptionsListQuery = ({
     queryKey: ['assetCompanyList', assetCategoryCode],
     queryFn: () =>
       assetApi.getCompanyOptionsList({ categoryCode: assetCategoryCode }),
-    select: (data) => transformToOptions(data.data),
+    select: (data) => transformToF88Options(data.data),
     enabled: !!assetCategoryCode,
   });
 };
@@ -59,7 +68,7 @@ export const useAssetModelOptionsListQuery = ({
         companyAssetCode: assetCompanyCode,
         categoryAssetCode: assetCategoryCode,
       }),
-    select: (data) => transformToOptions(data.data),
+    select: (data) => transformToF88Options(data.data),
     enabled: !!assetCompanyCode && !!assetCategoryCode,
   });
 };
@@ -86,7 +95,7 @@ export const useAssetYearOptionsListQuery = ({
         categoryAssetCode: assetCategoryCode,
         modelAssetCode: assetModelCode,
       }),
-    select: (data) => transformToOptions(data.data),
+    select: (data) => transformToF88Options(data.data),
     enabled: !!assetCompanyCode && !!assetCategoryCode && !!assetModelCode,
   });
 };
@@ -117,7 +126,7 @@ export const useAssetNameOptionsListQuery = ({
         modelAssetCode: assetModelCode,
         yearCode: assetYear,
       }),
-    select: (data) => transformToOptions(data.data),
+    select: (data) => transformToF88Options(data.data),
     enabled:
       !!assetCompanyCode &&
       !!assetCategoryCode &&
@@ -150,7 +159,7 @@ export const useLocationOptionsListQuery = (parentCode = '0') => {
   return useQuery({
     queryKey: ['locationList', parentCode],
     queryFn: () => locationApi.getLocationOptionsList({ parentCode }),
-    select: (data) => transformToOptions(data.data),
+    select: (data) => transformToF88Options(data.data),
     enabled: !!parentCode,
   });
 };

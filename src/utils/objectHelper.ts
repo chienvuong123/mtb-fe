@@ -54,6 +54,14 @@ const transformToOptions = <T extends Omit<BaseOptionListDTO, 'active'>>(
     value: item.id as string,
   })) ?? [];
 
+const transformToF88Options = <T extends Omit<BaseOptionListDTO, 'active'>>(
+  data: T[],
+): BaseAntdOptionType[] =>
+  data.map((item) => ({
+    label: item.name,
+    value: item.code,
+  })) ?? [];
+
 const getOptionLabel = (
   options: BaseAntdOptionType[] | undefined,
   value: string | number | undefined,
@@ -98,6 +106,7 @@ export {
   isNumberArray,
   filterObject,
   transformToOptions,
+  transformToF88Options,
   getOptionLabel,
   isEqual,
 };

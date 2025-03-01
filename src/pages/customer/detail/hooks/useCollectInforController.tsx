@@ -1,6 +1,6 @@
 import { CategoryType } from '@dtos';
 import {
-  useCategoryOptionsListQuery,
+  useF88OptionsListQuery,
   useAssetCategoryOptionsListQuery,
   useAssetCompanyOptionsListQuery,
   useAssetModelOptionsListQuery,
@@ -60,22 +60,18 @@ export const useCollectInforController = () => {
   const currentProvinceCode = Form.useWatch(['currentProvinceCode'], form);
   const currentDistrictCode = Form.useWatch(['currentDistrictCode'], form);
 
-  const { data: identityOptions } = useCategoryOptionsListQuery(
+  const { data: identityOptions } = useF88OptionsListQuery(
     CategoryType.F88_IDENTIFICATION,
   );
-  const { data: jobOptions } = useCategoryOptionsListQuery(
-    CategoryType.F88_JOB,
-  );
-  const { data: debtRepaymentMethodOptions } = useCategoryOptionsListQuery(
+  const { data: jobOptions } = useF88OptionsListQuery(CategoryType.F88_JOB);
+  const { data: debtRepaymentMethodOptions } = useF88OptionsListQuery(
     CategoryType.F88_DEBT_REPAYMENT_METHOD,
   );
-  const { data: maritalStatusOptions } = useCategoryOptionsListQuery(
+  const { data: maritalStatusOptions } = useF88OptionsListQuery(
     CategoryType.F88_MARITAL_STATUS,
   );
-  const { data: proofOptions } = useCategoryOptionsListQuery(
-    CategoryType.F88_PROOF,
-  );
-  const { data: genderOptions } = useCategoryOptionsListQuery(
+  const { data: proofOptions } = useF88OptionsListQuery(CategoryType.F88_PROOF);
+  const { data: genderOptions } = useF88OptionsListQuery(
     CategoryType.F88_GENDER,
   );
 
@@ -218,6 +214,8 @@ export const useCollectInforController = () => {
           placeholder: 'Chọn',
           options: currentDistrictOptions,
           disabled: !currentProvinceCode,
+          filterOption: true,
+          showSearch: true,
         },
         colProps: { span: 8 },
         rules: [{ required: true }],
@@ -335,6 +333,8 @@ export const useCollectInforController = () => {
         inputProps: {
           placeholder: 'Chọn',
           options: assetCategoryOptions,
+          filterOption: true,
+          showSearch: true,
         },
         rules: [{ required: true }],
       },
@@ -346,6 +346,8 @@ export const useCollectInforController = () => {
           placeholder: 'Chọn',
           options: assetCompanyOptions,
           disabled: !assetCategoryCode,
+          filterOption: true,
+          showSearch: true,
         },
         rules: [{ required: true }],
       },
@@ -357,6 +359,8 @@ export const useCollectInforController = () => {
           placeholder: 'Chọn',
           options: assetModelOptions,
           disabled: !assetCompanyCode,
+          filterOption: true,
+          showSearch: true,
         },
         rules: [{ required: true }],
       },
@@ -368,6 +372,8 @@ export const useCollectInforController = () => {
           placeholder: 'Chọn',
           options: assetYearOptions,
           disabled: !assetModelCode,
+          filterOption: true,
+          showSearch: true,
         },
         rules: [{ required: true }],
       },
@@ -379,6 +385,8 @@ export const useCollectInforController = () => {
           placeholder: 'Chọn',
           options: assetNameOptions,
           disabled: !assetYear,
+          filterOption: true,
+          showSearch: true,
         },
         colProps: { span: 24 },
         rules: [{ required: true }],
@@ -390,6 +398,7 @@ export const useCollectInforController = () => {
         inputProps: {
           placeholder: 'Chọn',
           disabled: !assetInfoCode,
+          maxDate: dayjs(),
         },
         rules: [{ required: true }],
       },
@@ -444,6 +453,8 @@ export const useCollectInforController = () => {
         inputProps: {
           placeholder: 'Chọn',
           options: jobOptions,
+          filterOption: true,
+          showSearch: true,
         },
         rules: [{ required: true }],
       },
@@ -463,6 +474,8 @@ export const useCollectInforController = () => {
         inputProps: {
           placeholder: 'Chọn',
           options: proofOptions,
+          filterOption: true,
+          showSearch: true,
         },
         rules: [{ required: true }],
       },
@@ -578,15 +591,14 @@ export const useCollectInforController = () => {
   const { mutate: checkLoanLimitMutation, isPending: loading } =
     useCustomerCheckLoanLimit();
 
-  // TODO: integrate with api
   const { data: customerQueryData } = useCustomerViewQuery({
-    id: 'cc3069d3-0bfc-4eb2-b2e7-f0b3a5197eae',
+    id: customerId as string,
   });
   const customerData = customerQueryData?.data;
   const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
 
   const saveDraft = async () => {
-    const formData = form.getFieldsValue();
+    const formData = form.getFieldsValue(true);
 
     const collectInfo = mapFormDataToDTO(formData, {
       identityOptions,
@@ -620,7 +632,7 @@ export const useCollectInforController = () => {
 
   const checkLoanLimit = async () => {
     await form.validateFields();
-    const formData = form.getFieldsValue();
+    const formData = form.getFieldsValue(true);
 
     const collectInfo = mapFormDataToDTO(formData, {
       identityOptions,
@@ -673,6 +685,9 @@ export const useCollectInforController = () => {
         averageSalary: customerData?.salaryAverage,
         countOfSalary: customerData?.salaryTime?.toString(),
         personalId: customerData?.identityCard,
+        customerId: customerData?.id,
+        orderId: customerData?.orderId,
+        campaignId: customerData?.campaignId,
       });
     }
   }, [form, genderOptions, customerData, draftLoanLimit]);

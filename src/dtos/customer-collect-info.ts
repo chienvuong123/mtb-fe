@@ -1,8 +1,8 @@
 export interface CustomerCollectInfoDTO {
   saveDraft?: boolean;
-  customerId: string;
-  orderId: string;
-  campaignId: string;
+  customerId?: string;
+  orderId?: string;
+  campaignId?: string;
   customerName: string;
   dateOfBirth: string;
   genderCode: string;
@@ -65,6 +65,9 @@ export interface CustomerCollectInfoDTO {
 export interface CustomerCollectFormDTO {
   // Basic Info (First Form)
   customerName: string;
+  customerId?: string;
+  orderId?: string;
+  campaignId?: string;
   genderCode: string;
   dateOfBirth: string;
   mobileNumber: string;
