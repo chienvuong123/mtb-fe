@@ -2,6 +2,7 @@ import { OSearchBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import type { ScenarioSearchRequest } from '@dtos';
 import { useQueryCategoryList } from '@hooks/queries';
+import { useProfile } from '@stores';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import { useMemo, type FC } from 'react';
@@ -9,13 +10,16 @@ import { useMemo, type FC } from 'react';
 interface IScenarioSearchForm {
   onSearch: (values: ScenarioSearchRequest) => void;
   onCreate: () => void;
+  onClearAll: () => void;
 }
 
 const ScenarioSearchForm: FC<IScenarioSearchForm> = ({
   onSearch,
   onCreate,
+  onClearAll,
 }) => {
   const [form] = useForm();
+  const { isAdmin, isCampaignManager } = useProfile();
 
   const { data: categoryList } = useQueryCategoryList(true);
 
@@ -58,10 +62,11 @@ const ScenarioSearchForm: FC<IScenarioSearchForm> = ({
   return (
     <div>
       <OSearchBaseForm<ScenarioSearchRequest>
-        onCreate={onCreate}
         items={items}
         form={form}
+        onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
         onSearch={onSearch}
+        onClearAll={onClearAll}
       />
     </div>
   );

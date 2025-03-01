@@ -205,7 +205,7 @@ const routes = createBrowserRouter(
           element: <RoleBasedGuard accessibleRoles={allRole} />,
           children: [
             {
-              path: '',
+              path: SCENARIO.LIST,
               element: createLazyElement(() => import('@pages/scenario')),
             },
             {

@@ -167,7 +167,6 @@ const useCustomerForm = ({
             name: 'identnDocType',
             inputProps: {
               options: identificationList,
-              mode: 'multiple',
               placeholder: 'Chọn...',
             },
           },

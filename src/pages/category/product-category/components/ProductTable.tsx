@@ -1,13 +1,12 @@
-import { ATag } from '@components/atoms';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable, type ITable } from '@components/organisms';
-import { EStatus } from '@constants/masterData';
+import { EStatus, STATUS_OBJECT } from '@constants/masterData';
 import type { OrderDTO, ProductCategoryDTO } from '@dtos';
 import { useProfile } from '@stores';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
-import { useMemo, useState, type FC, type Key, type ReactNode } from 'react';
+import { useMemo, useState, type FC, type Key } from 'react';
 
 export type TProductRecord = Partial<ProductCategoryDTO>;
 
@@ -20,11 +19,6 @@ interface IProductTable {
   onView: (id: string) => void;
   onSort: (field: string, direction: SortOrder) => void;
 }
-
-const statusObject: Partial<Record<EStatus, ReactNode>> = {
-  [EStatus.ACTIVE]: <ATag color="green">Đang hoạt động</ATag>,
-  [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
-};
 
 const ProductTable: FC<IProductTable> = ({
   dataSource,
@@ -60,7 +54,7 @@ const ProductTable: FC<IProductTable> = ({
         minWidth: 164,
         sorter: true,
         showSorterTooltip: false,
-        render: (value: EStatus) => statusObject[value] ?? null,
+        render: (value: EStatus) => STATUS_OBJECT[value] ?? null,
       },
       {
         title: 'Ngày tạo',
