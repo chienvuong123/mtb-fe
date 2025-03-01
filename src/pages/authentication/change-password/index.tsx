@@ -13,6 +13,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FooterAuth } from '../components/footer';
 
 import './index.scss';
+import { validatePassword } from '../utils';
 
 type TInValidate = {
   typeAlertValue?: 'success' | 'error' | 'warning';
@@ -39,15 +40,6 @@ const ChangePassword = () => {
     'error',
   );
 
-  const validateNoWhitespace = async (_: unknown, value: string) => {
-    if (/\s/.test(value)) {
-      return Promise.reject(
-        new Error('Mật khẩu phải bao gồm chữ, số hoặc ký tự'),
-      );
-    }
-    return Promise.resolve();
-  };
-
   const items: TFormItem[] = useMemo(() => {
     return [
       {
@@ -62,9 +54,9 @@ const ChangePassword = () => {
         colProps: { span: 24, className: 'fw-500' },
         rules: [
           { required: true },
-          { min: 8, message: 'Mật khẩu phải dài hơn 8 ký tự' },
+          { min: 8, message: 'Mật khẩu tối thiểu 8 ký tự' },
           {
-            validator: validateNoWhitespace,
+            validator: validatePassword,
           },
         ],
       },
@@ -75,11 +67,10 @@ const ChangePassword = () => {
         inputProps: { placeholder: 'Nhập...', maxLength: 50 },
         colProps: { span: 24, className: 'fw-500' },
         dependencies: ['newPassword'],
-        validateTrigger: 'onBlur',
         rules: [
           { required: true },
-          { min: 8, message: 'Mật khẩu phải dài hơn 8 ký tự' },
-          { validator: validateNoWhitespace },
+          { min: 8, message: 'Mật khẩu tối thiểu 8 ký tự' },
+          { validator: validatePassword },
           {
             validator: async (_: unknown, value: string) => {
               if (!value || form.getFieldValue('newPassword') === value) {

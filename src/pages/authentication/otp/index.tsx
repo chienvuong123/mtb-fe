@@ -8,7 +8,7 @@ import useFormItems from '@hooks/useFormItems';
 import { CONFIRM_PASSWORD, FORGOT_PASSWORD } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { getOTPCheck, saveOTPCheck } from '@utils/otpHelper';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { LayoutWrapper } from '../components';
 import { FooterAuth } from '../components/footer';
@@ -50,7 +50,7 @@ const OTP = () => {
   const { mutate: mutateVerifyInfoUser, isPending: isPendingResendOtp } =
     useVerifyInfoUserForgotPassword();
 
-  const handleResendOtp = () => {
+  const handleResendOtp = useCallback(() => {
     mutateVerifyInfoUser(valueValidOtp, {
       onSuccess: (res) => {
         if (res.data) {
@@ -61,7 +61,7 @@ const OTP = () => {
         throw Error('');
       },
     });
-  };
+  }, [mutateVerifyInfoUser, valueValidOtp]);
 
   const handleVerifyOtp = (values: UserInfoOtpRequest) => {
     if (values.otp?.length !== 6) return;
@@ -78,6 +78,12 @@ const OTP = () => {
             otp: values.otp,
           });
           navigate(CONFIRM_PASSWORD);
+          return;
+        }
+        if (res.errorCode === 'AUTH0009') {
+          setAlert('');
+          handleResendOtp();
+          return;
         }
 
         setErrorAllowed((prev) => {
