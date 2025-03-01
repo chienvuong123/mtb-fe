@@ -39,6 +39,7 @@ export const useCampaignScriptQuery = (
     queryKey: ['campaign-script', data],
     queryFn: () => campaignApi.campaignScript(data),
     ...options,
+    enabled: !!data.id,
   });
 };
 

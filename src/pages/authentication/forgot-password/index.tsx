@@ -79,11 +79,9 @@ const ForgotPassword = () => {
         if (res.data) {
           navigate(OTP);
           saveOTPCheck(data);
+          return;
         }
-        throw Error('');
-      },
-      onError: () => {
-        setAlert('Tài khoản hoặc email không tồn tại');
+        setAlert(res.errorDesc);
       },
     });
   };

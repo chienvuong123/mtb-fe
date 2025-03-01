@@ -8,6 +8,7 @@ import { Form } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { INPUT_TYPE, type TFormItem } from '@types';
+import { AButton } from '@components/atoms';
 import { LayoutWrapper } from '../components';
 import { FooterAuth } from '../components/footer';
 import { FormContentAuth } from '../components/form-content';
@@ -122,10 +123,14 @@ const ConfirmPassword = () => {
           subTitle="Nhập mật khẩu"
           textButton="Tiếp tục"
           textLink={
-            <div onClick={handleRedirectOTP} className="button-back">
+            <AButton
+              onClick={handleRedirectOTP}
+              type="link"
+              className="dis-flex ai-center fs-14 fw-400 gap-6 text-center pl-0 button-back"
+            >
               <ArrowLeft01Icon className="w-16 h-16" />
               Quay lại
-            </div>
+            </AButton>
           }
           alertText={alert}
           typeAlert={isReset ? 'success' : 'error'}

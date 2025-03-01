@@ -78,6 +78,12 @@ const OTP = () => {
             otp: values.otp,
           });
           navigate(CONFIRM_PASSWORD);
+          return;
+        }
+        if (res.errorCode === 'AUTH0009') {
+          setAlert('');
+          handleResendOtp();
+          return;
         }
 
         setErrorAllowed((prev) => {

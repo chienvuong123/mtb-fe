@@ -73,7 +73,7 @@ const CampaignCreate: React.FC = () => {
   });
 
   const { data: campaignScriptQuery } = useCampaignScriptQuery({
-    campaignId: campaignId ?? '',
+    id: campaignId ?? '',
   });
 
   const handleShowForm = () => {

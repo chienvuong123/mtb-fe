@@ -32,7 +32,7 @@ const ManagerCampaignDetail: React.FC = () => {
   });
 
   const { data: campaignScriptQuery } = useCampaignScriptQuery({
-    campaignId: campaignId ?? '',
+    id: campaignId ?? '',
   });
 
   const dataSourcesDetail: Partial<TCampaignDetailDTO> = useMemo(
