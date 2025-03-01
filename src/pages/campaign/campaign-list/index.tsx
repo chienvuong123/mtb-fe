@@ -78,7 +78,10 @@ const Campaign: React.FC = () => {
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination(data);
+    setPagination({
+      ...data,
+      current: data.pageSize !== pageSize ? 1 : data.current,
+    });
   };
 
   const paginations: IMPagination = {
@@ -156,7 +159,6 @@ const Campaign: React.FC = () => {
         dataSource={campaignRes?.data?.content ?? []}
         paginations={paginations}
         sortDirection={sort}
-        onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}

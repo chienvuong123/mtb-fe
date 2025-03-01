@@ -34,7 +34,7 @@ const columns: ColumnType<TCustomerRecord>[] = [
   },
   {
     title: 'Nhóm khách hàng',
-    dataIndex: 'cusGroup',
+    dataIndex: ['customerGroup', 'name'],
     width: 157,
     minWidth: 157,
     sorter: true,
@@ -66,7 +66,7 @@ const columns: ColumnType<TCustomerRecord>[] = [
   },
   {
     title: 'Seller',
-    dataIndex: 'seller',
+    dataIndex: ['sellerEntity', 'name'],
     width: 157,
     minWidth: 157,
     sorter: true,

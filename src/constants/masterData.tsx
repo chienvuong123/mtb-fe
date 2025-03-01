@@ -124,18 +124,6 @@ export const STATUS_SALES_OPPORTUNITIES_OPTIONS = [
     label: <Typography.Text className="red">Đã hủy</Typography.Text>,
   },
 ];
-
-export const GENDER_OPTIONS = [
-  {
-    value: EGender.MAN,
-    label: 'Nam',
-  },
-  {
-    value: EGender.WOMEN,
-    label: 'Nữ',
-  },
-];
-
 const optionElementWrapper = (label: string, element: JSX.Element) => (
   <Space>
     <div style={{ width: '100px' }}>{label}:</div>

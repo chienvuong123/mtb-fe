@@ -1,4 +1,3 @@
-import { GENDER_OPTIONS } from '@constants/masterData';
 import {
   BLOCKING_CHARACTERS_PARTERN,
   BLOCKING_NUMBER_PARTERN,
@@ -45,6 +44,9 @@ const useCustomerForm = ({
   );
   const { data: branchList } = useCategoryOptionsListQuery(
     CategoryType.BRANCHES,
+  );
+  const { data: genderList } = useCategoryOptionsListQuery(
+    CategoryType.MB_GENDER,
   );
   const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
     campaignId ?? '',
@@ -126,7 +128,10 @@ const useCustomerForm = ({
             type: INPUT_TYPE.SELECT,
             label: 'Giới tính',
             name: 'gender',
-            inputProps: { options: GENDER_OPTIONS },
+            inputProps: {
+              placeholder: 'Chọn...',
+              options: genderList,
+            },
           },
           {
             type: INPUT_TYPE.SELECT,
@@ -159,7 +164,7 @@ const useCustomerForm = ({
           {
             type: INPUT_TYPE.SELECT,
             label: 'Định danh khách hàng',
-            name: 'identification',
+            name: 'identnDocType',
             inputProps: {
               options: identificationList,
               mode: 'multiple',
@@ -237,19 +242,20 @@ const useCustomerForm = ({
       identificationList,
       branchList,
       groupCustomerList,
+      genderList,
       form,
     ],
   ) as TFormItem[];
 
   useEffect(() => {
     if (initialValues) {
-      const { birthday, hobbies, identification, ...otherInit } =
+      const { birthday, hobbies, identnDocType, ...otherInit } =
         initialValues ?? {};
       form.setFieldsValue({
         ...otherInit,
         birthday: birthday ? stringToDayjs(birthday) : undefined,
         hobbies: hobbies?.split(',') ?? [],
-        identification: identification?.split(',') ?? [],
+        identnDocType: identnDocType?.split(',') ?? [],
       } as TCustomerForm);
     }
   }, [initialValues, form]);
@@ -257,7 +263,7 @@ const useCustomerForm = ({
   const handleSubmit = ({
     birthday,
     hobbies,
-    identification,
+    identnDocType,
     ...values
   }: TCustomerForm) => {
     onSubmit?.(
@@ -265,7 +271,7 @@ const useCustomerForm = ({
         ...values,
         birthday: dayjsToString(birthday),
         hobbies: hobbies?.join(','),
-        identification: identification?.join(','),
+        identnDocType: identnDocType?.join(','),
       },
       form,
     );

@@ -2,6 +2,7 @@ import { OSearchBaseForm } from '@components/organisms';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import { CategoryType } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
+import { useProfile } from '@stores';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -22,6 +23,8 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
 }) => {
   const [form] = useForm();
   const startDate = Form.useWatch('startDate', form);
+
+  const { isAdmin, isCampaignManager } = useProfile();
 
   useEffect(() => {
     if (!startDate && form.getFieldValue('endDate')) {
@@ -115,7 +118,7 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
       form={form}
       onSearch={onSearch}
       onClearAll={onClearAll}
-      onCreate={onCreate}
+      onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
     />
   );
 };

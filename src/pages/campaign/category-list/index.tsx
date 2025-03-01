@@ -153,7 +153,10 @@ const ManageCategoryPage: React.FC = () => {
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination(data);
+    setPagination({
+      ...data,
+      current: data.pageSize !== pageSize ? 1 : data.current,
+    });
   };
 
   const handleDelete = (id: string) => {
@@ -232,7 +235,6 @@ const ManageCategoryPage: React.FC = () => {
         dataSource={manageCategoryRes?.data?.content ?? []}
         paginations={paginations}
         sortDirection={sort}
-        onCreate={handleCreate}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}

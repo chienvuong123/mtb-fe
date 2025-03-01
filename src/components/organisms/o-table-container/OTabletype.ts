@@ -63,7 +63,6 @@ export interface ITable<T> extends TableProps<T> {
   confirmProps?: IModalConfirm;
   isCheckboxHidden?: boolean;
   onEdit?: (record: T) => void;
-  onCreate?: () => void;
   onDeleteRow?: (key: Key) => void;
   setSelectedRowKeys?: React.Dispatch<React.SetStateAction<string[]>>;
   onView?: (key: Key) => void;
