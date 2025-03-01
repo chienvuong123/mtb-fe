@@ -22,7 +22,7 @@ export interface ScenarioSearchRequest extends BaseSearchParams {
   code?: string;
   name?: string;
   // category: { code: string; name: string };
-  categoryCode?: string;
+  categoryId?: string;
   categoryName?: string;
 }
 
