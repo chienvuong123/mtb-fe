@@ -45,7 +45,7 @@ const ScenarioCreatePage: FC = () => {
   const paginationProps: IMPagination = {
     pagination: {
       ...pagination,
-      total: initValues?.attributes?.length ?? 0,
+      total: 0,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
@@ -73,7 +73,7 @@ const ScenarioCreatePage: FC = () => {
       </Title>
       <div className="mt-24" />
       <AttributeTable
-        dataSource={initValues?.attributes ?? []}
+        dataSource={[]}
         pagination={paginationProps}
         onEdit={handleEdit}
         onDelete={handleDelete}

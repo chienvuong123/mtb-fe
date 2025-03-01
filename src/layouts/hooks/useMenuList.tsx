@@ -101,15 +101,15 @@ const useMenuList = (onLogout?: () => void) => {
             key: `${SCENARIO.ROOT}/${SCENARIO.LIST}`,
             label: 'Danh sách kịch bản',
           },
-          {
-            key: `${SCENARIO.ROOT}/${SCENARIO.CREATE}`,
-            label: 'Tạo kịch bản',
-            disabled: isSeller || isSaleManager,
-          },
-          {
-            key: `${SCENARIO.ROOT}/${SCENARIO.DETAIL}`,
-            label: 'Chi tiết kịch bản',
-          },
+          // {
+          //   key: `${SCENARIO.ROOT}/${SCENARIO.CREATE}`,
+          //   label: 'Tạo kịch bản',
+          //   disabled: isSeller || isSaleManager,
+          // },
+          // {
+          //   key: `${SCENARIO.ROOT}/${SCENARIO.DETAIL}`,
+          //   label: 'Chi tiết kịch bản',
+          // },
         ],
       },
       {

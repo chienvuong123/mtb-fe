@@ -8,13 +8,15 @@ import type {
 } from '@components/molecules/m-pagination/MPagination.type';
 
 import {
+  useApproachScriptSearchQuery,
   useScenarioRemoveMutation,
-  useScenarioSearchQuery,
 } from '@hooks/queries';
+import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import useUrlParams from '@hooks/useUrlParams';
-import { MOCK_SCENARIOS } from '@mocks/scenario';
 import { SCENARIO } from '@routers/path';
 import { useNavigate } from 'react-router-dom';
+import { filterObject } from '@utils/objectHelper';
+import type { SortOrder } from 'antd/es/table/interface';
 import ScenarioSearchForm from './components/ScenarioSearchForm';
 import ScenarioTable, {
   type TScenarioRecord,
@@ -26,14 +28,13 @@ const ScenarioPage: FC = () => {
   const { filters, setFilters, pagination, setPagination, sort, setSort } =
     useUrlParams<ScenarioSearchRequest>();
 
-  const { data: scenarioList } = useScenarioSearchQuery({
+  const { data: scenarioList } = useApproachScriptSearchQuery({
     page: {
-      pageSize: pagination.pageSize,
-      pageNum: pagination.current - 1,
+      pageSize: Number(pagination.pageSize),
+      pageNum: Number(pagination.current),
     },
     order: sort,
-    code: filters.code,
-    name: filters.name,
+    ...filterObject(filters),
   });
 
   const removeScenarioMutation = useScenarioRemoveMutation();
@@ -55,24 +56,32 @@ const ScenarioPage: FC = () => {
       ...data,
       current: data.pageSize !== pagination.pageSize ? 1 : data.current,
     });
-
-    // This for testing
-    setSort({
-      field: 'code',
-      direction: 'desc',
-    });
   };
 
   const handleDelete = (id: string) => {
     removeScenarioMutation.mutate({ id });
   };
 
+  const handleClearAll = () => {
+    setFilters({});
+  };
+
+  const handleView = (id: string) => {
+    navigate(`${SCENARIO.ROOT}/${id}`);
+  };
+
+  const handleSort = (field: string, direction: SortOrder) => {
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setSort({
+      field,
+      direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+    });
+  };
+
   const paginationProps: IMPagination = {
     pagination: {
       ...pagination,
-      total: scenarioList?.data?.page
-        ? scenarioList.data.page * (pagination?.pageSize || 20)
-        : 0,
+      total: scenarioList?.data?.total ?? 1,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
@@ -84,13 +93,20 @@ const ScenarioPage: FC = () => {
       <Title level={3} className="mb-24">
         Danh sách kịch bản
       </Title>
-      <ScenarioSearchForm onCreate={handleCreate} onSearch={handleSearch} />
+      <ScenarioSearchForm
+        onCreate={handleCreate}
+        onSearch={handleSearch}
+        onClearAll={handleClearAll}
+      />
       <div className="mt-24" />
       <ScenarioTable
-        dataSource={scenarioList?.data?.content ?? MOCK_SCENARIOS}
+        dataSource={scenarioList?.data?.content ?? []}
         pagination={paginationProps}
+        sortDirection={sort}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onView={handleView}
+        onSort={handleSort}
       />
     </div>
   );

@@ -214,3 +214,9 @@ export const SORT_ORDER_FOR_CLIENT: Record<string, SortOrder> = {
   asc: 'ascend',
   desc: 'descend',
 };
+
+export const STATUS_OBJECT: Record<EStatus, ReactNode> = {
+  [EStatus.ACTIVE]: <ATag color="green">Đang hoạt động</ATag>,
+  [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
+  [EStatus.ALL]: null,
+};

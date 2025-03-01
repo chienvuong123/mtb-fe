@@ -1,3 +1,4 @@
+import type { EStatus } from '@constants/masterData';
 import type { BaseEntity, BaseSearchParams } from './common';
 
 export interface ApproachResultDTO extends BaseEntity {
@@ -33,7 +34,7 @@ export interface ApproachScriptDTO extends BaseEntity {
   code: string;
   name: string;
   category: string;
-  status: string;
+  status: EStatus;
   desc: string;
   sellerName: string;
   campaignName: string;
