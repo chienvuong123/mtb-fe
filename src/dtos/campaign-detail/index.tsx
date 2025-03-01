@@ -44,9 +44,8 @@ export interface CampaignScriptDTO extends BaseEntity {
   note: string;
 }
 
-export interface CampaignScriptRequest extends BaseSearchParams {
-  campaignId: string;
-  createdDate?: string;
+export interface CampaignScriptRequest extends Partial<BaseEntity> {
+  id: string;
   code?: string;
   name?: string;
 }
