@@ -6,13 +6,14 @@ import { LOGIN, OTP } from '@routers/path';
 import { getOTPCheck } from '@utils/otpHelper';
 import { Form } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { LayoutWrapper } from '../components';
 import { FooterAuth } from '../components/footer';
 import { FormContentAuth } from '../components/form-content';
 
 import './index.scss';
+import { validatePassword } from '../utils';
 
 const ConfirmPassword = () => {
   const [form] = Form.useForm();
@@ -30,7 +31,8 @@ const ConfirmPassword = () => {
         colProps: { span: 24, className: 'fw-500' },
         rules: [
           { required: true },
-          { min: 8, message: 'Mật khẩu phải dài hơn 8 ký tự' },
+          { min: 8, message: 'Mật khẩu tối thiểu 8 ký tự' },
+          { validator: validatePassword },
         ],
       },
       {
@@ -42,7 +44,8 @@ const ConfirmPassword = () => {
         dependencies: ['password'],
         rules: [
           { required: true },
-          { min: 8, message: 'Mật khẩu phải dài hơn 8 ký tự' },
+          { min: 8, message: 'Mật khẩu tối thiểu 8 ký tự' },
+          { validator: validatePassword },
           {
             validator: async (_: unknown, value: string) => {
               if (!value || form.getFieldValue('password') === value) {
@@ -83,7 +86,9 @@ const ConfirmPassword = () => {
         if (res.data) {
           setAlert('Thay đổi mật khẩu thành công');
           setIsReset(true);
+          return;
         }
+        setAlert(res.errorDesc);
       },
     });
   };
@@ -92,6 +97,10 @@ const ConfirmPassword = () => {
     formItems: items,
     rowProps: { gutter: [0, 16] },
   });
+
+  const handleRedirectOTP = () => {
+    navigate(OTP, { state: { resendOTP: true } });
+  };
 
   useEffect(() => {
     if (!isReset) return;
@@ -113,10 +122,10 @@ const ConfirmPassword = () => {
           subTitle="Nhập mật khẩu"
           textButton="Tiếp tục"
           textLink={
-            <Link to={OTP} className="dis-flex ai-center gap-6">
+            <div onClick={handleRedirectOTP} className="button-back">
               <ArrowLeft01Icon className="w-16 h-16" />
               Quay lại
-            </Link>
+            </div>
           }
           alertText={alert}
           typeAlert={isReset ? 'success' : 'error'}
