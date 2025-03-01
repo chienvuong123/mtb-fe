@@ -79,9 +79,6 @@ export const mapFormDataToDTO = (
 
   return {
     ...formData,
-    customerId: '1',
-    orderId: '1',
-    campaignId: '1',
     typeOfIdName: getOptionLabel(identityOptions, formData.typeOfIdCode),
     jobName: getOptionLabel(jobOptions, formData.jobCode),
     incomeProofName: getOptionLabel(proofOptions, formData.incomeProofCode),
