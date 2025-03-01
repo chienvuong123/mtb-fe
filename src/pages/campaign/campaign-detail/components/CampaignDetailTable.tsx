@@ -23,7 +23,7 @@ interface ICampaignDetailTable {
 const columns: ColumnType<TCampaignDetaillRecord>[] = [
   {
     title: 'Phương thức tiếp cận',
-    dataIndex: 'name',
+    dataIndex: 'approach',
     minWidth: 326,
     sorter: true,
     showSorterTooltip: false,
