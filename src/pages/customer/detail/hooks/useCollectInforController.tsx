@@ -18,6 +18,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { CustomerCollectFormDTO } from 'src/dtos/customer-collect-info';
 import { useParams } from 'react-router-dom';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
+import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import { mapDraftToFormData, mapFormDataToDTO } from '../utils';
 
 interface FieldChangeInfo {
@@ -138,9 +139,10 @@ export const useCollectInforController = () => {
         type: INPUT_TYPE.TEXT,
         label: 'Số điện thoại',
         name: 'mobileNumber',
-        inputProps: { placeholder: 'Nhập...', maxLength: 10, type: 'number' },
+        inputProps: { placeholder: 'Nhập...', maxLength: 10 },
         rules: [{ required: true }],
         colProps: { span: 12 },
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
       },
       {
         type: INPUT_TYPE.LABEL,
