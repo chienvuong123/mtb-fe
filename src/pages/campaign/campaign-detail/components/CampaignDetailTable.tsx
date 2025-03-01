@@ -1,10 +1,8 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable, type ITable } from '@components/organisms';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
-import type { OrderDTO, TId } from '@dtos';
+import type { TId } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
-import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import React, { useState } from 'react';
 import type { CampaignScriptDTO } from 'src/dtos/campaign-detail';
 import Title from 'antd/lib/typography/Title';
@@ -18,11 +16,8 @@ export type TCampaignDetaillRecord = Partial<CampaignScriptDTO>;
 
 interface ICampaignDetailTable {
   dataSource: TCampaignDetaillRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-  onEdit: ITable<TCampaignDetaillRecord>['onEdit'];
-  onSort: (field: string, direction: SortOrder) => void;
-  onShowApproachForm: () => void;
+  onEdit?: ITable<TCampaignDetaillRecord>['onEdit'];
+  onShowApproachForm?: () => void;
 }
 
 const columns: ColumnType<TCampaignDetaillRecord>[] = [
@@ -51,10 +46,7 @@ const columns: ColumnType<TCampaignDetaillRecord>[] = [
 
 const CampaignDetailTable: React.FC<ICampaignDetailTable> = ({
   dataSource,
-  paginations,
-  sortDirection,
   onEdit,
-  onSort,
   onShowApproachForm,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
@@ -83,13 +75,7 @@ const CampaignDetailTable: React.FC<ICampaignDetailTable> = ({
         data={dataSource}
         selectedRowKeys={selectedRowKeys}
         setSelectedRowKeys={setSelectedRowKeys}
-        paginations={paginations}
-        sortDirection={sortDirection}
         onEdit={onEdit}
-        onChange={(_p, _f, s) => {
-          const { field, order } = s as SorterResult<TCampaignDetaillRecord>;
-          onSort(field as string, order as SortOrder);
-        }}
       />
     </div>
   );

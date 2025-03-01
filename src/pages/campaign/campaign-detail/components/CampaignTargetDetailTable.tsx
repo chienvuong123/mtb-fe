@@ -17,8 +17,8 @@ export type TCampaignTargetDetailTableRecord = Partial<CampaignTargetDTO>;
 interface ICampaignTargetDetailTable {
   dataSource: CampaignTargetDTO[];
   onEdit: ITable<TCampaignTargetDetailTableRecord>['onEdit'];
-  onDelete: (id: string) => void;
-  onShowTargetForm: () => void;
+  onDelete?: (id: string) => void;
+  onShowTargetForm?: () => void;
 }
 
 const columns: ColumnType<TCampaignTargetDetailTableRecord>[] = [
@@ -52,7 +52,9 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
   onShowTargetForm,
 }) => {
   const deleteRecord = (key: Key) => {
-    onDelete(key as string);
+    if (onDelete) {
+      onDelete(key as string);
+    }
   };
 
   const { id: campaignId } = useParams<TId>();

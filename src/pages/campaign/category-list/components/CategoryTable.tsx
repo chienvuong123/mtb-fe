@@ -1,7 +1,7 @@
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable, type ITable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
-import { ESalesCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
+import { EStatusCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
 import type { OrderDTO } from '@dtos';
 import { useProfile } from '@stores';
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
@@ -40,14 +40,14 @@ const columns: ColumnType<TCategoryTableRecord>[] = [
   },
   {
     title: 'Main Product',
-    dataIndex: 'mainProduct',
+    dataIndex: 'mainProductName',
     minWidth: 156,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Sub Product',
-    dataIndex: 'subProduct',
+    dataIndex: 'subProductName',
     minWidth: 200,
     sorter: true,
     showSorterTooltip: false,
@@ -58,7 +58,7 @@ const columns: ColumnType<TCategoryTableRecord>[] = [
     minWidth: 172,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: ESalesCampaign) => STATUS_CAMPAIGN_OBJECT[value] ?? null,
+    render: (value: EStatusCampaign) => STATUS_CAMPAIGN_OBJECT[value] ?? null,
   },
   {
     title: 'Thời gian bắt đầu',
@@ -78,14 +78,14 @@ const columns: ColumnType<TCategoryTableRecord>[] = [
   },
   {
     title: 'KH tiếp cận',
-    dataIndex: 'totalCustomerApproach',
+    dataIndex: 'totalCustomers',
     minWidth: 118,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'KH tham gia',
-    dataIndex: 'totalCustomerParticipating',
+    dataIndex: 'participatingCustomers',
     minWidth: 111,
     sorter: true,
     showSorterTooltip: false,

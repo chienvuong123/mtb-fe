@@ -1,12 +1,12 @@
 import { OSearchBaseForm } from '@components/organisms';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
-import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
+import { useQueryCategoryList } from '@hooks/queries';
 import { useProfile } from '@stores';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import type { TCampaignSearchForm } from 'src/dtos/campaign';
 
 interface ICampaignSearch {
@@ -23,13 +23,10 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
   onCreate,
 }) => {
   const [form] = useForm();
-  const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(dayjs());
+  const startDate = useWatch('startDate', form);
   const { isAdmin, isCampaignManager } = useProfile();
 
-  const categoryId = useWatch('categoryCode', form);
-
-  const { data: categoryList } = useQueryCategoryList();
-  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
+  const { data: categoryList } = useQueryCategoryList(true);
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [
@@ -46,14 +43,19 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
         },
       },
       {
-        type: INPUT_TYPE.SELECT,
+        type: INPUT_TYPE.TEXT,
         label: 'Campaign',
-        name: 'codeCampaign',
+        name: 'campaignCode',
         inputProps: {
-          placeholder: 'Chọn...',
-          showSearch: true,
-          filterOption: true,
-          options: campaignList,
+          placeholder: 'Nhập...',
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Campaign',
+        name: 'campaignName',
+        inputProps: {
+          placeholder: 'Nhập...',
         },
       },
       {
@@ -73,8 +75,6 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
         inputProps: {
           placeholder: 'Chọn ngày...',
           className: 'date-picker-campaign',
-          minDate: dayjs(),
-          onChange: (newValue) => setStartDate(newValue),
         },
       },
       {
@@ -89,7 +89,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
       },
     ];
     return formItems;
-  }, [categoryList, campaignList, startDate, form]);
+  }, [categoryList, startDate, form]);
 
   useEffect(() => {
     if (initialValues) {

@@ -26,6 +26,9 @@ export enum CategoryType {
   CUSTOMER_APPROACH_STATUS = 'CUSTOMER_APPROACH_STATUS', // "Danh mục trạng thái tiếp cận"
   CUSTOMER_APPROACH_RESULT = 'CUSTOMER_APPROACH_RESULT', // "Danh mục kết quả tiếp cận"
   CUSTOMER_APPROACH_DETAIL = 'CUSTOMER_APPROACH_DETAIL', // "Danh mục chi tiết tiếp cận"
+  CUSTOMER = 'CUSTOMER ', // "Danh mục khách hàng"
+  DEPLOYMENT_METHOD = 'DEPLOYMENT_METHOD', // "Phương thức triển khai"
+  SUB_PRODUCT = 'SUB_PRODUCT', // "Sub Product"
 }
 
 export interface CategoryDTO extends BaseEntity {

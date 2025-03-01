@@ -1,8 +1,5 @@
-import dayjs from 'dayjs';
-import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import Title from 'antd/lib/typography/Title';
 import { Flex } from 'antd';
-import { useForm } from 'antd/lib/form/Form';
 import { AButton } from '@components/atoms';
 import React, { useMemo } from 'react';
 import useUrlParams from '@hooks/useUrlParams';
@@ -15,17 +12,13 @@ import type {
 import type { TCategoryDetailDTO } from 'src/dtos/manage-category-detail';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { MANAGER_CAMPAIGN } from '@routers/path';
-import { filterObject } from '@utils/objectHelper';
 import { type TId } from '@dtos';
-import {
-  useCategoryDetailViewQuery,
-  useManageCategoryAddMutation,
-  useManageCategoryEditMutation,
-  useManageCategorySearchQuery,
-} from '@hooks/queries/manageCategoryQueries';
-import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import { useCategoryDetailViewQuery } from '@hooks/queries/manageCategoryQueries';
+import { useCampaignSearchQuery } from '@hooks/queries';
 import CategoryDetailSearch from './components/CategoryDetailSearch';
-import CategoryDetailTable from './components/CategoryDetailTable';
+import CategoryDetailTable, {
+  type TCategoryDetaillRecord,
+} from './components/CategoryDetailTable';
 import './index.scss';
 
 const BUTTON_TEXT = {
@@ -37,50 +30,25 @@ const BUTTON_TEXT = {
 const ManagerCategoryDetail: React.FC = () => {
   const { id: categoryId } = useParams<TId>();
 
-  const [form] = useForm();
-
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
 
-  const { isView, isCreate } = Object.fromEntries(searchParams);
-
-  const isAction = categoryId && isView;
+  const { categoryCode } = Object.fromEntries(searchParams);
 
   const {
     pagination: { current, pageSize },
     setPagination,
     setSort,
-    filters,
-    sort,
   } = useUrlParams<Partial<TCategoryDetailDTO>>();
 
   const { data: categoryDetailRes } = useCategoryDetailViewQuery({
     id: categoryId ?? '',
   });
 
-  const { data: categoryQuery } = useManageCategorySearchQuery({
-    categoryId: categoryId ?? '',
-    page: {
-      pageNum: Number(current),
-      pageSize: Number(pageSize),
-    },
-    order: sort,
-    ...filterObject(filters),
+  const { data: categoryQuery } = useCampaignSearchQuery({
+    categoryCode: categoryCode ?? '',
   });
-
-  const handleReset = () => {
-    form.resetFields();
-  };
-
-  const { mutate: mutationCreateCategory } = useManageCategoryAddMutation(
-    {},
-    handleReset,
-  );
-  const { mutate: mutationUpdateCategory } = useManageCategoryEditMutation(
-    {},
-    handleReset,
-  );
 
   const handlePaginationChange = (data: TPagination) => {
     setPagination(data);
@@ -91,22 +59,15 @@ const ManagerCategoryDetail: React.FC = () => {
     [categoryDetailRes],
   );
 
-  const handleSubmitInsert = () => {
-    const { startDate, endDate, ...categoryFormData } = form.getFieldsValue();
-    const data: Partial<ManagerCategoryDTO> = {
-      ...categoryFormData,
-      startDate: dayjs(startDate).format(DATE_SLASH_FORMAT),
-      endDate: dayjs(endDate).format(DATE_SLASH_FORMAT),
-    };
-
-    // update category
-    if (data?.id) {
-      mutationUpdateCategory(data);
-      return;
-    }
-    // create new category
-    mutationCreateCategory(data);
-  };
+  const dataSources: TCategoryDetaillRecord[] =
+    useMemo(
+      () =>
+        categoryQuery?.data?.content?.map((i) => ({
+          ...i,
+          key: i.id as string,
+        })),
+      [categoryQuery],
+    ) ?? [];
 
   const paginations: IMPagination = {
     pagination: {
@@ -131,55 +92,28 @@ const ManagerCategoryDetail: React.FC = () => {
     navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY}`);
   };
 
-  const getTitle = useMemo(() => {
-    if (isView) return 'Chi tiết Category';
-    if (isCreate) return 'Tạo mới Category';
-    return 'Chỉnh sửa Category';
-  }, [isView, isCreate]);
-
   return (
     <div className="pt-32">
       <Title level={3} className="pb-24">
-        {getTitle}
+        Chi tiết Category
       </Title>
-      <CategoryDetailSearch
-        initialValues={dataSourcesDetail}
-        isDisabled={Boolean(isAction)}
-        form={form}
-      />
+      <CategoryDetailSearch initialValues={dataSourcesDetail} isDisabled />
       <div className="mb-24" />
-      {isView && (
-        <CategoryDetailTable
-          onSort={handleSort}
-          dataSource={categoryQuery?.data?.content ?? []}
-          paginations={paginations}
-        />
-      )}
+      <CategoryDetailTable
+        onSort={handleSort}
+        dataSource={dataSources}
+        paginations={paginations}
+      />
       <div className="fixed bottom-0 left-0 w-full bg-white shadow-md z-10 mt-20 py-10 px-4">
         <Flex justify="between" className="py-4 w-full px-6" gap="middle">
-          {isAction ? (
-            <AButton
-              onClick={handleBack}
-              type="primary"
-              variant="filled"
-              data-testid="back-button"
-            >
-              {BUTTON_TEXT.BACK}
-            </AButton>
-          ) : (
-            <Flex className="ml-auto" gap="middle">
-              <AButton onClick={handleBack} variant="outlined">
-                {BUTTON_TEXT.CANCEL}
-              </AButton>
-              <AButton
-                onClick={handleSubmitInsert}
-                type="primary"
-                variant="filled"
-              >
-                {BUTTON_TEXT.SAVE}
-              </AButton>
-            </Flex>
-          )}
+          <AButton
+            onClick={handleBack}
+            type="primary"
+            variant="filled"
+            data-testid="back-button"
+          >
+            {BUTTON_TEXT.BACK}
+          </AButton>
         </Flex>
       </div>
     </div>
