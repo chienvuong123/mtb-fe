@@ -25,13 +25,9 @@ function useQueryClientConfig() {
       new QueryClient({
         defaultOptions: {
           queries: {
-            networkMode: 'always',
-            refetchOnWindowFocus: false,
             retry: false,
             gcTime: 5 * 60 * 1000,
-          },
-          mutations: {
-            networkMode: 'always',
+            staleTime: 60 * 1000,
           },
         },
         queryCache,
