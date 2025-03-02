@@ -72,7 +72,7 @@ const OSearchBaseForm = <T extends object>({
       <Form form={form} onFinish={handleSearch} layout="vertical">
         <div className="pa-24 pb-22">{formContent}</div>
         <Divider className="ma-0" />
-        <Flex justify="end" className="py-12 px-24" gap={24}>
+        <Flex justify="flex-end" className="py-12 px-24" gap={24}>
           <AButton
             className="clear-button w-115"
             onClick={handleClear}

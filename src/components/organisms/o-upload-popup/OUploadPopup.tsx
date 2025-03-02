@@ -163,7 +163,7 @@ const OUploadPopup: FC<IUploadPopup> = ({
         </div>
 
         <Divider className="ma-0 mt-32" />
-        <Flex gap={16} className="px-24 py-14" justify="end">
+        <Flex gap={16} className="px-24 py-14" justify="flex-end">
           <AButton
             type="text"
             className="w-115 fw-600 fs-14"

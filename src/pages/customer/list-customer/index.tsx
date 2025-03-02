@@ -113,7 +113,13 @@ const ListCustomerPage: FC = () => {
   const { mutate: mutationImportCustomer, isPending: importCustomerLoading } =
     useCustomerImportMutation();
   const { refetch: downloadTemplate } = useCustomerDownloadTemplete();
-  const { refetch: customerExport } = useCustomerExport(searchParams);
+  const { refetch: customerExport } = useCustomerExport({
+    ...searchParams,
+    page: {
+      pageNum: 1,
+      pageSize: customerRes?.data.total ?? pageSize,
+    },
+  });
   const { mutate: mutationCreateGroupCustomer } = useGroupCustomerAddMutation();
 
   const cancelImport = () => {
