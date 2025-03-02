@@ -2,7 +2,7 @@ import type { BaseResponse } from '@dtos';
 import type { NotificationArgsProps } from 'antd';
 
 export const validationHelper = <T>(
-  { errorCode }: BaseResponse<T>,
+  { errorCode, errorDesc }: BaseResponse<T>,
   setMsg: (props: NotificationArgsProps) => void,
   onSuccess: () => void,
 ) => {
@@ -11,5 +11,5 @@ export const validationHelper = <T>(
     return;
   }
 
-  setMsg({ type: 'error', message: 'Đã xảy ra lỗi!' });
+  setMsg({ type: 'error', message: errorDesc ?? 'Đã xảy ra lỗi!' });
 };
