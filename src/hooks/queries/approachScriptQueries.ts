@@ -19,7 +19,7 @@ export const {
 
 export const useApproachScriptViewByCustomerQuery = (customerId?: string) => {
   return useQuery({
-    queryKey: [APPROACH_SCRIPT_KEY, 'view-by-customer', customerId],
+    queryKey: [APPROACH_SCRIPT_KEY, 'view-by-customer'],
     queryFn: () => approachScriptApi.viewByCustomer(customerId),
     select: (data) => data.data,
     enabled: !!customerId,

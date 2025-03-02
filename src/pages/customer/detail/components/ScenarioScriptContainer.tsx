@@ -23,7 +23,9 @@ import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 
 import './CollectCustomerInformationModal.scss';
 import { AButton, ACollapse, ASelect, AInputArea } from '@components/atoms';
-import ScenarioScriptFooter from './ScenarioScriptFooter';
+import ScenarioScriptFooter, {
+  type ApproachData,
+} from './ScenarioScriptFooter';
 
 const AttributeItem: FC<{
   data: ApproachScriptAttributeDTO;
@@ -166,7 +168,7 @@ const AttributeItem: FC<{
           <Form.Item name={[approachId, data.id, 'note']} noStyle>
             <AInputArea
               placeholder="Nhập..."
-              maxLength={100}
+              maxLength={1000}
               showCount={{
                 formatter: ({ count, maxLength }) => `(${count}/${maxLength})`,
               }}
@@ -186,7 +188,8 @@ const ExpandIcon: FC<{ isActive?: boolean }> = ({ isActive }) => (
 const ScenarioScriptContainer: FC<{
   form: FormInstance;
   approach?: ApproachScriptDTO;
-}> = ({ form, approach }) => {
+  initialValues: Record<string, ApproachData>;
+}> = ({ form, approach, initialValues }) => {
   const { token } = theme.useToken();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -223,7 +226,11 @@ const ScenarioScriptContainer: FC<{
           items={attributeItems}
         />
         <Divider />
-        <ScenarioScriptFooter form={form} approachId={approach?.id} />
+        <ScenarioScriptFooter
+          form={form}
+          approachId={approach?.id}
+          initialValues={initialValues}
+        />
       </div>
     </Form>
   );

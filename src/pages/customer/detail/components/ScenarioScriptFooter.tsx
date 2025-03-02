@@ -2,25 +2,23 @@ import { AButton, AInputArea, ASelect } from '@components/atoms';
 import { CategoryType } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
 import {
+  APPROACH_SCRIPT_KEY,
   useApproachScriptResultMutation,
   useApproachScriptViewByCustomerQuery,
 } from '@hooks/queries/approachScriptQueries';
+import { useNotification } from '@libs/antd';
+import { useQueryClient } from '@tanstack/react-query';
 import { isEqual } from '@utils/objectHelper';
+import { validationHelper } from '@utils/validationHelper';
 import { Flex, Form, Rate, Typography, type FormInstance } from 'antd';
-import { type FC, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-
-interface IScenarioScriptFooterProps {
-  form: FormInstance;
-  approachId: string;
-}
+import { type FC } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface StepValue {
   attributes?: number | boolean | Array<number>;
   note?: string;
 }
-
-interface ApproachData {
+export interface ApproachData {
   status: string;
   approachStatus: string;
   rate?: number;
@@ -28,9 +26,16 @@ interface ApproachData {
   [key: string]: StepValue | string | number | undefined;
 }
 
+interface IScenarioScriptFooterProps {
+  form: FormInstance;
+  approachId: string;
+  initialValues: Record<string, ApproachData>;
+}
+
 const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   form,
   approachId,
+  initialValues,
 }) => {
   const { customerId } = useParams();
   const { data: approachResultOptions } = useCategoryOptionsListQuery(
@@ -46,40 +51,8 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
 
   const { mutate: createApproachResult } = useApproachScriptResultMutation();
 
-  const [initialValues, setInitialValues] = useState<
-    Record<string, ApproachData>
-  >({});
-
-  useEffect(() => {
-    if (approachScriptData) {
-      const initValues = approachScriptData.reduce(
-        (acc, approachScript) => ({
-          ...acc,
-          [approachScript.campaignScriptId]: {
-            ...approachScript.approachStep.reduce(
-              (stepAcc, step) => ({
-                ...stepAcc,
-                [step.id]: {
-                  attributes:
-                    step.controlType === 'CHECKBOX'
-                      ? step.approachResultStep?.result?.split(',')
-                      : step.approachResultStep?.result,
-                  note: step.approachResultStep?.note,
-                },
-              }),
-              {},
-            ),
-            result: approachScript.approachResult?.result,
-            resultDetail: approachScript.approachResult?.resultDetail,
-            rate: approachScript.approachResult?.rate,
-            note: approachScript.approachResult?.note,
-          },
-        }),
-        {},
-      );
-      setInitialValues(initValues);
-    }
-  }, [approachScriptData]);
+  const notify = useNotification();
+  const queryClient = useQueryClient();
 
   const handleSave = async () => {
     try {
@@ -122,7 +95,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
           return {
             approachResult: {
               id: oldApproachResult?.approachResult?.id,
-              customerId: 'f6225d34-0303-4965-bd4a-99f699c9d7a4',
+              customerId: customerId as string,
               campaignScriptId,
               result: String(approachData.result ?? ''),
               resultDetail: String(approachData.resultDetail ?? ''),
@@ -135,13 +108,29 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
           };
         },
       );
-
-      console.log('Transformed data array:', transformedDataArray);
-      createApproachResult(transformedDataArray);
+      createApproachResult(transformedDataArray, {
+        onSuccess: (d) => {
+          validationHelper(d, notify, () => {
+            notify({
+              message: 'Lưu thành công',
+              type: 'success',
+            });
+          });
+          queryClient.invalidateQueries({
+            queryKey: [APPROACH_SCRIPT_KEY, 'view-by-customer', customerId],
+          });
+        },
+      });
     } catch (error) {
       console.error('Validation failed:', error);
     }
   };
+
+  const navigate = useNavigate();
+  const handleCancel = () => {
+    navigate(`/customer/list`);
+  };
+
   return (
     <Flex gap={24} vertical className="mt-24">
       <Flex gap={24} justify="space-between" align="flex-end">
@@ -183,7 +172,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
         </Flex>
       </Flex>
       <Flex gap={24} justify="flex-end">
-        <AButton variant="filled" color="primary">
+        <AButton variant="filled" color="primary" onClick={handleCancel}>
           Hủy
         </AButton>
         <AButton type="primary" onClick={handleSave}>

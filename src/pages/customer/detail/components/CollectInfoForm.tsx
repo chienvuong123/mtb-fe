@@ -1,6 +1,7 @@
 import type { CustomerCollectFormDTO } from '@dtos';
 import { useFormItems } from '@hooks';
 import type { TFormItem } from '@types';
+import { getValueFromEvent } from '@utils/formHelper';
 import { Form, Typography, type FormInstance } from 'antd';
 import { useMemo } from 'react';
 
@@ -12,9 +13,13 @@ interface ICollectInfoForm {
 export const CollectInfoForm = ({ form, items }: ICollectInfoForm) => {
   const transformItems = useMemo(
     () =>
-      items.map(({ label, colProps, ...others }) => ({
+      items.map(({ label, blockingPattern, colProps, ...others }) => ({
         label: <Typography className="fw-500 fs-14">{label}</Typography>,
         colProps: { span: 12, ...colProps },
+        getValueFromEvent: blockingPattern
+          ? ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
+              getValueFromEvent(value, blockingPattern)
+          : undefined,
         ...others,
       })),
     [items],

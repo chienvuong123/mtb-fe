@@ -3,14 +3,10 @@ import type { CategoryType } from '../category';
 import type { BaseEntity, BaseResponse, BaseSearchParams } from '../common';
 
 export interface AuthVerifyDTO extends BaseEntity {
-  access_token: string;
-  expires_in: number;
-  refresh_expires_in: number;
-  refresh_token: string;
-  token_type: string;
-  'not-before-policy': number;
-  session_state: string;
-  scope: string;
+  accessToken: string;
+  expiresIn: number;
+  refreshExpiresIn: number;
+  refreshToken: string;
 }
 
 export interface AuthOtpDTO extends BaseEntity {
@@ -55,12 +51,9 @@ export interface UserRequest extends BaseSearchParams {
 export type UserViewResponse = BaseResponse<UserDTO>;
 
 export interface AuthRequest {
-  client_id?: string;
-  client_secret?: string;
   username?: string;
   password?: string;
-  refresh_token?: string;
-  grant_type?: string;
+  refreshToken?: string;
 }
 
 export interface UserInfoOtpRequest {

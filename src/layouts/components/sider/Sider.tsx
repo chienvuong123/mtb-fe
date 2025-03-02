@@ -40,7 +40,7 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
   const handleLogout = () => {
     mutateLogout(
       {
-        refresh_token: localStorage.getItem('refresh_token') ?? '',
+        refreshToken: localStorage.getItem('refresh_token') ?? '',
       },
       {
         onSuccess: () => {

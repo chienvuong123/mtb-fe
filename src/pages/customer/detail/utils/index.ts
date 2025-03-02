@@ -1,11 +1,15 @@
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
+import { EControlType } from '@constants/masterData';
 import type {
+  ApproachScriptAttributeDTO,
+  ApproachScriptDTO,
   BaseAntdOptionType,
   CustomerCollectFormDTO,
   CustomerCollectInfoDTO,
 } from '@dtos';
 import { getOptionLabel } from '@utils/objectHelper';
 import dayjs from 'dayjs';
+import type { ApproachData } from '../components/ScenarioScriptFooter';
 
 const formatAddressString = (
   province: string,
@@ -157,4 +161,56 @@ export const mapDraftToFormData = (dto: CustomerCollectInfoDTO) => {
     averageCreditMonth: dto.averageCreditMonth?.toString(),
     averageDebitMonth: dto.averageDebitMonth?.toString(),
   };
+};
+
+export const getInitialValues = (
+  approachScriptData: ApproachScriptDTO[],
+  statusOptions: BaseAntdOptionType[],
+) => {
+  const getStepResult = (step: ApproachScriptAttributeDTO) => {
+    if (step.controlType === EControlType.CHECKBOX) {
+      return step.approachResultStep?.result.split(',');
+    }
+    if (step.controlType === EControlType.DATETIME) {
+      return step.approachResultStep?.result
+        ? dayjs(step.approachResultStep.result)
+        : undefined;
+    }
+    return step.approachResultStep?.result;
+  };
+
+  const processApproachStep = (step: ApproachScriptAttributeDTO) => ({
+    [step.id]: {
+      attributes: getStepResult(step),
+      note: step.approachResultStep?.note,
+    },
+  });
+
+  const processApproachScript = (approachScript: ApproachScriptDTO) => ({
+    [approachScript.id]: {
+      ...approachScript.approachStep.reduce(
+        (stepAcc, step) => ({
+          ...stepAcc,
+          ...processApproachStep(step),
+        }),
+        {},
+      ),
+      result: approachScript.approachResult?.result,
+      resultDetail: approachScript.approachResult?.resultDetail,
+      rate: approachScript.approachResult?.rate,
+      note: approachScript.approachResult?.note,
+      status: approachScript.approachResult?.status || statusOptions[0].value,
+      rateCampaign: approachScript.approachResult?.rateCampaign,
+    },
+  });
+
+  const initialValues = approachScriptData.reduce(
+    (acc, approachScript) => ({
+      ...acc,
+      ...processApproachScript(approachScript),
+    }),
+    {},
+  );
+
+  return initialValues as Record<string, ApproachData>;
 };
