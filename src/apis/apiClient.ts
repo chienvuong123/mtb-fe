@@ -3,12 +3,7 @@
 import axios from 'axios';
 import qs from 'qs';
 import type { AxiosError, AxiosRequestConfig } from 'axios';
-import {
-  BASE_URL,
-  BASE_URL_AUTH,
-  CLIENT_ID,
-  CLIENT_SECRET,
-} from '@constants/baseUrl';
+import { BASE_URL } from '@constants/baseUrl';
 import { LOGIN } from '@routers/path';
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
@@ -29,23 +24,6 @@ const paramsSerializer = (params: Record<string, unknown>) => {
   });
 };
 
-const onRefreshToken = (token: string) => {
-  return axios.post(
-    `${BASE_URL_AUTH}/token`,
-    qs.stringify({
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
-      refresh_token: token,
-      grant_type: 'refresh_token',
-    }),
-    {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    },
-  );
-};
-
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
@@ -56,6 +34,12 @@ export const apiClient = axios.create({
 });
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let refreshTokenPromise: Promise<any> | null = null;
+
+const onRefreshToken = (token: string) => {
+  return axios.post(`${BASE_URL}auth/v1.0/refresh-token`, {
+    refreshToken: token,
+  });
+};
 
 // Interceptors setup
 apiClient.interceptors.request.use(
@@ -109,9 +93,12 @@ apiClient.interceptors.response.use(
           const response = await refreshTokenPromise;
 
           if (response) {
-            localStorage.setItem('token', response.data.access_token);
-            localStorage.setItem('refresh_token', response.data.refresh_token);
-            originalRequest.headers.Authorization = `Bearer ${response.data.access_token}`;
+            localStorage.setItem('token', response.data.data.accessToken);
+            localStorage.setItem(
+              'refresh_token',
+              response.data.data.refreshToken,
+            );
+            originalRequest.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
           } else {
             localStorage.removeItem('token');
             localStorage.removeItem('refresh_token');
