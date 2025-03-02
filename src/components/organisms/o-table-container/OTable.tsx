@@ -1,6 +1,6 @@
 import { Table } from 'antd';
 import type { TableRowSelection } from 'antd/es/table/interface';
-import React, { useMemo, useState, type Key } from 'react';
+import { useMemo, useState, type Key } from 'react';
 
 import { MPagination } from '@components/molecules';
 import { SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
