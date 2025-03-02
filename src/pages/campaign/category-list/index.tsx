@@ -36,9 +36,8 @@ import { validationHelper } from '@utils/validationHelper';
 import type { TCategoryTableRecord } from './components/CategoryTable';
 import CategoryTable from './components/CategoryTable';
 import CategorySearch from './components/CategorySearch';
-import './index.scss';
 import CategoryInsert from './components/CategoryInsert';
-import type { TCategoryDetaillRecord } from '../category-detail/components/CategoryDetailTable';
+import type { TCategoryDetaillRecord } from './details/components';
 
 const ManageCategoryPage: React.FC = () => {
   const [drawerMode, setDrawerMode] = useState<TFormType>();
@@ -193,7 +192,7 @@ const ManageCategoryPage: React.FC = () => {
     const item = manageCategoryRes?.data.content.find((i) => i.id === id);
     if (item) {
       navigate(
-        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/${id}?isView=${true}`,
+        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/${id}`,
       );
     }
   };

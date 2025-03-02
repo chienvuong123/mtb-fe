@@ -26,12 +26,14 @@ import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { useManageCategoryAddMutation } from '@hooks/queries/manageCategoryQueries';
 import type { TId } from '@dtos';
 import { validationHelper } from '@utils/validationHelper';
-import type { TCampaignDetaillRecord } from '../campaign-detail/components/CampaignDetailTable';
-import CampaignDetailSearch from '../campaign-detail/components/CampaignDetailSearch';
-import CampaignDetailTable from '../campaign-detail/components/CampaignDetailTable';
+import CategoryInsertForm from '@pages/campaign/category-list/components/CategoryInsert';
 import CampaignTargetForm from './components/CampaignTargerForm';
 import CampaignApproachForm from './components/CampaignApproachForm';
-import CategoryInsertForm from '../category-list/components/CategoryInsert';
+import {
+  CampaignDetailSearch,
+  CampaignDetailTable,
+  type TCampaignDetaillRecord,
+} from '../details/components';
 
 const BUTTON_TEXT = {
   CANCEL: 'Hủy',
@@ -250,7 +252,7 @@ const CampaignCreate: React.FC = () => {
   return (
     <div className="pt-32">
       <Title level={3} className="pb-24">
-        {campaignId ? 'Chi tiết Campaign' : 'Tạo mới Campaign'}
+        {campaignId ? 'Chỉnh sửa Campaign' : 'Tạo mới Campaign'}
       </Title>
       <CampaignDetailSearch
         initialValues={dataSourcesDetail}

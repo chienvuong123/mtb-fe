@@ -23,7 +23,7 @@ const ROUTE_PATH = {
     CAMPAIGN: `campaign`,
     CAMPAIGN_DETAIL: `campaign-detail`,
     CREATE_CAMPAIGN: `campaign-create`,
-    CREATE_CATEGORY: `create-category`,
+    EDIT_CAMPAIGN: `campaign-edit`,
     CATEGORY: `category`,
     CATEGORY_DETAIL: `category-detail`,
   },
