@@ -1,6 +1,8 @@
 import type {
   AuthOtpDTO,
   AuthOtpRequest,
+  AuthRequest,
+  AuthResponse,
   BaseResponse,
   ChangePasswordRequest,
   UserInfoOtpRequest,
@@ -8,9 +10,25 @@ import type {
 import { BaseApi } from './baseApi';
 import { apiRequest } from './apiClient';
 
-export class AuthOTPApi extends BaseApi<AuthOtpDTO, AuthOtpRequest> {
+export class AuthApi extends BaseApi<AuthOtpDTO, AuthOtpRequest> {
   constructor() {
     super('/auth/v1.0');
+  }
+
+  login(data: AuthRequest) {
+    return apiRequest<BaseResponse<AuthResponse>>({
+      url: `${this.endpoint}/login`,
+      method: 'POST',
+      data,
+    });
+  }
+
+  logout(data: AuthRequest) {
+    return apiRequest<BaseResponse<boolean>>({
+      url: `${this.endpoint}/logout`,
+      method: 'POST',
+      data,
+    });
   }
 
   async verifyOtpForgotPassword(data: Partial<UserInfoOtpRequest>) {
@@ -61,4 +79,4 @@ export class AuthOTPApi extends BaseApi<AuthOtpDTO, AuthOtpRequest> {
   }
 }
 
-export const authOtpApi = new AuthOTPApi();
+export const authApi = new AuthApi();

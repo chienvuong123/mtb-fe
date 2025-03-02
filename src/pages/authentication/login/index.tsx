@@ -47,12 +47,11 @@ const LoginPage = () => {
       {
         username: values.username,
         password: values.password,
-        grant_type: 'password',
       },
       {
         onSuccess(value) {
-          localStorage.setItem('token', value.access_token);
-          localStorage.setItem('refresh_token', value.refresh_token);
+          localStorage.setItem('token', value.data.accessToken);
+          localStorage.setItem('refresh_token', value.data.refreshToken);
           navigate(HOME);
         },
         onError() {
