@@ -5,3 +5,6 @@ export const handleResetFields = (fields: string[], form: FormInstance) => {
     form.setFieldValue(field, undefined);
   });
 };
+
+export const getValueFromEvent = (value: string, pattern?: RegExp) =>
+  pattern ? value.normalize('NFC').replace(pattern, '') : value;

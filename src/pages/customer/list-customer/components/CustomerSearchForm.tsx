@@ -9,6 +9,7 @@ import {
   useQueryCampaignList,
   useQueryCategoryList,
 } from '@hooks/queries';
+import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import { useProfile } from '@stores';
 import { handleResetFields } from '@utils/formHelper';
 import { parseCustomerObj } from '../customerHelper';
@@ -57,7 +58,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             showSearch: true,
             filterOption: true,
             options: categoryList,
-            onChange: () => handleResetFields(['campaignId'], form),
+            onChange: () => handleResetFields(['campaignId', 'cusGroup'], form),
           },
         },
         {
@@ -69,6 +70,8 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             showSearch: true,
             filterOption: true,
             options: campaignList,
+            disabled: !categoryId,
+            onChange: () => handleResetFields(['cusGroup'], form),
           },
         },
         {
@@ -102,10 +105,11 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
           },
         },
         {
-          type: INPUT_TYPE.NUMBER,
+          type: INPUT_TYPE.TEXT,
           label: 'Số điện thoại',
           name: 'phone',
-          inputProps: { placeholder: 'Nhập...' },
+          inputProps: { placeholder: 'Nhập...', maxLength: 10 },
+          blockingPattern: BLOCKING_NUMBER_PARTERN,
         },
         {
           type: INPUT_TYPE.SELECT,
@@ -127,10 +131,13 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
             showSearch: true,
             filterOption: true,
             options: groupCustomerList,
+            disabled: !campaignId || !categoryId,
           },
         },
       ] as TFormItem[],
     [
+      categoryId,
+      campaignId,
       categoryList,
       campaignList,
       customerSegmentList,
