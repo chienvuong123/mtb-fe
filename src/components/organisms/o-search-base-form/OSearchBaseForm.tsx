@@ -6,6 +6,7 @@ import { Divider, Flex, Form, type FormInstance, Typography } from 'antd';
 import { useMemo } from 'react';
 
 import './styles.scss';
+import { getValueFromEvent } from '@utils/formHelper';
 
 interface ISearchBaseForm<T> {
   items: TFormItem[];
@@ -43,11 +44,10 @@ const OSearchBaseForm = <T extends object>({
             {label}
           </Typography.Text>
         ),
-        getValueFromEvent: blockingPattern
-          ? ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-              return value.replace(blockingPattern, '');
-            }
-          : undefined,
+        getValueFromEvent: ({
+          target: { value },
+        }: React.ChangeEvent<HTMLInputElement>) =>
+          getValueFromEvent(value, blockingPattern),
         ...others,
       })),
     [items],

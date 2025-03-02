@@ -14,6 +14,7 @@ import { useMemo } from 'react';
 import clsx from 'clsx';
 
 import './styles.scss';
+import { getValueFromEvent } from '@utils/formHelper';
 
 const BUTTON_TEXT = {
   CANCEL: 'Hủy',
@@ -55,11 +56,10 @@ const OBaseForm = <T extends object>({
             {label}
           </Typography.Text>
         ),
-        getValueFromEvent: blockingPattern
-          ? ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-              return value.replace(blockingPattern, '');
-            }
-          : undefined,
+        getValueFromEvent: ({
+          target: { value },
+        }: React.ChangeEvent<HTMLInputElement>) =>
+          getValueFromEvent(value, blockingPattern),
         ...others,
       })),
     [items],

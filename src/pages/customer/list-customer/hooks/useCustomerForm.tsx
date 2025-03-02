@@ -108,7 +108,7 @@ const useCustomerForm = ({
             type: INPUT_TYPE.TEXT,
             label: 'Số điện thoại',
             name: 'phone',
-            inputProps: { maxLength: 12 },
+            inputProps: { maxLength: 10 },
             blockingPattern: BLOCKING_NUMBER_PARTERN,
           },
           {
@@ -163,7 +163,7 @@ const useCustomerForm = ({
           },
           {
             type: INPUT_TYPE.SELECT,
-            label: 'Định danh khách hàng',
+            label: 'Loại giấy tờ định danh',
             name: 'identnDocType',
             inputProps: {
               options: identificationList,
@@ -178,7 +178,7 @@ const useCustomerForm = ({
           },
           {
             type: INPUT_TYPE.TEXT,
-            label: 'CCCD',
+            label: 'Số giấy tờ định danh',
             name: 'identityCard',
             inputProps: { maxLength: 20, stringMode: true },
             blockingPattern: BLOCKING_NUMBER_PARTERN,
