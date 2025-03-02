@@ -16,6 +16,7 @@ import {
   useSellerAssignCustomerMutation,
 } from '@hooks/queries';
 import { useNotification } from '@libs/antd';
+import { OModalConfirm } from '@components/organisms/o-modal';
 import { SellerAddFormDrawer, SellerAssignmentActions } from '.';
 import {
   distributeCustomers,
@@ -44,6 +45,7 @@ const SellerTable: FC<ISellerTable> = ({
 
   const [showDrawer, setShowDrawer] = useState(false);
   const [tableRecords, setTableRecords] = useState<TSellerRecord[]>([]);
+  const [showModalConfirm, setShowModalConfirm] = useState(false);
 
   const { mutate: assignCustomerMutate } = useSellerAssignCustomerMutation();
   const { mutate: addToCampaignMutate } = useSellerAddToCampaignMutation();
@@ -84,25 +86,39 @@ const SellerTable: FC<ISellerTable> = ({
     const columnList: ColumnType<TSellerRecord>[] = [
       {
         title: 'Seller',
-        dataIndex: 'sellerName',
+        dataIndex: 'sellerId',
         width: 535,
         minWidth: 535,
+        render: (value, record) => `${value} - ${record.sellerName}`,
       },
       {
         title: 'Số lượng',
         dataIndex: 'quantity',
         width: 176,
         minWidth: 176,
-        render: (_, record) => (
-          <FormItem name={`quantity_${record?.sellerId}`}>
-            <AInputNumber
-              controls
-              min={0}
-              max={getMaxQuantity(totalCustomer, record.sellerId, form)}
-              disabled={form.getFieldValue(`isLock_${record?.sellerId}`)}
-            />
-          </FormItem>
-        ),
+        render: (_, record) => {
+          const maxQuantity = getMaxQuantity(
+            totalCustomer,
+            record.sellerId,
+            form,
+          );
+          const fieldName = `quantity_${record?.sellerId}`;
+          return (
+            <FormItem name={fieldName}>
+              <AInputNumber
+                controls
+                min={0}
+                max={maxQuantity > 0 ? maxQuantity : 0}
+                disabled={form.getFieldValue(`isLock_${record?.sellerId}`)}
+                onBlur={({ target: { value } }) => {
+                  if (!value) {
+                    form.setFieldValue(fieldName, 0);
+                  }
+                }}
+              />
+            </FormItem>
+          );
+        },
       },
       {
         title: 'Dừng chia',
@@ -151,7 +167,7 @@ const SellerTable: FC<ISellerTable> = ({
   useEffect(() => {
     const tableRec: TSellerRecord[] = [];
     const sellerObj = dataSource.reduce((a, c, idx) => {
-      a[`quantity_${c.sellerId}`] = c?.assignNumber ?? 0;
+      a[`quantity_${c.sellerId}`] = 0;
       a[`isLock_${c.sellerId}`] = c?.isLock ?? false;
       a[`isTop_${c.sellerId}`] = idx === 0;
 
@@ -165,7 +181,9 @@ const SellerTable: FC<ISellerTable> = ({
       return a;
     }, {} as AnyObject);
     form.setFieldsValue(sellerObj);
-    setTableRecords(tableRec);
+    setTableRecords(
+      tableRec.sort((a, b) => a.sellerId.localeCompare(b.sellerId)),
+    );
   }, [dataSource, form]);
 
   const handleCloseDrawer = () => setShowDrawer(false);
@@ -188,6 +206,15 @@ const SellerTable: FC<ISellerTable> = ({
         return a;
       }, {} as AnyObject),
     );
+  };
+
+  const handleConfirmDivide = () => {
+    const lockItem = tableRecords.find((i) => i.isLock);
+    if (lockItem) {
+      setShowModalConfirm(true);
+    } else {
+      handleDivide();
+    }
   };
 
   const handleSubmit = () => {
@@ -249,6 +276,17 @@ const SellerTable: FC<ISellerTable> = ({
 
   return (
     <div>
+      <OModalConfirm
+        open={showModalConfirm}
+        title="Thông báo"
+        content="Có seller bị khoá, bạn có chắc chắn muốn chia đều"
+        onCancel={() => setShowModalConfirm(false)}
+        onOk={() => {
+          handleDivide();
+          setShowModalConfirm(false);
+        }}
+      />
+
       <SellerAddFormDrawer
         open={showDrawer}
         onClose={handleCloseDrawer}
@@ -260,7 +298,7 @@ const SellerTable: FC<ISellerTable> = ({
         disabledDivide={!campaignId}
         totalCustomer={totalCustomer}
         onCreateSeller={handleCreateSeller}
-        onDivide={handleDivide}
+        onDivide={handleConfirmDivide}
         onUnlockAll={handleUnlockAll}
       />
 

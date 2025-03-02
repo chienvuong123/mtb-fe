@@ -35,14 +35,14 @@ const columns: ColumnType<TSellerRecord>[] = [
   {
     title: 'Tổng số Campaign tham gia',
     dataIndex: 'totalCampaign',
-    width: 162,
+    width: 220,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Tổng số khách hàng',
     dataIndex: 'totalCustomer',
-    width: 118,
+    width: 178,
     sorter: true,
     showSorterTooltip: false,
   },
@@ -63,7 +63,7 @@ const columns: ColumnType<TSellerRecord>[] = [
   {
     title: 'Chi nhánh',
     dataIndex: ['user', 'branchDtl', 'name'],
-    width: 108,
+    width: 118,
     sorter: true,
     showSorterTooltip: false,
   },

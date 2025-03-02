@@ -27,25 +27,25 @@ const SellerDetailsForm: FC<ISellerDetailsForm> = ({ initialValues }) => {
         type: INPUT_TYPE.TEXT,
         label: 'Mã nhân viên',
         name: 'code',
-        inputProps: { readOnly: true },
+        inputProps: { readOnly: true, disabled: true },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Họ và tên',
         name: 'name',
-        inputProps: { readOnly: true },
+        inputProps: { readOnly: true, disabled: true },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Email',
         name: 'email',
-        inputProps: { readOnly: true },
+        inputProps: { readOnly: true, disabled: true },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Số điện thoại',
         name: 'phone',
-        inputProps: { readOnly: true },
+        inputProps: { readOnly: true, disabled: true },
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -72,10 +72,10 @@ const SellerDetailsForm: FC<ISellerDetailsForm> = ({ initialValues }) => {
         },
       },
       {
-        type: INPUT_TYPE.NUMBER,
+        type: INPUT_TYPE.SELECT,
         label: 'Tổng campaign tham gia',
         name: 'totalCampaign',
-        inputProps: { readOnly: true },
+        inputProps: { readOnly: true, disabled: true },
       },
     ] as TFormItem[];
   }, []);
