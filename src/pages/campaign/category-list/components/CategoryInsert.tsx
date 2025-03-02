@@ -1,10 +1,10 @@
 import { OBaseForm } from '@components/organisms';
 import { GROUP_CUSTOMER_KEY } from '@hooks/queries/groupCustomerQueries';
-import { useCategoryFormItems } from '@pages/campaign/category-detail/hook/CategoryDetailSearchForm';
 import type { FormInstance } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, type FC } from 'react';
 import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import { useCategoryFormItems } from '../hooks';
 
 interface ICategoryInsertForm {
   onClose: () => void;

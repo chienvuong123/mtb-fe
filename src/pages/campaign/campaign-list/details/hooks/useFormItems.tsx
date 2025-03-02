@@ -1,72 +1,55 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
-import dayjs from 'dayjs';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
-import { CategoryType } from '@dtos';
-import { useCategoryOptionsListQuery } from '@hooks/queries';
-import { useEffect } from 'react';
-import { Form } from 'antd';
-import type { FormInstance } from 'antd';
+import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
+import { useQueryCategoryList } from '@hooks/queries';
 
-interface ICategoryFormItemsProps {
+interface ICampaignFormItemsProps {
   isDisabled: boolean;
-  form: FormInstance;
+  onShowForm: () => void;
 }
 
-export const useCategoryFormItems = ({
+const useCampaignFormItems = ({
   isDisabled,
-  form,
-}: ICategoryFormItemsProps): TFormItem[] => {
-  const startDate = Form.useWatch('startDate', form);
-
-  useEffect(() => {
-    if (!startDate && form.getFieldValue('endDate')) {
-      form.setFieldValue('endDate', null);
-    }
-  }, [startDate, form]);
-
-  const { data: mainProductOptions } = useCategoryOptionsListQuery(
-    CategoryType.PRODUCT,
-  );
-  const { data: customerOptions } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER,
-  );
-  const { data: subProductOptions } = useCategoryOptionsListQuery(
-    CategoryType.SUB_PRODUCT,
-  );
-  const { data: deploymentOptions } = useCategoryOptionsListQuery(
-    CategoryType.DEPLOYMENT_METHOD,
-  );
+  onShowForm,
+}: ICampaignFormItemsProps): TFormItem[] => {
+  const { data: categoryList } = useQueryCategoryList(true);
 
   return [
     {
-      type: INPUT_TYPE.TEXT,
-      label: 'Mã',
-      name: 'code',
-      required: true,
-      rules: [{ required: true }],
+      type: INPUT_TYPE.SELECT,
+      label: 'Category',
+      name: 'categoryName',
+      onAddClick: isDisabled ? undefined : onShowForm,
       inputProps: {
-        placeholder: 'Nhập...',
+        placeholder: 'Chọn...',
+        showSearch: true,
+        disabled: isDisabled,
+        filterOption: true,
+        options: categoryList,
+      },
+    },
+    {
+      type: INPUT_TYPE.TEXT,
+      label: 'Mã Campaign',
+      name: 'codeCampaign',
+      inputProps: {
+        placeholder: 'Chọn...',
         disabled: isDisabled,
       },
     },
     {
       type: INPUT_TYPE.TEXT,
-      label: 'Tên',
-      name: 'name',
-      required: true,
-      rules: [{ required: true }],
+      label: 'Tên Campaign',
+      name: 'nameCampaign',
       inputProps: {
-        placeholder: 'Nhập...',
+        placeholder: 'Chọn...',
         disabled: isDisabled,
-        maxLength: 100,
       },
     },
     {
       type: INPUT_TYPE.DATE_PICKER,
       label: 'Ngày bắt đầu',
       name: 'startDate',
-      required: true,
-      rules: [{ required: true }],
       inputProps: {
         placeholder: 'Chọn ngày...',
         className: 'date-picker-campaign',
@@ -77,89 +60,89 @@ export const useCategoryFormItems = ({
       type: INPUT_TYPE.DATE_PICKER,
       label: 'Ngày kết thúc',
       name: 'endDate',
-      required: true,
-      rules: [{ required: true }],
       inputProps: {
         placeholder: 'Chọn ngày...',
         className: 'date-picker-campaign',
         disabled: isDisabled,
-        minDate: startDate ? dayjs(startDate) : dayjs(),
+      },
+    },
+    {
+      type: INPUT_TYPE.SELECT,
+      label: 'Chi nhánh triển khai',
+      name: 'branches',
+      inputProps: {
+        placeholder: 'Chọn...',
+        showSearch: true,
+        filterOption: true,
+        disabled: isDisabled,
+        options: MOCK_CUSTOMER_OPTIONS,
+      },
+    },
+    {
+      type: INPUT_TYPE.SELECT,
+      label: 'Loại chiến dịch',
+      name: 'campaignType',
+      inputProps: {
+        placeholder: 'Chọn...',
+        showSearch: true,
+        filterOption: true,
+        disabled: isDisabled,
+        options: MOCK_CUSTOMER_OPTIONS,
       },
     },
     {
       type: INPUT_TYPE.SELECT,
       label: 'Trạng thái',
       name: 'status',
-      required: true,
-      rules: [{ required: true }],
       inputProps: {
         placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        disabled: isDisabled,
         options: STATUS_CAMPAIGN_OPTIONS,
+        allowClear: false,
+        disabled: isDisabled,
       },
     },
     {
       type: INPUT_TYPE.SELECT,
       label: 'Phương thức triển khai',
-      name: 'deploymentMethod',
-      required: true,
-      rules: [{ required: true }],
+      name: 'implementationMethod',
       inputProps: {
         placeholder: 'Chọn...',
         showSearch: true,
         filterOption: true,
         disabled: isDisabled,
-        options: deploymentOptions,
+        options: MOCK_CUSTOMER_OPTIONS,
+      },
+    },
+    {
+      type: INPUT_TYPE.SELECT,
+      label: 'Phụ trách triển khai',
+      name: 'supervisor',
+      inputProps: {
+        placeholder: 'Chọn...',
+        showSearch: true,
+        filterOption: true,
+        disabled: isDisabled,
+        options: MOCK_CUSTOMER_OPTIONS,
       },
     },
     {
       type: INPUT_TYPE.SELECT,
       label: 'Danh mục khách hàng',
-      name: 'customer',
-      required: true,
-      rules: [{ required: true }],
+      name: 'customerCatalog',
       inputProps: {
         placeholder: 'Chọn...',
         showSearch: true,
         filterOption: true,
         disabled: isDisabled,
-        options: customerOptions,
+        options: MOCK_CUSTOMER_OPTIONS,
       },
     },
-    {
-      type: INPUT_TYPE.SELECT,
-      label: 'Main Product',
-      name: 'mainProduct',
-      required: true,
-      rules: [{ required: true }],
-      inputProps: {
-        placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        disabled: isDisabled,
-        options: mainProductOptions,
-      },
-    },
-    {
-      type: INPUT_TYPE.SELECT,
-      label: 'Sub Product',
-      name: 'subProduct',
-      inputProps: {
-        placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        disabled: isDisabled,
-        options: subProductOptions,
-      },
-    },
+    { type: INPUT_TYPE.BLANK },
+    { type: INPUT_TYPE.BLANK },
     {
       type: INPUT_TYPE.TEXT_AREA,
       label: 'Ghi chú',
       name: 'note',
-      required: true,
-      rules: [{ required: true }],
       colProps: {
         span: 12,
       },
@@ -180,9 +163,7 @@ export const useCategoryFormItems = ({
     {
       type: INPUT_TYPE.TEXT_AREA,
       label: 'Phạm vi triển khai',
-      name: 'scope',
-      required: true,
-      rules: [{ required: true }],
+      name: 'scopeImplementation',
       colProps: {
         span: 12,
       },
@@ -202,3 +183,5 @@ export const useCategoryFormItems = ({
     },
   ];
 };
+
+export default useCampaignFormItems;

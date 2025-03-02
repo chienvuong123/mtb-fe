@@ -14,7 +14,6 @@ import CampaignDetailSearch from './components/CampaignDetailSearch';
 import CampaignDetailTable, {
   type TCampaignDetaillRecord,
 } from './components/CampaignDetailTable';
-import './index.scss';
 
 const BUTTON_TEXT = {
   CANCEL: 'Hủy',
@@ -66,7 +65,7 @@ const ManagerCampaignDetail: React.FC = () => {
   return (
     <div className="pt-32">
       <Title level={3} className="pb-24">
-        {campaignId ? 'Chi tiết Campaign' : 'Tạo mới Campaign'}
+        Chi tiết Campaign
       </Title>
       <CampaignDetailSearch
         initialValues={dataSourcesDetail}

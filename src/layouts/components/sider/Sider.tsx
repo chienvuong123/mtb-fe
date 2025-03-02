@@ -14,7 +14,6 @@ import {
 import { AButton } from '@components/atoms';
 import AMenu from '@components/atoms/a-menu/AMenu';
 import useMenuList from '@layouts/hooks/useMenuList';
-import type { SelectEventHandler } from 'rc-menu/lib/interface';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getFirstPathname } from '@utils/stringHelper';
 import { useLogoutMutation } from '@hooks/queries';
@@ -75,7 +74,7 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
     setActualAction((prev) => !prev);
   };
 
-  const handleMenuClick: SelectEventHandler = ({ key }) => {
+  const handleMenuClick = ({ key }: { key: string }) => {
     navigate(key);
     setSelectedKey([key]);
   };
@@ -128,7 +127,7 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
               items={menu}
               mode="inline"
               className={clsx({ 'is-collapsed': isCollapsed })}
-              onSelect={handleMenuClick}
+              onClick={handleMenuClick}
               onOpenChange={handleOpenChange}
             />
           </div>

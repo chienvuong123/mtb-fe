@@ -9,9 +9,8 @@ import type { ITable } from '@components/organisms';
 import { dayjsToString } from '@utils/dateHelper';
 import { useForm } from 'antd/es/form/Form';
 import CampaignTargetDetailTable from './CampaignTargetDetailTable';
-import '../index.scss';
-import { useCampaignFormItems } from '../hook/CampaignDetailSearchFrom';
 import type { TCampaignDetaillRecord } from './CampaignDetailTable';
+import { useCampaignFormItems } from '../hooks';
 
 interface ICampaignDetailSearch {
   initialValues?: Partial<TCampaignDetailDTO>;
@@ -53,7 +52,7 @@ const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
   }, [initialValues, form]);
 
   return (
-    <div className="campaign-detail-search border-2 rounded-8 border-gray-border bg-white">
+    <div className="no-resize border-2 rounded-8 border-gray-border bg-white">
       {form && (
         <OFormDetail<TCampaignDetailSearchForm>
           items={items}

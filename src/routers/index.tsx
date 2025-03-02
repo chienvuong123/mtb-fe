@@ -135,13 +135,19 @@ const routes = createBrowserRouter(
             {
               path: `${MANAGER_CAMPAIGN.CAMPAIGN_DETAIL}/:id`,
               element: createLazyElement(
-                () => import('@pages/campaign/campaign-detail'),
+                () => import('@pages/campaign/campaign-list/details'),
               ),
             },
             {
               path: `${MANAGER_CAMPAIGN.CREATE_CAMPAIGN}`,
               element: createLazyElement(
-                () => import('@pages/campaign/campaign-create'),
+                () => import('@pages/campaign/campaign-list/form'),
+              ),
+            },
+            {
+              path: `${MANAGER_CAMPAIGN.EDIT_CAMPAIGN}/:id`,
+              element: createLazyElement(
+                () => import('@pages/campaign/campaign-list/form'),
               ),
             },
             {
@@ -153,13 +159,7 @@ const routes = createBrowserRouter(
             {
               path: `${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/:id`,
               element: createLazyElement(
-                () => import('@pages/campaign/category-detail'),
-              ),
-            },
-            {
-              path: `${MANAGER_CAMPAIGN.CREATE_CATEGORY}`,
-              element: createLazyElement(
-                () => import('@pages/campaign/category-detail'),
+                () => import('@pages/campaign/category-list/details'),
               ),
             },
           ],

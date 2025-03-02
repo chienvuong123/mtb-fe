@@ -6,8 +6,8 @@ import type {
   TCategoryDetailSearchForm,
 } from 'src/dtos/manage-category-detail';
 import dayjs from 'dayjs';
-import { useCategoryFormItems } from '../hook/CategoryDetailSearchForm';
 import '../index.scss';
+import { useCategoryFormItems } from '../../hooks';
 
 interface ICategoryDetailSearch {
   initialValues?: Partial<TCategoryDetailDTO>;

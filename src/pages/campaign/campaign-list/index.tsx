@@ -28,7 +28,6 @@ import CampaignTable, {
   type TCampaignRecord,
 } from './components/CampaignTable';
 import CampaignSearch from './components/CampaignSearch';
-import './index.scss';
 
 const Campaign: React.FC = () => {
   const {
@@ -67,7 +66,7 @@ const Campaign: React.FC = () => {
   const handleEdit = (data: TCampaignRecord) => {
     if (data?.id) {
       navigate(
-        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN_DETAIL}/${data.id}`,
+        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.EDIT_CAMPAIGN}/${data.id}`,
       );
     }
   };
@@ -104,7 +103,7 @@ const Campaign: React.FC = () => {
     const item = campaignRes?.data.content.find((i) => i.id === id);
     if (item) {
       navigate(
-        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN_DETAIL}/${id}?isView=${true}`,
+        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN_DETAIL}/${id}`,
       );
     }
   };

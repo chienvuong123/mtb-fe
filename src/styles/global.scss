@@ -43,6 +43,10 @@ h6,
   white-space: nowrap;
 }
 
+.no-resize {
+  resize: none;
+}
+
 // notification
 .mbb-notification-notice {
   border-radius: 8px;
