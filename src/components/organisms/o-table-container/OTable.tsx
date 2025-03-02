@@ -130,14 +130,19 @@ const OTable = <T extends object>({
     onCall,
   ]);
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys?.(newSelectedRowKeys as string[]);
+  const onSelectChange = (selectedRow: T, selected: boolean) => {
+    setSelectedRowKeys?.((pre) => {
+      if (selected) {
+        return [...pre, selectedRow[rowKey] as string];
+      }
+      return pre.filter((i) => i !== selectedRow[rowKey]);
+    });
   };
 
   const rowSelection: TableRowSelection<T> = {
     selectedRowKeys,
     columnWidth: 73,
-    onChange: onSelectChange,
+    onSelect: onSelectChange,
     getCheckboxProps: () => ({
       className: 'table-form-checkbox px-15',
     }),
