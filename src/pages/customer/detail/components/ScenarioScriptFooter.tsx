@@ -182,7 +182,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
           </Form.Item>
         </Flex>
       </Flex>
-      <Flex gap={24} justify="end">
+      <Flex gap={24} justify="flex-end">
         <AButton variant="filled" color="primary">
           Hủy
         </AButton>

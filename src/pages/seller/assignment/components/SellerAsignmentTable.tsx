@@ -312,7 +312,7 @@ const SellerTable: FC<ISellerTable> = ({
           scroll={{ x: 1573 }}
         />
         <Affix offsetBottom={0}>
-          <Flex justify="end" className="bg-white pr-32 py-16">
+          <Flex justify="flex-end" className="bg-white pr-32 py-16">
             <Flex gap={24}>
               <AButton color="primary" variant="filled">
                 Huỷ

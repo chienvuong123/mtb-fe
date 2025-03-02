@@ -41,7 +41,7 @@ const Header = () => {
 
   return (
     <Layout.Header className="bg-white h-75">
-      <Flex justify="end" align="center" className="h-full">
+      <Flex justify="flex-end" align="center" className="h-full">
         <HeaderNotify />
 
         <Divider type="vertical" className="h-40 mx-12" />
