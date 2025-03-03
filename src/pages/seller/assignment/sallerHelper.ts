@@ -48,7 +48,9 @@ export function getDataSplitSeller(
     }
     return {
       customerQuantity,
-      isLock: values[`isLock_${c.sellerId}`],
+      isLock: (values[`isLock_${c.sellerId}`]
+        ? 1
+        : 0) as SellerDistribution['isLock'],
       sellerId: c.sellerId as string,
     };
   });
