@@ -51,7 +51,7 @@ const ScenarioScriptContainer: FC<{
     <Form form={form}>
       <div ref={ref}>
         <Typography.Title level={4} className="mt-24 mb-16">
-          Kịch bản {approach?.campaignName}
+          Kịch bản {approach?.name}
         </Typography.Title>
         {isLastApproach ? (
           <Image src={DefaultScenario} preview={{ scaleStep: 1, mask: null }} />
