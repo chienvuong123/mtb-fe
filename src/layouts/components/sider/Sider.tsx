@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getFirstPathname } from '@utils/stringHelper';
 import { useLogoutMutation } from '@hooks/queries';
 import { LOGIN } from '@routers/path';
+import { useQueryClient } from '@tanstack/react-query';
 
 const { Sider } = Layout;
 
@@ -34,7 +35,7 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
+  const queryClient = useQueryClient();
   const { mutate: mutateLogout } = useLogoutMutation();
 
   const handleLogout = () => {
@@ -46,6 +47,7 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
         onSuccess: () => {
           localStorage.clear();
           navigate(LOGIN);
+          queryClient.clear();
         },
       },
     );
