@@ -5,6 +5,7 @@ import type {
 } from 'src/dtos/approach-script';
 import { approachScriptApi } from '@apis';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import type { BaseResponse } from '@dtos';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const APPROACH_SCRIPT_KEY = 'approach-script-list';
@@ -12,10 +13,11 @@ export const APPROACH_SCRIPT_KEY = 'approach-script-list';
 export const {
   useSearchQuery: useApproachScriptSearchQuery,
   useViewQuery: useApproachScriptViewQuery,
-} = createBaseQueryHooks<ApproachScriptDTO, ApproachScriptSearchRequest>(
-  APPROACH_SCRIPT_KEY,
-  approachScriptApi,
-);
+} = createBaseQueryHooks<
+  ApproachScriptDTO,
+  ApproachScriptSearchRequest,
+  BaseResponse<ApproachScriptDTO>
+>(APPROACH_SCRIPT_KEY, approachScriptApi);
 
 export const useApproachScriptViewByCustomerQuery = (customerId?: string) => {
   return useQuery({

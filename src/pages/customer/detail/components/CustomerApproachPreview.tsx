@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useApproachScriptViewByCustomerQuery } from '@hooks/queries/approachScriptQueries';
 import { useParams } from 'react-router-dom';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
-import ScenarioScriptContainer from './ScenarioScriptContainer';
+import { ScenarioScriptContainer } from '@components/organisms';
 import CollectCustomerInformationModal from './CollectCustomerInformationModal';
 import { getInitialValues } from '../utils';
 

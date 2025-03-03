@@ -1,15 +1,15 @@
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { EControlType } from '@constants/masterData';
 import type {
-  ApproachScriptAttributeDTO,
-  ApproachScriptDTO,
-  BaseAntdOptionType,
   CustomerCollectFormDTO,
+  BaseAntdOptionType,
   CustomerCollectInfoDTO,
+  ApproachScriptDTO,
+  ApproachScriptAttributeDTO,
+  ApproachFormData,
 } from '@dtos';
 import { getOptionLabel } from '@utils/objectHelper';
 import dayjs from 'dayjs';
-import type { ApproachData } from '../components/ScenarioScriptFooter';
 
 const formatAddressString = (
   province: string,
@@ -212,5 +212,5 @@ export const getInitialValues = (
     {},
   );
 
-  return initialValues as Record<string, ApproachData>;
+  return initialValues as Record<string, ApproachFormData>;
 };
