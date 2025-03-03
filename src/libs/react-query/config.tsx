@@ -4,8 +4,14 @@ import type { AxiosError } from 'axios';
 
 function useQueryClientConfig() {
   const handleCallApiFailure = (errorAxios: AxiosError) => {
-    // TODO: handle error when connection is lost
-    console.log(errorAxios);
+    console.warn(errorAxios);
+
+    if (
+      errorAxios.code === 'ERR_NETWORK' ||
+      errorAxios.message === 'Network Error'
+    ) {
+      window.location.href = '/500';
+    }
   };
 
   const queryCache = new QueryCache({
