@@ -15,6 +15,11 @@ export interface SalesOpportunitiesSearchRequest extends BaseSearchParams {
   name?: string;
 }
 
+interface defaultObjectDtl extends BaseEntity {
+  name: string;
+  code: string;
+}
+
 export interface SalesOpportunitiesDTO extends BaseEntity {
   orderId: string;
   customerId: string;
@@ -35,6 +40,13 @@ export interface SalesOpportunitiesDTO extends BaseEntity {
   category: CategoryDTO;
   campaign: CampaignDTO;
   customerGroup: CustomerGroupDTO;
+  limitAmount: number;
+  assetName: string;
+  categoryAssetId: string;
+  loanStatusDtl: string;
+  statusDtl: defaultObjectDtl;
+  assetNameDtl: defaultObjectDtl;
+  categoryAssetDtl: defaultObjectDtl;
 }
 
 export type TSalesOpportunitiesSearchForm = {
