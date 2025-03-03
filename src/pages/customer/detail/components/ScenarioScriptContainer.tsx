@@ -23,6 +23,7 @@ import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 
 import './CollectCustomerInformationModal.scss';
 import { AButton, ACollapse, ASelect, AInputArea } from '@components/atoms';
+import DefaultScenario from '@assets/images/Scenario.png';
 import ScenarioScriptFooter, {
   type ApproachData,
 } from './ScenarioScriptFooter';
@@ -132,26 +133,7 @@ const AttributeItem: FC<{
       }
       case EControlType.IMAGE: {
         const image = config as ControlValue<EControlType.IMAGE>;
-        return (
-          <Image
-            alt={image.title}
-            src={image.src}
-            height={300}
-            preview={{
-              classNames: {
-                content: 'control-type-img-content',
-                body: 'control-type-img-body',
-                wrapper: 'control-type-img-wrapper',
-              },
-              movable: false,
-              // imageRender: (originalNode, { transform, image: img }) => { TODO: will be fixed
-              //   // eslint-disable-next-line no-param-reassign
-              //   console.log(transform);
-              //   return originalNode;
-              // },
-            }}
-          />
-        );
+        return <Image alt={image.title} src={image.src} height={300} />;
       }
       default:
         return config as string;
@@ -189,7 +171,8 @@ const ScenarioScriptContainer: FC<{
   form: FormInstance;
   approach?: ApproachScriptDTO;
   initialValues: Record<string, ApproachData>;
-}> = ({ form, approach, initialValues }) => {
+  isLastApproach: boolean;
+}> = ({ form, approach, initialValues, isLastApproach }) => {
   const { token } = theme.useToken();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -217,14 +200,18 @@ const ScenarioScriptContainer: FC<{
         <Typography.Title level={4} className="mt-24 mb-16">
           Kịch bản {approach?.campaignName}
         </Typography.Title>
-        <ACollapse
-          bordered={false}
-          defaultActiveKey={attributeItems?.map((x) => x.key)}
-          expandIconPosition="end"
-          expandIcon={ExpandIcon}
-          style={{ background: token.colorBgContainer }}
-          items={attributeItems}
-        />
+        {isLastApproach ? (
+          <Image src={DefaultScenario} preview={{ scaleStep: 1, mask: null }} />
+        ) : (
+          <ACollapse
+            bordered={false}
+            defaultActiveKey={attributeItems?.map((x) => x.key)}
+            expandIconPosition="end"
+            expandIcon={ExpandIcon}
+            style={{ background: token.colorBgContainer }}
+            items={attributeItems}
+          />
+        )}
         <Divider />
         <ScenarioScriptFooter
           form={form}

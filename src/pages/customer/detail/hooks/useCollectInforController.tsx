@@ -19,6 +19,8 @@ import type { CustomerCollectFormDTO } from 'src/dtos/customer-collect-info';
 import { useParams } from 'react-router-dom';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
+import { validationHelper } from '@utils/validationHelper';
+import { useNotification } from '@libs/antd';
 import { mapDraftToFormData, mapFormDataToDTO } from '../utils';
 
 interface FieldChangeInfo {
@@ -598,6 +600,7 @@ export const useCollectInforController = () => {
   });
   const customerData = customerQueryData?.data;
   const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
+  const notify = useNotification();
 
   const saveDraft = async () => {
     const formData = form.getFieldsValue(true);
@@ -622,11 +625,13 @@ export const useCollectInforController = () => {
     checkLoanLimitMutation(
       { ...collectInfo, saveDraft: true },
       {
-        onSuccess: () => {
-          message.success('Save draft successfully');
-        },
-        onError: () => {
-          message.error('Save draft failed');
+        onSuccess: (data) => {
+          validationHelper(data, notify, () => {
+            notify({
+              type: 'success',
+              message: 'Lưu bản nháp thành công',
+            });
+          });
         },
       },
     );
