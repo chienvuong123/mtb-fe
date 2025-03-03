@@ -92,7 +92,7 @@ export type SellerDetailsDTO = {
 export type SellerDistribution = {
   sellerId: string;
   customerQuantity: number;
-  isLock: boolean;
+  isLock: 0 | 1 | boolean;
 };
 
 export type AssignmentSellerRequestDTO = {

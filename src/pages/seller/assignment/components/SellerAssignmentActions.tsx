@@ -25,12 +25,12 @@ const SellerAsignmentActions: FC<ISellerAssignmentActions> = ({
       <div>
         <Typography.Text className="red">
           • &nbsp;Khi ấn khóa dừng chia, Seller sẽ được ấn định số lượng khách
-          hàng đã chọn, không được chia đều số lượng khách.
+          hàng = 0, không được chia đều số lượng khách.
         </Typography.Text>
         <br />
         <Typography.Text className="red">
-          • &nbsp;Các Seller không được ấn định số lượng được chia đều số lượng
-          khách, số dư được gán cho Seller đầu tiên trong danh sách
+          • &nbsp;Các Seller được chia đều số lượng khách, số dư được gán cho
+          các Seller đầu tiên trong danh sách
         </Typography.Text>
         <Flex className="mt-20" gap={8}>
           <ForwardArrowIcon />
