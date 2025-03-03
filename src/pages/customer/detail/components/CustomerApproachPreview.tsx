@@ -38,6 +38,9 @@ const CustomerApproachPreview = () => {
 
   if (!approachScriptData || !approach) return null;
 
+  const isLastApproach =
+    approachScriptData[approachScriptData.length - 1].id === approach.id;
+
   return (
     <div>
       <Form.Provider>
@@ -90,6 +93,7 @@ const CustomerApproachPreview = () => {
               form={form}
               approach={approach}
               initialValues={initialValues}
+              isLastApproach={isLastApproach}
             />
           )}
         </div>
