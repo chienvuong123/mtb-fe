@@ -48,9 +48,11 @@ const MPagination: React.FC<IMPagination> = ({
   return (
     <div className={classAntd}>
       <Flex gap={12} align="center" justify={justify}>
-        <Typography.Text className="fw-500">
-          Tổng số {pagination.total} bản ghi
-        </Typography.Text>
+        {pagination?.total && (
+          <Typography.Text className="fw-500">
+            Tổng số {pagination.total} bản ghi
+          </Typography.Text>
+        )}
         <Flex align="center">
           {optionPageSize?.length && (
             <ASelect
