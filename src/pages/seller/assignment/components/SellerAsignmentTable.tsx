@@ -54,12 +54,14 @@ const SellerTable: FC<ISellerTable> = ({
     (fieldName: string, record: TSellerRecord) => {
       const isLock = !form.getFieldValue(fieldName);
       form.setFieldValue(fieldName, isLock);
+      form.setFieldValue(`quantity_${record.sellerId}`, 0);
       setTableRecords((pre) => {
         const newItems = [...pre];
         const idx = pre.findIndex((i) => i.sellerId === record?.sellerId);
         if (idx !== -1) {
           newItems[idx] = {
             ...newItems[idx],
+            assignNumber: 0,
             isLock,
           };
         }
