@@ -23,6 +23,7 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
 }) => {
   const [form] = useForm();
   const startDate = Form.useWatch('startDate', form);
+  const endDate = Form.useWatch('endDate', form);
 
   const { isAdmin, isCampaignManager } = useProfile();
 
@@ -47,6 +48,7 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
         name: 'code',
         inputProps: {
           placeholder: 'Nhập...',
+          maxLength: 20,
         },
       },
       {
@@ -55,6 +57,7 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
         name: 'name',
         inputProps: {
           placeholder: 'Nhập...',
+          maxLength: 100,
         },
       },
       {
@@ -64,6 +67,7 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
         inputProps: {
           placeholder: 'Chọn ngày...',
           className: 'date-picker-campaign',
+          maxDate: endDate ? dayjs(endDate) : undefined,
         },
       },
       {
@@ -110,7 +114,7 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
       },
     ];
     return formItems;
-  }, [startDate, subProductOptions, mainProductOptions]);
+  }, [startDate, subProductOptions, mainProductOptions, endDate]);
 
   return (
     <OSearchBaseForm<TManageCategorySearchForm>

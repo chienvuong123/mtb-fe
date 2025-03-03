@@ -77,14 +77,14 @@ const columns: ColumnType<TCategoryTableRecord>[] = [
   },
   {
     title: 'KH tiếp cận',
-    dataIndex: 'totalCustomers',
+    dataIndex: 'participatingCustomers',
     minWidth: 118,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'KH tham gia',
-    dataIndex: 'participatingCustomers',
+    dataIndex: 'totalCustomers',
     minWidth: 111,
     sorter: true,
     showSorterTooltip: false,

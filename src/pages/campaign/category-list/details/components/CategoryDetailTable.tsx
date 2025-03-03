@@ -29,17 +29,18 @@ interface ICategoryDetailTable {
 const columns: ColumnType<TCategoryDetaillRecord>[] = [
   {
     title: 'Mã Campaign',
-    dataIndex: 'name',
+    dataIndex: 'code',
     minWidth: 150,
     sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Tên Campaign',
-    dataIndex: 'code',
+    dataIndex: 'name',
     minWidth: 150,
     sorter: true,
     showSorterTooltip: false,
+    ellipsis: true,
   },
   {
     title: 'Chi nhánh triển khai',
@@ -109,6 +110,7 @@ const CampaignDetailTable: React.FC<ICategoryDetailTable> = ({
         paginations={paginations}
         sortDirection={sortDirection}
         hideActions
+        scroll={{ x: 1575 }}
         onChange={(_p, _f, s) => {
           const { field, order } = s as SorterResult<TCategoryDetaillRecord>;
           onSort(field as string, order as SortOrder);

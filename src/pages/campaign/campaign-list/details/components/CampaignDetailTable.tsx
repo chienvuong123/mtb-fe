@@ -36,7 +36,7 @@ const columns: ColumnType<TCampaignDetaillRecord>[] = [
     showSorterTooltip: false,
   },
   {
-    title: 'Kịch bản tiếp theo',
+    title: 'Kịch bản tiếp cận',
     dataIndex: 'script',
     minWidth: 326,
     sorter: true,
@@ -75,6 +75,8 @@ const CampaignDetailTable: React.FC<ICampaignDetailTable> = ({
         data={dataSource}
         selectedRowKeys={selectedRowKeys}
         setSelectedRowKeys={setSelectedRowKeys}
+        isCheckboxHidden={!!campaignId}
+        hideActions={!!campaignId}
         onEdit={onEdit}
       />
     </div>

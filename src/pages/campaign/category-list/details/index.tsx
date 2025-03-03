@@ -10,7 +10,7 @@ import type {
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
 import type { TCategoryDetailDTO } from 'src/dtos/manage-category-detail';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MANAGER_CAMPAIGN } from '@routers/path';
 import { type TId } from '@dtos';
 import { useCategoryDetailViewQuery } from '@hooks/queries/manageCategoryQueries';
@@ -24,7 +24,7 @@ import './index.scss';
 const BUTTON_TEXT = {
   CANCEL: 'Hủy',
   SAVE: 'Lưu',
-  BACK: 'Trở về',
+  BACK: 'Quay lại',
 } as const;
 
 const ManagerCategoryDetail: React.FC = () => {
@@ -32,14 +32,11 @@ const ManagerCategoryDetail: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const [searchParams] = useSearchParams();
-
-  const { categoryCode } = Object.fromEntries(searchParams);
-
   const {
     pagination: { current, pageSize },
     setPagination,
     setSort,
+    sort,
   } = useUrlParams<Partial<TCategoryDetailDTO>>();
 
   const { data: categoryDetailRes } = useCategoryDetailViewQuery({
@@ -47,7 +44,12 @@ const ManagerCategoryDetail: React.FC = () => {
   });
 
   const { data: categoryQuery } = useCampaignSearchQuery({
-    categoryCode: categoryCode ?? '',
+    categoryId: categoryId ?? '',
+    page: {
+      pageNum: Number(current),
+      pageSize: Number(pageSize),
+    },
+    order: sort,
   });
 
   const handlePaginationChange = (data: TPagination) => {

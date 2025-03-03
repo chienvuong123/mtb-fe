@@ -2,6 +2,7 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
 import { useQueryCategoryList } from '@hooks/queries';
+import clsx from 'clsx';
 
 interface ICampaignFormItemsProps {
   isDisabled: boolean;
@@ -23,7 +24,7 @@ const useCampaignFormItems = ({
       inputProps: {
         placeholder: 'Chọn...',
         showSearch: true,
-        disabled: isDisabled,
+        className: clsx({ 'pointer-events-none': isDisabled }),
         filterOption: true,
         options: categoryList,
       },
@@ -31,19 +32,19 @@ const useCampaignFormItems = ({
     {
       type: INPUT_TYPE.TEXT,
       label: 'Mã Campaign',
-      name: 'codeCampaign',
+      name: 'code',
       inputProps: {
         placeholder: 'Chọn...',
-        disabled: isDisabled,
+        className: clsx({ 'pointer-events-none': isDisabled }),
       },
     },
     {
       type: INPUT_TYPE.TEXT,
       label: 'Tên Campaign',
-      name: 'nameCampaign',
+      name: 'name',
       inputProps: {
         placeholder: 'Chọn...',
-        disabled: isDisabled,
+        className: clsx({ 'pointer-events-none': isDisabled }),
       },
     },
     {
@@ -52,8 +53,9 @@ const useCampaignFormItems = ({
       name: 'startDate',
       inputProps: {
         placeholder: 'Chọn ngày...',
-        className: 'date-picker-campaign',
-        disabled: isDisabled,
+        className: clsx('date-picker-campaign', {
+          'pointer-events-none': isDisabled,
+        }),
       },
     },
     {
@@ -62,8 +64,9 @@ const useCampaignFormItems = ({
       name: 'endDate',
       inputProps: {
         placeholder: 'Chọn ngày...',
-        className: 'date-picker-campaign',
-        disabled: isDisabled,
+        className: clsx('date-picker-campaign', {
+          'pointer-events-none': isDisabled,
+        }),
       },
     },
     {
@@ -74,19 +77,7 @@ const useCampaignFormItems = ({
         placeholder: 'Chọn...',
         showSearch: true,
         filterOption: true,
-        disabled: isDisabled,
-        options: MOCK_CUSTOMER_OPTIONS,
-      },
-    },
-    {
-      type: INPUT_TYPE.SELECT,
-      label: 'Loại chiến dịch',
-      name: 'campaignType',
-      inputProps: {
-        placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        disabled: isDisabled,
+        className: clsx({ 'pointer-events-none': isDisabled }),
         options: MOCK_CUSTOMER_OPTIONS,
       },
     },
@@ -98,19 +89,7 @@ const useCampaignFormItems = ({
         placeholder: 'Chọn...',
         options: STATUS_CAMPAIGN_OPTIONS,
         allowClear: false,
-        disabled: isDisabled,
-      },
-    },
-    {
-      type: INPUT_TYPE.SELECT,
-      label: 'Phương thức triển khai',
-      name: 'implementationMethod',
-      inputProps: {
-        placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        disabled: isDisabled,
-        options: MOCK_CUSTOMER_OPTIONS,
+        className: clsx({ 'pointer-events-none': isDisabled }),
       },
     },
     {
@@ -121,19 +100,7 @@ const useCampaignFormItems = ({
         placeholder: 'Chọn...',
         showSearch: true,
         filterOption: true,
-        disabled: isDisabled,
-        options: MOCK_CUSTOMER_OPTIONS,
-      },
-    },
-    {
-      type: INPUT_TYPE.SELECT,
-      label: 'Danh mục khách hàng',
-      name: 'customerCatalog',
-      inputProps: {
-        placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        disabled: isDisabled,
+        className: clsx({ 'pointer-events-none': isDisabled }),
         options: MOCK_CUSTOMER_OPTIONS,
       },
     },
@@ -149,7 +116,7 @@ const useCampaignFormItems = ({
       inputProps: {
         placeholder: 'Nhập...',
         maxLength: 1000,
-        disabled: isDisabled,
+        className: clsx({ 'pointer-events-none w-full no-resize': isDisabled }),
         showCount: {
           formatter: ({ count, maxLength }) => (
             <span className="pos-absolute right-8 bottom-22 text-gray fs-12">
@@ -157,7 +124,6 @@ const useCampaignFormItems = ({
             </span>
           ),
         },
-        className: 'w-full no-resize',
       },
     },
     {
@@ -170,7 +136,7 @@ const useCampaignFormItems = ({
       inputProps: {
         placeholder: 'Nhập...',
         maxLength: 1000,
-        disabled: isDisabled,
+        className: clsx({ 'pointer-events-none w-full no-resize': isDisabled }),
         showCount: {
           formatter: ({ count, maxLength }) => (
             <span className="pos-absolute right-8 bottom-22 text-gray fs-12">
@@ -178,7 +144,6 @@ const useCampaignFormItems = ({
             </span>
           ),
         },
-        className: 'w-full no-resize',
       },
     },
   ];
