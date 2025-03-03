@@ -6,7 +6,7 @@ import type {
   AssignmentSellerRequestDTO,
   AssignmentSellerResponseDTO,
 } from '@dtos';
-import { Affix, Button, Flex, Form } from 'antd';
+import { Button, Flex, Form } from 'antd';
 import type { AnyObject } from 'antd/es/_util/type';
 import FormItem from 'antd/es/form/FormItem';
 import type { ColumnType } from 'antd/es/table';
@@ -54,12 +54,14 @@ const SellerTable: FC<ISellerTable> = ({
     (fieldName: string, record: TSellerRecord) => {
       const isLock = !form.getFieldValue(fieldName);
       form.setFieldValue(fieldName, isLock);
+      form.setFieldValue(`quantity_${record.sellerId}`, 0);
       setTableRecords((pre) => {
         const newItems = [...pre];
         const idx = pre.findIndex((i) => i.sellerId === record?.sellerId);
         if (idx !== -1) {
           newItems[idx] = {
             ...newItems[idx],
+            assignNumber: 0,
             isLock,
           };
         }
@@ -219,14 +221,17 @@ const SellerTable: FC<ISellerTable> = ({
 
   const handleSubmit = () => {
     if (!campaignId) return;
+
+    const { data: dataSplitSellerDtos, totalQuantity } = getDataSplitSeller(
+      form.getFieldsValue(),
+      tableRecords,
+    );
     const data: AssignmentSellerRequestDTO = {
       campaignId,
-      totalQuantity: totalCustomer,
-      dataSplitSellerDtos: getDataSplitSeller(
-        form.getFieldsValue(),
-        tableRecords,
-      ),
+      totalQuantity,
+      dataSplitSellerDtos,
     };
+
     assignCustomerMutate(data, {
       onSuccess: ({ errorCode, errorDesc }) => {
         if (errorCode !== '0') {
@@ -311,18 +316,16 @@ const SellerTable: FC<ISellerTable> = ({
           data={tableRecords}
           scroll={{ x: 1573 }}
         />
-        <Affix offsetBottom={0}>
-          <Flex justify="flex-end" className="bg-white pr-32 py-16">
-            <Flex gap={24}>
-              <AButton color="primary" variant="filled">
-                Huỷ
-              </AButton>
-              <AButton type="primary" htmlType="submit">
-                Lưu
-              </AButton>
-            </Flex>
+        <Flex justify="end" className="bg-white pr-32 py-16">
+          <Flex gap={24}>
+            <AButton color="primary" variant="filled">
+              Huỷ
+            </AButton>
+            <AButton type="primary" htmlType="submit">
+              Lưu
+            </AButton>
           </Flex>
-        </Affix>
+        </Flex>
       </Form>
     </div>
   );

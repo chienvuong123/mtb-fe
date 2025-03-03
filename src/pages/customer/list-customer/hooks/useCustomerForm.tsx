@@ -180,7 +180,7 @@ const useCustomerForm = ({
             type: INPUT_TYPE.TEXT,
             label: 'Số giấy tờ định danh',
             name: 'identityCard',
-            inputProps: { maxLength: 20, stringMode: true },
+            inputProps: { maxLength: 20 },
             blockingPattern: BLOCKING_NUMBER_PARTERN,
           },
           {
