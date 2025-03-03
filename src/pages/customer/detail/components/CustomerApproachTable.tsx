@@ -49,7 +49,7 @@ const CustomerApproachTable: FC = () => {
     },
     {
       title: 'Kịch bản tiếp cận',
-      dataIndex: 'campaignName',
+      dataIndex: 'name',
       minWidth: 164,
     },
     {
