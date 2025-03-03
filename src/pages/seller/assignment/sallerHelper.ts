@@ -40,13 +40,20 @@ export function getDataSplitSeller(
   values: AnyObject,
   records: TSellerRecord[],
 ) {
-  return records.map((c) => {
+  let totalQuantity = 0;
+  const data = records.map((c) => {
+    const customerQuantity: number = values[`quantity_${c.sellerId}`] ?? 0;
+    if (customerQuantity > 0) {
+      totalQuantity += customerQuantity;
+    }
     return {
-      customerQuantity: values[`quantity_${c.sellerId}`],
+      customerQuantity,
       isLock: values[`isLock_${c.sellerId}`],
       sellerId: c.sellerId as string,
     };
   });
+
+  return { data, totalQuantity };
 }
 
 export function getMaxQuantity(
