@@ -1,5 +1,6 @@
 import { Layout } from 'antd';
 import { LayoutContent, LayoutHeader, LayoutSider } from './components';
+import './index.scss';
 
 const LayoutWrapper = () => {
   return (

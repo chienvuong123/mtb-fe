@@ -1,5 +1,5 @@
 import { AButton, AInputArea, ASelect } from '@components/atoms';
-import { CategoryType } from '@dtos';
+import { CategoryType, type ApproachFormData } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
 import {
   APPROACH_SCRIPT_KEY,
@@ -8,34 +8,24 @@ import {
 } from '@hooks/queries/approachScriptQueries';
 import { useNotification } from '@libs/antd';
 import { useQueryClient } from '@tanstack/react-query';
-import { isEqual } from '@utils/objectHelper';
 import { validationHelper } from '@utils/validationHelper';
 import { Flex, Form, Rate, Typography, type FormInstance } from 'antd';
 import { type FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
-interface StepValue {
-  attributes?: number | boolean | Array<number>;
-  note?: string;
-}
-export interface ApproachData {
-  status: string;
-  approachStatus: string;
-  rate?: number;
-  note?: string;
-  [key: string]: StepValue | string | number | undefined;
-}
+import { transformDataToSubmit } from '../utils';
 
 interface IScenarioScriptFooterProps {
   form: FormInstance;
   approachId: string;
-  initialValues: Record<string, ApproachData>;
+  initialValues?: Record<string, ApproachFormData>;
+  isPreview?: boolean;
 }
 
 const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   form,
   approachId,
   initialValues,
+  isPreview = false,
 }) => {
   const { customerId } = useParams();
   const { data: approachResultOptions } = useCategoryOptionsListQuery(
@@ -56,58 +46,19 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
 
   const handleSave = async () => {
     try {
+      if (!initialValues || !approachScriptData) return;
       const currentValues = form.getFieldsValue(true) as Record<
         string,
-        ApproachData
+        ApproachFormData
       >;
 
-      const transformedDataArray = Object.entries(currentValues).map(
-        ([campaignScriptId, approachData]) => {
-          const oldApproachResult = approachScriptData?.find(
-            (i) => i.campaignScriptId === campaignScriptId,
-          );
-          const oldApproachResultSteps = oldApproachResult?.approachStep || [];
-          const initialValue = initialValues[campaignScriptId];
-
-          const changedSteps = Object.entries(approachData)
-            .filter(([key]) => !Number.isNaN(Number(key)))
-            .filter(([key, value]) => {
-              const initial = initialValue?.[key] as StepValue;
-              const current = value as StepValue;
-
-              return (
-                !isEqual(initial?.attributes, current.attributes) ||
-                initial?.note !== current.note
-              );
-            })
-            .map(([approachStepId, value]) => {
-              const oldApproachResultStep = oldApproachResultSteps.find(
-                (i) => i.approachResultStep?.approachStepId === approachStepId,
-              );
-              return {
-                id: oldApproachResultStep?.approachResultStep?.id,
-                approachStepId,
-                result: (value as StepValue).attributes?.toString() || '',
-                note: (value as StepValue).note || '',
-              };
-            });
-
-          return {
-            approachResult: {
-              id: oldApproachResult?.approachResult?.id,
-              customerId: customerId as string,
-              campaignScriptId,
-              result: String(approachData.result ?? ''),
-              resultDetail: String(approachData.resultDetail ?? ''),
-              rate: approachData.rate?.toString() || '',
-              note: approachData.note?.toString() || '',
-              status: approachData.status?.toString() || '',
-              rateCampaign: approachData.rateCampaign?.toString() || '',
-            },
-            approachResultStep: changedSteps,
-          };
-        },
+      const transformedDataArray = transformDataToSubmit(
+        currentValues,
+        initialValues,
+        approachScriptData,
+        customerId as string,
       );
+
       createApproachResult(transformedDataArray, {
         onSuccess: (d) => {
           validationHelper(d, notify, () => {
@@ -146,7 +97,9 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
             <ASelect options={approachDetailOptions} placeholder="Chọn" />
           </Form.Item>
         </Flex>
-        <AButton type="primary">Chuyển thông tin booking</AButton>
+        <AButton type="primary" disabled={isPreview}>
+          Chuyển thông tin booking
+        </AButton>
         <Flex gap={8} vertical>
           <Typography.Text>Khách hàng đánh giá chiến dịch</Typography.Text>
           <Form.Item name={[approachId, 'rate']} noStyle>
@@ -171,14 +124,16 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
           </Form.Item>
         </Flex>
       </Flex>
-      <Flex gap={24} justify="flex-end">
-        <AButton variant="filled" color="primary" onClick={handleCancel}>
-          Hủy
-        </AButton>
-        <AButton type="primary" onClick={handleSave}>
-          Lưu
-        </AButton>
-      </Flex>
+      {!isPreview && (
+        <Flex gap={24} justify="flex-end">
+          <AButton variant="filled" color="primary" onClick={handleCancel}>
+            Hủy
+          </AButton>
+          <AButton type="primary" onClick={handleSave}>
+            Lưu
+          </AButton>
+        </Flex>
+      )}
     </Flex>
   );
 };

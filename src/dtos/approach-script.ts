@@ -30,6 +30,19 @@ export interface ApproachScriptAttributeDTO {
   approachResultStep?: ApproachResultStepDTO;
 }
 
+export interface ApproachStepFormValue {
+  attributes?: number | boolean | Array<number>;
+  note?: string;
+}
+
+export interface ApproachFormData {
+  status: string;
+  approachStatus: string;
+  rate?: number;
+  note?: string;
+  [key: string]: ApproachStepFormValue | string | number | undefined;
+}
+
 export interface ApproachScriptDTO extends BaseEntity {
   code: string;
   name: string;
