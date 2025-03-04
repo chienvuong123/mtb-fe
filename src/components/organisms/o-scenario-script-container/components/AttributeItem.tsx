@@ -1,16 +1,18 @@
 import { ASelect, AButton, AInputArea } from '@components/atoms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { EControlType } from '@constants/masterData';
+import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import type { ApproachScriptAttributeDTO, ControlValue } from '@dtos';
+import { getValueFromEvent } from '@utils/formHelper';
 import {
   Checkbox,
   Switch,
   Radio,
   DatePicker,
-  InputNumber,
   Typography,
   Form,
   Image,
+  Input,
 } from 'antd';
 import { type FC, useMemo } from 'react';
 
@@ -94,8 +96,14 @@ const AttributeItem: FC<{
         );
       case EControlType.NUMBER:
         return (
-          <Form.Item name={[approachId, data.id, 'attributes']} noStyle>
-            <InputNumber placeholder="Nhập số" />
+          <Form.Item
+            name={[approachId, data.id, 'attributes']}
+            noStyle
+            getValueFromEvent={({ target: { value } }) =>
+              getValueFromEvent(value, BLOCKING_NUMBER_PARTERN)
+            }
+          >
+            <Input placeholder="Nhập số" className="w-100" />
           </Form.Item>
         );
       case EControlType.LINK:
