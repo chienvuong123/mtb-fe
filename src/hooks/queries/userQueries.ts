@@ -13,5 +13,6 @@ export const useUserInfoQuery = () => {
   return useQuery({
     queryKey: ['user', 'info'],
     queryFn: () => userApi.getUserInfo(),
+    enabled: !!localStorage.getItem('token'),
   });
 };
