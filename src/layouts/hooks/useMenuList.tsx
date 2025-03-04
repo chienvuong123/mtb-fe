@@ -151,6 +151,10 @@ const useMenuList = (onLogout?: () => void) => {
             label: 'Loại đa phương tiện',
             disabled: isSeller,
           },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.POSITON_CATEGORY}`,
+            label: 'Chức vụ',
+          },
         ],
       },
       {
