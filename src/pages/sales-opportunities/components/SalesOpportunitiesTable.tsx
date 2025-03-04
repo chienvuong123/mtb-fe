@@ -32,10 +32,11 @@ export const statusSalesOpportunitiesObject: Record<
 const columns: ColumnType<TSalesOpportunitiesRecord>[] = [
   {
     title: 'Mã khách hàng',
-    dataIndex: 'customerId',
+    dataIndex: 'customer',
     minWidth: 104,
     sorter: true,
     showSorterTooltip: false,
+    render: (customer) => customer?.code || ' ',
   },
   {
     title: 'Order ID',
@@ -55,10 +56,11 @@ const columns: ColumnType<TSalesOpportunitiesRecord>[] = [
   },
   {
     title: 'Nhóm khách hàng',
-    dataIndex: 'customerGroupName',
+    dataIndex: 'customerGroup',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
+    render: (customerGroup) => customerGroup?.name || ' ',
   },
   {
     title: 'Phân khúc khách hàng',

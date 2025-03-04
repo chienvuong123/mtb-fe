@@ -1,14 +1,6 @@
 import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
-import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
-import {
-  EGender,
-  GENDER_OBJECT,
-  STATUS_CUSTOMER_OBJECT,
-} from '@constants/masterData';
-import type { EApproachStatus } from '@dtos';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
-import dayjs from 'dayjs';
 import React, { useEffect, useMemo } from 'react';
 import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
 
@@ -50,15 +42,6 @@ const items: TFormItem[] = [
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Ngày cập nhật',
-    name: 'updatedDate',
-    inputProps: { disabled: true },
-    getValueProps: (value) => ({
-      value: value ? dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY) : '',
-    }),
-  },
-  {
-    type: INPUT_TYPE.TEXT,
     label: 'Mã khách hàng',
     name: 'customerCode',
     inputProps: { disabled: true },
@@ -92,9 +75,6 @@ const items: TFormItem[] = [
     label: 'Giới tính',
     name: 'gender',
     inputProps: { disabled: true },
-    getValueProps: (value) => ({
-      value: GENDER_OBJECT[value as EGender] || '',
-    }),
   },
   {
     type: INPUT_TYPE.TEXT,
@@ -110,20 +90,20 @@ const items: TFormItem[] = [
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Khách hàng định danh',
-    name: 'identifierCustomer',
+    label: 'Loại giấy tờ',
+    name: 'identnDocType',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Nhóm khách hàng',
-    name: 'cusGroupName',
+    label: 'Số giấy tờ định danh',
+    name: 'identityCard',
+    inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Sở thích',
-    name: 'hobby',
-    inputProps: { disabled: true },
+    label: 'Hạn mức vay',
+    name: 'limitAmount',
   },
   {
     type: INPUT_TYPE.TEXT,
@@ -145,18 +125,30 @@ const items: TFormItem[] = [
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Số giấy tờ định danh',
-    name: 'identityCard',
+    label: 'Nhóm khách hàng',
+    name: 'cusGroupName',
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Trạng thái cơ hội bán',
+    name: 'status',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Trạng thái',
-    name: 'status',
+    label: 'Trạng thái khoản vay F88',
+    name: 'loanStatusDtl',
     inputProps: { disabled: true },
-    getValueProps: (value) => ({
-      value: STATUS_CUSTOMER_OBJECT[value as EApproachStatus] || '',
-    }),
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Loại tài sản',
+    name: 'categoryAssetName',
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Tên tài sản',
+    name: 'assetName',
   },
 ];
 

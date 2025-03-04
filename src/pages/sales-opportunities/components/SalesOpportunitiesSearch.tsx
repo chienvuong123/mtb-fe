@@ -1,9 +1,13 @@
 import { OSearchBaseForm } from '@components/organisms';
 import { STATUS_SALES_OPPORTUNITIES_OPTIONS } from '@constants/masterData';
-import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
-import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
+import { CategoryType } from '@dtos';
+import {
+  useCategoryOptionsListQuery,
+  useGroupCustomerOptionsListQuery,
+  useQueryCampaignList,
+  useQueryCategoryList,
+} from '@hooks/queries';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import React, { useEffect, useMemo } from 'react';
 import type { TSalesOpportunitiesSearchForm } from 'src/dtos/sales-opportunities';
@@ -20,10 +24,21 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
   onClearAll,
 }) => {
   const [form] = useForm();
-  const categoryId = useWatch('categoryCode', form);
+  const categoryId = useWatch('categoryId', form);
+  const campaignId = useWatch(['campaignId'], form);
+
+  const unselectedCategory = !categoryId;
+  const unselectedCampaign = !campaignId;
 
   const { data: categoryList } = useQueryCategoryList(true);
-  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
+  const { data: campaignList } = useQueryCampaignList({ categoryId }, false);
+  const { data: customerSegmentList } = useCategoryOptionsListQuery(
+    CategoryType.CUSTOMER_SEGMENT,
+  );
+  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.JOB);
+  const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
+    campaignId ?? '',
+  );
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [
@@ -36,35 +51,37 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
       {
         type: INPUT_TYPE.SELECT,
         label: 'Category',
-        name: 'categoryCode',
+        name: 'categoryId',
         inputProps: {
           placeholder: 'Chọn...',
           showSearch: true,
           filterOption: true,
           options: categoryList,
-          onChange: () => handleResetFields(['campaignCode'], form),
         },
       },
       {
         type: INPUT_TYPE.SELECT,
         label: 'Campaign',
-        name: 'campaignCode',
+        name: 'campaignId',
         inputProps: {
           placeholder: 'Chọn...',
           showSearch: true,
           filterOption: true,
+          disabled: unselectedCategory,
           options: campaignList,
         },
       },
       {
         type: INPUT_TYPE.SELECT,
         label: 'Nhóm khách hàng',
-        name: 'customerGroup',
+        name: 'customerGroupId',
         inputProps: {
           placeholder: 'Chọn...',
+          mode: 'multiple',
           showSearch: true,
           filterOption: true,
-          options: MOCK_CUSTOMER_OPTIONS,
+          disabled: unselectedCampaign,
+          options: groupCustomerList,
         },
       },
       {
@@ -75,7 +92,7 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
           placeholder: 'Chọn...',
           showSearch: true,
           filterOption: true,
-          options: MOCK_CUSTOMER_OPTIONS,
+          options: customerSegmentList,
         },
       },
       {
@@ -111,7 +128,11 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
         type: INPUT_TYPE.SELECT,
         label: 'Nghề nghiệp',
         name: 'cusJob',
-        inputProps: { title: 'Nghề nghiệp', placeholder: 'Chọn...' },
+        inputProps: {
+          title: 'Nghề nghiệp',
+          placeholder: 'Chọn...',
+          options: jobList,
+        },
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -125,13 +146,34 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
       },
     ];
     return formItems;
-  }, [categoryList, campaignList, form]);
+  }, [
+    categoryList,
+    campaignList,
+    unselectedCategory,
+    jobList,
+    customerSegmentList,
+    groupCustomerList,
+    unselectedCampaign,
+  ]);
 
   useEffect(() => {
     if (initialValues) {
       form.setFieldsValue({ ...initialValues });
     }
   }, [initialValues, form]);
+
+  useEffect(() => {
+    if (unselectedCategory || !campaignList?.length) {
+      form.resetFields(['campaignId']);
+      form.resetFields(['customerGroupId']);
+    }
+  }, [unselectedCategory, form, campaignList]);
+
+  useEffect(() => {
+    if (unselectedCampaign || !groupCustomerList?.length) {
+      form.resetFields(['customerGroupId']);
+    }
+  }, [unselectedCampaign, form, groupCustomerList]);
 
   return (
     <div className="search-oppportunites-wrapper">
