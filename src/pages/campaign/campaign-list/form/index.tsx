@@ -38,7 +38,7 @@ import {
 const BUTTON_TEXT = {
   CANCEL: 'Hủy',
   SAVE: 'Lưu',
-  BACK: 'Trở về',
+  BACK: 'Quay lại',
 } as const;
 
 const CampaignCreate: React.FC = () => {
