@@ -87,6 +87,9 @@ const ConfirmPassword = () => {
         if (res.data) {
           setAlert('Thay đổi mật khẩu thành công');
           setIsReset(true);
+          localStorage.removeItem('token');
+          localStorage.removeItem('refreshToken');
+          navigate(LOGIN);
           return;
         }
         setAlert(res.errorDesc);
