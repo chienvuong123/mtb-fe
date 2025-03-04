@@ -142,7 +142,7 @@ const ProductCategoryPage: FC = () => {
 
   const handleSubmitEdit = ({ name, code, status }: ProductCategoryDTO) => {
     const data: Partial<ProductCategoryDTO> = {
-      categoryTypeCode: CategoryType.MEDIA,
+      categoryTypeCode: CategoryType.PRODUCT,
       code,
       name,
       status,
