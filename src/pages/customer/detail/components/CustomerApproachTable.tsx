@@ -1,9 +1,11 @@
 import { OTable } from '@components/organisms';
+import { DATE_SLASH_FORMAT_DDMMYYYY_HHMMSS } from '@constants/dateFormat';
 import { CategoryType, type ApproachScriptDTO } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
 import { useApproachScriptViewByCustomerQuery } from '@hooks/queries/approachScriptQueries';
 import { getOptionLabel } from '@utils/objectHelper';
 import type { ColumnType } from 'antd/es/table';
+import dayjs from 'dayjs';
 import { useState, type FC } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -34,8 +36,9 @@ const CustomerApproachTable: FC = () => {
     },
     {
       title: 'Ngày',
-      dataIndex: 'updatedDate',
+      dataIndex: ['approachResult', 'updatedDate'],
       minWidth: 120,
+      render: (value) => dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY_HHMMSS),
     },
     {
       title: 'Phương thức tiếp cận',

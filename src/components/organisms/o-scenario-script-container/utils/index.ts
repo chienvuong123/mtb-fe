@@ -79,8 +79,8 @@ export const transformDataToSubmit = (
   approachScriptData: ApproachScriptDTO[],
   customerId: string,
 ) => {
-  return Object.entries(currentValues).map(
-    ([campaignScriptId, approachData]) => {
+  return Object.entries(currentValues)
+    .map(([campaignScriptId, approachData]) => {
       const oldApproachResult = approachScriptData?.find(
         (i) => i.campaignScriptId === campaignScriptId,
       );
@@ -100,10 +100,23 @@ export const transformDataToSubmit = (
         oldApproachResult,
       );
 
-      return {
-        approachResult,
-        approachResultStep: changedSteps,
-      };
-    },
-  );
+      const initialApproachResult = createApproachResult(
+        initialValue,
+        customerId,
+        campaignScriptId,
+        oldApproachResult,
+      );
+
+      const hasChanges =
+        !isEqual(approachResult, initialApproachResult) ||
+        changedSteps.length > 0;
+
+      return hasChanges
+        ? {
+            approachResult,
+            approachResultStep: changedSteps,
+          }
+        : null;
+    })
+    .filter((e) => e !== null);
 };
