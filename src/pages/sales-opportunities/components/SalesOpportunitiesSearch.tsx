@@ -90,6 +90,7 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
         name: 'cusSegment',
         inputProps: {
           placeholder: 'Chọn...',
+          mode: 'multiple',
           showSearch: true,
           filterOption: true,
           options: customerSegmentList,
@@ -131,6 +132,7 @@ const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
         inputProps: {
           title: 'Nghề nghiệp',
           placeholder: 'Chọn...',
+          mode: 'multiple',
           options: jobList,
         },
       },
