@@ -16,6 +16,7 @@ const ROUTE_PATH = {
     ROOT: '/category',
     PRODUCT_CATEGORY: `product-category`,
     MEDIA_CATEGORY: `media-category`,
+    POSITON_CATEGORY: `positon-category`,
   },
 
   MANAGER_CAMPAIGN: {

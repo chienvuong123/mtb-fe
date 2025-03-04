@@ -114,6 +114,12 @@ const routes = createBrowserRouter(
                 () => import('@pages/category/media-category'),
               ),
             },
+            {
+              path: CATEGORY.POSITON_CATEGORY,
+              element: createLazyElement(
+                () => import('@pages/category/positon-category'),
+              ),
+            },
           ],
         },
 
