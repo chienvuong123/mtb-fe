@@ -113,7 +113,7 @@ const ManageCategoryPage: React.FC = () => {
             validationHelper(d, notify, () => {
               handleReset({
                 type: 'success',
-                message: 'Thay đổi thành công',
+                message: 'Cập nhập thông tin thành công',
               });
               handleCloseForm();
             });
@@ -245,7 +245,7 @@ const ManageCategoryPage: React.FC = () => {
         mode={drawerMode}
         onClose={handleCloseForm}
         open={!!drawerMode}
-        width={1025}
+        width={1280}
       >
         <CategoryInsert
           key={drawerMode ?? 'view'}

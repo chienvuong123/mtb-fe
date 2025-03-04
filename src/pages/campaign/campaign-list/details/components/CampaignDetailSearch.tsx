@@ -6,8 +6,8 @@ import type {
   TCampaignDetailSearchForm,
 } from 'src/dtos/campaign-detail';
 import type { ITable } from '@components/organisms';
-import { dayjsToString } from '@utils/dateHelper';
 import { useForm } from 'antd/es/form/Form';
+import dayjs from 'dayjs';
 import CampaignTargetDetailTable from './CampaignTargetDetailTable';
 import type { TCampaignDetaillRecord } from './CampaignDetailTable';
 import { useCampaignFormItems } from '../hooks';
@@ -42,10 +42,10 @@ const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
       form.setFieldsValue({
         ...initialValues,
         startDate: initialValues?.startDate
-          ? dayjsToString(initialValues.startDate)
+          ? dayjs(initialValues.startDate)
           : undefined,
         endDate: initialValues?.endDate
-          ? dayjsToString(initialValues.endDate)
+          ? dayjs(initialValues.endDate)
           : undefined,
       });
     }

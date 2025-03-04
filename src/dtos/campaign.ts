@@ -34,6 +34,7 @@ export interface CampaignSearchRequest extends BaseSearchParams {
   campaignCode?: string;
   categoryType?: string;
   categoryCode?: string;
+  categoryId?: string;
 }
 
 export type CampaignSearchResponse = BaseResponse<

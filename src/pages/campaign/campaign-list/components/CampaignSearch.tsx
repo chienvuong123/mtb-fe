@@ -24,6 +24,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
 }) => {
   const [form] = useForm();
   const startDate = useWatch('startDate', form);
+  const endDate = useWatch('endDate', form);
   const { isAdmin, isCampaignManager } = useProfile();
 
   const { data: categoryList } = useQueryCategoryList(true);
@@ -33,7 +34,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
       {
         type: INPUT_TYPE.SELECT,
         label: 'Category',
-        name: 'categoryCode',
+        name: 'categoryId',
         inputProps: {
           placeholder: 'Chọn...',
           showSearch: true,
@@ -44,7 +45,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
       },
       {
         type: INPUT_TYPE.TEXT,
-        label: 'Campaign',
+        label: 'Mã campaign',
         name: 'campaignCode',
         inputProps: {
           placeholder: 'Nhập...',
@@ -52,7 +53,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
       },
       {
         type: INPUT_TYPE.TEXT,
-        label: 'Campaign',
+        label: 'Tên campaign',
         name: 'campaignName',
         inputProps: {
           placeholder: 'Nhập...',
@@ -75,6 +76,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
         inputProps: {
           placeholder: 'Chọn ngày...',
           className: 'date-picker-campaign',
+          maxDate: endDate ? dayjs(endDate) : undefined,
         },
       },
       {
@@ -89,7 +91,7 @@ const CampaignSearch: React.FC<ICampaignSearch> = ({
       },
     ];
     return formItems;
-  }, [categoryList, startDate, form]);
+  }, [categoryList, startDate, form, endDate]);
 
   useEffect(() => {
     if (initialValues) {

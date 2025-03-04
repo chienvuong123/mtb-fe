@@ -1,14 +1,13 @@
-import { ATag } from '@components/atoms';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable, type ITable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
-import { ESalesCampaign } from '@constants/masterData';
+import { EStatusCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
 import type { OrderDTO } from '@dtos';
 import { useProfile } from '@stores';
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import type { ColumnType } from 'antd/lib/table';
 import dayjs from 'dayjs';
-import React, { useState, type Key, type ReactNode } from 'react';
+import React, { useState, type Key } from 'react';
 import type { CampaignDTO } from 'src/dtos/campaign';
 
 export type TCampaignRecord = Partial<CampaignDTO>;
@@ -22,12 +21,6 @@ interface ICampaignTable {
   onView: (id: string) => void;
   onSort: (field: string, direction: SortOrder) => void;
 }
-
-const statusObject: Record<ESalesCampaign, ReactNode> = {
-  [ESalesCampaign.DISBURSED]: <ATag color="green">Đang triển khai</ATag>,
-  [ESalesCampaign.OPPORTUNITY_TO_SELL]: <ATag color="blue">Chưa bắt đầu</ATag>,
-  [ESalesCampaign.CANCELED]: <ATag color="red">Kết thúc</ATag>,
-};
 
 const columns: ColumnType<TCampaignRecord>[] = [
   {
@@ -43,6 +36,7 @@ const columns: ColumnType<TCampaignRecord>[] = [
     minWidth: 185,
     sorter: true,
     showSorterTooltip: false,
+    ellipsis: true,
   },
   {
     title: 'Mã Category',
@@ -64,7 +58,7 @@ const columns: ColumnType<TCampaignRecord>[] = [
     minWidth: 172,
     sorter: true,
     showSorterTooltip: false,
-    render: (value: ESalesCampaign) => statusObject[value] ?? null,
+    render: (value: EStatusCampaign) => STATUS_CAMPAIGN_OBJECT[value] ?? null,
   },
   {
     title: 'Thời gian bắt đầu',
@@ -83,14 +77,14 @@ const columns: ColumnType<TCampaignRecord>[] = [
     render: (value: string) => dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY),
   },
   {
-    title: 'KH tiếp cận',
+    title: 'Khách hàng tiếp cận',
     dataIndex: 'totalCustomerApproach',
     minWidth: 118,
     sorter: true,
     showSorterTooltip: false,
   },
   {
-    title: 'KH tham gia',
+    title: 'Khách hàng tham gia',
     dataIndex: 'totalCustomerParticipating',
     minWidth: 111,
     sorter: true,
@@ -126,6 +120,7 @@ const CampaignTable: React.FC<ICampaignTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}
+      scroll={{ x: 1575 }}
       onView={(id) => onView(id as string)}
       onChange={(_p, _f, s) => {
         const { field, order } = s as SorterResult<TCampaignRecord>;

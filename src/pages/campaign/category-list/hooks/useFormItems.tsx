@@ -17,6 +17,7 @@ const useCategoryFormItems = ({
   form,
 }: ICategoryFormItemsProps): TFormItem[] => {
   const startDate = Form.useWatch('startDate', form);
+  const endDate = Form.useWatch('endDate', form);
 
   useEffect(() => {
     if (!startDate && form.getFieldValue('endDate')) {
@@ -42,11 +43,9 @@ const useCategoryFormItems = ({
       type: INPUT_TYPE.TEXT,
       label: 'Mã',
       name: 'code',
-      required: true,
-      rules: [{ required: true }],
       inputProps: {
         placeholder: 'Nhập...',
-        disabled: isDisabled,
+        disabled: true,
       },
     },
     {
@@ -71,6 +70,7 @@ const useCategoryFormItems = ({
         placeholder: 'Chọn ngày...',
         className: 'date-picker-campaign',
         disabled: isDisabled,
+        maxDate: endDate ? dayjs(endDate) : undefined,
       },
     },
     {
@@ -158,8 +158,6 @@ const useCategoryFormItems = ({
       type: INPUT_TYPE.TEXT_AREA,
       label: 'Ghi chú',
       name: 'note',
-      required: true,
-      rules: [{ required: true }],
       colProps: {
         span: 12,
       },
@@ -181,8 +179,6 @@ const useCategoryFormItems = ({
       type: INPUT_TYPE.TEXT_AREA,
       label: 'Phạm vi triển khai',
       name: 'scope',
-      required: true,
-      rules: [{ required: true }],
       colProps: {
         span: 12,
       },

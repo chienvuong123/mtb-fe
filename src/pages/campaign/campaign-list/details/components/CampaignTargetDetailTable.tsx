@@ -3,7 +3,7 @@ import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
 import type { ColumnType } from 'antd/es/table';
 import Title from 'antd/lib/typography/Title';
-import React, { type Key } from 'react';
+import React, { useState, type Key } from 'react';
 import type { CampaignTargetDTO } from 'src/dtos/campaign-detail';
 import { useParams } from 'react-router-dom';
 import type { TId } from '@dtos';
@@ -23,7 +23,7 @@ interface ICampaignTargetDetailTable {
 
 const columns: ColumnType<TCampaignTargetDetailTableRecord>[] = [
   {
-    title: 'Mục tiêu',
+    title: 'Tên mục tiêu',
     dataIndex: 'name',
     minWidth: 213,
     sorter: true,
@@ -51,6 +51,7 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
   onEdit,
   onShowTargetForm,
 }) => {
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const deleteRecord = (key: Key) => {
     if (onDelete) {
       onDelete(key as string);
@@ -82,8 +83,10 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
         data={dataSource}
         onEdit={onEdit}
         onDeleteRow={deleteRecord}
-        isCheckboxHidden
-        hideIndexColumn
+        isCheckboxHidden={!!campaignId}
+        hideActions={!!campaignId}
+        selectedRowKeys={selectedRowKeys}
+        setSelectedRowKeys={setSelectedRowKeys}
       />
     </div>
   );
