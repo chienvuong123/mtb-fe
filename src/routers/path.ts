@@ -17,6 +17,7 @@ const ROUTE_PATH = {
     PRODUCT_CATEGORY: `product-category`,
     MEDIA_CATEGORY: `media-category`,
     POSITON_CATEGORY: `positon-category`,
+    BRANCH_CATEGORY: `branch-category`,
   },
 
   MANAGER_CAMPAIGN: {
