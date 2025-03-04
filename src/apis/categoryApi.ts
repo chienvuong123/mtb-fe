@@ -26,6 +26,7 @@ class CategoryApi extends BaseApi<CategoryDTO, CategorySearchRequest> {
     return apiRequest<BaseResponse<BaseSearchResponse<BaseOptionListDTO>>>({
       url: '/category-campaign/v1.0/list',
       method: 'GET',
+      params: { page: { pageSize: 200 } }, // TODO: will be fixed in milestone 2
     });
   }
 }

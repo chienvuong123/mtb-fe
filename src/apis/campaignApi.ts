@@ -40,7 +40,7 @@ class CampaignApi extends BaseApi<CampaignDTO, CampaignSearchRequest> {
     return apiRequest<BaseResponse<BaseSearchResponse<BaseOptionListDTO>>>({
       url: `${this.endpoint}/list`,
       method: 'GET',
-      params: data,
+      params: { ...data, page: { ...data?.page, pageSize: 200 } }, // TODO: will be fixed in milestone 2
     });
   }
 
