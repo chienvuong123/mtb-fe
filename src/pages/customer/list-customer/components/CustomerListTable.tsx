@@ -65,6 +65,14 @@ const columns: ColumnType<TCustomerRecord>[] = [
     showSorterTooltip: false,
   },
   {
+    title: 'Số lần gọi',
+    dataIndex: 'numberOfCalls',
+    width: 157,
+    minWidth: 157,
+    sorter: true,
+    showSorterTooltip: false,
+  },
+  {
     title: 'Seller',
     dataIndex: ['sellerEntity', 'name'],
     width: 157,

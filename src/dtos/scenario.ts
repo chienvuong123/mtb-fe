@@ -21,7 +21,7 @@ export interface ScenarioDTO extends BaseEntity {
 export interface ScenarioSearchRequest extends BaseSearchParams {
   code?: string;
   name?: string;
-  // category: { code: string; name: string };
+  status?: EStatus;
   categoryId?: string;
   categoryName?: string;
 }
