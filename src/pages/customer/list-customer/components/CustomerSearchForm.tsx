@@ -19,7 +19,7 @@ interface ICustomerSearchForm {
   initialValues: Partial<CustomerDTO>;
   onSearch: (values: TCustomerSearchForm) => void;
   onClearAll?: () => void;
-  onDeleteAll: () => void;
+  onDeleteAll?: () => void;
   onCreate: (values: CustomerDTO) => void;
 }
 

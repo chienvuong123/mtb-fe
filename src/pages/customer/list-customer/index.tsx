@@ -369,9 +369,9 @@ const ListCustomerPage: FC = () => {
         onClearAll={handleClearAll}
         initialValues={filters}
         onCreate={handleCreate}
-        onDeleteAll={() => {
-          console.log('delete all');
-        }}
+        // onDeleteAll={() => { TODO: will be implemented in milestone 2
+        //   console.log('delete all');
+        // }}
       />
       <div className="mt-24" />
       <CustomerListTable
