@@ -98,7 +98,7 @@ const SellerSearchForm: FC<ISellerSearchForm> = ({
         type: INPUT_TYPE.NUMBER,
         label: 'Tổng campaign tham gia',
         name: 'totalCampaign',
-        inputProps: { placeholder: 'Nhập...', controls: true },
+        inputProps: { placeholder: 'Nhập...', controls: true, min: 0 },
       },
       {
         type: INPUT_TYPE.SELECT,
