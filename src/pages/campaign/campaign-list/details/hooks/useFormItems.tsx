@@ -1,8 +1,11 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
-import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
-import { useQueryCategoryList } from '@hooks/queries';
+import {
+  useCategoryOptionsListQuery,
+  useQueryCategoryList,
+} from '@hooks/queries';
 import clsx from 'clsx';
+import { CategoryType } from '@dtos';
 
 interface ICampaignFormItemsProps {
   isDisabled: boolean;
@@ -14,6 +17,12 @@ const useCampaignFormItems = ({
   onShowForm,
 }: ICampaignFormItemsProps): TFormItem[] => {
   const { data: categoryList } = useQueryCategoryList(true);
+  const { data: branchesOptions } = useCategoryOptionsListQuery(
+    CategoryType.BRANCHES,
+  );
+  const { data: deploymentOptions } = useCategoryOptionsListQuery(
+    CategoryType.DEPLOYMENT_METHOD,
+  );
 
   return [
     {
@@ -48,6 +57,30 @@ const useCampaignFormItems = ({
       },
     },
     {
+      type: INPUT_TYPE.SELECT,
+      label: 'Chi nhánh triển khai',
+      name: 'branches',
+      inputProps: {
+        placeholder: 'Chọn...',
+        showSearch: true,
+        filterOption: true,
+        className: clsx({ 'pointer-events-none': isDisabled }),
+        options: branchesOptions,
+      },
+    },
+    {
+      type: INPUT_TYPE.SELECT,
+      label: 'Phụ trách triển khai',
+      name: 'supervisor',
+      inputProps: {
+        placeholder: 'Chọn...',
+        showSearch: true,
+        filterOption: true,
+        className: clsx({ 'pointer-events-none': isDisabled }),
+        options: deploymentOptions,
+      },
+    },
+    {
       type: INPUT_TYPE.DATE_PICKER,
       label: 'Ngày bắt đầu',
       name: 'startDate',
@@ -71,18 +104,6 @@ const useCampaignFormItems = ({
     },
     {
       type: INPUT_TYPE.SELECT,
-      label: 'Chi nhánh triển khai',
-      name: 'branches',
-      inputProps: {
-        placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        className: clsx({ 'pointer-events-none': isDisabled }),
-        options: MOCK_CUSTOMER_OPTIONS,
-      },
-    },
-    {
-      type: INPUT_TYPE.SELECT,
       label: 'Trạng thái',
       name: 'status',
       inputProps: {
@@ -90,18 +111,6 @@ const useCampaignFormItems = ({
         options: STATUS_CAMPAIGN_OPTIONS,
         allowClear: false,
         className: clsx({ 'pointer-events-none': isDisabled }),
-      },
-    },
-    {
-      type: INPUT_TYPE.SELECT,
-      label: 'Phụ trách triển khai',
-      name: 'supervisor',
-      inputProps: {
-        placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        className: clsx({ 'pointer-events-none': isDisabled }),
-        options: MOCK_CUSTOMER_OPTIONS,
       },
     },
     { type: INPUT_TYPE.BLANK },
