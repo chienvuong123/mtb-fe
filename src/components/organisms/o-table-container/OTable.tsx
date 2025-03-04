@@ -40,7 +40,7 @@ const OTable = <T extends object>({
           const transformDirection =
             sortDirection && sortDirection.field?.includes('.')
               ? {
-                  field: sortDirection.field.split('.'),
+                  field: sortDirection.field?.split('.'),
                   direction: sortDirection.direction,
                 }
               : sortDirection;

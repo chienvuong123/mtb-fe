@@ -169,7 +169,7 @@ export const getInitialValues = (
 ) => {
   const getStepResult = (step: ApproachScriptAttributeDTO) => {
     if (step.controlType === EControlType.CHECKBOX) {
-      return step.approachResultStep?.result.split(',');
+      return step.approachResultStep?.result?.split(',');
     }
     if (step.controlType === EControlType.DATETIME) {
       return step.approachResultStep?.result
