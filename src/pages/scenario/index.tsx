@@ -8,14 +8,16 @@ import type {
 } from '@components/molecules/m-pagination/MPagination.type';
 
 import {
+  useApproachScriptRemoveMutation,
   useApproachScriptSearchQuery,
-  useScenarioRemoveMutation,
 } from '@hooks/queries';
-import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
+import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import useUrlParams from '@hooks/useUrlParams';
 import { SCENARIO } from '@routers/path';
 import { useNavigate } from 'react-router-dom';
 import { filterObject } from '@utils/objectHelper';
+import { useNotification } from '@libs/antd';
+import { validationHelper } from '@utils/validationHelper';
 import type { SortOrder } from 'antd/es/table/interface';
 import ScenarioSearchForm from './components/ScenarioSearchForm';
 import ScenarioTable, {
@@ -28,6 +30,8 @@ const ScenarioPage: FC = () => {
   const { filters, setFilters, pagination, setPagination, sort, setSort } =
     useUrlParams<ScenarioSearchRequest>();
 
+  const notify = useNotification();
+
   const { data: scenarioList } = useApproachScriptSearchQuery({
     page: {
       pageSize: Number(pagination.pageSize),
@@ -37,7 +41,7 @@ const ScenarioPage: FC = () => {
     ...filterObject(filters),
   });
 
-  const removeScenarioMutation = useScenarioRemoveMutation();
+  const { mutate: removeScenarioMutation } = useApproachScriptRemoveMutation();
 
   const handleCreate = () => {
     navigate(`${SCENARIO.ROOT}/${SCENARIO.CREATE}`);
@@ -47,8 +51,11 @@ const ScenarioPage: FC = () => {
     navigate(`${SCENARIO.ROOT}/${data.id}`);
   };
 
-  const handleSearch = (values: ScenarioSearchRequest) => {
-    setFilters(values);
+  const handleSearch = ({ status, ...values }: ScenarioSearchRequest) => {
+    setFilters({
+      ...values,
+      status: status === EStatus.ALL ? undefined : status,
+    });
   };
 
   const handlePaginationChange = (data: TPagination) => {
@@ -59,7 +66,15 @@ const ScenarioPage: FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    removeScenarioMutation.mutate({ id });
+    removeScenarioMutation(
+      { id },
+      {
+        onSuccess: (data) =>
+          validationHelper(data, notify, () => {
+            notify({ message: 'Xoá thành công', type: 'success' });
+          }),
+      },
+    );
   };
 
   const handleClearAll = () => {

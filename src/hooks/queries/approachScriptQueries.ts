@@ -13,6 +13,7 @@ export const APPROACH_SCRIPT_KEY = 'approach-script-list';
 export const {
   useSearchQuery: useApproachScriptSearchQuery,
   useViewQuery: useApproachScriptViewQuery,
+  useRemoveMutation: useApproachScriptRemoveMutation,
 } = createBaseQueryHooks<
   ApproachScriptDTO,
   ApproachScriptSearchRequest,

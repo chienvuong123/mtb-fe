@@ -321,7 +321,11 @@ const SellerTable: FC<ISellerTable> = ({
             <AButton color="primary" variant="filled">
               Huỷ
             </AButton>
-            <AButton type="primary" htmlType="submit">
+            <AButton
+              type="primary"
+              htmlType="submit"
+              disabled={!tableRecords.length}
+            >
               Lưu
             </AButton>
           </Flex>

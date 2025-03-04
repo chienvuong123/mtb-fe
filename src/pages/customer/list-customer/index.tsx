@@ -117,7 +117,7 @@ const ListCustomerPage: FC = () => {
     ...searchParams,
     page: {
       pageNum: 1,
-      pageSize: customerRes?.data.total ?? pageSize,
+      pageSize: customerRes?.data?.total ?? pageSize,
     },
   });
   const { mutate: mutationCreateGroupCustomer } = useGroupCustomerAddMutation();
