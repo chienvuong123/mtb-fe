@@ -114,10 +114,10 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
   }, [initialValues, form, mode]);
 
   useEffect(() => {
-    if (unselectedCategory || !campaignList?.length) {
+    if ((unselectedCategory || !campaignList?.length) && mode !== 'view') {
       form.resetFields(['campaignId']);
     }
-  }, [unselectedCategory, form, campaignList]);
+  }, [unselectedCategory, form, campaignList, mode]);
 
   return (
     <div>

@@ -24,8 +24,8 @@ export enum EStatus {
 
 export enum EStatusCampaign {
   INPROGRESS = 'INPROGRESS',
-  PENDING = 'PENDING ',
-  ENDED = 'ENDED ',
+  PENDING = 'PENDING',
+  ENDED = 'ENDED',
 }
 
 export enum EGender {

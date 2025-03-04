@@ -36,6 +36,7 @@ const columns: ColumnType<TCategoryTableRecord>[] = [
     minWidth: 199,
     sorter: true,
     showSorterTooltip: false,
+    ellipsis: true,
   },
   {
     title: 'Main Product',
@@ -119,6 +120,7 @@ const CategoryTable: React.FC<ICategoryTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}
+      scroll={{ x: 1575 }}
       onView={(id) => onView(id as string)}
       onChange={(_p, _f, s) => {
         const { field, order } = s as SorterResult<TCategoryTableRecord>;
