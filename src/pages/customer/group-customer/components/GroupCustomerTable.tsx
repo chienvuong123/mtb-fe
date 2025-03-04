@@ -31,9 +31,10 @@ const columns: ColumnType<TGroupCustomerRecord>[] = [
   },
   {
     title: 'Mã Campaign',
-    dataIndex: 'campaignId',
+    dataIndex: 'campaign',
     minWidth: 164,
     showSorterTooltip: false,
+    render: (campaign) => campaign?.code || '',
   },
   {
     title: 'Tên Campaign',
