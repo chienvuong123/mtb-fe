@@ -120,6 +120,12 @@ const routes = createBrowserRouter(
                 () => import('@pages/category/positon-category'),
               ),
             },
+            {
+              path: CATEGORY.BRANCH_CATEGORY,
+              element: createLazyElement(
+                () => import('@pages/category/branch-category'),
+              ),
+            },
           ],
         },
 

@@ -155,6 +155,10 @@ const useMenuList = (onLogout?: () => void) => {
             key: `${CATEGORY.ROOT}/${CATEGORY.POSITON_CATEGORY}`,
             label: 'Chức vụ',
           },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.BRANCH_CATEGORY}`,
+            label: 'Danh mục chi nhánh',
+          },
         ],
       },
       {
