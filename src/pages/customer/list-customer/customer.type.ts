@@ -8,10 +8,6 @@ export type TCustomerForm = Partial<
   hobbies?: string[];
 };
 
-export type TCustomerSearchForm = Partial<
-  Omit<CustomerDTO, 'cusSegment' | 'cusGroup' | 'job'>
-> & {
-  cusSegment?: string[];
+export type TCustomerSearchForm = Partial<Omit<CustomerDTO, 'cusGroup'>> & {
   cusGroup?: string[];
-  job?: string[];
 };

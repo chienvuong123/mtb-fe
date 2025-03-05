@@ -55,7 +55,7 @@ const transformToOptions = <T extends Omit<BaseOptionListDTO, 'active'>>(
   combine?: boolean,
 ): BaseAntdOptionType[] =>
   data.map((item) => ({
-    label: combine ? `${item.code} - ${item.name}` : item.name,
+    label: combine ? `${item.code ?? item.id} - ${item.name}` : item.name,
     value: item.id as string,
   })) ?? [];
 
