@@ -2,7 +2,7 @@ import { AButton, ASelect } from '@components/atoms';
 import { ASegmented } from '@components/atoms/a-segmented';
 import { CategoryType, type ApproachScriptDTO } from '@dtos';
 import { Flex, Form, Input, Rate, Typography } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useApproachScriptViewByCustomerQuery } from '@hooks/queries/approachScriptQueries';
 import { useParams } from 'react-router-dom';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
@@ -24,15 +24,17 @@ const CustomerApproachPreview = () => {
     CategoryType.CUSTOMER_APPROACH_STATUS,
   );
 
-  useEffect(() => {
-    if (approachScriptData) setApproach(approachScriptData[0]);
-  }, [approachScriptData]);
+  const isFistInitFlag = useRef(true);
 
   useEffect(() => {
     if (approachScriptData && statusOptions?.length) {
       const initValue = getInitialValues(approachScriptData, statusOptions);
       setInitialValues(initValue);
-      form.setFieldsValue(initValue);
+      if (isFistInitFlag.current) {
+        setApproach(approachScriptData[0]);
+        form.setFieldsValue(initValue);
+        isFistInitFlag.current = false;
+      }
     }
   }, [approachScriptData, form, statusOptions]);
 
@@ -51,6 +53,7 @@ const CustomerApproachPreview = () => {
               label: `Lần ${x.id}`,
               value: x.id,
             }))}
+            value={approach?.id}
             onChange={(value) => {
               setApproach(
                 approachScriptData.find((x) => x.id === value) ?? null,

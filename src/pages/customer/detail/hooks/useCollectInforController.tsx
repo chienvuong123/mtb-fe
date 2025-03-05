@@ -630,7 +630,7 @@ export const useCollectInforController = () => {
           validationHelper(data, notify, () => {
             notify({
               type: 'success',
-              message: 'Lưu bản nháp thành công',
+              message: 'Cập nhật thông tin thành công',
             });
           });
         },
