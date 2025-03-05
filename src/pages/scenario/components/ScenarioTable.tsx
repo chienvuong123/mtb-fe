@@ -42,7 +42,7 @@ const columns: ColumnType<TScenarioRecord>[] = [
   },
   {
     title: 'Mô tả',
-    dataIndex: 'name',
+    dataIndex: 'description',
     minWidth: 150,
     sorter: true,
     showSorterTooltip: false,

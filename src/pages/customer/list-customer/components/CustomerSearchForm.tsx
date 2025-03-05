@@ -106,6 +106,8 @@ const CustomerSearchForm: FC<
           name: 'job',
           inputProps: {
             placeholder: 'Chọn...',
+            showSearch: true,
+            filterOption: true,
             options: jobList,
           },
         },

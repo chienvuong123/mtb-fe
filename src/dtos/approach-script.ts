@@ -48,7 +48,7 @@ export interface ApproachScriptDTO extends BaseEntity {
   name: string;
   category: string;
   status: EStatus;
-  desc: string;
+  description: string;
   sellerName: string;
   campaignName: string;
   campaignScriptId: string;
