@@ -104,12 +104,12 @@ export const useAssetNameOptionsListQuery = ({
   assetCompanyCode,
   assetCategoryCode,
   assetModelCode,
-  assetYear,
+  assetYearCode,
 }: {
   assetCompanyCode: string;
   assetCategoryCode: string;
   assetModelCode: string;
-  assetYear: string;
+  assetYearCode: string;
 }) => {
   return useQuery({
     queryKey: [
@@ -117,21 +117,21 @@ export const useAssetNameOptionsListQuery = ({
       assetCompanyCode,
       assetCategoryCode,
       assetModelCode,
-      assetYear,
+      assetYearCode,
     ],
     queryFn: () =>
       assetApi.getNameOptionsList({
         companyAssetCode: assetCompanyCode,
         categoryAssetCode: assetCategoryCode,
         modelAssetCode: assetModelCode,
-        yearCode: assetYear,
+        yearCode: assetYearCode,
       }),
     select: (data) => transformToF88Options(data.data),
     enabled:
       !!assetCompanyCode &&
       !!assetCategoryCode &&
       !!assetModelCode &&
-      !!assetYear,
+      !!assetYearCode,
   });
 };
 

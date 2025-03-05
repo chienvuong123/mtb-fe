@@ -4,6 +4,7 @@ import type {
   SalesOpportunitiesDTO,
   SalesOpportunitiesSearchRequest,
 } from 'src/dtos/sales-opportunities';
+import { useMutation } from '@tanstack/react-query';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const {
@@ -19,3 +20,10 @@ export const {
 >('sales-opportunities', salesOpportunitiesApi);
 
 // define other queries
+
+export const useForwardBookingInforMutation = () => {
+  return useMutation({
+    mutationFn: (id: string) => salesOpportunitiesApi.forwardBookingInfor(id),
+    mutationKey: ['sales-opportunities-forward-booking-infor'],
+  });
+};

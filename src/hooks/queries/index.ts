@@ -12,3 +12,4 @@ export * from './optionListQueries';
 export * from './groupCustomerQueries';
 export * from './sellerQueries';
 export * from './approachScriptQueries';
+export * from './salesOpportunitiesQueries';

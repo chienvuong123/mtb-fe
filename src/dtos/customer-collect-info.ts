@@ -42,7 +42,8 @@ export interface CustomerCollectInfoDTO {
   assetCompanyName: string;
   assetModelCode: string;
   assetModelName: string;
-  assetYear: number;
+  assetYearCode: string;
+  assetYearName: string;
   assetInfoCode: string;
   assetInfoName: string;
   assetInfoValue: string;
@@ -60,6 +61,7 @@ export interface CustomerCollectInfoDTO {
   ekycLevel: string;
   branchOfPartner?: string;
   expireDate?: string;
+  finalMaxLoan?: string;
 }
 
 export interface CustomerCollectFormDTO {
@@ -93,7 +95,7 @@ export interface CustomerCollectFormDTO {
   assetCategoryCode: string;
   assetCompanyCode: string;
   assetModelCode: string;
-  assetYear: string;
+  assetYearCode: string;
   assetInfoCode: string;
   paperIssueDate: string;
   assetInfoValue: string;
