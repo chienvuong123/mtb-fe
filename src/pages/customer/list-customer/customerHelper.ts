@@ -7,29 +7,21 @@ import { downloadFile } from '@utils/fileHelper';
 import type { TCustomerSearchForm } from './customer.type';
 
 export const parseCustomerObj = ({
-  cusSegment,
   cusGroup,
-  job,
   ...values
 }: Partial<CustomerDTO>) => {
   return {
-    cusSegment: cusSegment?.split(','),
     cusGroup: cusGroup?.split(','),
-    job: job?.split(','),
     ...values,
   };
 };
 
 export const stringifyCustomerObj = ({
-  cusSegment,
   cusGroup,
-  job,
   ...values
 }: Partial<TCustomerSearchForm>) => {
   return {
-    cusSegment: cusSegment?.join(','),
     cusGroup: cusGroup?.join(','),
-    job: job?.join(','),
     ...values,
   };
 };

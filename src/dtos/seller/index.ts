@@ -20,12 +20,7 @@ interface SellerDetailDTO extends BaseEntity {
   name: string;
 }
 
-interface SellerUserDTO {
-  createdDate: string;
-  createdBy: string;
-  updatedDate: string;
-  updatedBy: string;
-  id: string;
+interface SellerUserDTO extends Partial<BaseEntity> {
   username: string;
   fullName: string;
   email: string;
@@ -50,6 +45,9 @@ export type SellerDTO = {
   name: string;
   status: EStatus;
   user: SellerUserDTO;
+  branch: SellerDetailDTO;
+  position: SellerDetailDTO;
+  department: SellerDetailDTO;
   totalCustomer: number;
   totalCampaign: number;
 };

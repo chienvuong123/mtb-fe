@@ -88,7 +88,6 @@ const CustomerSearchForm: FC<
           name: 'cusSegment',
           inputProps: {
             placeholder: 'Chọn...',
-            mode: 'multiple',
             showSearch: true,
             filterOption: true,
             options: customerSegmentList,
@@ -107,7 +106,6 @@ const CustomerSearchForm: FC<
           name: 'job',
           inputProps: {
             placeholder: 'Chọn...',
-            mode: 'multiple',
             options: jobList,
           },
         },
