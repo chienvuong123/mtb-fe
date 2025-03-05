@@ -37,12 +37,12 @@ const FIELD_DEPENDENCIES = {
   assetCategoryCode: [
     'assetCompanyCode',
     'assetModelCode',
-    'assetYear',
+    'assetYearCode',
     'assetInfoCode',
   ],
-  assetCompanyCode: ['assetModelCode', 'assetYear', 'assetInfoCode'],
-  assetModelCode: ['assetYear', 'assetInfoCode'],
-  assetYear: ['assetInfoCode'],
+  assetCompanyCode: ['assetModelCode', 'assetYearCode', 'assetInfoCode'],
+  assetModelCode: ['assetYearCode', 'assetInfoCode'],
+  assetYearCode: ['assetInfoCode'],
   residenceProvinceCode: ['residenceDistrictCode', 'residenceWardCode'],
   residenceDistrictCode: ['residenceWardCode'],
   currentProvinceCode: ['currentDistrictCode', 'currentWardCode'],
@@ -56,7 +56,7 @@ export const useCollectInforController = () => {
   const assetCategoryCode = Form.useWatch(['assetCategoryCode'], form);
   const assetCompanyCode = Form.useWatch(['assetCompanyCode'], form);
   const assetModelCode = Form.useWatch(['assetModelCode'], form);
-  const assetYear = Form.useWatch(['assetYear'], form);
+  const assetYearCode = Form.useWatch(['assetYearCode'], form);
   const assetInfoCode = Form.useWatch(['assetInfoCode'], form);
   const residenceProvinceCode = Form.useWatch(['residenceProvinceCode'], form);
   const residenceDistrictCode = Form.useWatch(['residenceDistrictCode'], form);
@@ -95,7 +95,7 @@ export const useCollectInforController = () => {
     assetCompanyCode,
     assetCategoryCode,
     assetModelCode,
-    assetYear,
+    assetYearCode,
   });
 
   const { data: provinceOptions } = useLocationOptionsListQuery();
@@ -371,7 +371,7 @@ export const useCollectInforController = () => {
       {
         type: INPUT_TYPE.SELECT,
         label: 'Năm sản xuất',
-        name: 'assetYear',
+        name: 'assetYearCode',
         inputProps: {
           placeholder: 'Chọn',
           options: assetYearOptions,
@@ -388,7 +388,7 @@ export const useCollectInforController = () => {
         inputProps: {
           placeholder: 'Chọn',
           options: assetNameOptions,
-          disabled: !assetYear,
+          disabled: !assetYearCode,
           filterOption: true,
           showSearch: true,
         },
@@ -555,7 +555,7 @@ export const useCollectInforController = () => {
     assetCategoryCode,
     assetCompanyCode,
     assetModelCode,
-    assetYear,
+    assetYearCode,
     provinceOptions,
     districtOptions,
     wardOptions,
@@ -619,6 +619,7 @@ export const useCollectInforController = () => {
       assetCategoryOptions,
       assetCompanyOptions,
       assetModelOptions,
+      assetYearOptions,
       assetNameOptions,
     });
 
@@ -655,6 +656,7 @@ export const useCollectInforController = () => {
       assetCategoryOptions,
       assetCompanyOptions,
       assetModelOptions,
+      assetYearOptions,
       assetNameOptions,
     });
 

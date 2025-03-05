@@ -35,6 +35,7 @@ export const mapFormDataToDTO = (
     assetCategoryOptions?: BaseAntdOptionType[];
     assetCompanyOptions?: BaseAntdOptionType[];
     assetModelOptions?: BaseAntdOptionType[];
+    assetYearOptions?: BaseAntdOptionType[];
     assetNameOptions?: BaseAntdOptionType[];
   },
 ): CustomerCollectInfoDTO => {
@@ -52,6 +53,7 @@ export const mapFormDataToDTO = (
     assetCategoryOptions,
     assetCompanyOptions,
     assetModelOptions,
+    assetYearOptions,
     assetNameOptions,
   } = options;
 
@@ -106,7 +108,7 @@ export const mapFormDataToDTO = (
     ),
     assetModelName: getOptionLabel(assetModelOptions, formData.assetModelCode),
     assetInfoName: getOptionLabel(assetNameOptions, formData.assetInfoCode),
-    assetYear: Number(formData.assetYear),
+    assetYearName: getOptionLabel(assetYearOptions, formData.assetYearCode),
     tenor: Number(formData.tenor),
     averageTransaction: Number(formData.averageTransaction),
     countOfTransaction: Number(formData.countOfTransaction),
@@ -148,7 +150,6 @@ export const mapDraftToFormData = (dto: CustomerCollectInfoDTO) => {
     appDate: dto.appDate
       ? dayjs(dto.appDate, DATE_SLASH_FORMAT_DDMMYYYY)
       : undefined,
-    assetYear: dto.assetYear?.toString(),
     tenor: dto.tenor?.toString(),
     averageTransaction: dto.averageTransaction?.toString(),
     countOfTransaction: dto.countOfTransaction?.toString(),

@@ -1,6 +1,11 @@
 import { AButton, AInputArea, ASelect } from '@components/atoms';
 import { CategoryType, type ApproachFormData } from '@dtos';
-import { useCategoryOptionsListQuery } from '@hooks/queries';
+import {
+  CUSTOMER_KEY,
+  useCategoryOptionsListQuery,
+  useCustomerGetDraftLoanLimit,
+  useForwardBookingInforMutation,
+} from '@hooks/queries';
 import {
   APPROACH_SCRIPT_KEY,
   useApproachScriptResultMutation,
@@ -31,18 +36,21 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   const { data: approachResultOptions } = useCategoryOptionsListQuery(
     CategoryType.CUSTOMER_APPROACH_RESULT,
   );
-
   const { data: approachDetailOptions } = useCategoryOptionsListQuery(
     CategoryType.CUSTOMER_APPROACH_DETAIL,
   );
-
   const { data: approachScriptData } =
     useApproachScriptViewByCustomerQuery(customerId);
+  const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
 
   const { mutate: createApproachResult } = useApproachScriptResultMutation();
 
+  const { mutate: forwardBookingInforMutate } =
+    useForwardBookingInforMutation();
+
   const notify = useNotification();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const handleSave = async () => {
     try {
@@ -70,6 +78,9 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
           queryClient.invalidateQueries({
             queryKey: [APPROACH_SCRIPT_KEY, 'view-by-customer', customerId],
           });
+          queryClient.invalidateQueries({
+            queryKey: [CUSTOMER_KEY, 'draft-loan-limit', customerId],
+          });
         },
       });
     } catch (error) {
@@ -77,9 +88,21 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
     }
   };
 
-  const navigate = useNavigate();
   const handleCancel = () => {
     navigate(`/customer/list`);
+  };
+
+  const forwardBookingInfor = () => {
+    forwardBookingInforMutate(customerId as string, {
+      onSuccess: (d) => {
+        validationHelper(d, notify, () => {
+          notify({
+            message: 'Chuyển thông tin booking thành công',
+            type: 'success',
+          });
+        });
+      },
+    });
   };
 
   return (
@@ -97,7 +120,11 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
             <ASelect options={approachDetailOptions} placeholder="Chọn" />
           </Form.Item>
         </Flex>
-        <AButton type="primary" disabled={isPreview}>
+        <AButton
+          type="primary"
+          onClick={forwardBookingInfor}
+          disabled={Boolean(!draftLoanLimit?.data?.finalMaxLoan)}
+        >
           Chuyển thông tin booking
         </AButton>
         <Flex gap={8} vertical>

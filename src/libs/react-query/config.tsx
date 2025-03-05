@@ -33,7 +33,7 @@ function useQueryClientConfig() {
           queries: {
             retry: false,
             gcTime: 5 * 60 * 1000,
-            staleTime: 60 * 1000,
+            staleTime: 5 * 1000,
           },
         },
         queryCache,

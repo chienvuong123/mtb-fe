@@ -2,7 +2,9 @@ import type {
   SalesOpportunitiesDTO,
   SalesOpportunitiesSearchRequest,
 } from 'src/dtos/sales-opportunities';
+import type { BaseResponse } from '@dtos';
 import { BaseApi } from './baseApi';
+import { apiRequest } from './apiClient';
 
 class SalesOpportunities extends BaseApi<
   SalesOpportunitiesDTO,
@@ -10,6 +12,14 @@ class SalesOpportunities extends BaseApi<
 > {
   constructor() {
     super('/sales-opportunity/v1.0');
+  }
+
+  forwardBookingInfor(id: string) {
+    return apiRequest<BaseResponse<boolean>>({
+      url: `${this.endpoint}/info-approach`,
+      method: 'POST',
+      data: { id },
+    });
   }
 }
 
