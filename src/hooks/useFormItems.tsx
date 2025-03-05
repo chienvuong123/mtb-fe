@@ -30,6 +30,8 @@ import {
 } from '@types';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { PlusIcon } from '@assets/icons';
+import type { DefaultOptionType } from 'antd/es/select';
+import { REMOVE_ACCENTS_REGEX } from '@constants/regex';
 
 interface IFormItemsProps {
   formItems?: TFormItem[];
@@ -42,6 +44,19 @@ type FormItemComponent<P = any> = (props: P) => React.ReactElement;
 
 const trimField = (value?: string, fieldName?: string, form?: FormInstance) => {
   form?.setFieldValue(fieldName, value?.trim());
+};
+
+const removeAccents = (str: string) => {
+  return str.normalize('NFD').replace(REMOVE_ACCENTS_REGEX, '').toLowerCase();
+};
+
+const handleFilterOption = (input: string, option?: DefaultOptionType) => {
+  const label = (option?.label ? String(option.label) : '').toLowerCase();
+  const labelNoAccent = removeAccents(label);
+  const inputNoAccent = removeAccents(input.toLowerCase());
+  return (
+    label.includes(input.toLowerCase()) || labelNoAccent.includes(inputNoAccent)
+  );
 };
 
 const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
@@ -73,14 +88,7 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
       allowClear
       notFoundContent="Không có dữ liệu"
       maxTagCount="responsive"
-      filterOption={
-        filterOption === true
-          ? (input, option) =>
-              ((option?.label ?? '') as string)
-                .toLowerCase()
-                .includes(input.toLowerCase())
-          : filterOption
-      }
+      filterOption={filterOption === true ? handleFilterOption : filterOption}
       {...props}
     />
   ),
