@@ -61,8 +61,6 @@ const ManageCategoryPage: React.FC = () => {
       },
       order: sort,
       ...filterObject(filters),
-      startDate: dayjsToString(filters?.startDate),
-      endDate: dayjsToString(filters?.endDate),
     }),
     [current, pageSize, sort, filters],
   );
@@ -145,7 +143,11 @@ const ManageCategoryPage: React.FC = () => {
 
   const handleSearch = (searchObject: TCampaignSearchForm) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters(searchObject);
+    setFilters({
+      ...searchObject,
+      startDate: dayjsToString(searchObject?.startDate),
+      endDate: dayjsToString(searchObject?.endDate),
+    });
   };
 
   const handlePaginationChange = (data: TPagination) => {
