@@ -8,10 +8,7 @@ import {
 import Title from 'antd/lib/typography/Title';
 import { useEffect, useState, type FC } from 'react';
 
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 import { ODrawer } from '@components/organisms';
 import {
   useProductCategoryAddMutation,
@@ -37,7 +34,7 @@ import {
 
 const ProductCategoryPage: FC = () => {
   const [initValuesInsertForm, setInitValuesInsertForm] =
-    useState<Partial<TProductRecord> | null>(null);
+    useState<ProductCategoryDTO>();
   const [initValuesEditForm, setInitValuesEditForm] =
     useState<Partial<TProductRecord> | null>(null);
 
@@ -83,7 +80,7 @@ const ProductCategoryPage: FC = () => {
         });
         handleCloseForm();
         setInitValuesEditForm(null);
-        setInitValuesInsertForm(null);
+        setInitValuesInsertForm(undefined);
       });
   };
 
@@ -239,6 +236,7 @@ const ProductCategoryPage: FC = () => {
       >
         {drawerMode === 'add' ? (
           <ProductInsertForm
+            mode="add"
             onClose={handleCloseForm}
             initialValues={initValuesInsertForm}
             onSubmit={handleSubmitInsert}

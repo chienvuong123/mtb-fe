@@ -1,17 +1,10 @@
 import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import { MEDIA_CATEGORY_KEY } from '@hooks/queries/useMediaCategoryQueries';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
 import type { PositionCategoryDTO } from 'src/dtos/position';
-
-interface IPositionEditForm {
-  isViewMode?: boolean;
-  initialValues?: Partial<PositionCategoryDTO> | null;
-  onClose: () => void;
-  onSubmit: (values: PositionCategoryDTO) => void;
-}
 
 const items: TFormItem[] = [
   {
@@ -70,17 +63,17 @@ const items: TFormItem[] = [
   },
 ];
 
-const PositionEditForm: FC<IPositionEditForm> = ({
+const PositionEditForm: FC<CBaseForm<PositionCategoryDTO>> = ({
   onClose,
   onSubmit,
   initialValues,
-  isViewMode,
+  mode,
 }) => {
   const [form] = useForm();
 
   const formItems = useMemo(
     () =>
-      isViewMode
+      mode === 'view'
         ? items.map((i) => ({
             ...i,
             inputProps: {
@@ -90,7 +83,7 @@ const PositionEditForm: FC<IPositionEditForm> = ({
             },
           }))
         : items,
-    [isViewMode],
+    [mode],
   ) as TFormItem[];
 
   useEffect(() => {
@@ -106,9 +99,9 @@ const PositionEditForm: FC<IPositionEditForm> = ({
         items={formItems}
         form={form}
         onSubmit={onSubmit}
-        isViewMode={isViewMode}
+        isViewMode={mode === 'view'}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
       />

@@ -1,4 +1,4 @@
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
@@ -6,14 +6,7 @@ import { STATUS_OPTIONS } from '@constants/masterData';
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import type { TPositionSearchForm } from 'src/dtos/position';
 
-interface IPositionSearchForm {
-  initialValues?: TPositionSearchForm;
-  onSearch: (values: TPositionSearchForm) => void;
-  onClearAll?: () => void;
-  onCreate?: () => void;
-}
-
-const PositionSearchForm: FC<IPositionSearchForm> = ({
+const PositionSearchForm: FC<CBaseSearch<TPositionSearchForm>> = ({
   initialValues,
   onSearch,
   onClearAll,

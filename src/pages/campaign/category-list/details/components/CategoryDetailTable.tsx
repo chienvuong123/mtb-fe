@@ -1,4 +1,4 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination } from '@components/molecules';
 import { OTable } from '@components/organisms';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';

@@ -1,4 +1,4 @@
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
@@ -6,14 +6,7 @@ import type { TMediaSearchForm } from '@dtos';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 
-interface IMediaSearchForm {
-  initialValues?: TMediaSearchForm;
-  onSearch: (values: TMediaSearchForm) => void;
-  onClearAll?: () => void;
-  onCreate?: () => void;
-}
-
-const MediaSearchForm: FC<IMediaSearchForm> = ({
+const MediaSearchForm: FC<CBaseSearch<TMediaSearchForm>> = ({
   initialValues,
   onSearch,
   onClearAll,

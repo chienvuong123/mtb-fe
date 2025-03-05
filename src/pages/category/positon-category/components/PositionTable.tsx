@@ -1,26 +1,13 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { EStatus, STATUS_OBJECT } from '@constants/masterData';
-import type { OrderDTO } from '@dtos';
+import type { CBaseTable } from '@types';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useMemo, useState, type FC, type Key } from 'react';
 import type { PositionCategoryDTO } from 'src/dtos/position';
 
-export type TPositionRecord = Partial<PositionCategoryDTO>;
-
-interface IPositionTable {
-  dataSource: TPositionRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-  onEdit: ITable<TPositionRecord>['onEdit'];
-  onDelete: (id: string) => void;
-  onView: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-}
-
-const PositionTable: FC<IPositionTable> = ({
+const PositionTable: FC<CBaseTable<PositionCategoryDTO>> = ({
   dataSource,
   paginations,
   sortDirection,
@@ -31,7 +18,7 @@ const PositionTable: FC<IPositionTable> = ({
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
-  const columns: ColumnType<TPositionRecord>[] = useMemo(
+  const columns: ColumnType<PositionCategoryDTO>[] = useMemo(
     () => [
       {
         title: 'Mã',
@@ -90,11 +77,11 @@ const PositionTable: FC<IPositionTable> = ({
   );
 
   const deleteRecord = (key: Key) => {
-    onDelete(key as string);
+    onDelete?.(key as string);
   };
 
   return (
-    <OTable<TPositionRecord>
+    <OTable<PositionCategoryDTO>
       rowKey="id"
       columns={columns}
       data={dataSource}
@@ -104,10 +91,10 @@ const PositionTable: FC<IPositionTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}
-      onView={(id) => onView(id as string)}
+      onView={(id) => onView?.(id as string)}
       onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<TPositionRecord>;
-        onSort(field as string, order as SortOrder);
+        const { field, order } = s as SorterResult<PositionCategoryDTO>;
+        onSort?.(field as string, order as SortOrder);
       }}
       scroll={{ x: 1200 }}
     />

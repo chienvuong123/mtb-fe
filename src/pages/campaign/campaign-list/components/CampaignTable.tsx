@@ -1,28 +1,15 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { EStatusCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
-import type { OrderDTO } from '@dtos';
 import { useProfile } from '@stores';
+import type { CBaseTable } from '@types';
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import type { ColumnType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useState, type Key } from 'react';
 import type { CampaignDTO } from 'src/dtos/campaign';
 
-export type TCampaignRecord = Partial<CampaignDTO>;
-
-interface ICampaignTable {
-  dataSource: TCampaignRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-  onEdit: ITable<TCampaignRecord>['onEdit'];
-  onDelete: (id: string) => void;
-  onView: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-}
-
-const columns: ColumnType<TCampaignRecord>[] = [
+const columns: ColumnType<CampaignDTO>[] = [
   {
     title: 'Mã Campaign',
     dataIndex: 'code',
@@ -92,7 +79,7 @@ const columns: ColumnType<TCampaignRecord>[] = [
   },
 ];
 
-const CampaignTable: React.FC<ICampaignTable> = ({
+const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
   dataSource,
   paginations,
   sortDirection,
@@ -106,11 +93,11 @@ const CampaignTable: React.FC<ICampaignTable> = ({
   const { isAdmin, isCampaignManager } = useProfile();
 
   const deleteRecord = (key: Key) => {
-    onDelete(key as string);
+    onDelete?.(key as string);
   };
 
   return (
-    <OTable<TCampaignRecord>
+    <OTable<CampaignDTO>
       rowKey="id"
       columns={columns}
       data={dataSource}
@@ -121,10 +108,10 @@ const CampaignTable: React.FC<ICampaignTable> = ({
       paginations={paginations}
       sortDirection={sortDirection}
       scroll={{ x: 1575 }}
-      onView={(id) => onView(id as string)}
+      onView={(id) => onView?.(id as string)}
       onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<TCampaignRecord>;
-        onSort(field as string, order as SortOrder);
+        const { field, order } = s as SorterResult<CampaignDTO>;
+        onSort?.(field as string, order as SortOrder);
       }}
     />
   );

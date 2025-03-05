@@ -1,24 +1,14 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { EStatus, STATUS_OBJECT } from '@constants/masterData';
-import type { ApproachScriptDTO, OrderDTO } from '@dtos';
+import type { ApproachScriptDTO } from '@dtos';
 import { useProfile } from '@stores';
+import type { CBaseTable } from '@types';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import { useState, type FC, type Key } from 'react';
 
 export type TScenarioRecord = ApproachScriptDTO;
-
-interface IScenarioTable {
-  dataSource: TScenarioRecord[];
-  sortDirection?: OrderDTO;
-  pagination: IMPagination;
-  onEdit: ITable<TScenarioRecord>['onEdit'];
-  onDelete: (id: string) => void;
-  onView: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-}
 
 const columns: ColumnType<TScenarioRecord>[] = [
   {
@@ -87,9 +77,9 @@ const columns: ColumnType<TScenarioRecord>[] = [
   },
 ];
 
-const ScenarioTable: FC<IScenarioTable> = ({
+const ScenarioTable: FC<CBaseTable<ApproachScriptDTO>> = ({
   dataSource,
-  pagination,
+  paginations,
   sortDirection,
   onEdit,
   onDelete,
@@ -100,7 +90,7 @@ const ScenarioTable: FC<IScenarioTable> = ({
   const { isAdmin, isCampaignManager, isSaleManager } = useProfile();
 
   const deleteRecord = (key: Key) => {
-    onDelete(key as string);
+    onDelete?.(key as string);
   };
 
   return (
@@ -116,11 +106,11 @@ const ScenarioTable: FC<IScenarioTable> = ({
       onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       sortDirection={sortDirection}
-      paginations={pagination}
-      onView={(id) => onView(id as string)}
+      paginations={paginations}
+      onView={(id) => onView?.(id as string)}
       onChange={(_p, _f, s) => {
         const { field, order } = s as SorterResult<TScenarioRecord>;
-        onSort(field as string, order as SortOrder);
+        onSort?.(field as string, order as SortOrder);
       }}
     />
   );

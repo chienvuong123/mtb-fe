@@ -26,18 +26,18 @@ import type {
   TPositionSearchForm,
 } from 'src/dtos/position';
 import { validateInsertCategory } from '../utils';
-import PositionSearchForm from './components/PositionSearchForm';
-import PositionTable, {
-  type TPositionRecord,
-} from './components/PositionTable';
-import PositionInsertForm from './components/PositionInsertForm';
-import PositionEditForm from './components/PositionEditForm';
+import {
+  PositionSearchForm,
+  PositionTable,
+  PositionInsertForm,
+  PositionEditForm,
+} from './components';
 
 const PositionCategoryPage: FC = () => {
   const [initValuesInsertForm, setInitValuesInsertForm] =
-    useState<Partial<TPositionRecord> | null>(null);
+    useState<Partial<PositionCategoryDTO> | null>(null);
   const [initValuesEditForm, setInitValuesEditForm] =
-    useState<Partial<TPositionRecord> | null>(null);
+    useState<Partial<PositionCategoryDTO> | null>(null);
 
   const {
     pagination: { current, pageSize },
@@ -103,7 +103,7 @@ const PositionCategoryPage: FC = () => {
     setDrawerMode('add');
   };
 
-  const handleEdit = (data: TPositionRecord) => {
+  const handleEdit = (data: PositionCategoryDTO) => {
     setInitValuesEditForm({
       ...data,
       createdDate: formatDate(data.createdDate ?? ''),
@@ -235,20 +235,22 @@ const PositionCategoryPage: FC = () => {
         open={!!drawerMode}
         width={1025}
       >
-        {drawerMode === 'add' ? (
-          <PositionInsertForm
-            onClose={handleCloseForm}
-            initialValues={initValuesInsertForm}
-            onSubmit={handleSubmitInsert}
-          />
-        ) : (
-          <PositionEditForm
-            isViewMode={drawerMode === 'view'}
-            onClose={handleCloseForm}
-            initialValues={initValuesEditForm}
-            onSubmit={handleSubmitEdit}
-          />
-        )}
+        {drawerMode &&
+          (drawerMode === 'add' ? (
+            <PositionInsertForm
+              mode={drawerMode}
+              onClose={handleCloseForm}
+              initialValues={initValuesInsertForm as PositionCategoryDTO}
+              onSubmit={handleSubmitInsert}
+            />
+          ) : (
+            <PositionEditForm
+              mode={drawerMode}
+              onClose={handleCloseForm}
+              initialValues={initValuesEditForm as PositionCategoryDTO}
+              onSubmit={handleSubmitEdit}
+            />
+          ))}
       </ODrawer>
     </div>
   );

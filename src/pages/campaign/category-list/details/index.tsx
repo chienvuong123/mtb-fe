@@ -5,10 +5,7 @@ import React, { useMemo } from 'react';
 import useUrlParams from '@hooks/useUrlParams';
 import type { SortOrder } from 'antd/es/table/interface';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 import type { TCategoryDetailDTO } from 'src/dtos/manage-category-detail';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MANAGER_CAMPAIGN } from '@routers/path';

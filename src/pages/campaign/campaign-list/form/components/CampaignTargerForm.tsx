@@ -1,16 +1,9 @@
 import { OBaseForm } from '@components/organisms';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useEffect, type FC } from 'react';
 import { useForm } from 'antd/lib/form/Form';
 import type { CampaignTargetDTO } from 'src/dtos/campaign-detail';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
-
-interface ICampaignTargetForm {
-  isViewMode?: boolean;
-  initialValues?: Partial<CampaignTargetDTO> | null;
-  onClose: () => void;
-  onSubmit?: (values: CampaignTargetDTO) => void;
-}
 
 const items: TFormItem[] = [
   {
@@ -43,11 +36,11 @@ const items: TFormItem[] = [
   },
 ];
 
-const CampaignTargetForm: FC<ICampaignTargetForm> = ({
+const CampaignTargetForm: FC<CBaseForm<CampaignTargetDTO>> = ({
   onClose,
   onSubmit,
   initialValues,
-  isViewMode,
+  mode,
 }) => {
   const [form] = useForm();
 
@@ -64,9 +57,9 @@ const CampaignTargetForm: FC<ICampaignTargetForm> = ({
         items={items}
         form={form}
         onSubmit={onSubmit}
-        isViewMode={isViewMode}
+        isViewMode={mode === 'view'}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
       />

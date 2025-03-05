@@ -1,10 +1,12 @@
 import { OBaseForm } from '@components/organisms';
 import { type FC } from 'react';
 import { CUSTOMER_KEY } from '@hooks/queries';
-import type { ICustomerForm, TCustomerForm } from '../customer.type';
+import type { CBaseForm } from '@types';
+import type { CustomerDTO } from '@dtos';
+import type { TCustomerForm } from '../customer.type';
 import { useCustomerForm } from '../hooks';
 
-const CustomerAddForm: FC<ICustomerForm> = ({
+const CustomerAddForm: FC<CBaseForm<CustomerDTO, TCustomerForm>> = ({
   onClose,
   onSubmit,
   initialValues,

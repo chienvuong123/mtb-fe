@@ -1,4 +1,4 @@
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { useEffect, type FC, useMemo } from 'react';
@@ -15,21 +15,11 @@ import { handleResetFields } from '@utils/formHelper';
 import { parseCustomerObj } from '../customerHelper';
 import type { TCustomerSearchForm } from '../customer.type';
 
-interface ICustomerSearchForm {
-  initialValues: Partial<CustomerDTO>;
-  onSearch: (values: TCustomerSearchForm) => void;
-  onClearAll?: () => void;
-  onDeleteAll?: () => void;
-  onCreate: (values: CustomerDTO) => void;
-}
-
-const CustomerSearchForm: FC<ICustomerSearchForm> = ({
-  initialValues,
-  onSearch,
-  onClearAll,
-  onCreate,
-  onDeleteAll,
-}) => {
+const CustomerSearchForm: FC<
+  CBaseSearch<CustomerDTO, TCustomerSearchForm> & {
+    onDeleteAll?: () => void;
+  }
+> = ({ initialValues, onSearch, onClearAll, onCreate, onDeleteAll }) => {
   const [form] = useForm();
   const { isAdmin, isCampaignManager } = useProfile();
 
@@ -162,7 +152,7 @@ const CustomerSearchForm: FC<ICustomerSearchForm> = ({
         onClearAll={onClearAll}
         onCreate={
           isAdmin || isCampaignManager
-            ? () => onCreate(form.getFieldsValue())
+            ? () => onCreate?.(form.getFieldsValue() as CustomerDTO)
             : undefined
         }
         onDeleteAll={onDeleteAll}

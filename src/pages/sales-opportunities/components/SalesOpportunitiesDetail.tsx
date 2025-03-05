@@ -1,14 +1,8 @@
 import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import React, { useEffect, useMemo } from 'react';
 import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
-
-interface ISalesOpportunitiesDetail {
-  onClose: () => void;
-  isViewMode?: boolean;
-  initialValues?: Partial<SalesOpportunitiesDTO> | null;
-}
 
 const items: TFormItem[] = [
   {
@@ -152,16 +146,16 @@ const items: TFormItem[] = [
   },
 ];
 
-const SalesOpportunitiesDetail: React.FC<ISalesOpportunitiesDetail> = ({
+const SalesOpportunitiesDetail: React.FC<CBaseForm<SalesOpportunitiesDTO>> = ({
   onClose,
-  isViewMode,
+  mode,
   initialValues,
 }) => {
   const [form] = useForm();
 
   const formItems = useMemo(
     () =>
-      isViewMode
+      mode === 'view'
         ? items.map((i) => ({
             ...i,
             inputProps: {
@@ -171,7 +165,7 @@ const SalesOpportunitiesDetail: React.FC<ISalesOpportunitiesDetail> = ({
             },
           }))
         : items,
-    [isViewMode],
+    [mode],
   ) as TFormItem[];
 
   useEffect(() => {
@@ -186,7 +180,7 @@ const SalesOpportunitiesDetail: React.FC<ISalesOpportunitiesDetail> = ({
         form={form}
         items={formItems}
         onClose={onClose}
-        isViewMode={isViewMode}
+        isViewMode={mode === 'view'}
       />
     </div>
   );

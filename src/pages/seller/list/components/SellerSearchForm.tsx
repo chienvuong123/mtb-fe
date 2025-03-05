@@ -1,4 +1,4 @@
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
@@ -11,14 +11,7 @@ import {
 } from '@hooks/queries';
 import { handleResetFields } from '@utils/formHelper';
 
-interface ISellerSearchForm {
-  initialValues?: SellerSearchRequest;
-  onSearch: (values: SellerSearchRequest) => void;
-  onClearAll?: () => void;
-  onCreate?: () => void;
-}
-
-const SellerSearchForm: FC<ISellerSearchForm> = ({
+const SellerSearchForm: FC<CBaseSearch<SellerSearchRequest>> = ({
   initialValues,
   onSearch,
   onClearAll,

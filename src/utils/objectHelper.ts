@@ -1,4 +1,4 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination } from '@components/molecules';
 import type { BaseAntdOptionType, BaseOptionListDTO } from '@dtos';
 import type {
   QueryObserverResult,

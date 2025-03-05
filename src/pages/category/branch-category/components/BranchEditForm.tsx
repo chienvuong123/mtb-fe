@@ -1,17 +1,10 @@
 import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import { BRANCH_CATEGORY_KEY } from '@hooks/queries/branchCategoryQueries';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
 import type { BranchCategoryDTO } from 'src/dtos/branch';
-
-interface IBranchEditForm {
-  isViewMode?: boolean;
-  initialValues?: Partial<BranchCategoryDTO> | null;
-  onClose: () => void;
-  onSubmit: (values: BranchCategoryDTO) => void;
-}
 
 const items: TFormItem[] = [
   {
@@ -70,17 +63,17 @@ const items: TFormItem[] = [
   },
 ];
 
-const BranchEditForm: FC<IBranchEditForm> = ({
+const BranchEditForm: FC<CBaseForm<BranchCategoryDTO>> = ({
   onClose,
   onSubmit,
   initialValues,
-  isViewMode,
+  mode,
 }) => {
   const [form] = useForm();
 
   const formItems = useMemo(
     () =>
-      isViewMode
+      mode === 'view'
         ? items.map((i) => ({
             ...i,
             inputProps: {
@@ -90,7 +83,7 @@ const BranchEditForm: FC<IBranchEditForm> = ({
             },
           }))
         : items,
-    [isViewMode],
+    [mode],
   ) as TFormItem[];
 
   useEffect(() => {
@@ -106,9 +99,9 @@ const BranchEditForm: FC<IBranchEditForm> = ({
         items={formItems}
         form={form}
         onSubmit={onSubmit}
-        isViewMode={isViewMode}
+        isViewMode={mode === 'view'}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
       />

@@ -4,10 +4,7 @@ import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
 import { type FC, useState } from 'react';
 
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 
 import {
   useControlAddMutation,

@@ -9,10 +9,7 @@ import { type FC, type SetStateAction, useMemo, useState } from 'react';
 
 import { UserGroupIcon } from '@assets/icons';
 import { AButton } from '@components/atoms';
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 import {
   useCustomerAddMutation,
   useCustomerDownloadTemplete,
@@ -40,7 +37,7 @@ import {
   CustomerSearchForm,
   CustomerViewForm,
 } from './components';
-import type { TCustomerRecord, TCustomerSearchForm } from './customer.type';
+import type { TCustomerSearchForm } from './customer.type';
 import {
   destructCustomerData,
   downloadFileByGetMethod,
@@ -60,9 +57,7 @@ let abortController = new AbortController();
 const ListCustomerPage: FC = () => {
   const [drawerMode, setDrawerMode] = useState<TDrawerMode>(false);
   const [drawerWidth, setDrawerWidth] = useState<number>(DRAWER_WIDTH.list);
-  const [initValues, setInitValues] = useState<Partial<CustomerDTO> | null>(
-    null,
-  );
+  const [initValues, setInitValues] = useState<CustomerDTO | null>(null);
   const notify = useNotification();
   const navigate = useNavigate();
 
@@ -134,11 +129,11 @@ const ListCustomerPage: FC = () => {
   const handleCreate = () => {
     setInitValues({
       ...destructCustomerData({}),
-    });
+    } as CustomerDTO);
     handleOpenDrawer();
   };
 
-  const handleEdit = (data: TCustomerRecord) => {
+  const handleEdit = (data: CustomerDTO) => {
     setInitValues({
       ...destructCustomerData({}), // reset fields
       ...data,
@@ -156,7 +151,7 @@ const ListCustomerPage: FC = () => {
       current: data.pageSize !== pageSize ? 1 : data.current,
     });
   };
-  const handleSubmitInsert = (data: Partial<CustomerDTO>) => {
+  const handleSubmitInsert = (data: CustomerDTO) => {
     const dData = destructCustomerData(data);
     // update customer
     if (initValues?.id) {
@@ -289,7 +284,7 @@ const ListCustomerPage: FC = () => {
     }
   };
 
-  const handleCall = (record: TCustomerRecord) => {
+  const handleCall = (record: CustomerDTO) => {
     navigate(`${CUSTOMER.ROOT}/${record.id}`);
   };
 
@@ -316,9 +311,9 @@ const ListCustomerPage: FC = () => {
     if (drawerWidth === DRAWER_WIDTH.group)
       return (
         <GroupCustomerInsertForm
-          {...props}
           mode="add"
           onSubmit={handleSubmitInsertCustomerGroup}
+          onClose={handleCloseForm}
         />
       );
     if (isViewMode) return <CustomerViewForm {...props} />;
@@ -367,7 +362,7 @@ const ListCustomerPage: FC = () => {
       <CustomerSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
-        initialValues={filters}
+        initialValues={filters as CustomerDTO}
         onCreate={handleCreate}
         // onDeleteAll={() => { TODO: will be implemented in milestone 2
         //   console.log('delete all');

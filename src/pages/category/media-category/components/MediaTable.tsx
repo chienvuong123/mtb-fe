@@ -1,7 +1,7 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { EStatus, STATUS_OBJECT } from '@constants/masterData';
-import type { MediaCategoryDTO, OrderDTO } from '@dtos';
+import type { MediaCategoryDTO } from '@dtos';
+import type { CBaseTable } from '@types';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
@@ -9,17 +9,7 @@ import { useMemo, useState, type FC, type Key } from 'react';
 
 export type TMediaRecord = Partial<MediaCategoryDTO>;
 
-interface IMediaTable {
-  dataSource: TMediaRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-  onEdit: ITable<TMediaRecord>['onEdit'];
-  onDelete: (id: string) => void;
-  onView: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-}
-
-const MediaTable: FC<IMediaTable> = ({
+const MediaTable: FC<CBaseTable<TMediaRecord>> = ({
   dataSource,
   paginations,
   sortDirection,
@@ -89,7 +79,7 @@ const MediaTable: FC<IMediaTable> = ({
   );
 
   const deleteRecord = (key: Key) => {
-    onDelete(key as string);
+    onDelete?.(key as string);
   };
 
   return (
@@ -103,10 +93,10 @@ const MediaTable: FC<IMediaTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}
-      onView={(id) => onView(id as string)}
+      onView={(id) => onView?.(id as string)}
       onChange={(_p, _f, s) => {
         const { field, order } = s as SorterResult<TMediaRecord>;
-        onSort(field as string, order as SortOrder);
+        onSort?.(field as string, order as SortOrder);
       }}
       scroll={{ x: 1200 }}
     />

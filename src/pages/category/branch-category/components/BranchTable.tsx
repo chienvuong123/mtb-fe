@@ -1,26 +1,13 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { EStatus, STATUS_OBJECT } from '@constants/masterData';
-import type { OrderDTO } from '@dtos';
+import type { CBaseTable } from '@types';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useMemo, useState, type FC, type Key } from 'react';
 import type { BranchCategoryDTO } from 'src/dtos/branch';
 
-export type TBranchRecord = Partial<BranchCategoryDTO>;
-
-interface IBranchTable {
-  dataSource: TBranchRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-  onEdit: ITable<TBranchRecord>['onEdit'];
-  onDelete: (id: string) => void;
-  onView: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-}
-
-const BranchTable: FC<IBranchTable> = ({
+const BranchTable: FC<CBaseTable<BranchCategoryDTO>> = ({
   dataSource,
   paginations,
   sortDirection,
@@ -31,7 +18,7 @@ const BranchTable: FC<IBranchTable> = ({
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
-  const columns: ColumnType<TBranchRecord>[] = useMemo(
+  const columns: ColumnType<BranchCategoryDTO>[] = useMemo(
     () => [
       {
         title: 'Mã',
@@ -90,11 +77,11 @@ const BranchTable: FC<IBranchTable> = ({
   );
 
   const deleteRecord = (key: Key) => {
-    onDelete(key as string);
+    onDelete?.(key as string);
   };
 
   return (
-    <OTable<TBranchRecord>
+    <OTable<BranchCategoryDTO>
       rowKey="id"
       columns={columns}
       data={dataSource}
@@ -104,10 +91,10 @@ const BranchTable: FC<IBranchTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}
-      onView={(id) => onView(id as string)}
+      onView={(id) => onView?.(id as string)}
       onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<TBranchRecord>;
-        onSort(field as string, order as SortOrder);
+        const { field, order } = s as SorterResult<BranchCategoryDTO>;
+        onSort?.(field as string, order as SortOrder);
       }}
       scroll={{ x: 1200 }}
     />

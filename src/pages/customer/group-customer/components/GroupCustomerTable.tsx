@@ -1,22 +1,11 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { OTable } from '@components/organisms';
-import type { OrderDTO } from '@dtos';
+import type { CBaseTable } from '@types';
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import type { ColumnType } from 'antd/lib/table';
 import { useState, type FC } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
 
-export type TGroupCustomerRecord = Partial<GroupCustomerDTO>;
-
-interface IGroupCustomerTable {
-  dataSource: TGroupCustomerRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-  onView: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-}
-
-const columns: ColumnType<TGroupCustomerRecord>[] = [
+const columns: ColumnType<GroupCustomerDTO>[] = [
   {
     title: 'Mã Category',
     dataIndex: 'categoryCode',
@@ -62,7 +51,7 @@ const columns: ColumnType<TGroupCustomerRecord>[] = [
   },
 ];
 
-const GroupCustomerTable: FC<IGroupCustomerTable> = ({
+const GroupCustomerTable: FC<CBaseTable<GroupCustomerDTO>> = ({
   dataSource,
   paginations,
   sortDirection,
@@ -72,7 +61,7 @@ const GroupCustomerTable: FC<IGroupCustomerTable> = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   return (
-    <OTable<TGroupCustomerRecord>
+    <OTable<GroupCustomerDTO>
       rowKey="id"
       columns={columns}
       data={dataSource}
@@ -81,10 +70,10 @@ const GroupCustomerTable: FC<IGroupCustomerTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}
-      onView={(id) => onView(id as string)}
+      onView={(id) => onView?.(id as string)}
       onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<TGroupCustomerRecord>;
-        onSort(field as string, order as SortOrder);
+        const { field, order } = s as SorterResult<GroupCustomerDTO>;
+        onSort?.(field as string, order as SortOrder);
       }}
       scroll={{ x: 1300 }}
     />

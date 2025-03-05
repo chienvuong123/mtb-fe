@@ -1,16 +1,10 @@
 import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import { BRANCH_CATEGORY_KEY } from '@hooks/queries/branchCategoryQueries';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, type FC } from 'react';
 import type { BranchCategoryDTO } from 'src/dtos/branch';
-
-interface IBranchInsertForm {
-  initialValues?: Partial<BranchCategoryDTO> | null;
-  onClose: () => void;
-  onSubmit: (values: BranchCategoryDTO) => void;
-}
 
 const items: TFormItem[] = [
   {
@@ -69,7 +63,7 @@ const items: TFormItem[] = [
   },
 ];
 
-const BranchInsertForm: FC<IBranchInsertForm> = ({
+const BranchInsertForm: FC<CBaseForm<BranchCategoryDTO>> = ({
   onClose,
   onSubmit,
   initialValues,
@@ -90,7 +84,7 @@ const BranchInsertForm: FC<IBranchInsertForm> = ({
         form={form}
         onSubmit={onSubmit}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
       />

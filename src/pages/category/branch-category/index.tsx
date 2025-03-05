@@ -23,17 +23,18 @@ import { useNotification } from '@libs/antd';
 import type { SortOrder } from 'antd/es/table/interface';
 import type { BranchCategoryDTO, TBranchSearchForm } from 'src/dtos/branch';
 import { validateInsertCategory } from '../utils';
-import type { TBranchRecord } from './components/BranchTable';
-import BranchSearchForm from './components/BranchSearchForm';
-import BranchTable from './components/BranchTable';
-import BranchInsertForm from './components/BranchInsertForm';
-import BranchEditForm from './components/BranchEditForm';
+import {
+  BranchInsertForm,
+  BranchEditForm,
+  BranchSearchForm,
+  BranchTable,
+} from './components';
 
 const BranchCategoryPage: FC = () => {
   const [initValuesInsertForm, setInitValuesInsertForm] =
-    useState<Partial<TBranchRecord> | null>(null);
+    useState<BranchCategoryDTO | null>(null);
   const [initValuesEditForm, setInitValuesEditForm] =
-    useState<Partial<TBranchRecord> | null>(null);
+    useState<BranchCategoryDTO | null>(null);
 
   const {
     pagination: { current, pageSize },
@@ -98,7 +99,7 @@ const BranchCategoryPage: FC = () => {
     setDrawerMode('add');
   };
 
-  const handleEdit = (data: TBranchRecord) => {
+  const handleEdit = (data: BranchCategoryDTO) => {
     setInitValuesEditForm({
       ...data,
       createdDate: formatDate(data.createdDate ?? ''),
@@ -240,20 +241,22 @@ const BranchCategoryPage: FC = () => {
         open={!!drawerMode}
         width={1025}
       >
-        {drawerMode === 'add' ? (
-          <BranchInsertForm
-            onClose={handleCloseForm}
-            initialValues={initValuesInsertForm}
-            onSubmit={handleSubmitInsert}
-          />
-        ) : (
-          <BranchEditForm
-            isViewMode={drawerMode === 'view'}
-            onClose={handleCloseForm}
-            initialValues={initValuesEditForm}
-            onSubmit={handleSubmitEdit}
-          />
-        )}
+        {drawerMode &&
+          (drawerMode === 'add' ? (
+            <BranchInsertForm
+              mode="add"
+              onClose={handleCloseForm}
+              initialValues={initValuesInsertForm}
+              onSubmit={handleSubmitInsert}
+            />
+          ) : (
+            <BranchEditForm
+              mode={drawerMode}
+              onClose={handleCloseForm}
+              initialValues={initValuesEditForm}
+              onSubmit={handleSubmitEdit}
+            />
+          ))}
       </ODrawer>
     </div>
   );

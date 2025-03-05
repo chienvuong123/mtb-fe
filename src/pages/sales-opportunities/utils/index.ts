@@ -1,8 +1,7 @@
 import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
-import type { TSalesOpportunitiesRecord } from '../SalesOpportunitiesTable';
 
 export const convertInitValues = (
-  initValues: TSalesOpportunitiesRecord,
+  initValues: SalesOpportunitiesDTO,
 ): Partial<SalesOpportunitiesDTO> => {
   const convertData = {
     key: initValues.id,

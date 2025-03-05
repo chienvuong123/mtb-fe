@@ -2,15 +2,9 @@ import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import type { MediaCategoryDTO } from '@dtos';
 import { MEDIA_CATEGORY_KEY } from '@hooks/queries/useMediaCategoryQueries';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, type FC } from 'react';
-
-interface IMediaInsertForm {
-  initialValues?: Partial<MediaCategoryDTO> | null;
-  onClose: () => void;
-  onSubmit: (values: MediaCategoryDTO) => void;
-}
 
 const items: TFormItem[] = [
   {
@@ -69,7 +63,7 @@ const items: TFormItem[] = [
   },
 ];
 
-const MediaInsertForm: FC<IMediaInsertForm> = ({
+const MediaInsertForm: FC<CBaseForm<MediaCategoryDTO>> = ({
   onClose,
   onSubmit,
   initialValues,
@@ -90,7 +84,7 @@ const MediaInsertForm: FC<IMediaInsertForm> = ({
         form={form}
         onSubmit={onSubmit}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
       />

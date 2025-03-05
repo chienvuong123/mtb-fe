@@ -7,22 +7,14 @@ import {
   useQueryCampaignList,
   useQueryCategoryList,
 } from '@hooks/queries';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import React, { useEffect, useMemo } from 'react';
 import type { TSalesOpportunitiesSearchForm } from 'src/dtos/sales-opportunities';
 
-interface ISalesOpportunitiesSearch {
-  initialValues?: TSalesOpportunitiesSearchForm;
-  onSearch: (values: TSalesOpportunitiesSearchForm) => void;
-  onClearAll?: () => void;
-}
-
-const SalesOpportunitiesSearch: React.FC<ISalesOpportunitiesSearch> = ({
-  initialValues,
-  onSearch,
-  onClearAll,
-}) => {
+const SalesOpportunitiesSearch: React.FC<
+  CBaseSearch<TSalesOpportunitiesSearchForm>
+> = ({ initialValues, onSearch, onClearAll }) => {
   const [form] = useForm();
   const categoryId = useWatch('categoryId', form);
   const campaignId = useWatch(['campaignId'], form);

@@ -2,15 +2,9 @@ import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import type { ProductCategoryDTO } from '@dtos';
 import { PRODUCT_CATEGORY_KEY } from '@hooks/queries';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, type FC } from 'react';
-
-interface IProductInsertForm {
-  initialValues?: Partial<ProductCategoryDTO> | null;
-  onClose: () => void;
-  onSubmit: (values: ProductCategoryDTO) => void;
-}
 
 const items: TFormItem[] = [
   {
@@ -69,7 +63,7 @@ const items: TFormItem[] = [
   },
 ];
 
-const ProductInsertForm: FC<IProductInsertForm> = ({
+const ProductInsertForm: FC<CBaseForm<ProductCategoryDTO>> = ({
   onClose,
   onSubmit,
   initialValues,
@@ -90,7 +84,7 @@ const ProductInsertForm: FC<IProductInsertForm> = ({
         form={form}
         onSubmit={onSubmit}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
       />
