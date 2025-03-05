@@ -3,17 +3,11 @@ import { STATUS_OPTIONS } from '@constants/masterData';
 import type { ScenarioSearchRequest } from '@dtos';
 import { useQueryCategoryList } from '@hooks/queries';
 import { useProfile } from '@stores';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import { useMemo, type FC } from 'react';
 
-interface IScenarioSearchForm {
-  onSearch: (values: ScenarioSearchRequest) => void;
-  onCreate: () => void;
-  onClearAll: () => void;
-}
-
-const ScenarioSearchForm: FC<IScenarioSearchForm> = ({
+const ScenarioSearchForm: FC<CBaseSearch<ScenarioSearchRequest>> = ({
   onSearch,
   onCreate,
   onClearAll,

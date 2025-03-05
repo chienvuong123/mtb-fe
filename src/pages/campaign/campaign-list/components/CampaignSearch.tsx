@@ -2,21 +2,14 @@ import { OSearchBaseForm } from '@components/organisms';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import { useQueryCategoryList } from '@hooks/queries';
 import { useProfile } from '@stores';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo } from 'react';
 import type { TCampaignSearchForm } from 'src/dtos/campaign';
 
-interface ICampaignSearch {
-  initialValues: TCampaignSearchForm;
-  onSearch: (values: TCampaignSearchForm) => void;
-  onClearAll: () => void;
-  onCreate?: () => void;
-}
-
-const CampaignSearch: React.FC<ICampaignSearch> = ({
+const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
   initialValues,
   onSearch,
   onClearAll,

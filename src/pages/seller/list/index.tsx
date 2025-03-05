@@ -2,10 +2,7 @@ import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { type SellerSearchRequest } from '@dtos';
 import { useEffect, type FC } from 'react';
 
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 import useUrlParams from '@hooks/useUrlParams';
 import { filterObject } from '@utils/objectHelper';
 import type { SortOrder } from 'antd/es/table/interface';

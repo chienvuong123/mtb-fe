@@ -2,16 +2,9 @@ import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import type { MediaCategoryDTO } from '@dtos';
 import { MEDIA_CATEGORY_KEY } from '@hooks/queries/useMediaCategoryQueries';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
-
-interface IMediaEditForm {
-  isViewMode?: boolean;
-  initialValues?: Partial<MediaCategoryDTO> | null;
-  onClose: () => void;
-  onSubmit: (values: MediaCategoryDTO) => void;
-}
 
 const items: TFormItem[] = [
   {
@@ -70,17 +63,17 @@ const items: TFormItem[] = [
   },
 ];
 
-const MediaEditForm: FC<IMediaEditForm> = ({
+const MediaEditForm: FC<CBaseForm<Partial<MediaCategoryDTO>>> = ({
+  mode,
   onClose,
   onSubmit,
   initialValues,
-  isViewMode,
 }) => {
   const [form] = useForm();
 
   const formItems = useMemo(
     () =>
-      isViewMode
+      mode === 'view'
         ? items.map((i) => ({
             ...i,
             inputProps: {
@@ -90,7 +83,7 @@ const MediaEditForm: FC<IMediaEditForm> = ({
             },
           }))
         : items,
-    [isViewMode],
+    [mode],
   ) as TFormItem[];
 
   useEffect(() => {
@@ -106,9 +99,9 @@ const MediaEditForm: FC<IMediaEditForm> = ({
         items={formItems}
         form={form}
         onSubmit={onSubmit}
-        isViewMode={isViewMode}
+        isViewMode={mode === 'view'}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
       />

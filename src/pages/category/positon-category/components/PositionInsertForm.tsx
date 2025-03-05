@@ -1,16 +1,10 @@
 import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import { MEDIA_CATEGORY_KEY } from '@hooks/queries/useMediaCategoryQueries';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, type FC } from 'react';
 import type { PositionCategoryDTO } from 'src/dtos/position';
-
-interface IPositionInsertForm {
-  initialValues?: Partial<PositionCategoryDTO> | null;
-  onClose: () => void;
-  onSubmit: (values: PositionCategoryDTO) => void;
-}
 
 const items: TFormItem[] = [
   {
@@ -69,7 +63,7 @@ const items: TFormItem[] = [
   },
 ];
 
-const PositionInsertForm: FC<IPositionInsertForm> = ({
+const PositionInsertForm: FC<CBaseForm<PositionCategoryDTO>> = ({
   onClose,
   onSubmit,
   initialValues,
@@ -90,7 +84,7 @@ const PositionInsertForm: FC<IPositionInsertForm> = ({
         form={form}
         onSubmit={onSubmit}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
       />

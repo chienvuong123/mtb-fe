@@ -1,4 +1,4 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination } from '@components/molecules';
 import type { OrderDTO } from '@dtos';
 import { INPUT_TYPE } from '@types';
 import type {

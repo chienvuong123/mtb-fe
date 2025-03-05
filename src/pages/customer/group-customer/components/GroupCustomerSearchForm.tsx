@@ -1,20 +1,13 @@
 import { OSearchBaseForm } from '@components/organisms';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { useProfile } from '@stores';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
 
-interface IGroupCustomerSearchForm {
-  initialValues?: Partial<GroupCustomerDTO>;
-  onSearch: (values: GroupCustomerDTO) => void;
-  onClearAll?: () => void;
-  onCreate: (values: Partial<GroupCustomerDTO>) => void;
-}
-
-const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
+const GroupCustomerSearchForm: FC<CBaseSearch<GroupCustomerDTO>> = ({
   initialValues,
   onSearch,
   onClearAll,
@@ -97,7 +90,7 @@ const GroupCustomerSearchForm: FC<IGroupCustomerSearchForm> = ({
         onClearAll={onClearAll}
         onCreate={
           isAdmin || isCampaignManager || isSaleManager
-            ? () => onCreate(form.getFieldsValue())
+            ? () => onCreate?.(form.getFieldsValue())
             : undefined
         }
       />

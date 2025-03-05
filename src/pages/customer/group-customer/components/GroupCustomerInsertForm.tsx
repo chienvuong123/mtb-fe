@@ -2,21 +2,14 @@ import { OBaseForm } from '@components/organisms';
 import { ACCEPTING_FULL_ALPHA_NUMERIC_SPACE_PATTERN } from '@constants/regex';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
 import { GROUP_CUSTOMER_KEY } from '@hooks/queries/groupCustomerQueries';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type TFormItem, type CBaseForm } from '@types';
 import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import clsx from 'clsx';
 import { useEffect, useMemo, type FC } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
 
-interface IGroupCustomerInsertForm {
-  onClose: () => void;
-  onSubmit: (values: Partial<GroupCustomerDTO>) => void;
-  mode: 'add' | 'view';
-  initialValues?: Partial<GroupCustomerDTO> | null;
-}
-
-const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
+const GroupCustomerInsertForm: FC<CBaseForm<GroupCustomerDTO>> = ({
   onClose,
   onSubmit,
   initialValues,
@@ -128,7 +121,7 @@ const GroupCustomerInsertForm: FC<IGroupCustomerInsertForm> = ({
         form={form}
         onSubmit={onSubmit}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
       />

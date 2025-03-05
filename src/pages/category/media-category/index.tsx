@@ -8,10 +8,7 @@ import {
 import Title from 'antd/lib/typography/Title';
 import { useEffect, useState, type FC } from 'react';
 
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 import { ODrawer } from '@components/organisms';
 import {
   useMediaCategoryAddMutation,
@@ -27,16 +24,18 @@ import { filterObject } from '@utils/objectHelper';
 import { useNotification } from '@libs/antd';
 import type { SortOrder } from 'antd/es/table/interface';
 import { validateInsertCategory } from '../utils';
-import MediaEditForm from './components/MediaEditForm';
-import MediaInsertForm from './components/MediaInsertForm';
-import MediaSearchForm from './components/MediaSearchForm';
-import MediaTable, { type TMediaRecord } from './components/MediaTable';
+import {
+  MediaEditForm,
+  MediaInsertForm,
+  MediaTable,
+  MediaSearchForm,
+} from './components';
 
 const MediaCategoryPage: FC = () => {
   const [initValuesInsertForm, setInitValuesInsertForm] =
-    useState<Partial<TMediaRecord> | null>(null);
+    useState<MediaCategoryDTO | null>(null);
   const [initValuesEditForm, setInitValuesEditForm] =
-    useState<Partial<TMediaRecord> | null>(null);
+    useState<Partial<MediaCategoryDTO> | null>(null);
 
   const {
     pagination: { current, pageSize },
@@ -101,7 +100,7 @@ const MediaCategoryPage: FC = () => {
     setDrawerMode('add');
   };
 
-  const handleEdit = (data: TMediaRecord) => {
+  const handleEdit = (data: MediaCategoryDTO) => {
     setInitValuesEditForm({
       ...data,
       createdDate: formatDate(data.createdDate ?? ''),
@@ -137,7 +136,11 @@ const MediaCategoryPage: FC = () => {
     });
   };
 
-  const handleSubmitEdit = ({ name, code, status }: MediaCategoryDTO) => {
+  const handleSubmitEdit = ({
+    name,
+    code,
+    status,
+  }: Partial<MediaCategoryDTO>) => {
     const data: Partial<MediaCategoryDTO> = {
       categoryTypeCode: CategoryType.MEDIA,
       code,
@@ -234,20 +237,22 @@ const MediaCategoryPage: FC = () => {
         open={!!drawerMode}
         width={1025}
       >
-        {drawerMode === 'add' ? (
-          <MediaInsertForm
-            onClose={handleCloseForm}
-            initialValues={initValuesInsertForm}
-            onSubmit={handleSubmitInsert}
-          />
-        ) : (
-          <MediaEditForm
-            isViewMode={drawerMode === 'view'}
-            onClose={handleCloseForm}
-            initialValues={initValuesEditForm}
-            onSubmit={handleSubmitEdit}
-          />
-        )}
+        {drawerMode &&
+          (drawerMode === 'add' ? (
+            <MediaInsertForm
+              mode="add"
+              onClose={handleCloseForm}
+              initialValues={initValuesInsertForm}
+              onSubmit={handleSubmitInsert}
+            />
+          ) : (
+            <MediaEditForm
+              mode={drawerMode}
+              onClose={handleCloseForm}
+              initialValues={initValuesEditForm}
+              onSubmit={handleSubmitEdit}
+            />
+          ))}
       </ODrawer>
     </div>
   );

@@ -4,10 +4,7 @@ import useUrlParams from '@hooks/useUrlParams';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { ODrawer } from '@components/organisms';
 import type { SortOrder } from 'antd/es/table/interface';
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 import { downloadFileByGetMethod, filterObject } from '@utils/objectHelper';
 import {
   useCategoryExport,

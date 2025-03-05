@@ -1,4 +1,4 @@
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type TFormItem, type CBaseSearch } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
@@ -7,14 +7,7 @@ import { STATUS_OPTIONS } from '@constants/masterData';
 import { useProfile } from '@stores';
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 
-interface IProductSearchForm {
-  initialValues?: TProductSearchForm;
-  onSearch: (values: TProductSearchForm) => void;
-  onClearAll?: () => void;
-  onCreate?: () => void;
-}
-
-const ProductSearchForm: FC<IProductSearchForm> = ({
+const ProductSearchForm: FC<CBaseSearch<TProductSearchForm>> = ({
   initialValues,
   onSearch,
   onClearAll,

@@ -1,23 +1,12 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable } from '@components/organisms';
-import type { OrderDTO, SellerDTO } from '@dtos';
+import { OTable } from '@components/organisms';
+import type { SellerDTO } from '@dtos';
 import { useProfile } from '@stores';
+import type { CBaseTable } from '@types';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC } from 'react';
 
-export type TSellerRecord = Partial<SellerDTO>;
-
-interface ISellerTable {
-  dataSource: TSellerRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-  onEdit: ITable<TSellerRecord>['onEdit'];
-  onView?: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-}
-
-const columns: ColumnType<TSellerRecord>[] = [
+const columns: ColumnType<SellerDTO>[] = [
   {
     title: 'Mã',
     dataIndex: ['user', 'employeeCode'],
@@ -83,7 +72,7 @@ const columns: ColumnType<TSellerRecord>[] = [
   },
 ];
 
-const SellerTable: FC<ISellerTable> = ({
+const SellerTable: FC<CBaseTable<SellerDTO>> = ({
   dataSource,
   paginations,
   sortDirection,
@@ -97,7 +86,7 @@ const SellerTable: FC<ISellerTable> = ({
   const activeAction = isAdmin || isCampaignManager || isSaleManager;
 
   return (
-    <OTable<TSellerRecord>
+    <OTable<SellerDTO>
       rowKey="id"
       isCheckboxHidden
       columns={columns}
@@ -109,8 +98,8 @@ const SellerTable: FC<ISellerTable> = ({
       sortDirection={sortDirection}
       onView={(id) => onView?.(id as string)}
       onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<TSellerRecord>;
-        onSort(field as string, order as SortOrder);
+        const { field, order } = s as SorterResult<SellerDTO>;
+        onSort?.(field as string, order as SortOrder);
       }}
       scroll={{ x: 1575 }}
     />

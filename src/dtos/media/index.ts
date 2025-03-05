@@ -1,17 +1,12 @@
 import type { CategoryType } from '../category';
-import type { PageableObject } from '../common';
+import type { BaseEntity, PageableObject } from '../common';
 
-export type MediaCategoryDTO = {
-  createdDate: string;
-  createdBy: string;
-  updatedDate: string;
-  updatedBy: string;
-  id: string;
-  code: string;
-  name: string;
-  status: string;
+export interface MediaCategoryDTO extends Partial<BaseEntity> {
+  code?: string;
+  name?: string;
+  status?: string;
   categoryTypeCode?: CategoryType;
-};
+}
 
 export type MediaCategorySearch = {
   categoryTypeCode: CategoryType;

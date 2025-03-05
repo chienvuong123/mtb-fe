@@ -18,14 +18,18 @@ import {
   useSellerOptionsListQuery,
 } from '@hooks/queries';
 import { handleResetFields } from '@utils/formHelper';
-import type { ICustomerForm, TCustomerForm } from '../customer.type';
+import type { FormInstance } from 'antd/lib';
+import type { TCustomerForm } from '../customer.type';
 
 const useCustomerForm = ({
   mode,
   initialValues,
   onSubmit,
   onClose,
-}: IFormType<TCustomerForm, CustomerDTO> & Partial<ICustomerForm>) => {
+}: IFormType<TCustomerForm, CustomerDTO> & {
+  onClose?: () => void;
+  onSubmit?: (values: CustomerDTO, form: FormInstance<TCustomerForm>) => void;
+}) => {
   const [form] = Form.useForm<Partial<TCustomerForm>>();
 
   const categoryId = Form.useWatch(['categoryId'], form);
@@ -263,7 +267,7 @@ const useCustomerForm = ({
         ...values,
         birthday: dayjsToString(birthday),
         hobbies: hobbies?.join(','),
-      },
+      } as CustomerDTO,
       form,
     );
   };

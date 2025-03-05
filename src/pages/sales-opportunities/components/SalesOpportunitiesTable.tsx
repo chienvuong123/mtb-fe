@@ -5,18 +5,7 @@ import type { ColumnType } from 'antd/es/table';
 import React, { useState, type ReactNode } from 'react';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import type { OrderDTO } from '@dtos';
-
-export type TSalesOpportunitiesRecord = Partial<SalesOpportunitiesDTO>;
-
-interface ISalesOpportunitiesTable {
-  dataSource: TSalesOpportunitiesRecord[];
-  onView: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-}
+import type { CBaseTable } from '@types';
 
 export const statusSalesOpportunitiesObject: Record<
   ESalesOpportunities,
@@ -29,7 +18,7 @@ export const statusSalesOpportunitiesObject: Record<
   [ESalesOpportunities.CANCELED]: <ATag color="red">Đã hủy</ATag>,
 };
 
-const columns: ColumnType<TSalesOpportunitiesRecord>[] = [
+const columns: ColumnType<SalesOpportunitiesDTO>[] = [
   {
     title: 'Mã khách hàng',
     dataIndex: 'customer',
@@ -99,7 +88,7 @@ const columns: ColumnType<TSalesOpportunitiesRecord>[] = [
   },
 ];
 
-const SalesOpportunitiesTable: React.FC<ISalesOpportunitiesTable> = ({
+const SalesOpportunitiesTable: React.FC<CBaseTable<SalesOpportunitiesDTO>> = ({
   dataSource,
   onView,
   onSort,
@@ -110,7 +99,7 @@ const SalesOpportunitiesTable: React.FC<ISalesOpportunitiesTable> = ({
 
   return (
     <div>
-      <OTable<TSalesOpportunitiesRecord>
+      <OTable<SalesOpportunitiesDTO>
         rowKey="id"
         columns={columns}
         data={dataSource}
@@ -119,10 +108,10 @@ const SalesOpportunitiesTable: React.FC<ISalesOpportunitiesTable> = ({
         paginations={paginations}
         sortDirection={sortDirection}
         isCheckboxHidden
-        onView={(id) => onView(id as string)}
+        onView={(id) => onView?.(id as string)}
         onChange={(_p, _f, s) => {
-          const { field, order } = s as SorterResult<TSalesOpportunitiesRecord>;
-          onSort(field as string, order as SortOrder);
+          const { field, order } = s as SorterResult<SalesOpportunitiesDTO>;
+          onSort?.(field as string, order as SortOrder);
         }}
       />
     </div>

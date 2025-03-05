@@ -1,7 +1,4 @@
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 import { ODrawer } from '@components/organisms';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { BaseResponse } from '@dtos';
@@ -22,7 +19,6 @@ import {
   GroupCustomerInsertForm,
   GroupCustomerSearchForm,
   GroupCustomerTable,
-  type TGroupCustomerRecord,
 } from './components';
 
 const GroupCustomerPage = () => {
@@ -30,7 +26,7 @@ const GroupCustomerPage = () => {
   const notify = useNotification();
 
   const [initialValuesForm, setInitialValuesForm] =
-    useState<Partial<TGroupCustomerRecord> | null>(null);
+    useState<GroupCustomerDTO | null>(null);
 
   const { pagination, setPagination, sort, setSort, filters, setFilters } =
     useUrlParams<Partial<GroupCustomerDTO>>();
@@ -143,7 +139,7 @@ const GroupCustomerPage = () => {
     });
   };
 
-  const dataSources: TGroupCustomerRecord[] =
+  const dataSources: GroupCustomerDTO[] =
     useMemo(
       () =>
         groupCustomerRes?.data?.content?.map((i) => ({
@@ -189,7 +185,7 @@ const GroupCustomerPage = () => {
         onSearch={handleSearch}
         onClearAll={handleClearAll}
         onCreate={handleCreate}
-        initialValues={filters}
+        initialValues={filters as GroupCustomerDTO}
       />
       <div className="mt-24" />
       <GroupCustomerTable

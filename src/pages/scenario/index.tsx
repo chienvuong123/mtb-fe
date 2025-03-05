@@ -2,10 +2,7 @@ import type { ScenarioSearchRequest } from '@dtos';
 import Title from 'antd/lib/typography/Title';
 import { type FC } from 'react';
 
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 
 import {
   useApproachScriptRemoveMutation,
@@ -116,7 +113,7 @@ const ScenarioPage: FC = () => {
       <div className="mt-24" />
       <ScenarioTable
         dataSource={scenarioList?.data?.content ?? []}
-        pagination={paginationProps}
+        paginations={paginationProps}
         sortDirection={sort}
         onEdit={handleEdit}
         onDelete={handleDelete}

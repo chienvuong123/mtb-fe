@@ -4,9 +4,10 @@ import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC, type Key } from 'react';
 import { useProfile } from '@stores';
-import type { ICustomerTable, TCustomerRecord } from '../customer.type';
+import type { CBaseTable } from '@types';
+import type { CustomerDTO } from '@dtos';
 
-const columns: ColumnType<TCustomerRecord>[] = [
+const columns: ColumnType<CustomerDTO>[] = [
   {
     title: 'Order ID',
     dataIndex: 'orderId',
@@ -86,7 +87,7 @@ const confirmProps: IModalConfirm = {
   title: 'Xoá khách hàng',
 };
 
-const CustomerListTable: FC<ICustomerTable> = ({
+const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
   dataSource,
   paginations,
   onEdit,
@@ -99,11 +100,11 @@ const CustomerListTable: FC<ICustomerTable> = ({
   const { isAdmin, isCampaignManager } = useProfile();
 
   const deleteRecord = (key: Key) => {
-    onDelete(key as string);
+    onDelete?.(key as string);
   };
 
   return (
-    <OTable<TCustomerRecord>
+    <OTable<CustomerDTO>
       rowKey="id"
       isCheckboxHidden
       columns={columns}
@@ -113,12 +114,12 @@ const CustomerListTable: FC<ICustomerTable> = ({
       onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
-      onView={(id) => onView(id as string)}
+      onView={(id) => onView?.(id as string)}
       onCall={onCall}
       scroll={{ x: 1574 }}
       onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<TCustomerRecord>;
-        onSort(field as string, order as SortOrder);
+        const { field, order } = s as SorterResult<CustomerDTO>;
+        onSort?.(field as string, order as SortOrder);
       }}
       confirmProps={confirmProps}
     />

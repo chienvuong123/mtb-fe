@@ -1,8 +1,8 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
-import { OTable, type ITable } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { EStatus, STATUS_OBJECT } from '@constants/masterData';
-import type { OrderDTO, ProductCategoryDTO } from '@dtos';
+import type { ProductCategoryDTO } from '@dtos';
 import { useProfile } from '@stores';
+import type { CBaseTable } from '@types';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
@@ -10,17 +10,7 @@ import { useMemo, useState, type FC, type Key } from 'react';
 
 export type TProductRecord = Partial<ProductCategoryDTO>;
 
-interface IProductTable {
-  dataSource: TProductRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-  onEdit: ITable<TProductRecord>['onEdit'];
-  onDelete: (id: string) => void;
-  onView: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-}
-
-const ProductTable: FC<IProductTable> = ({
+const ProductTable: FC<CBaseTable<TProductRecord>> = ({
   dataSource,
   paginations,
   sortDirection,
@@ -91,7 +81,7 @@ const ProductTable: FC<IProductTable> = ({
   );
 
   const deleteRecord = (key: Key) => {
-    onDelete(key as string);
+    onDelete?.(key as string);
   };
 
   return (
@@ -105,10 +95,10 @@ const ProductTable: FC<IProductTable> = ({
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}
-      onView={(id) => onView(id as string)}
+      onView={(id) => onView?.(id as string)}
       onChange={(_p, _f, s) => {
         const { field, order } = s as SorterResult<TProductRecord>;
-        onSort(field as string, order as SortOrder);
+        onSort?.(field as string, order as SortOrder);
       }}
       scroll={{ x: 1200 }}
     />

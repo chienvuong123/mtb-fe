@@ -49,7 +49,7 @@ const CampaignCreate: React.FC = () => {
   const [initTargetValues, setInitTargetValues] =
     useState<Partial<TCampaignDetaillRecord> | null>(null);
   const [initApproachValues, setInitApproachValues] =
-    useState<Partial<TCampaignDetaillRecord> | null>(null);
+    useState<TCampaignDetaillRecord | null>(null);
 
   const notify = useNotification();
 
@@ -299,9 +299,9 @@ const CampaignCreate: React.FC = () => {
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
       >
         <CampaignTargetForm
-          isViewMode={isViewMode}
+          mode={isViewMode ? 'view' : 'add'}
           onClose={handleCloseForm}
-          initialValues={initTargetValues}
+          initialValues={initTargetValues as CampaignTargetDTO}
           onSubmit={handleSaveTarget}
         />
       </ODrawer>
@@ -309,16 +309,16 @@ const CampaignCreate: React.FC = () => {
         usePrefixTitle
         title="kế hoạch tiếp cận"
         mode={showInsertApproachForm}
-        onClose={handleShowApproachForm}
+        onClose={handleCloseForm}
         open={!!showInsertApproachForm}
         width={1080}
         maskClosable={false}
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
       >
         <CampaignApproachForm
-          isViewMode={isViewModeTarget}
+          mode={isViewModeTarget ? 'view' : 'add'}
           onClose={handleCloseForm}
-          initialValues={initApproachValues}
+          initialValues={initApproachValues as CampaignScriptDTO}
           onSubmit={handleSaveApproach}
         />
       </ODrawer>

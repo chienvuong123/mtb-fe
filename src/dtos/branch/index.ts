@@ -1,8 +1,8 @@
 import type { CategoryType } from '../category';
 import type { BaseEntity } from '../common';
 
-export interface BranchCategoryDTO extends BaseEntity {
-  code: string;
+export interface BranchCategoryDTO extends Partial<BaseEntity> {
+  code?: string;
   name: string;
   categoryTypeCode?: CategoryType;
 }

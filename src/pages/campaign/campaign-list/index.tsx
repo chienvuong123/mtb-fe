@@ -3,10 +3,7 @@ import Title from 'antd/lib/typography/Title';
 import useUrlParams from '@hooks/useUrlParams';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { SortOrder } from 'antd/es/table/interface';
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 import { downloadFileByGetMethod, filterObject } from '@utils/objectHelper';
 import type {
   CampaignDTO,
@@ -24,10 +21,7 @@ import { ExportIcon } from '@assets/icons';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
 import { useNotification } from '@libs/antd';
-import CampaignTable, {
-  type TCampaignRecord,
-} from './components/CampaignTable';
-import CampaignSearch from './components/CampaignSearch';
+import { CampaignSearch, CampaignTable } from './components';
 
 const Campaign: React.FC = () => {
   const {
@@ -63,7 +57,7 @@ const Campaign: React.FC = () => {
     navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CREATE_CAMPAIGN}`);
   };
 
-  const handleEdit = (data: TCampaignRecord) => {
+  const handleEdit = (data: CampaignDTO) => {
     if (data?.id) {
       navigate(
         `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.EDIT_CAMPAIGN}/${data.id}`,

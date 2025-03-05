@@ -1,9 +1,9 @@
 import type { CategoryType } from '../category';
 import type { BaseEntity } from '../common';
 
-export interface ProductCategoryDTO extends BaseEntity {
-  code: string;
-  name: string;
+export interface ProductCategoryDTO extends Partial<BaseEntity> {
+  code?: string;
+  name?: string;
   categoryTypeCode?: CategoryType;
 }
 

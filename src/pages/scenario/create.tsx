@@ -1,10 +1,7 @@
 import Title from 'antd/lib/typography/Title';
 import { useState, type FC } from 'react';
 
-import type {
-  IMPagination,
-  TPagination,
-} from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination, TPagination } from '@components/molecules';
 import type { AttributeDTO, AttributeSearchRequest } from '@dtos';
 import useUrlParams from '@hooks/useUrlParams';
 import { Drawer } from 'antd';

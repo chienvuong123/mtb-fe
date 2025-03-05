@@ -1,4 +1,4 @@
-import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
+import type { IMPagination } from '@components/molecules';
 import { OTable, type ITable } from '@components/organisms';
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import type { AttributeDTO } from '@dtos';
