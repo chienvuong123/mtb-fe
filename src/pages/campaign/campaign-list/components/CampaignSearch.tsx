@@ -1,4 +1,5 @@
 import { OSearchBaseForm } from '@components/organisms';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import { useQueryCategoryList } from '@hooks/queries';
 import { useProfile } from '@stores';
@@ -88,7 +89,15 @@ const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
 
   useEffect(() => {
     if (initialValues) {
-      form.setFieldsValue({ ...initialValues });
+      form.setFieldsValue({
+        ...initialValues,
+        startDate: initialValues.startDate
+          ? dayjs(initialValues.startDate, DATE_SLASH_FORMAT_DDMMYYYY)
+          : null,
+        endDate: initialValues.endDate
+          ? dayjs(initialValues.endDate, DATE_SLASH_FORMAT_DDMMYYYY)
+          : null,
+      });
     }
   }, [initialValues, form]);
 

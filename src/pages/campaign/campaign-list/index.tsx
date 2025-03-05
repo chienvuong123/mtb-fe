@@ -21,6 +21,7 @@ import { ExportIcon } from '@assets/icons';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
 import { useNotification } from '@libs/antd';
+import { dayjsToString } from '@utils/dateHelper';
 import { CampaignSearch, CampaignTable } from './components';
 
 const Campaign: React.FC = () => {
@@ -67,7 +68,11 @@ const Campaign: React.FC = () => {
 
   const handleSearch = (searchObject: TCampaignSearchForm) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters(searchObject);
+    setFilters({
+      ...searchObject,
+      startDate: dayjsToString(searchObject?.startDate),
+      endDate: dayjsToString(searchObject?.endDate),
+    });
   };
 
   const handlePaginationChange = (data: TPagination) => {
