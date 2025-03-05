@@ -3,9 +3,9 @@ import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
 import { STATUS_OPTIONS } from '@constants/masterData';
-import type { TPositionSearchForm } from 'src/dtos/position';
+import type { THobbySearchForm } from 'src/dtos/hobby';
 
-const PositionSearchForm: FC<CBaseSearch<TPositionSearchForm>> = ({
+const HobbySearchForm: FC<CBaseSearch<THobbySearchForm>> = ({
   initialValues,
   onSearch,
   onClearAll,
@@ -52,7 +52,7 @@ const PositionSearchForm: FC<CBaseSearch<TPositionSearchForm>> = ({
 
   return (
     <div>
-      <OSearchBaseForm<TPositionSearchForm>
+      <OSearchBaseForm<THobbySearchForm>
         items={items}
         form={form}
         onSearch={onSearch}
@@ -63,4 +63,4 @@ const PositionSearchForm: FC<CBaseSearch<TPositionSearchForm>> = ({
   );
 };
 
-export default PositionSearchForm;
+export default HobbySearchForm;
