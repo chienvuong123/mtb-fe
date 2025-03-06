@@ -54,11 +54,11 @@ class SellerApiImpl
     });
   }
 
-  async getBlankSeller(keyword: string) {
+  async getBlankSeller(keyword: string, campaignId: string) {
     return apiRequest<BaseResponse<AssignmentSellerItemDTO[]>>({
       url: `${this.endpoint}/get-list-seller-not-be-assign-to-campaign`,
       method: 'GET',
-      params: { keyword },
+      params: { keyword, campaignId },
     });
   }
 }

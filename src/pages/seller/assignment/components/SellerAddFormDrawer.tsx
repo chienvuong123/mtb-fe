@@ -16,6 +16,7 @@ interface ISellerAddFormDrawer {
   onClose: () => void;
   onSubmit: (values: string[], reset: () => void) => void;
   drawerProps?: IDrawer;
+  campaignId: string;
 }
 
 const columns: ColumnType<AssignmentSellerItemDTO>[] = [
@@ -36,13 +37,14 @@ const SellerAddFormDrawer: FC<ISellerAddFormDrawer> = ({
   drawerProps,
   onClose,
   onSubmit,
+  campaignId,
 }) => {
   const [form] = Form.useForm();
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [keyword, setKeyword] = useState('');
 
-  const { data: dataRes } = useSellerBlankQuery(keyword, open);
+  const { data: dataRes } = useSellerBlankQuery({ keyword, campaignId }, open);
 
   const handleCancel = () => {
     setSelectedRowKeys([]);

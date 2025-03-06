@@ -68,8 +68,7 @@ const SellerTable: FC<ISellerTable> = ({
         return newItems;
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [form],
   );
   const handlePushToTop = useCallback(
     (record: TSellerRecord) => {
@@ -296,6 +295,7 @@ const SellerTable: FC<ISellerTable> = ({
         open={showDrawer}
         onClose={handleCloseDrawer}
         onSubmit={handleAddSeller}
+        campaignId={campaignId as string}
       />
 
       <SellerAssignmentActions

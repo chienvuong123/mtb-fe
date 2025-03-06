@@ -41,10 +41,13 @@ export const useSellerAddToCampaignMutation = () => {
   });
 };
 
-export const useSellerBlankQuery = (keyword: string, enabled: boolean) => {
+export const useSellerBlankQuery = (
+  { keyword, campaignId }: { keyword: string; campaignId: string },
+  enabled: boolean,
+) => {
   return useQuery({
-    queryKey: [SELLER_KEY, 'blank', keyword, enabled],
-    queryFn: () => sellerApi.getBlankSeller(keyword),
+    queryKey: [SELLER_KEY, 'blank', keyword, campaignId, enabled],
+    queryFn: () => sellerApi.getBlankSeller(keyword, campaignId),
     enabled,
   });
 };
