@@ -169,10 +169,24 @@ const routes = createBrowserRouter(
               ),
             },
             {
-              path: `${MANAGER_CAMPAIGN.CATEGORY}`,
-              element: createLazyElement(
-                () => import('@pages/campaign/category-list'),
+              path: '',
+              element: (
+                <RoleBasedGuard
+                  accessibleRoles={[
+                    ERole.ADMIN,
+                    ERole.CAMPAIGN_MANAGER,
+                    ERole.SALE_LEADER,
+                  ]}
+                />
               ),
+              children: [
+                {
+                  path: `${MANAGER_CAMPAIGN.CATEGORY}`,
+                  element: createLazyElement(
+                    () => import('@pages/campaign/category-list'),
+                  ),
+                },
+              ],
             },
             {
               path: `${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/:id`,

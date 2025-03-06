@@ -65,6 +65,7 @@ const useMenuList = (onLogout?: () => void) => {
           {
             key: `${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY}`,
             label: 'Danh sách Category',
+            disabled: isSeller,
           },
         ],
       },
