@@ -34,7 +34,7 @@ export interface CustomerCollectInfoDTO {
   currentWardCode: string;
   currentWardName: string;
   loanMoney: number;
-  tenor: number;
+  tenor: string;
   paymentMethod: string;
   assetCategoryCode: string;
   assetCategoryName: string;
@@ -71,6 +71,7 @@ export interface CustomerCollectFormDTO {
   orderId?: string;
   campaignId?: string;
   genderCode: string;
+  genderName: string;
   dateOfBirth: string;
   mobileNumber: string;
   residenceProvinceCode: string;

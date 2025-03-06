@@ -109,7 +109,7 @@ export const mapFormDataToDTO = (
     assetModelName: getOptionLabel(assetModelOptions, formData.assetModelCode),
     assetInfoName: getOptionLabel(assetNameOptions, formData.assetInfoCode),
     assetYearName: getOptionLabel(assetYearOptions, formData.assetYearCode),
-    tenor: Number(formData.tenor),
+    tenor: formData.tenor ? `${formData.tenor}M` : '',
     averageTransaction: Number(formData.averageTransaction),
     countOfTransaction: Number(formData.countOfTransaction),
     averageCreditAmt: Number(formData.averageCreditAmt),
@@ -150,7 +150,7 @@ export const mapDraftToFormData = (dto: CustomerCollectInfoDTO) => {
     appDate: dto.appDate
       ? dayjs(dto.appDate, DATE_SLASH_FORMAT_DDMMYYYY)
       : undefined,
-    tenor: dto.tenor?.toString(),
+    tenor: dto.tenor?.toString()?.replace('M', ''),
     averageTransaction: dto.averageTransaction?.toString(),
     countOfTransaction: dto.countOfTransaction?.toString(),
     averageCreditAmt: dto.averageCreditAmt?.toString(),

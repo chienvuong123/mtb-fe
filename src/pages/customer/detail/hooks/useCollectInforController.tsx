@@ -123,7 +123,7 @@ export const useCollectInforController = () => {
       {
         type: INPUT_TYPE.TEXT,
         label: 'Giới tính',
-        name: 'genderCode',
+        name: 'genderName',
         inputProps: {
           readOnly: true,
           disabled: true,
@@ -679,7 +679,8 @@ export const useCollectInforController = () => {
     if (genderOptions) {
       form.setFieldsValue({
         customerName: customerData?.name,
-        genderCode: customerData?.genderCategory?.name,
+        genderName: customerData?.genderCategory?.name,
+        genderCode: customerData?.genderCategory?.code,
         dateOfBirth: customerData?.birthday,
         mobileNumber: customerData?.phone,
         appDate: customerData?.activeAppTime,
