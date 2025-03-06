@@ -1,5 +1,5 @@
 import { OBaseForm } from '@components/organisms';
-import { STATUS_OPTIONS } from '@constants/masterData';
+import { STATUS_OPTIONS_WITHOUT_ALL } from '@constants/masterData';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
@@ -36,7 +36,7 @@ const baseItems = [
     label: 'Trạng thái',
     name: 'status',
     inputProps: {
-      options: STATUS_OPTIONS,
+      options: STATUS_OPTIONS_WITHOUT_ALL,
       allowClear: false,
     },
     colProps: { span: 12 },
