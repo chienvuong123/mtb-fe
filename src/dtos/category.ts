@@ -45,6 +45,11 @@ export interface CategorySearchRequest extends BaseSearchParams {
   status?: string;
 }
 
+export type TCategorySearchForm = Pick<
+  CategorySearchRequest,
+  'code' | 'name' | 'status'
+>;
+
 export type CategorySearchResponse = BaseResponse<
   BaseSearchResponse<CategoryDTO>
 >;

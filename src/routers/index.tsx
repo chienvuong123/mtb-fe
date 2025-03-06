@@ -132,6 +132,12 @@ const routes = createBrowserRouter(
                 () => import('@pages/category/hobby-category'),
               ),
             },
+            {
+              path: CATEGORY.CUSTOMER_CATEGORY,
+              element: createLazyElement(
+                () => import('@pages/category/customer-segment-category'),
+              ),
+            },
           ],
         },
 
