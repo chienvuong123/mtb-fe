@@ -2,86 +2,10 @@ import { OTable } from '@components/organisms';
 import type { IModalConfirm } from '@components/organisms/o-modal/OModalConfirm';
 import type { ColumnType } from 'antd/es/table';
 import type { SortOrder, SorterResult } from 'antd/es/table/interface';
-import { useState, type FC, type Key } from 'react';
+import { useMemo, useState, type FC, type Key } from 'react';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import type { CustomerDTO } from '@dtos';
-
-const columns: ColumnType<CustomerDTO>[] = [
-  {
-    title: 'Order ID',
-    dataIndex: 'orderId',
-    width: 157,
-    minWidth: 157,
-    sorter: true,
-    showSorterTooltip: false,
-    align: 'center',
-  },
-  {
-    title: 'Mã khách hàng',
-    dataIndex: 'code',
-    width: 157,
-    minWidth: 157,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Họ và tên',
-    dataIndex: 'name',
-    width: 157,
-    minWidth: 157,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Nhóm khách hàng',
-    dataIndex: ['customerGroup', 'name'],
-    width: 157,
-    minWidth: 157,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Năm sinh',
-    dataIndex: 'birthday',
-    width: 157,
-    minWidth: 157,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-    width: 157,
-    minWidth: 157,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Số điện thoại',
-    dataIndex: 'phone',
-    width: 157,
-    minWidth: 157,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Số lần gọi',
-    dataIndex: 'numberOfCalls',
-    width: 157,
-    minWidth: 157,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-  {
-    title: 'Seller',
-    dataIndex: ['sellerEntity', 'name'],
-    width: 157,
-    minWidth: 157,
-    sorter: true,
-    showSorterTooltip: false,
-  },
-];
 
 const confirmProps: IModalConfirm = {
   title: 'Xoá khách hàng',
@@ -97,7 +21,87 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
   onCall,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { isAdmin, isCampaignManager, isSeller } = useProfile();
+
+  const columns: ColumnType<CustomerDTO>[] = useMemo(() => {
+    const columnsTable: ColumnType<CustomerDTO>[] = [
+      {
+        title: 'Order ID',
+        dataIndex: 'orderId',
+        width: 157,
+        minWidth: 157,
+        sorter: true,
+        showSorterTooltip: false,
+        align: 'center',
+      },
+      {
+        title: 'Mã khách hàng',
+        dataIndex: 'code',
+        width: 157,
+        minWidth: 157,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
+        title: 'Họ và tên',
+        dataIndex: 'name',
+        width: 157,
+        minWidth: 157,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
+        title: 'Nhóm khách hàng',
+        dataIndex: ['customerGroup', 'name'],
+        width: 157,
+        minWidth: 157,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
+        title: 'Năm sinh',
+        dataIndex: 'birthday',
+        width: 157,
+        minWidth: 157,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
+        title: 'Email',
+        dataIndex: 'email',
+        width: 157,
+        minWidth: 157,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
+        title: 'Số điện thoại',
+        dataIndex: 'phone',
+        width: 157,
+        minWidth: 157,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
+        title: 'Số lần gọi',
+        dataIndex: 'numberOfCalls',
+        width: 157,
+        minWidth: 157,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
+        title: 'Seller',
+        dataIndex: ['sellerEntity', 'name'],
+        width: 157,
+        minWidth: 157,
+        sorter: true,
+        showSorterTooltip: false,
+        hidden: isSeller,
+      },
+    ];
+    return columnsTable;
+  }, [isSeller]);
 
   const deleteRecord = (key: Key) => {
     onDelete?.(key as string);
