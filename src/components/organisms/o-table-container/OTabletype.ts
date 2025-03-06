@@ -66,6 +66,7 @@ export interface ITable<T> extends TableProps<T> {
   onDeleteRow?: (key: Key) => void;
   setSelectedRowKeys?: React.Dispatch<React.SetStateAction<string[]>>;
   onView?: (key: Key) => void;
+  onList?: (key: Key) => void;
   onCall?: (record: T) => void;
   tableRowKey?: GetRowKey<T>;
 }

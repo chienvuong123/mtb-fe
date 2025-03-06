@@ -28,6 +28,7 @@ const OTable = <T extends object>({
   onDeleteRow,
   onView,
   onCall,
+  onList,
   setSelectedRowKeys,
   ...props
 }: ITable<T>) => {
@@ -99,6 +100,7 @@ const OTable = <T extends object>({
                       onEdit={onEdit}
                       onView={onView}
                       onCall={onCall}
+                      onList={onList}
                       onDelete={
                         onDeleteRow &&
                         ((key: Key) => {
@@ -128,6 +130,7 @@ const OTable = <T extends object>({
     onEdit,
     onView,
     onCall,
+    onList,
   ]);
 
   const onSelectChange = (selectedRow: T, selected: boolean) => {
