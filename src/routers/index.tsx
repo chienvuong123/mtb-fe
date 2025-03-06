@@ -133,9 +133,21 @@ const routes = createBrowserRouter(
               ),
             },
             {
-              path: CATEGORY.CUSTOMER_CATEGORY,
+              path: CATEGORY.CUSTOMER_SEGMENT_CATEGORY,
               element: createLazyElement(
                 () => import('@pages/category/customer-segment-category'),
+              ),
+            },
+            {
+              path: CATEGORY.JOB_CATEGORY,
+              element: createLazyElement(
+                () => import('@pages/category/job-category'),
+              ),
+            },
+            {
+              path: CATEGORY.CUSTOMER_GROUP_CATEGORY,
+              element: createLazyElement(
+                () => import('@pages/category/customer-group-category'),
               ),
             },
           ],
