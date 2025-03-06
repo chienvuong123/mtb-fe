@@ -135,7 +135,19 @@ const routes = createBrowserRouter(
             {
               path: CATEGORY.CUSTOMER_SEGMENT_CATEGORY,
               element: createLazyElement(
-                () => import('@pages/category/customer-segment-category'),
+                () => import('@pages/category/department-category'),
+              ),
+            },
+            {
+              path: CATEGORY.DEPARTMENT_CATEGORY,
+              element: createLazyElement(
+                () => import('@pages/category/department-category'),
+              ),
+            },
+            {
+              path: CATEGORY.EXPERSITE_CATEGORY,
+              element: createLazyElement(
+                () => import('@pages/category/expertise-category'),
               ),
             },
             {
