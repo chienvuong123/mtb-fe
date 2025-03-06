@@ -82,6 +82,10 @@ export const STATUS_OPTIONS = [
   },
 ];
 
+export const STATUS_OPTIONS_WITHOUT_ALL = STATUS_OPTIONS.filter(
+  (i) => i.value !== EStatus.ALL,
+);
+
 export const APPROACH_STATUS_OPTIONS = [
   {
     value: EApproachStatus.PENDING,
