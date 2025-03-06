@@ -3,6 +3,7 @@ import { CategoryType, type ApproachFormData } from '@dtos';
 import {
   CUSTOMER_KEY,
   useCategoryOptionsListQuery,
+  useCustomerGetDraftLoanLimit,
   useForwardBookingInforMutation,
 } from '@hooks/queries';
 import {
@@ -40,6 +41,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   );
   const { data: approachScriptData } =
     useApproachScriptViewByCustomerQuery(customerId);
+  const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
 
   const { mutate: createApproachResult } = useApproachScriptResultMutation();
 
@@ -118,7 +120,11 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
             <ASelect options={approachDetailOptions} placeholder="Chọn" />
           </Form.Item>
         </Flex>
-        <AButton type="primary" onClick={forwardBookingInfor}>
+        <AButton
+          type="primary"
+          onClick={forwardBookingInfor}
+          disabled={Boolean(!draftLoanLimit?.data?.finalMaxLoan)}
+        >
           Chuyển thông tin booking
         </AButton>
         <Flex gap={8} vertical>

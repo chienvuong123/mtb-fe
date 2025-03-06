@@ -10,17 +10,19 @@ import {
   useCustomerCheckLoanLimit,
   useCustomerViewQuery,
   useCustomerGetDraftLoanLimit,
+  CUSTOMER_KEY,
 } from '@hooks/queries';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { Form, message } from 'antd';
+import { Form } from 'antd';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import type { CustomerCollectFormDTO } from 'src/dtos/customer-collect-info';
 import { useParams } from 'react-router-dom';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import { validationHelper } from '@utils/validationHelper';
 import { useNotification } from '@libs/antd';
+import { useQueryClient } from '@tanstack/react-query';
 import { mapDraftToFormData, mapFormDataToDTO } from '../utils';
 
 interface FieldChangeInfo {
@@ -591,7 +593,6 @@ export const useCollectInforController = () => {
   );
 
   const { customerId } = useParams();
-  const [loanLimit, setLoanLimit] = useState<number | undefined>(undefined);
   const { mutate: checkLoanLimitMutation, isPending: loading } =
     useCustomerCheckLoanLimit();
 
@@ -601,6 +602,7 @@ export const useCollectInforController = () => {
   const customerData = customerQueryData?.data;
   const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
   const notify = useNotification();
+  const queryClient = useQueryClient();
 
   const saveDraft = async () => {
     const formData = form.getFieldsValue(true);
@@ -661,12 +663,16 @@ export const useCollectInforController = () => {
     });
 
     checkLoanLimitMutation(collectInfo, {
-      onSuccess: (res) => {
-        setLoanLimit(Number(res.data.customerLimit));
-      },
-      onError: () => {
-        setLoanLimit(0);
-        message.error('Không tìm thấy thông tin khách hàng');
+      onSuccess: (d) => {
+        validationHelper(d, notify, () => {
+          notify({
+            type: 'success',
+            message: 'Check hạn mức thành công',
+          });
+        });
+        queryClient.invalidateQueries({
+          queryKey: [CUSTOMER_KEY, 'draft-loan-limit', customerId],
+        });
       },
     });
   };
@@ -707,7 +713,7 @@ export const useCollectInforController = () => {
     firstItems,
     secondItems,
     thirdItems,
-    loanLimit,
+    loanLimit: Number(draftLoanLimit?.data?.finalMaxLoan) ?? 0,
     loading,
     handleFormValuesChange,
     saveDraft,
