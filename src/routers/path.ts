@@ -22,6 +22,9 @@ const ROUTE_PATH = {
     CUSTOMER_SEGMENT_CATEGORY: `customer-segment-category`,
     JOB_CATEGORY: `job-category`,
     CUSTOMER_GROUP_CATEGORY: `customer-group-category`,
+    CUSTOMER_CATEGORY: `customer-category`,
+    DEPARTMENT_CATEGORY: `department-category`,
+    EXPERSITE_CATEGORY: `expertise-category`,
   },
 
   MANAGER_CAMPAIGN: {

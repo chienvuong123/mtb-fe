@@ -176,6 +176,14 @@ const useMenuList = (onLogout?: () => void) => {
             key: `${CATEGORY.ROOT}/${CATEGORY.CUSTOMER_GROUP_CATEGORY}`,
             label: 'Nhóm khách hàng',
           },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.DEPARTMENT_CATEGORY}`,
+            label: 'Phòng ban',
+          },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.EXPERSITE_CATEGORY}`,
+            label: 'Chuyên môn',
+          },
         ],
       },
       {
