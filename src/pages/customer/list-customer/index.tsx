@@ -73,17 +73,18 @@ const ListCustomerPage: FC = () => {
   const [isViewMode, setIsViewMode] = useState(false);
   const { isAdmin, isCampaignManager, isSaleManager } = useProfile();
 
-  const searchParams: CustomerSearchRequest = useMemo(
-    () => ({
+  const searchParams: CustomerSearchRequest = useMemo(() => {
+    const { cusGroup, ...rest } = filters;
+    return {
       page: {
         pageNum: Number(current),
         pageSize: Number(pageSize),
       },
       order: sort,
-      ...filterObject(destructCustomerData(filters, true)),
-    }),
-    [current, pageSize, sort, filters],
-  );
+      ...filterObject(destructCustomerData(rest, true)),
+      groupId: cusGroup,
+    };
+  }, [current, pageSize, sort, filters]);
 
   const { data: customerRes, refetch: refetchCustomer } =
     useCustomerSearchQuery(searchParams);
