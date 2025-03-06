@@ -18,6 +18,7 @@ const ROUTE_PATH = {
     MEDIA_CATEGORY: `media-category`,
     POSITON_CATEGORY: `positon-category`,
     BRANCH_CATEGORY: `branch-category`,
+    HOBBY_CATEGORY: `hobby-category`,
   },
 
   MANAGER_CAMPAIGN: {

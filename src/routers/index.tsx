@@ -126,6 +126,12 @@ const routes = createBrowserRouter(
                 () => import('@pages/category/branch-category'),
               ),
             },
+            {
+              path: CATEGORY.HOBBY_CATEGORY,
+              element: createLazyElement(
+                () => import('@pages/category/hobby-category'),
+              ),
+            },
           ],
         },
 

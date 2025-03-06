@@ -3,7 +3,6 @@ import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
 import { STATUS_OPTIONS } from '@constants/masterData';
-import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import type { TBranchSearchForm } from 'src/dtos/branch';
 
 const BranchSearchForm: FC<CBaseSearch<TBranchSearchForm>> = ({
@@ -25,7 +24,6 @@ const BranchSearchForm: FC<CBaseSearch<TBranchSearchForm>> = ({
           placeholder: 'Nhập...',
           maxLength: 20,
         },
-        blockingPattern: BLOCKING_NUMBER_PARTERN,
       },
       {
         type: INPUT_TYPE.TEXT,

@@ -144,7 +144,7 @@ const useMenuList = (onLogout?: () => void) => {
         children: [
           {
             key: `${CATEGORY.ROOT}/${CATEGORY.PRODUCT_CATEGORY}`,
-            label: 'Danh mục Product',
+            label: 'Sản phẩm',
           },
           {
             key: `${CATEGORY.ROOT}/${CATEGORY.MEDIA_CATEGORY}`,
@@ -157,7 +157,11 @@ const useMenuList = (onLogout?: () => void) => {
           },
           {
             key: `${CATEGORY.ROOT}/${CATEGORY.BRANCH_CATEGORY}`,
-            label: 'Danh mục chi nhánh',
+            label: 'Chi nhánh',
+          },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.HOBBY_CATEGORY}`,
+            label: 'Sở thích',
           },
         ],
       },
