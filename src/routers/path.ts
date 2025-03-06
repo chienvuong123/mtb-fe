@@ -19,7 +19,9 @@ const ROUTE_PATH = {
     POSITON_CATEGORY: `positon-category`,
     BRANCH_CATEGORY: `branch-category`,
     HOBBY_CATEGORY: `hobby-category`,
-    CUSTOMER_CATEGORY: `customer-category`,
+    CUSTOMER_SEGMENT_CATEGORY: `customer-segment-category`,
+    JOB_CATEGORY: `job-category`,
+    CUSTOMER_GROUP_CATEGORY: `customer-group-category`,
   },
 
   MANAGER_CAMPAIGN: {

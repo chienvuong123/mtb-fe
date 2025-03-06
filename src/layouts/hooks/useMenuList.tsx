@@ -165,8 +165,16 @@ const useMenuList = (onLogout?: () => void) => {
             label: 'Sở thích',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.CUSTOMER_CATEGORY}`,
+            key: `${CATEGORY.ROOT}/${CATEGORY.CUSTOMER_SEGMENT_CATEGORY}`,
             label: 'Phân khúc khách hàng',
+          },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.JOB_CATEGORY}`,
+            label: 'Nghề nghiệp',
+          },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.CUSTOMER_GROUP_CATEGORY}`,
+            label: 'Nhóm khách hàng',
           },
         ],
       },
