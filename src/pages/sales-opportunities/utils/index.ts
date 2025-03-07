@@ -6,8 +6,8 @@ export const convertInitValues = (
   const convertData = {
     key: initValues.id,
     orderId: initValues?.orderId,
-    categoryCode: initValues?.customer?.categoryCampaign?.code,
-    categoryName: initValues?.customer?.categoryCampaign?.name,
+    categoryCode: initValues?.categoryCampaign?.code,
+    categoryName: initValues?.categoryCampaign?.name,
     campaignCode: initValues?.customer?.campaign?.code,
     campaignName: initValues?.customer?.campaign?.name,
     customerCode: initValues?.customer?.code,
@@ -29,6 +29,8 @@ export const convertInitValues = (
     assetName: initValues?.assetNameDtl?.name,
     categoryAssetName: initValues?.categoryAssetDtl?.name,
     loanStatusDtl: initValues?.loanStatusDtl,
+    mbOpportunityStt: initValues?.mbOpportunityStt,
+    quickOfferStatus: initValues?.quickOfferStatus,
   } as Partial<SalesOpportunitiesDTO>;
 
   return convertData;
