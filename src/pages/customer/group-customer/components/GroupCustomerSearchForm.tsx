@@ -14,7 +14,7 @@ const GroupCustomerSearchForm: FC<CBaseSearch<GroupCustomerDTO>> = ({
   onCreate,
 }) => {
   const [form] = useForm();
-  const { isAdmin, isCampaignManager, isSaleManager } = useProfile();
+  const { isAdmin, isCampaignManager, isSellerManager } = useProfile();
 
   const categoryId = useWatch('categoryId', form);
 
@@ -89,7 +89,7 @@ const GroupCustomerSearchForm: FC<CBaseSearch<GroupCustomerDTO>> = ({
         onSearch={onSearch}
         onClearAll={onClearAll}
         onCreate={
-          isAdmin || isCampaignManager || isSaleManager
+          isAdmin || isCampaignManager || isSellerManager
             ? () => onCreate?.(form.getFieldsValue())
             : undefined
         }

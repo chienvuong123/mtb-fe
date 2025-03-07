@@ -31,7 +31,7 @@ import { useProfile } from '@stores';
 
 const useMenuList = (onLogout?: () => void) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { isSaleManager, isSeller, isAuthenticated } = useProfile();
+  const { isSellerManager, isSeller, isAuthenticated } = useProfile();
 
   const menuList = useMemo(() => {
     if (!isAuthenticated) return { menu: [], menuBottom: [] };
@@ -101,7 +101,7 @@ const useMenuList = (onLogout?: () => void) => {
           // {
           //   key: `${SCENARIO.ROOT}/${SCENARIO.CREATE}`,
           //   label: 'Tạo kịch bản',
-          //   disabled: isSeller || isSaleManager,
+          //   disabled: isSeller || isSellerManager,
           // },
           // {
           //   key: `${SCENARIO.ROOT}/${SCENARIO.DETAIL}`,
@@ -129,19 +129,19 @@ const useMenuList = (onLogout?: () => void) => {
         key: MULTIMEDIA_WAREHOUSE,
         label: 'Kho đa phương tiện',
         icon: <FloppyDiskIcon />,
-        disabled: isSaleManager || isSeller,
+        disabled: isSellerManager || isSeller,
       },
       {
         key: ACCOUNT_MANAGEMENT,
         label: 'Quản lý tài khoản',
         icon: <UserSettingsIcon />,
-        disabled: isSaleManager || isSeller,
+        disabled: isSellerManager || isSeller,
       },
       {
         key: CATEGORY.ROOT,
         label: 'Quản lý danh mục',
         icon: <FolderManagementIcon />,
-        disabled: isSaleManager || isSeller,
+        disabled: isSellerManager || isSeller,
         children: [
           {
             key: `${CATEGORY.ROOT}/${CATEGORY.PRODUCT_CATEGORY}`,
@@ -201,13 +201,13 @@ const useMenuList = (onLogout?: () => void) => {
             <span>SETTINGS</span>
           </>
         ),
-        disabled: isSeller || isSaleManager,
+        disabled: isSeller || isSellerManager,
       },
       {
         key: `${SETTING.ROOT}/${SETTING.CONTROL}`,
         label: 'Cài đặt',
         icon: <Setting02Icon />,
-        disabled: isSeller || isSaleManager,
+        disabled: isSeller || isSellerManager,
       },
       {
         key: 'example',
@@ -251,7 +251,7 @@ const useMenuList = (onLogout?: () => void) => {
     ];
 
     return { menu, menuBottom };
-  }, [isSeller, isSaleManager, isAuthenticated]);
+  }, [isSeller, isSellerManager, isAuthenticated]);
 
   return menuList;
 };

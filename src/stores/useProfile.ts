@@ -25,7 +25,7 @@ const useProfile = () => {
     refreshToken,
     isAdmin: userData?.role === ERole.ADMIN,
     isCampaignManager: userData?.role === ERole.CAMPAIGN_MANAGER,
-    isSaleManager: userData?.role === ERole.SALE_LEADER,
+    isSellerManager: userData?.role === ERole.SELLER_MANAGER,
     isSeller: userData?.role === ERole.SELLER,
   };
 };
