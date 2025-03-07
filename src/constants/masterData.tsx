@@ -228,3 +228,13 @@ export const STATUS_OBJECT: Record<EStatus, ReactNode> = {
   [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
   [EStatus.ALL]: null,
 };
+
+export const STATUS_OBJECT_STATIC: Partial<Record<EStatus, ReactNode>> = {
+  [EStatus.ACTIVE]: <ATag color="green">Hoạt động</ATag>,
+  [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
+};
+
+export const ROLE_OPTIONS = Object.values(ERole).map((role) => ({
+  label: role,
+  value: role,
+}));

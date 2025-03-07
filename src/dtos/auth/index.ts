@@ -1,5 +1,5 @@
 import type { ERole } from '@constants/masterData';
-import type { CategoryType } from '../category';
+import type { CategoryDTO, CategoryType } from '../category';
 import type { BaseEntity, BaseResponse, BaseSearchParams } from '../common';
 
 export interface AuthVerifyDTO extends BaseEntity {
@@ -40,6 +40,10 @@ export interface UserDTO extends BaseEntity {
   branch: string;
   expertise: string;
   name?: string;
+  employeeCode: string;
+  positionDtl: CategoryDTO;
+  departmentDtl: CategoryDTO;
+  branchDtl: CategoryDTO;
 }
 
 export interface UserRequest extends BaseSearchParams {
@@ -68,6 +72,16 @@ export interface ChangePasswordRequest {
   newPassword?: string;
   confirmNewPassword?: string;
   token?: string;
+}
+
+export interface AccountRequest extends BaseSearchParams {
+  fullName?: string;
+  email?: string;
+  phoneNumber?: string;
+  role?: ERole;
+  position?: string;
+  branch?: string;
+  department?: string;
 }
 
 export type AuthResponse = AuthVerifyDTO;

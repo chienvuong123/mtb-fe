@@ -1,5 +1,5 @@
 import { ERole } from '@constants/masterData';
-import type { UserDTO } from '@dtos';
+import { CategoryType, type UserDTO } from '@dtos';
 
 export const USER_ADMIN = {
   id: '1',
@@ -26,4 +26,35 @@ export const USER_SELLER: UserDTO = {
   position: 'Senior Sales Representative',
   branch: 'Main Branch',
   expertise: 'Product Sales',
+  employeeCode: '1234567890',
+  positionDtl: {
+    id: '1',
+    name: 'Senior Sales Representative',
+    code: '1234567890',
+    categoryTypeCode: CategoryType.POSITION,
+    createdDate: '2024-01-01T00:00:00Z',
+    createdBy: 'system',
+    updatedDate: '2024-01-01T00:00:00Z',
+    updatedBy: 'system',
+  },
+  departmentDtl: {
+    id: '1',
+    name: 'Sales',
+    code: '1234567890',
+    categoryTypeCode: CategoryType.DEPARTMENT,
+    createdDate: '2024-01-01T00:00:00Z',
+    createdBy: 'system',
+    updatedDate: '2024-01-01T00:00:00Z',
+    updatedBy: 'system',
+  },
+  branchDtl: {
+    id: '1',
+    name: 'Main Branch',
+    code: '1234567890',
+    categoryTypeCode: CategoryType.BRANCHES,
+    createdDate: '2024-01-01T00:00:00Z',
+    createdBy: 'system',
+    updatedDate: '2024-01-01T00:00:00Z',
+    updatedBy: 'system',
+  },
 };
