@@ -47,6 +47,9 @@ export interface SalesOpportunitiesDTO extends BaseEntity {
   statusDtl: defaultObjectDtl;
   assetNameDtl: defaultObjectDtl;
   categoryAssetDtl: defaultObjectDtl;
+  categoryCampaign: defaultObjectDtl;
+  mbOpportunityStt: string;
+  quickOfferStatus: string;
 }
 
 export type TSalesOpportunitiesSearchForm = {

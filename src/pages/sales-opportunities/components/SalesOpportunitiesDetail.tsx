@@ -84,7 +84,7 @@ const items: TFormItem[] = [
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Loại giấy tờ',
+    label: 'Loại giấy tờ định danh',
     name: 'identnDocType',
     inputProps: { disabled: true },
   },
@@ -125,13 +125,13 @@ const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Trạng thái cơ hội bán',
-    name: 'status',
+    name: 'mbOpportunityStt',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Trạng thái khoản vay F88',
-    name: 'loanStatusDtl',
+    name: 'quickOfferStatus',
     inputProps: { disabled: true },
   },
   {
