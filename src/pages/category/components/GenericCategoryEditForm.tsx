@@ -2,7 +2,7 @@ import { OBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS_WITHOUT_ALL } from '@constants/masterData';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
-import { useEffect, useMemo, type FC } from 'react';
+import { useEffect, type FC } from 'react';
 import type { CategoryDTO } from '@dtos';
 import { formatDate } from '@utils/dateHelper';
 import { ACCEPTING_NUMBER_SPACE_COMMA_PATTERN } from '@constants/regex';
@@ -15,7 +15,7 @@ export interface GenericCategoryEditFormProps {
   mutationKey?: string;
 }
 
-const baseItems = [
+const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Mã',
@@ -86,21 +86,6 @@ export const GenericCategoryEditForm: FC<GenericCategoryEditFormProps> = ({
   mutationKey = 'category',
 }) => {
   const [form] = useForm();
-
-  const items = useMemo(
-    () =>
-      isViewMode
-        ? baseItems.map((i) => ({
-            ...i,
-            inputProps: {
-              ...i.inputProps,
-              disabled: i.type === INPUT_TYPE.SELECT,
-              readOnly: true,
-            },
-          }))
-        : baseItems,
-    [isViewMode],
-  ) as TFormItem[];
 
   useEffect(() => {
     if (initialValues) {

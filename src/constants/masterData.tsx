@@ -1,18 +1,18 @@
-import { ControlImageIcon } from '@assets/icons';
+import {
+  ControlType10Icon,
+  ControlType1Icon,
+  ControlType2Icon,
+  ControlType3Icon,
+  ControlType4Icon,
+  ControlType5Icon,
+  ControlType6Icon,
+  ControlType7Icon,
+  ControlType8Icon,
+  ControlType9Icon,
+} from '@assets/icons';
 import { ATag } from '@components/atoms';
 import { EApproachStatus } from '@dtos';
-import {
-  Checkbox,
-  DatePicker,
-  Flex,
-  Input,
-  InputNumber,
-  Radio,
-  Select,
-  Space,
-  Switch,
-  Typography,
-} from 'antd';
+import { Flex, Space, Typography } from 'antd';
 import type { SortOrder } from 'antd/es/table/interface';
 import type { ReactNode } from 'react';
 
@@ -158,58 +158,98 @@ export const GENDER_OBJECT: Record<EGender, ReactNode> = {
 };
 
 export const CONTROL_ELEMENTS = {
-  TEXT: <Input size="small" placeholder="Nhập..." />,
-  SELECT: <Select size="small" placeholder="Chọn giá trị..." />,
-  RADIO: <Radio checked />,
-  CHECKBOX: <Checkbox checked />,
-  IMAGE: <ControlImageIcon height={32} />,
-  DATETIME: <DatePicker placeholder="Chọn ngày tháng năm" />,
-  NUMBER: <InputNumber value={1} />,
-  SWITCH: <Switch checked />,
-  LINK: <Typography.Link>Link</Typography.Link>,
-  EDITOR: <Input.TextArea size="small" rows={1} />,
+  BLOCK_OF_TEXT: (
+    <Flex gap={16}>
+      <ControlType1Icon /> Block of text
+    </Flex>
+  ),
+  COMBO_BOX: (
+    <Flex gap={16}>
+      <ControlType4Icon /> Combo box
+    </Flex>
+  ),
+  RADIO_BUTTON_GROUP: (
+    <Flex gap={16}>
+      <ControlType3Icon /> Radio button group
+    </Flex>
+  ),
+  CHECKBOX_LIST: (
+    <Flex gap={16}>
+      <ControlType2Icon /> Checkbox list
+    </Flex>
+  ),
+  BUTTON: (
+    <Flex gap={16}>
+      <ControlType5Icon /> Button
+    </Flex>
+  ),
+  DATE_PICKER: (
+    <Flex gap={16}>
+      <ControlType6Icon /> Date picker
+    </Flex>
+  ),
+  IMAGE: (
+    <Flex gap={16}>
+      <ControlType7Icon /> Image
+    </Flex>
+  ),
+  ON_OFF_SWITCH: (
+    <Flex gap={16}>
+      <ControlType8Icon /> On off switch
+    </Flex>
+  ),
+  NUMBER_STEPPER: (
+    <Flex gap={16}>
+      <ControlType9Icon /> Number stepper
+    </Flex>
+  ),
+  LINK: (
+    <Flex gap={16}>
+      <ControlType10Icon /> Link
+    </Flex>
+  ),
 };
 
 export const CONTROL_TYPE_OPTIONS = [
   {
-    value: 'TEXT',
-    label: optionElementWrapper('Text', CONTROL_ELEMENTS.TEXT),
+    value: 'BLOCK_OF_TEXT',
+    label: optionElementWrapper('Text', CONTROL_ELEMENTS.BLOCK_OF_TEXT),
   },
   {
-    value: 'SELECT',
-    label: optionElementWrapper('Select', CONTROL_ELEMENTS.SELECT),
+    value: 'COMBO_BOX',
+    label: optionElementWrapper('Select', CONTROL_ELEMENTS.COMBO_BOX),
   },
   {
-    value: 'RADIO',
-    label: optionElementWrapper('Radio', CONTROL_ELEMENTS.RADIO),
+    value: 'RADIO_BUTTON_GROUP',
+    label: optionElementWrapper('Radio', CONTROL_ELEMENTS.RADIO_BUTTON_GROUP),
   },
   {
-    value: 'CHECKBOX',
-    label: optionElementWrapper('Checkbox', CONTROL_ELEMENTS.CHECKBOX),
+    value: 'CHECKBOX_LIST',
+    label: optionElementWrapper('Checkbox', CONTROL_ELEMENTS.CHECKBOX_LIST),
   },
   {
     value: 'IMAGE',
     label: optionElementWrapper('Hình ảnh', CONTROL_ELEMENTS.IMAGE),
   },
   {
-    value: 'DATETIME',
-    label: optionElementWrapper('Ngày tháng', CONTROL_ELEMENTS.DATETIME),
+    value: 'DATE_PICKER',
+    label: optionElementWrapper('Ngày tháng', CONTROL_ELEMENTS.DATE_PICKER),
   },
   {
-    value: 'NUMBER',
-    label: optionElementWrapper('Số', CONTROL_ELEMENTS.NUMBER),
+    value: 'NUMBER_STEPPER',
+    label: optionElementWrapper('Số', CONTROL_ELEMENTS.NUMBER_STEPPER),
   },
   {
-    value: 'SWITCH',
-    label: optionElementWrapper('Switch', CONTROL_ELEMENTS.SWITCH),
+    value: 'ON_OFF_SWITCH',
+    label: optionElementWrapper('Switch', CONTROL_ELEMENTS.ON_OFF_SWITCH),
   },
   {
     value: 'LINK',
     label: optionElementWrapper('Liên kết', CONTROL_ELEMENTS.LINK),
   },
   {
-    value: 'EDITOR',
-    label: optionElementWrapper('Trình soạn thảo', CONTROL_ELEMENTS.EDITOR),
+    value: 'BUTTON',
+    label: optionElementWrapper('Nút', CONTROL_ELEMENTS.BUTTON),
   },
 ];
 

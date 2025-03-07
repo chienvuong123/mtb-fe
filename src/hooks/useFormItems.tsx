@@ -1,4 +1,5 @@
 import {
+  Checkbox,
   Col,
   DatePicker,
   Form,
@@ -13,7 +14,6 @@ import {
 } from 'antd';
 import React, { useMemo, type FocusEvent } from 'react';
 
-import clsx from 'clsx';
 import {
   AButton,
   AInputArea,
@@ -22,13 +22,16 @@ import {
   AInputPassword,
   ASelect,
 } from '@components/atoms';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import {
   INPUT_TYPE,
   type TFormItem,
   type TOTPProps,
   type TPasswordProps,
 } from '@types';
-import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
+import clsx from 'clsx';
+import type { ReactQuillProps } from 'react-quill';
+import ReactQuill from 'react-quill';
 import { PlusIcon } from '@assets/icons';
 import type { DefaultOptionType } from 'antd/es/select';
 import { REMOVE_ACCENTS_REGEX } from '@constants/regex';
@@ -121,6 +124,10 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
   [INPUT_TYPE.LABEL]: (props: GetProps<typeof Typography>) => (
     <Typography {...props} />
   ),
+  [INPUT_TYPE.CHECKBOX]: (props: GetProps<typeof Checkbox>) => (
+    <Checkbox {...props} />
+  ),
+  [INPUT_TYPE.EDITOR]: (props: ReactQuillProps) => <ReactQuill {...props} />,
 };
 
 const useFormItems = ({ formItems, rowProps, form }: IFormItemsProps = {}) => {

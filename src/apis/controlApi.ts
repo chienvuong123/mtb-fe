@@ -3,7 +3,7 @@ import { BaseApi } from './baseApi';
 
 class ControlApi extends BaseApi<ControlDTO, ControlSearchRequest> {
   constructor() {
-    super('/control/v1.0');
+    super('/control-type/v1.0');
   }
 }
 

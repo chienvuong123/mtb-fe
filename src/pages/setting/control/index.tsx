@@ -1,8 +1,6 @@
-import type { ControlDTO, ControlSearchRequest } from '@dtos';
-import { Drawer } from 'antd';
+import type { BaseResponse, ControlDTO, ControlSearchRequest } from '@dtos';
 import Title from 'antd/lib/typography/Title';
-import dayjs from 'dayjs';
-import { type FC, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 
 import type { IMPagination, TPagination } from '@components/molecules';
 
@@ -14,124 +12,167 @@ import {
 } from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
 import { filterObject } from '@utils/objectHelper';
+import type { TFormType } from '@types';
+import { useNotification } from '@libs/antd';
+import { validationHelper } from '@utils/validationHelper';
+import { ODrawer } from '@components/organisms';
 import ControlInsertForm from './components/ControlInsertForm';
 import ControlSearchForm from './components/ControlSearchForm';
-import ControlTable, { type TControlRecord } from './components/ControlTable';
+import ControlTable from './components/ControlTable';
 import './index.scss';
 
 const SettingControlPage: FC = () => {
-  const [showInsertForm, setShowInsertForm] = useState<boolean>(false);
-  const [initValues, setInitValues] = useState<Partial<TControlRecord> | null>(
+  const [initValues, setInitValues] = useState<Partial<ControlDTO> | null>(
     null,
   );
+  const [drawerMode, setDrawerMode] = useState<TFormType>();
 
-  const { filters, setFilters, pagination, setPagination, sort, setSort } =
-    useUrlParams<ControlSearchRequest>();
+  const notify = useNotification();
 
-  const { data: controlList } = useControlSearchQuery({
+  const {
+    pagination: { current, pageSize },
+    setPagination,
+    sort,
+    filters,
+    setFilters,
+  } = useUrlParams<ControlSearchRequest>();
+
+  const { data: controlList, isLoading } = useControlSearchQuery({
     page: {
-      pageSize: Number(pagination.pageSize),
-      pageNum: Number(pagination.current - 1),
+      pageNum: current,
+      pageSize,
     },
     order: sort,
     ...filterObject(filters),
   });
 
-  const handleCloseForm = () => setShowInsertForm(false);
-  const handleReset = () => {
-    handleCloseForm();
-    setInitValues(null);
-  };
-  const addControlMutation = useControlAddMutation({}, handleReset);
-  const editControlMutation = useControlEditMutation({}, handleReset);
-  const removeControlMutation = useControlRemoveMutation({}, handleReset);
+  const { mutate: addMutate } = useControlAddMutation();
+  const { mutate: editMutate } = useControlEditMutation();
+  const { mutate: removeMutate } = useControlRemoveMutation({});
 
-  const handleEdit = (data: TControlRecord) => {
+  const handleCloseForm = () => {
+    setDrawerMode(undefined);
+  };
+
+  const handleInvalidate = (
+    d?: BaseResponse<boolean>,
+    mode: 'create' | 'edit' | 'remove' = 'create',
+  ) => {
+    const title = {
+      create: 'Tạo mới',
+      edit: 'Chỉnh sửa',
+      remove: 'Xóa',
+    };
+    if (d)
+      validationHelper(d, notify, () => {
+        notify({
+          message: `${title[mode]} thành công`,
+          type: 'success',
+        });
+        handleCloseForm();
+        setInitValues(null);
+      });
+  };
+
+  const handleCreate = () => {
+    setInitValues(null);
+    setDrawerMode('add');
+  };
+
+  const handleEdit = (data: ControlDTO) => {
     setInitValues(data);
-    setShowInsertForm(true);
+    setDrawerMode('edit');
+  };
+
+  const handleView = (id: string) => {
+    const control = controlList?.data?.content?.find((c) => c.id === id);
+    if (control) {
+      setInitValues(control);
+      setDrawerMode('view');
+    }
   };
 
   const handleSearch = (values: ControlSearchRequest) => {
     setFilters(values);
   };
 
-  const handlePaginationChange = (data: TPagination) => {
+  const handlePaginationChange = (paginationData: TPagination) => {
     setPagination({
-      ...data,
-      current: data.pageSize !== pagination.pageSize ? 1 : data.current,
-    });
-
-    // This for testing
-    setSort({
-      field: 'code',
-      direction: 'desc',
+      ...paginationData,
+      current:
+        paginationData.pageSize !== pageSize ? 1 : paginationData.current,
     });
   };
 
-  const handleSubmitUpsert = ({
-    name,
-    code,
-    status,
-    controlType,
-    createdBy,
-    createdDate,
-    updatedBy,
-    updatedDate,
-  }: ControlDTO) => {
+  const handleSubmitUpsert = ({ name, type }: ControlDTO) => {
     const data = {
       id: '',
-      reqNo: '',
       name,
-      code, // insert from client??
-      controlType,
-      status,
-      createdBy, // insert from client??
-      createdDate: dayjs(createdDate).toISOString(), // insert from client??
-      updatedBy, // insert from client??
-      updatedDate: dayjs(updatedDate).toISOString(), // insert from client??
+      type,
     };
     if (initValues?.id) {
       data.id = initValues.id;
-      addControlMutation.mutate(data);
+      editMutate(data, {
+        onSuccess: (resData) => handleInvalidate(resData, 'edit'),
+      });
     } else {
-      editControlMutation.mutate(data);
+      addMutate(data, {
+        onSuccess: (resData) => handleInvalidate(resData, 'create'),
+      });
     }
   };
 
   const handleDelete = (id: string) => {
-    removeControlMutation.mutate({ id });
+    removeMutate(
+      { id },
+      {
+        onSuccess: (resData) => handleInvalidate(resData, 'remove'),
+      },
+    );
   };
 
   const paginationProps: IMPagination = {
     pagination: {
-      ...pagination,
-      total: controlList?.data?.page
-        ? controlList.data.page * (pagination?.pageSize || 20)
-        : 0,
+      current,
+      pageSize,
+      total: controlList?.data?.total || 0,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
     className: 'flex-end',
   };
 
+  useEffect(() => {
+    if (!isLoading && !controlList?.data?.content?.length && current > 1) {
+      setPagination((prev) => ({
+        ...prev,
+        current: prev.current - 1,
+        total: controlList?.data?.total ?? 1,
+      }));
+    }
+  }, [controlList, setPagination, current, isLoading]);
+
   return (
     <div className="pt-32">
       <Title level={3} className="mb-24">
         Danh mục Control Attribute
       </Title>
-      <ControlSearchForm onSearch={handleSearch} />
+      <ControlSearchForm onSearch={handleSearch} onCreate={handleCreate} />
       <div className="mt-24" />
       <ControlTable
+        paginations={paginationProps}
         dataSource={controlList?.data?.content ?? []}
-        pagination={paginationProps}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onView={handleView}
       />
 
-      <Drawer
-        title={`${initValues?.id ? 'Chỉnh sửa' : 'Tạo mới'} danh mục control attribute`}
+      <ODrawer
+        usePrefixTitle
+        title="danh mục control attribute"
+        mode={drawerMode}
         onClose={handleCloseForm}
-        open={showInsertForm}
+        open={!!drawerMode}
         width={1025}
         maskClosable={false}
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
@@ -140,8 +181,9 @@ const SettingControlPage: FC = () => {
           onClose={handleCloseForm}
           initialValues={initValues}
           onSubmit={handleSubmitUpsert}
+          mode={drawerMode}
         />
-      </Drawer>
+      </ODrawer>
     </div>
   );
 };
