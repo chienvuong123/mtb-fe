@@ -28,4 +28,5 @@ export interface CBaseTable<T> {
   onView?: (id: string) => void;
   onSort?: (field: string, direction: SortOrder) => void;
   onCall?: (record: T) => void;
+  onList?: (id: string) => void;
 }

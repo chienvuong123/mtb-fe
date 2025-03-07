@@ -25,6 +25,7 @@ export interface CampaignDTO extends BaseEntity {
   endDate?: string;
   categoryCode?: string;
   campaignCode?: string;
+  categoryId: string;
 }
 
 export interface CampaignSearchRequest extends BaseSearchParams {

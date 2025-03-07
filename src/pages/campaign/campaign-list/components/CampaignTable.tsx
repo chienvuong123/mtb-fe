@@ -87,6 +87,7 @@ const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
   onDelete,
   onView,
   onSort,
+  onList,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
@@ -104,6 +105,7 @@ const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
       selectedRowKeys={selectedRowKeys}
       onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
       onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
+      onList={(id) => onList?.(id as string)}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}

@@ -34,6 +34,7 @@ export { ReactComponent as TrashIcon } from './trash.svg';
 export { ReactComponent as Upload05Icon } from './upload-05.svg';
 export { ReactComponent as UserMultipleIcon } from './user-multiple.svg';
 export { ReactComponent as UserSettingsIcon } from './user-settings-01.svg';
+export { ReactComponent as UserCheckIcon } from './user-check.svg';
 export { ReactComponent as ViewOffIcon } from './view-off.svg';
 export { ReactComponent as ViewIcon } from './view.svg';
 export { ReactComponent as InfoIcon } from './Info.svg';

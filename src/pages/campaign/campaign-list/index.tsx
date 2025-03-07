@@ -16,7 +16,7 @@ import {
   useCampaignSearchQuery,
 } from '@hooks/queries';
 import { useNavigate } from 'react-router-dom';
-import { MANAGER_CAMPAIGN } from '@routers/path';
+import { CUSTOMER, MANAGER_CAMPAIGN } from '@routers/path';
 import { ExportIcon } from '@assets/icons';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
@@ -107,6 +107,15 @@ const Campaign: React.FC = () => {
     }
   };
 
+  const handleCustomerListView = (id: string) => {
+    const item = campaignRes?.data.content.find((i) => i.id === id);
+    if (item) {
+      navigate(
+        `${CUSTOMER.ROOT}/${CUSTOMER.CUSTOMER_CAMPAIGN_LIST}?categoryId=${item.categoryId}&campaignId=${item.id}`,
+      );
+    }
+  };
+
   const handleSort = (field: string, direction: SortOrder) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
@@ -161,6 +170,7 @@ const Campaign: React.FC = () => {
         onDelete={handleDelete}
         onView={handleView}
         onSort={handleSort}
+        onList={handleCustomerListView}
       />
     </div>
   );
