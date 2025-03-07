@@ -8,39 +8,48 @@ import useFormItems from '@hooks/useFormItems';
 import { CONFIRM_PASSWORD, FORGOT_PASSWORD } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { getOTPCheck, saveOTPCheck } from '@utils/otpHelper';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'antd/es/form/Form';
 import { LayoutWrapper } from '../components';
 import { FooterAuth } from '../components/footer';
 import { FormContentAuth } from '../components/form-content';
 
 import './index.scss';
 
-const items: TFormItem[] = [
-  {
-    type: INPUT_TYPE.OTP,
-    label: '',
-    name: 'otp',
-    inputProps: {
-      type: 'number',
-    },
-    colProps: { span: 24, className: 'fw-500' },
-    rules: [
-      {
-        required: true,
-      },
-    ],
-  },
-];
-
 const ERROR_ALLOW = 5;
 
 const OTP = () => {
   const [errorAllowed, setErrorAllowed] = useState(ERROR_ALLOW);
   const [alert, setAlert] = useState('');
+  const [form] = useForm();
 
   const navigate = useNavigate();
   const valueValidOtp = getOTPCheck();
+
+  const items = useMemo(() => {
+    const formItems: TFormItem[] = [
+      {
+        type: INPUT_TYPE.OTP,
+        label: '',
+        name: 'otp',
+        inputProps: {
+          type: 'number',
+          onInput: (value) => {
+            form.setFieldValue('otp', value.join(''));
+          },
+        },
+        colProps: { span: 24, className: 'fw-500' },
+        rules: [
+          {
+            required: true,
+          },
+        ],
+      },
+    ];
+    return formItems;
+  }, [form]);
+
   const { formContent } = useFormItems({
     formItems: items,
     rowProps: { gutter: [0, 16] },
@@ -64,7 +73,6 @@ const OTP = () => {
   }, [mutateVerifyInfoUser, valueValidOtp]);
 
   const handleVerifyOtp = (values: UserInfoOtpRequest) => {
-    if (values.otp?.length !== 6) return;
     const data = {
       username: valueValidOtp.username,
       otp: values.otp,
@@ -110,6 +118,7 @@ const OTP = () => {
         <LogoOpenIcon />
 
         <FormContentAuth
+          form={form}
           title="Nhập OTP"
           subTitle={
             <>

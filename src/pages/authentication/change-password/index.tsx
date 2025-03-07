@@ -102,7 +102,7 @@ const ChangePassword = () => {
 
   const handleInValidate = ({
     alertTextValue,
-    pathRedirect = HOME,
+    pathRedirect = LOGIN,
     typeAlertValue = 'success',
     isRedirect = true,
   }: TInValidate) => {
