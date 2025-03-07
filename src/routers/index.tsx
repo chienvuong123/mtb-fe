@@ -18,6 +18,7 @@ import {
   EXPRIED_CHANGE_PASSWORD,
   SELLER,
   SETTING,
+  ACCOUNT_MANAGEMENT,
 } from './path';
 
 const GuestGuard = React.lazy(() => import('./guards/GuestGuard'));
@@ -337,6 +338,10 @@ const routes = createBrowserRouter(
               ),
             },
           ],
+        },
+        {
+          path: ACCOUNT_MANAGEMENT,
+          element: createLazyElement(() => import('@pages/account-management')),
         },
       ],
     },
