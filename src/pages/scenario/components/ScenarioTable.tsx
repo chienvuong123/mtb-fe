@@ -5,7 +5,6 @@ import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
-import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import { useState, type FC, type Key } from 'react';
 
 export type TScenarioRecord = ApproachScriptDTO;
@@ -110,10 +109,7 @@ const ScenarioTable: FC<CBaseTable<ApproachScriptDTO>> = ({
       sortDirection={sortDirection}
       paginations={paginations}
       onView={(id) => onView?.(id as string)}
-      onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<TScenarioRecord>;
-        onSort?.(field as string, order as SortOrder);
-      }}
+      onSort={onSort}
     />
   );
 };

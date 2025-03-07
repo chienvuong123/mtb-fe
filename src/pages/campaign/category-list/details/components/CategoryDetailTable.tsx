@@ -1,10 +1,8 @@
-import type { IMPagination } from '@components/molecules';
 import { OTable } from '@components/organisms';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
-import type { OrderDTO, TId } from '@dtos';
+import type { TId } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
-import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import React from 'react';
 import Title from 'antd/lib/typography/Title';
 import { useParams } from 'react-router-dom';
@@ -12,19 +10,13 @@ import type { CategoryScriptDTO } from 'src/dtos/manage-category-detail';
 import { EStatusCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import dayjs from 'dayjs';
+import type { CBaseTable } from '@types';
 
 const BUTTON_TEXT = {
   ADD: 'Thêm mới',
 } as const;
 
 export type TCategoryDetaillRecord = Partial<CategoryScriptDTO>;
-
-interface ICategoryDetailTable {
-  dataSource: TCategoryDetaillRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-  onSort: (field: string, direction: SortOrder) => void;
-}
 
 const columns: ColumnType<TCategoryDetaillRecord>[] = [
   {
@@ -82,7 +74,7 @@ const columns: ColumnType<TCategoryDetaillRecord>[] = [
   },
 ];
 
-const CampaignDetailTable: React.FC<ICategoryDetailTable> = ({
+const CampaignDetailTable: React.FC<CBaseTable<TCategoryDetaillRecord>> = ({
   dataSource,
   paginations,
   sortDirection,
@@ -111,10 +103,7 @@ const CampaignDetailTable: React.FC<ICategoryDetailTable> = ({
         sortDirection={sortDirection}
         hideActions
         scroll={{ x: 1575 }}
-        onChange={(_p, _f, s) => {
-          const { field, order } = s as SorterResult<TCategoryDetaillRecord>;
-          onSort(field as string, order as SortOrder);
-        }}
+        onSort={onSort}
       />
     </div>
   );

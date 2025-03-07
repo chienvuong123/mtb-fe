@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { filterObject } from '@utils/objectHelper';
 import { useNotification } from '@libs/antd';
 import { validationHelper } from '@utils/validationHelper';
-import type { SortOrder } from 'antd/es/table/interface';
+import type { TBaseTableSort } from '@types';
 import ScenarioSearchForm from './components/ScenarioSearchForm';
 import ScenarioTable, {
   type TScenarioRecord,
@@ -82,7 +82,7 @@ const ScenarioPage: FC = () => {
     navigate(`${SCENARIO.ROOT}/${id}`);
   };
 
-  const handleSort = (field: string, direction: SortOrder) => {
+  const handleSort = ({ field, direction }: TBaseTableSort) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
       field,

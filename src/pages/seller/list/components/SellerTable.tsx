@@ -1,12 +1,10 @@
-import { OTable } from '@components/organisms';
+import { OTable, type TColumnType } from '@components/organisms';
 import type { SellerDTO } from '@dtos';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
-import type { ColumnType } from 'antd/es/table';
-import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useState, type FC } from 'react';
 
-const columns: ColumnType<SellerDTO>[] = [
+const columns: TColumnType<SellerDTO>[] = [
   {
     title: 'Mã',
     dataIndex: ['user', 'employeeCode'],
@@ -20,6 +18,8 @@ const columns: ColumnType<SellerDTO>[] = [
     width: 271,
     sorter: true,
     showSorterTooltip: false,
+    unicodeSort: true,
+    sortFieldName: 's.user',
   },
   {
     title: 'Tổng số Campaign tham gia',
@@ -97,10 +97,7 @@ const SellerTable: FC<CBaseTable<SellerDTO>> = ({
       paginations={paginations}
       sortDirection={sortDirection}
       onView={(id) => onView?.(id as string)}
-      onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<SellerDTO>;
-        onSort?.(field as string, order as SortOrder);
-      }}
+      onSort={onSort}
       scroll={{ x: 1575 }}
     />
   );

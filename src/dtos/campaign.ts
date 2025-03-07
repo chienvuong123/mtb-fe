@@ -1,4 +1,5 @@
 import type { ApproachPlanDTO } from './approach-plan';
+import type { CategoryDTO } from './category';
 import type {
   BaseEntity,
   BaseResponse,
@@ -26,6 +27,7 @@ export interface CampaignDTO extends BaseEntity {
   categoryCode?: string;
   campaignCode?: string;
   categoryId: string;
+  categoryCampaign?: CategoryDTO;
 }
 
 export interface CampaignSearchRequest extends BaseSearchParams {

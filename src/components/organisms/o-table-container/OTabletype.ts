@@ -1,6 +1,6 @@
 import type { IMPagination } from '@components/molecules';
 import type { OrderDTO } from '@dtos';
-import { INPUT_TYPE } from '@types';
+import { INPUT_TYPE, type TBaseTableSort } from '@types';
 import type {
   DatePickerProps,
   InputNumberProps,
@@ -17,6 +17,11 @@ import type { GetRowKey } from 'antd/es/table/interface';
 import type { IModalConfirm } from '../o-modal';
 
 export type FixedType = 'left' | 'right' | boolean;
+
+export type TColumnType<T> = ColumnType<T> & {
+  unicodeSort?: boolean;
+  sortFieldName?: string;
+};
 
 export type EditableCellInputProps =
   | {
@@ -58,7 +63,7 @@ export interface ITable<T> extends TableProps<T> {
   hideIndexColumn?: boolean;
   isShowDeleteBtn?: boolean;
   paginations?: IMPagination;
-  columns: ColumnType<T>[];
+  columns: TColumnType<T>[];
   sortDirection?: OrderDTO;
   confirmProps?: IModalConfirm;
   isCheckboxHidden?: boolean;
@@ -68,5 +73,6 @@ export interface ITable<T> extends TableProps<T> {
   onView?: (key: Key) => void;
   onList?: (key: Key) => void;
   onCall?: (record: T) => void;
+  onSort?: (sort: TBaseTableSort) => void;
   tableRowKey?: GetRowKey<T>;
 }

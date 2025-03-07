@@ -11,10 +11,9 @@ import {
   useAccountManagementRemoveMutation,
 } from '@hooks/queries/accountManagementQueries';
 import useUrlParams from '@hooks/useUrlParams';
-import type { TFormType } from '@types';
+import type { TBaseTableSort, TFormType } from '@types';
 
 import { validateInsertCategory } from '@pages/category/utils';
-import type { SortOrder } from 'antd/es/table/interface';
 import Title from 'antd/lib/typography/Title';
 import { useEffect, useMemo, useState } from 'react';
 import type { AccountRequest, UserDTO } from 'src/dtos/auth';
@@ -109,11 +108,12 @@ const AccountManagementPage = () => {
     }
   };
 
-  const handleSort = (field: string, direction: SortOrder) => {
+  const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      unicode: unicodeSort,
     });
   };
 

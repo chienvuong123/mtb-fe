@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
 import useUrlParams from '@hooks/useUrlParams';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import type { SortOrder } from 'antd/es/table/interface';
 import type { IMPagination, TPagination } from '@components/molecules';
 import { downloadFileByGetMethod, filterObject } from '@utils/objectHelper';
 import type {
@@ -22,6 +21,7 @@ import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
 import { useNotification } from '@libs/antd';
 import { dayjsToString } from '@utils/dateHelper';
+import type { TBaseTableSort } from '@types';
 import { CampaignSearch, CampaignTable } from './components';
 
 const Campaign: React.FC = () => {
@@ -116,7 +116,7 @@ const Campaign: React.FC = () => {
     }
   };
 
-  const handleSort = (field: string, direction: SortOrder) => {
+  const handleSort = ({ direction, field }: TBaseTableSort) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
       field,

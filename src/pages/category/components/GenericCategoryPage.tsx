@@ -10,8 +10,7 @@ import type {
 import { ODrawer } from '@components/organisms';
 import useUrlParams from '@hooks/useUrlParams';
 import { useNotification } from '@libs/antd';
-import type { SortOrder } from 'antd/es/table/interface';
-import type { TFormType } from '@types';
+import type { TBaseTableSort, TFormType } from '@types';
 import { formatDate } from '@utils/dateHelper';
 import { filterObject } from '@utils/objectHelper';
 import { createCategoryQueryHooks } from '@hooks/queries/categoryQueries';
@@ -162,7 +161,7 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
     setFilters({ code: undefined, name: undefined, status: EStatus.ACTIVE });
   };
 
-  const handleSort = (field: string, direction: SortOrder) => {
+  const handleSort = ({ field, direction }: TBaseTableSort) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
       field,

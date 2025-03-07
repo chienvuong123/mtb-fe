@@ -4,6 +4,12 @@ import type { SortOrder } from 'antd/es/table/interface';
 import type { FormInstance } from 'antd';
 import type { TFormType } from './formItem.types';
 
+export type TBaseTableSort = {
+  field: string;
+  direction: SortOrder;
+  unicodeSort?: boolean;
+};
+
 export interface CBaseForm<T, P = T> {
   mode?: TFormType;
   initialValues?: Partial<T> | null;
@@ -26,7 +32,7 @@ export interface CBaseTable<T> {
   onEdit?: (record: T) => void;
   onDelete?: (id: string) => void;
   onView?: (id: string) => void;
-  onSort?: (field: string, direction: SortOrder) => void;
+  onSort?: (sort: TBaseTableSort) => void;
   onCall?: (record: T) => void;
   onList?: (id: string) => void;
 }

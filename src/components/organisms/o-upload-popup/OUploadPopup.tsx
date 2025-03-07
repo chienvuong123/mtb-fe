@@ -26,6 +26,7 @@ export interface IUploadPopup {
   progress?: number;
   showError?: boolean | string;
   disabled?: boolean;
+  templateDownloadLoading?: boolean;
   onSubmit?: (file: UploadFile[], resetField?: () => void) => void;
   onDownloadEg?: () => void;
   onCancelImport?: () => void;
@@ -42,6 +43,7 @@ const OUploadPopup: FC<IUploadPopup> = ({
   progress,
   showError,
   disabled,
+  templateDownloadLoading,
   onSubmit,
   onDownloadEg,
   onCancelImport,
@@ -155,7 +157,11 @@ const OUploadPopup: FC<IUploadPopup> = ({
               >
                 Tải template
               </Typography.Text>
-              <AButton icon={<SheetIcon />} onClick={onDownloadEg}>
+              <AButton
+                icon={<SheetIcon />}
+                onClick={onDownloadEg}
+                loading={templateDownloadLoading}
+              >
                 Tải về
               </AButton>
             </>

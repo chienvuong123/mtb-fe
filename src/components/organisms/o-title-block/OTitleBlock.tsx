@@ -12,6 +12,7 @@ interface ITitleBlock {
   popupProps?: IUploadPopup;
   showImport?: boolean;
   showExport?: boolean;
+  exportLoading?: boolean;
   onExport?: () => void;
   onImport?: (
     file: UploadFile[],
@@ -29,6 +30,7 @@ const OTitleBlock: FC<ITitleBlock> = ({
   popupProps,
   showImport,
   showExport = true,
+  exportLoading,
   onImport,
   onExport,
   onDownloadEg,
@@ -95,6 +97,7 @@ const OTitleBlock: FC<ITitleBlock> = ({
               color="primary"
               icon={<ExportIcon />}
               onClick={onExport}
+              loading={exportLoading}
             >
               Export
             </AButton>

@@ -1,11 +1,9 @@
-import { OTable } from '@components/organisms';
 import type { IModalConfirm } from '@components/organisms/o-modal';
+import { OTable, type TColumnType } from '@components/organisms';
 import { EStatus, STATUS_OBJECT_STATIC } from '@constants/masterData';
 import type { CategoryDTO } from '@dtos';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
-import type { SorterResult, SortOrder } from 'antd/es/table/interface';
-import type { ColumnType } from 'antd/lib/table';
 import { useState, type FC, type Key } from 'react';
 import type { UserDTO } from 'src/dtos/auth';
 
@@ -15,7 +13,7 @@ const confirmProps: IModalConfirm = {
 
 export type TAccountManagementRecord = Partial<UserDTO>;
 
-const columns: ColumnType<TAccountManagementRecord>[] = [
+const columns: TColumnType<TAccountManagementRecord>[] = [
   {
     title: 'Mã nhân viên',
     dataIndex: 'employeeCode',
@@ -32,7 +30,9 @@ const columns: ColumnType<TAccountManagementRecord>[] = [
     title: 'Họ và tên',
     dataIndex: 'fullName',
     minWidth: 164,
+    sorter: true,
     showSorterTooltip: false,
+    unicodeSort: true,
   },
   {
     title: 'Chức vụ',
@@ -106,10 +106,7 @@ const AccountTable: FC<CBaseTable<TAccountManagementRecord>> = ({
       sortDirection={sortDirection}
       isCheckboxHidden
       onView={(id) => onView?.(id as string)}
-      onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<TAccountManagementRecord>;
-        onSort?.(field as string, order as SortOrder);
-      }}
+      onSort={onSort}
       scroll={{ x: 1300 }}
       confirmProps={confirmProps}
     />

@@ -1,5 +1,9 @@
 import { Table } from 'antd';
-import type { TableRowSelection } from 'antd/es/table/interface';
+import type {
+  SortOrder,
+  SorterResult,
+  TableRowSelection,
+} from 'antd/es/table/interface';
 import { useMemo, useState, type Key } from 'react';
 
 import { MPagination } from '@components/molecules';
@@ -8,7 +12,7 @@ import type { ColumnType } from 'antd/es/table';
 import clsx from 'clsx';
 import { getTableIndex } from '@pages/category/utils';
 import { OModalConfirm } from '../o-modal';
-import type { FixedType, ITable } from './OTabletype';
+import type { FixedType, ITable, TColumnType } from './OTabletype';
 import './styles.scss';
 import TableActions from './TableActions';
 
@@ -29,6 +33,7 @@ const OTable = <T extends object>({
   onView,
   onCall,
   onList,
+  onSort,
   setSelectedRowKeys,
   ...props
 }: ITable<T>) => {
@@ -183,6 +188,15 @@ const OTable = <T extends object>({
         scroll={{ x: 'max-content' }}
         locale={{ emptyText: 'Không có dữ liệu' }}
         rowKey={tableRowKey || ((record) => record[rowKey] as Key)}
+        onChange={(_p, _f, s) => {
+          const { field, order, column } = s as SorterResult<T>;
+          const record = column as TColumnType<T>;
+          onSort?.({
+            field: record?.sortFieldName ?? (field as string),
+            direction: order as SortOrder,
+            unicodeSort: record?.unicodeSort,
+          });
+        }}
         {...props}
       />
       {paginations && <MPagination {...paginations} />}

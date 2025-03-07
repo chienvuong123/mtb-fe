@@ -14,6 +14,7 @@ class CustomerApi extends BaseApi<CustomerDTO, CustomerSearchRequest> {
       url: `${this.endpoint}/download-template`,
       method: 'GET',
       responseType: 'blob',
+      timeout: Infinity,
     });
   }
 
@@ -23,6 +24,7 @@ class CustomerApi extends BaseApi<CustomerDTO, CustomerSearchRequest> {
       method: 'GET',
       params,
       responseType: 'blob',
+      timeout: Infinity,
     });
   }
 

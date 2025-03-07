@@ -1,26 +1,14 @@
-import type { IMPagination } from '@components/molecules';
-import { OTable, type ITable } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { EStatusCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
-import type { OrderDTO } from '@dtos';
 import { useProfile } from '@stores';
-import type { SorterResult, SortOrder } from 'antd/es/table/interface';
+import type { CBaseTable } from '@types';
 import type { ColumnType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useState, type Key } from 'react';
 import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
 
 export type TCategoryTableRecord = Partial<ManagerCategoryDTO>;
-
-interface ICategoryTable {
-  dataSource: TCategoryTableRecord[];
-  paginations: IMPagination;
-  sortDirection?: OrderDTO;
-  onEdit: ITable<TCategoryTableRecord>['onEdit'];
-  onDelete: (id: string) => void;
-  onView: (id: string) => void;
-  onSort: (field: string, direction: SortOrder) => void;
-}
 
 const columns: ColumnType<TCategoryTableRecord>[] = [
   {
@@ -92,7 +80,7 @@ const columns: ColumnType<TCategoryTableRecord>[] = [
   },
 ];
 
-const CategoryTable: React.FC<ICategoryTable> = ({
+const CategoryTable: React.FC<CBaseTable<TCategoryTableRecord>> = ({
   dataSource,
   paginations,
   sortDirection,
@@ -105,7 +93,7 @@ const CategoryTable: React.FC<ICategoryTable> = ({
   const { isAdmin, isCampaignManager } = useProfile();
 
   const deleteRecord = (key: Key) => {
-    onDelete(key as string);
+    onDelete?.(key as string);
   };
 
   return (
@@ -121,11 +109,8 @@ const CategoryTable: React.FC<ICategoryTable> = ({
       paginations={paginations}
       sortDirection={sortDirection}
       scroll={{ x: 1575 }}
-      onView={(id) => onView(id as string)}
-      onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<TCategoryTableRecord>;
-        onSort(field as string, order as SortOrder);
-      }}
+      onView={(id) => onView?.(id as string)}
+      onSort={onSort}
     />
   );
 };

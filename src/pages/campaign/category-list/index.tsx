@@ -3,7 +3,6 @@ import Title from 'antd/lib/typography/Title';
 import useUrlParams from '@hooks/useUrlParams';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { ODrawer } from '@components/organisms';
-import type { SortOrder } from 'antd/es/table/interface';
 import type { IMPagination, TPagination } from '@components/molecules';
 import { downloadFileByGetMethod, filterObject } from '@utils/objectHelper';
 import {
@@ -26,7 +25,7 @@ import type {
   ManagerCategoryDTO,
 } from 'src/dtos/manage-category';
 import { useNotification } from '@libs/antd';
-import type { TFormType } from '@types';
+import type { TBaseTableSort, TFormType } from '@types';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import dayjs from 'dayjs';
 import { validationHelper } from '@utils/validationHelper';
@@ -196,7 +195,7 @@ const ManageCategoryPage: React.FC = () => {
     }
   };
 
-  const handleSort = (field: string, direction: SortOrder) => {
+  const handleSort = ({ direction, field }: TBaseTableSort) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
       field,
