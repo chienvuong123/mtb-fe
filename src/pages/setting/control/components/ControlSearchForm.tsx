@@ -1,12 +1,9 @@
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { OSearchBaseForm } from '@components/organisms';
 import { useForm } from 'antd/es/form/Form';
 import { type FC } from 'react';
 import type { ControlSearchRequest } from '@dtos';
-
-interface IControlSearchForm {
-  onSearch: (values: ControlSearchRequest) => void;
-}
+import { useProfile } from '@stores';
 
 const items: TFormItem[] = [
   {
@@ -23,8 +20,12 @@ const items: TFormItem[] = [
   },
 ];
 
-const ControlSearchForm: FC<IControlSearchForm> = ({ onSearch }) => {
+const ControlSearchForm: FC<CBaseSearch<ControlSearchRequest>> = ({
+  onSearch,
+  onCreate,
+}) => {
   const [form] = useForm();
+  const { isAdmin, isCampaignManager } = useProfile();
 
   return (
     <div>
@@ -32,6 +33,7 @@ const ControlSearchForm: FC<IControlSearchForm> = ({ onSearch }) => {
         items={items}
         form={form}
         onSearch={onSearch}
+        onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
       />
     </div>
   );

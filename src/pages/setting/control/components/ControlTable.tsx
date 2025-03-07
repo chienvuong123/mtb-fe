@@ -1,22 +1,13 @@
-import type { IMPagination } from '@components/molecules';
-import { OTable, type ITable } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
 import { CONTROL_ELEMENTS } from '@constants/masterData';
 import type { ControlDTO } from '@dtos';
+import type { CBaseTable } from '@types';
 import type { ColumnType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import { useState, type FC, type Key } from 'react';
+import { type FC } from 'react';
 
-export type TControlRecord = ControlDTO;
-
-interface IControlTable {
-  dataSource: TControlRecord[];
-  pagination: IMPagination;
-  onEdit: ITable<TControlRecord>['onEdit'];
-  onDelete: (id: string) => void;
-}
-
-const columns: ColumnType<TControlRecord>[] = [
+const columns: ColumnType<ControlDTO>[] = [
   {
     title: 'Mã',
     dataIndex: 'code',
@@ -29,7 +20,7 @@ const columns: ColumnType<TControlRecord>[] = [
   },
   {
     title: 'Control',
-    dataIndex: 'controlType',
+    dataIndex: 'type',
     minWidth: 150,
     render: (controlType: keyof typeof CONTROL_ELEMENTS) => (
       <div className="pointer-events-none">
@@ -59,28 +50,23 @@ const columns: ColumnType<TControlRecord>[] = [
   },
 ];
 
-const ControlTable: FC<IControlTable> = ({
+const ControlTable: FC<CBaseTable<ControlDTO>> = ({
   dataSource,
-  pagination,
+  paginations,
   onEdit,
+  onView,
   onDelete,
 }) => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-
-  const deleteRecord = (key: Key) => {
-    onDelete(key as string);
-  };
-
   return (
-    <OTable<TControlRecord>
+    <OTable<ControlDTO>
       rowKey="id"
       columns={columns}
       data={dataSource}
-      selectedRowKeys={selectedRowKeys}
-      onDeleteRow={deleteRecord}
+      onDeleteRow={(key) => onDelete?.(key as string)}
       onEdit={onEdit}
-      setSelectedRowKeys={setSelectedRowKeys}
-      paginations={pagination}
+      onView={(key) => onView?.(key as string)}
+      paginations={paginations}
+      isCheckboxHidden
     />
   );
 };

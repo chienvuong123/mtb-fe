@@ -1,24 +1,26 @@
 import type {
-  UploadProps,
-  FormItemProps,
-  InputProps,
+  CheckboxProps,
   ColProps,
-  InputNumberProps,
-  SelectProps,
   DatePickerProps,
-  TimePickerProps,
-  Input,
   FormInstance,
+  FormItemProps,
+  Input,
+  InputNumberProps,
+  InputProps,
+  SelectProps,
+  TimePickerProps,
+  UploadProps,
 } from 'antd';
 import type { GetProps } from 'antd/lib';
 import type { TextAreaProps } from 'antd/lib/input';
 import type { CSSProperties } from 'react';
+import type { ReactQuillProps } from 'react-quill';
 
 export type TFormType = 'add' | 'edit' | 'view';
 export interface IFormType<T, Init = T> {
-  mode: TFormType;
+  mode?: TFormType;
   form?: FormInstance<T>;
-  initialValues?: Init | null;
+  initialValues?: Partial<Init> | null;
 }
 
 export enum INPUT_TYPE {
@@ -34,6 +36,8 @@ export enum INPUT_TYPE {
   FILE,
   BLANK,
   LABEL,
+  CHECKBOX,
+  EDITOR,
 }
 
 export type TOTPProps = GetProps<typeof Input.OTP>;
@@ -92,4 +96,12 @@ export type TFormItem =
   | (TBaseFormItem & {
       type: INPUT_TYPE.LABEL;
       inputProps?: InputProps & { label: string };
+    })
+  | (TBaseFormItem & {
+      type: INPUT_TYPE.CHECKBOX;
+      inputProps?: CheckboxProps;
+    })
+  | (TBaseFormItem & {
+      type: INPUT_TYPE.EDITOR;
+      inputProps?: ReactQuillProps;
     });

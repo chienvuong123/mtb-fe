@@ -5,14 +5,14 @@ import type { FormInstance } from 'antd';
 import type { TFormType } from './formItem.types';
 
 export interface CBaseForm<T, P = T> {
-  mode: TFormType;
-  initialValues?: T | null;
+  mode?: TFormType;
+  initialValues?: Partial<T> | null;
   onClose?: () => void;
   onSubmit: (values: T, form?: FormInstance<P>) => void;
 }
 
 export interface CBaseSearch<T, P = T> {
-  initialValues?: T | null;
+  initialValues?: Partial<T> | null;
   onSearch: (values: P) => void;
   onClearAll?: () => void;
   onCreate?: (values?: T) => void;

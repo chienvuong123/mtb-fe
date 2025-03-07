@@ -1,4 +1,3 @@
-import { EControlType } from '@constants/masterData';
 import type {
   BaseEntity,
   BaseResponse,
@@ -9,7 +8,7 @@ import type {
 export interface ControlDTO extends BaseEntity {
   code: string;
   name: string;
-  controlType: EControlType;
+  type: string;
 }
 
 export interface ControlSearchRequest extends BaseSearchParams {

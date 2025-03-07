@@ -2,6 +2,7 @@ import { controlApi } from '@apis';
 import type { ControlDTO, ControlSearchRequest } from '@dtos';
 import { createBaseQueryHooks } from './baseQueries';
 
+export const CONTROL_TYPE = 'control-type';
 export const {
   useSearchQuery: useControlSearchQuery,
   useViewQuery: useControlViewQuery,
@@ -9,6 +10,6 @@ export const {
   useEditMutation: useControlEditMutation,
   useRemoveMutation: useControlRemoveMutation,
 } = createBaseQueryHooks<ControlDTO, ControlSearchRequest>(
-  'controls',
+  CONTROL_TYPE,
   controlApi,
 );

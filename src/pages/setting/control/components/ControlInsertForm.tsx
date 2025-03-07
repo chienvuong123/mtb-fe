@@ -1,25 +1,12 @@
 import { OBaseForm } from '@components/organisms';
 import { CONTROL_TYPE_OPTIONS } from '@constants/masterData';
 import type { ControlDTO } from '@dtos';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { CONTROL_TYPE } from '@hooks/queries';
+import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, type FC } from 'react';
 
-interface IControlInsertForm {
-  initialValues?: Partial<ControlDTO> | null;
-  onClose: () => void;
-  onSubmit: (values: ControlDTO) => void;
-}
-
 const items: TFormItem[] = [
-  {
-    type: INPUT_TYPE.TEXT,
-    label: 'Mã',
-    name: 'code',
-    required: true,
-    rules: [{ required: true }],
-    inputProps: { placeholder: 'Nhập...', maxLength: 100 },
-  },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Tên',
@@ -27,21 +14,24 @@ const items: TFormItem[] = [
     inputProps: { placeholder: 'Nhập...', maxLength: 100 },
     required: true,
     rules: [{ required: true }],
+    colProps: { span: 12 },
   },
   {
     type: INPUT_TYPE.SELECT,
-    label: 'Control',
-    name: 'controlType',
+    label: 'Loại control',
+    name: 'type',
     inputProps: {
       options: CONTROL_TYPE_OPTIONS,
     },
+    colProps: { span: 12 },
   },
 ];
 
-const ControlInsertForm: FC<IControlInsertForm> = ({
+const ControlInsertForm: FC<CBaseForm<ControlDTO>> = ({
   onClose,
   onSubmit,
   initialValues,
+  mode,
 }) => {
   const [form] = useForm();
 
@@ -54,14 +44,15 @@ const ControlInsertForm: FC<IControlInsertForm> = ({
   return (
     <div>
       <OBaseForm<ControlDTO>
-        mutationKey=""
+        mutationKey={CONTROL_TYPE}
         items={items}
         form={form}
         onSubmit={onSubmit}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
+        isViewMode={mode === 'view'}
       />
     </div>
   );

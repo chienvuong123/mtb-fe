@@ -50,19 +50,37 @@ const OBaseForm = <T extends object>({
 
   const transformItems = useMemo(
     () =>
-      items.map(({ label, blockingPattern, ...others }) => ({
-        label: (
-          <Typography.Text ellipsis className="fw-500 fs-14">
-            {label}
-          </Typography.Text>
-        ),
-        getValueFromEvent: blockingPattern
-          ? ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
-              getValueFromEvent(value, blockingPattern)
-          : undefined,
-        ...others,
-      })),
-    [items],
+      items.map(
+        ({ label, blockingPattern, type, inputProps = {}, ...others }) => {
+          const modifiedInputProps = isViewMode
+            ? {
+                ...inputProps,
+                open: false,
+                readOnly: true,
+                suffixIcon: null,
+                allowClear: false,
+                className: 'cursor-default',
+              }
+            : inputProps;
+
+          return {
+            label: (
+              <Typography.Text ellipsis className="fw-500 fs-14">
+                {label}
+              </Typography.Text>
+            ),
+            getValueFromEvent: blockingPattern
+              ? ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
+                  getValueFromEvent(value, blockingPattern)
+              : undefined,
+            inputProps: modifiedInputProps,
+            type,
+            ...others,
+            required: isViewMode ? false : others.required,
+          };
+        },
+      ) as TFormItem[],
+    [items, isViewMode],
   );
 
   const { formContent } = useFormItems({
