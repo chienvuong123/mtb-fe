@@ -46,7 +46,6 @@ const ScenarioScriptContainer: FC<{
   if (!approach) {
     return null;
   }
-
   return (
     <Form form={form}>
       <div ref={ref}>
@@ -66,12 +65,13 @@ const ScenarioScriptContainer: FC<{
           />
         )}
         <Divider />
-        <ScenarioScriptFooter
-          form={form}
-          approachId={approach?.id}
-          initialValues={initialValues}
-          isPreview={isPreview}
-        />
+        {!isPreview && (
+          <ScenarioScriptFooter
+            form={form}
+            approachId={approach?.id}
+            initialValues={initialValues}
+          />
+        )}
       </div>
     </Form>
   );
