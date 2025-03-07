@@ -1,6 +1,5 @@
 import { OTable } from '@components/organisms';
 import type { CBaseTable } from '@types';
-import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import type { ColumnType } from 'antd/lib/table';
 import { useState, type FC } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
@@ -8,22 +7,21 @@ import type { GroupCustomerDTO } from 'src/dtos/group-customer';
 const columns: ColumnType<GroupCustomerDTO>[] = [
   {
     title: 'Mã Category',
-    dataIndex: 'categoryCode',
+    dataIndex: ['campaign', 'categoryCampaign', 'code'],
     minWidth: 104,
     showSorterTooltip: false,
   },
   {
     title: 'Tên Category',
-    dataIndex: 'nameCategory',
+    dataIndex: ['campaign', 'categoryCampaign', 'name'],
     minWidth: 213,
     showSorterTooltip: false,
   },
   {
     title: 'Mã Campaign',
-    dataIndex: 'campaign',
+    dataIndex: ['campaign', 'code'],
     minWidth: 164,
     showSorterTooltip: false,
-    render: (campaign) => campaign?.code || '',
   },
   {
     title: 'Tên Campaign',
@@ -62,6 +60,7 @@ const GroupCustomerTable: FC<CBaseTable<GroupCustomerDTO>> = ({
 
   return (
     <OTable<GroupCustomerDTO>
+      isCheckboxHidden
       rowKey="id"
       columns={columns}
       data={dataSource}
@@ -71,10 +70,7 @@ const GroupCustomerTable: FC<CBaseTable<GroupCustomerDTO>> = ({
       paginations={paginations}
       sortDirection={sortDirection}
       onView={(id) => onView?.(id as string)}
-      onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<GroupCustomerDTO>;
-        onSort?.(field as string, order as SortOrder);
-      }}
+      onSort={onSort}
       scroll={{ x: 1300 }}
     />
   );

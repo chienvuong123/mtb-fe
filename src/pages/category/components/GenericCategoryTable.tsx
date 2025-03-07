@@ -4,9 +4,9 @@ import type { CategoryDTO } from '@dtos';
 import type { IMPagination } from '@components/molecules/m-pagination/MPagination.type';
 import { formatDate } from '@utils/dateHelper';
 import type { ColumnType } from 'antd/es/table';
-import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useMemo, useState, type FC, type Key } from 'react';
 import { useProfile } from '@stores';
+import type { TBaseTableSort } from '@types';
 
 export interface GenericCategoryTableProps {
   dataSource: CategoryDTO[];
@@ -16,7 +16,7 @@ export interface GenericCategoryTableProps {
   onEdit?: (record: CategoryDTO) => void;
   onDelete?: (id: string) => void;
   onView?: (id: string) => void;
-  onSort?: (field: string, direction: SortOrder) => void;
+  onSort?: (sort: TBaseTableSort) => void;
   formatDate?: (date: string) => string;
 }
 
@@ -109,10 +109,7 @@ export const GenericCategoryTable: FC<GenericCategoryTableProps> = ({
       loading={loading}
       sortDirection={sort}
       onView={(id) => onView?.(id as string)}
-      onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<CategoryDTO>;
-        onSort?.(field as string, order as SortOrder);
-      }}
+      onSort={onSort}
       scroll={{ x: 1200 }}
     />
   );

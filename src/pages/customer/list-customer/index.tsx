@@ -24,13 +24,13 @@ import useUrlParams from '@hooks/useUrlParams';
 import { filterObject } from '@utils/objectHelper';
 
 import { ODrawer, OTitleBlock } from '@components/organisms';
-import type { SortOrder } from 'antd/es/table/interface';
 import { downloadBase64File } from '@utils/fileHelper';
 import { useProfile } from '@stores';
 import { useNotification } from '@libs/antd';
 import { CUSTOMER } from '@routers/path';
 import { useNavigate } from 'react-router-dom';
 import { validationHelper } from '@utils/validationHelper';
+import type { TBaseTableSort } from '@types';
 import {
   CustomerForm,
   CustomerListTable,
@@ -108,14 +108,16 @@ const ListCustomerPage: FC = () => {
   const { mutate: mutationDeleteCustomer } = useCustomerRemoveMutation();
   const { mutate: mutationImportCustomer, isPending: importCustomerLoading } =
     useCustomerImportMutation();
-  const { refetch: downloadTemplate } = useCustomerDownloadTemplete();
-  const { refetch: customerExport } = useCustomerExport({
-    ...searchParams,
-    page: {
-      pageNum: 1,
-      pageSize: customerRes?.data?.total ?? pageSize,
-    },
-  });
+  const { refetch: downloadTemplate, isFetching: templateDownloadLoading } =
+    useCustomerDownloadTemplete();
+  const { refetch: customerExport, isFetching: exportLoading } =
+    useCustomerExport({
+      ...searchParams,
+      page: {
+        pageNum: 1,
+        pageSize: customerRes?.data?.total ?? pageSize,
+      },
+    });
   const { mutate: mutationCreateGroupCustomer } = useGroupCustomerAddMutation();
 
   const cancelImport = () => {
@@ -289,13 +291,14 @@ const ListCustomerPage: FC = () => {
     navigate(`${CUSTOMER.ROOT}/${record.id}`);
   };
 
-  const handleSort = (field: string, direction: SortOrder) => {
+  const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {
     const orderField = Array.isArray(field) ? field.join('.') : field;
 
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
       field: orderField,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      unicode: unicodeSort,
     });
   };
 
@@ -332,6 +335,7 @@ const ListCustomerPage: FC = () => {
       <OTitleBlock
         title="Danh sách khách hàng"
         showImport={isAdmin || isCampaignManager}
+        exportLoading={exportLoading}
         onExport={() => downloadFileByGetMethod(customerExport, 'DSKH.xlsx')}
         onImport={handleImportCustomer}
         onDownloadEg={() =>
@@ -343,6 +347,7 @@ const ListCustomerPage: FC = () => {
             title: 'Tải lên danh sách khách hàng',
           },
           onCancelImport: cancelImport,
+          templateDownloadLoading,
         }}
       >
         {(isAdmin || isCampaignManager || isSellerManager) && (

@@ -252,9 +252,11 @@ const useCustomerForm = ({
 
   useEffect(() => {
     if (initialValues) {
-      const { birthday, hobbies, ...otherInit } = initialValues ?? {};
+      const { birthday, hobbies, categoryCampaign, ...otherInit } =
+        initialValues ?? {};
       form.setFieldsValue({
         ...otherInit,
+        categoryId: categoryCampaign?.id,
         birthday: birthday ? stringToDayjs(birthday) : undefined,
         hobbies: hobbies?.split(',') ?? [],
       } as TCustomerForm);

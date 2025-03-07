@@ -7,10 +7,9 @@ import {
   useGroupCustomerSearchQuery,
 } from '@hooks/queries/groupCustomerQueries';
 import useUrlParams from '@hooks/useUrlParams';
-import type { TFormType } from '@types';
+import type { TBaseTableSort, TFormType } from '@types';
 
 import { validateInsertCategory } from '@pages/category/utils';
-import type { SortOrder } from 'antd/es/table/interface';
 import Title from 'antd/lib/typography/Title';
 import { useEffect, useMemo, useState } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
@@ -86,7 +85,7 @@ const GroupCustomerPage = () => {
     }
   };
 
-  const handleSort = (field: string, direction: SortOrder) => {
+  const handleSort = ({ field, direction }: TBaseTableSort) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
       field,

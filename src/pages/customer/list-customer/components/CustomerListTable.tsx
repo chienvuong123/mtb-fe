@@ -1,7 +1,5 @@
-import { OTable } from '@components/organisms';
+import { OTable, type TColumnType } from '@components/organisms';
 import type { IModalConfirm } from '@components/organisms/o-modal/OModalConfirm';
-import type { ColumnType } from 'antd/es/table';
-import type { SortOrder, SorterResult } from 'antd/es/table/interface';
 import { useMemo, useState, type FC, type Key } from 'react';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
@@ -23,8 +21,8 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const { isAdmin, isCampaignManager, isSeller } = useProfile();
 
-  const columns: ColumnType<CustomerDTO>[] = useMemo(() => {
-    const columnsTable: ColumnType<CustomerDTO>[] = [
+  const columns: TColumnType<CustomerDTO>[] = useMemo(() => {
+    const columnsTable: TColumnType<CustomerDTO>[] = [
       {
         title: 'Order ID',
         dataIndex: 'orderId',
@@ -49,6 +47,8 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
         minWidth: 157,
         sorter: true,
         showSorterTooltip: false,
+        unicodeSort: true,
+        // sortFieldName: 's.name',
       },
       {
         title: 'Nhóm khách hàng',
@@ -121,10 +121,7 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
       onView={(id) => onView?.(id as string)}
       onCall={onCall}
       scroll={{ x: 1574 }}
-      onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<CustomerDTO>;
-        onSort?.(field as string, order as SortOrder);
-      }}
+      onSort={onSort}
       confirmProps={confirmProps}
     />
   );

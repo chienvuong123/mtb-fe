@@ -5,11 +5,11 @@ import { useEffect, type FC } from 'react';
 import type { IMPagination, TPagination } from '@components/molecules';
 import useUrlParams from '@hooks/useUrlParams';
 import { filterObject } from '@utils/objectHelper';
-import type { SortOrder } from 'antd/es/table/interface';
 import { OTitleBlock } from '@components/organisms';
 import { useNavigate } from 'react-router-dom';
 import { useSellerSearchQuery } from '@hooks/queries';
 import { SELLER } from '@routers/path';
+import type { TBaseTableSort } from '@types';
 import { SellerSearchForm, SellerTable } from './components';
 
 const SellerPage: FC = () => {
@@ -73,12 +73,13 @@ const SellerPage: FC = () => {
     navigate(`${SELLER.ROOT}/${id}`);
   };
 
-  const handleSort = (field: string | string[], direction: SortOrder) => {
+  const handleSort = ({ direction, field, unicodeSort }: TBaseTableSort) => {
     const orderField = Array.isArray(field) ? field.join('.') : field;
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
       field: orderField,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      unicode: unicodeSort,
     });
   };
 

@@ -3,7 +3,6 @@ import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { EStatusCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
-import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import type { ColumnType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useState, type Key } from 'react';
@@ -111,10 +110,7 @@ const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
       sortDirection={sortDirection}
       scroll={{ x: 1575 }}
       onView={(id) => onView?.(id as string)}
-      onChange={(_p, _f, s) => {
-        const { field, order } = s as SorterResult<CampaignDTO>;
-        onSort?.(field as string, order as SortOrder);
-      }}
+      onSort={onSort}
     />
   );
 };

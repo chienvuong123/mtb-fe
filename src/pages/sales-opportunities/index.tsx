@@ -5,12 +5,11 @@ import type {
   TSalesOpportunitiesSearchForm,
   SalesOpportunitiesDTO,
 } from 'src/dtos/sales-opportunities';
-import type { SortOrder } from 'antd/es/table/interface';
 import type { IMPagination, TPagination } from '@components/molecules';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { useSalesOpportunitiesSearchQuery } from '@hooks/queries/salesOpportunitiesQueries';
 import { ODrawer } from '@components/organisms';
-import type { TFormType } from '@types';
+import type { TBaseTableSort, TFormType } from '@types';
 import { filterObject } from '@utils/objectHelper';
 import { convertInitValues } from './utils';
 import {
@@ -74,11 +73,12 @@ const ManageSalesOpportunities: React.FC = () => {
     setFilters({});
   };
 
-  const handleSort = (field: string, direction: SortOrder) => {
+  const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      unicode: unicodeSort,
     });
   };
 

@@ -23,6 +23,7 @@ export type PageParams = {
 export type SortParams = {
   field: string;
   direction: string;
+  unicode?: boolean;
 };
 
 // Base interfaces
