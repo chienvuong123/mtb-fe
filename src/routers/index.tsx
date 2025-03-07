@@ -28,7 +28,7 @@ const RoleBasedGuard = React.lazy(() => import('./guards/RoleBasedGuard'));
 const allRole = [
   ERole.ADMIN,
   ERole.CAMPAIGN_MANAGER,
-  ERole.SALE_LEADER,
+  ERole.SELLER_MANAGER,
   ERole.SELLER,
 ];
 
@@ -205,7 +205,7 @@ const routes = createBrowserRouter(
                   accessibleRoles={[
                     ERole.ADMIN,
                     ERole.CAMPAIGN_MANAGER,
-                    ERole.SALE_LEADER,
+                    ERole.SELLER_MANAGER,
                   ]}
                 />
               ),
@@ -317,7 +317,7 @@ const routes = createBrowserRouter(
               accessibleRoles={[
                 ERole.ADMIN,
                 ERole.CAMPAIGN_MANAGER,
-                ERole.SALE_LEADER,
+                ERole.SELLER_MANAGER,
               ]}
             />
           ),

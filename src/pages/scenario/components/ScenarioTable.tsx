@@ -87,7 +87,7 @@ const ScenarioTable: FC<CBaseTable<ApproachScriptDTO>> = ({
   onView,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const { isAdmin, isCampaignManager, isSaleManager } = useProfile();
+  const { isAdmin, isCampaignManager, isSellerManager } = useProfile();
 
   const deleteRecord = (key: Key) => {
     onDelete?.(key as string);
@@ -101,7 +101,9 @@ const ScenarioTable: FC<CBaseTable<ApproachScriptDTO>> = ({
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
       onDeleteRow={
-        isAdmin || isCampaignManager || isSaleManager ? deleteRecord : undefined
+        isAdmin || isCampaignManager || isSellerManager
+          ? deleteRecord
+          : undefined
       }
       onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}

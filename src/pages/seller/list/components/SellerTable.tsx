@@ -81,9 +81,9 @@ const SellerTable: FC<CBaseTable<SellerDTO>> = ({
   onSort,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const { isAdmin, isCampaignManager, isSaleManager } = useProfile();
+  const { isAdmin, isCampaignManager, isSellerManager } = useProfile();
 
-  const activeAction = isAdmin || isCampaignManager || isSaleManager;
+  const activeAction = isAdmin || isCampaignManager || isSellerManager;
 
   return (
     <OTable<SellerDTO>

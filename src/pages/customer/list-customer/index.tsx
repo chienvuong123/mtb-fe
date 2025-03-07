@@ -71,7 +71,7 @@ const ListCustomerPage: FC = () => {
   } = useUrlParams<Partial<CustomerDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
-  const { isAdmin, isCampaignManager, isSaleManager } = useProfile();
+  const { isAdmin, isCampaignManager, isSellerManager } = useProfile();
 
   const searchParams: CustomerSearchRequest = useMemo(() => {
     const { cusGroup, ...rest } = filters;
@@ -345,7 +345,7 @@ const ListCustomerPage: FC = () => {
           onCancelImport: cancelImport,
         }}
       >
-        {(isAdmin || isCampaignManager || isSaleManager) && (
+        {(isAdmin || isCampaignManager || isSellerManager) && (
           <AButton
             variant="filled"
             color="primary"
