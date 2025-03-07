@@ -7,3 +7,4 @@ export const ACCEPTING_CONTAIN_LETTER_AND_NUMBER_PATTERN =
   /^(?=.*[a-zA-Z])(?=.*\d).+$/;
 
 export const REMOVE_ACCENTS_REGEX = /[\u0300-\u036f]/g;
+export const ACCEPTING_NUMBER_SPACE_COMMA_PATTERN = /^[\p{L}0-9\s,]+$/u;

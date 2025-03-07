@@ -6,7 +6,7 @@ import { useEffect, type FC } from 'react';
 import type { CategoryDTO } from '@dtos';
 import { formatDate } from '@utils/dateHelper';
 import { useProfile } from '@stores';
-import { ACCEPTING_FULL_ALPHA_NUMERIC_SPACE_PATTERN } from '@constants/regex';
+import { ACCEPTING_NUMBER_SPACE_COMMA_PATTERN } from '@constants/regex';
 
 export interface GenericCategoryInsertFormProps {
   onSubmit?: (values: CategoryDTO) => void;
@@ -31,7 +31,7 @@ const items: TFormItem[] = [
     rules: [
       { required: true },
       {
-        pattern: ACCEPTING_FULL_ALPHA_NUMERIC_SPACE_PATTERN,
+        pattern: ACCEPTING_NUMBER_SPACE_COMMA_PATTERN,
         message: 'Không được nhập ký tự đặc biệt',
       },
     ],
