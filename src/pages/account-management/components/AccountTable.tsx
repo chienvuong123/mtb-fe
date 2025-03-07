@@ -1,4 +1,5 @@
 import { OTable } from '@components/organisms';
+import type { IModalConfirm } from '@components/organisms/o-modal';
 import { EStatus, STATUS_OBJECT_STATIC } from '@constants/masterData';
 import type { CategoryDTO } from '@dtos';
 import { useProfile } from '@stores';
@@ -7,6 +8,10 @@ import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import type { ColumnType } from 'antd/lib/table';
 import { useState, type FC, type Key } from 'react';
 import type { UserDTO } from 'src/dtos/auth';
+
+const confirmProps: IModalConfirm = {
+  title: 'Xoá tài khoản',
+};
 
 export type TAccountManagementRecord = Partial<UserDTO>;
 
@@ -106,6 +111,7 @@ const AccountTable: FC<CBaseTable<TAccountManagementRecord>> = ({
         onSort?.(field as string, order as SortOrder);
       }}
       scroll={{ x: 1300 }}
+      confirmProps={confirmProps}
     />
   );
 };
