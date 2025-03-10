@@ -38,7 +38,12 @@ const CustomerApproachTable: FC = () => {
       title: 'Ngày',
       dataIndex: ['approachResult', 'updatedDate'],
       minWidth: 120,
-      render: (value) => dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY_HHMMSS),
+      render: (value) => {
+        if (!value) {
+          return '';
+        }
+        return dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY_HHMMSS);
+      },
     },
     {
       title: 'Phương thức tiếp cận',

@@ -678,12 +678,8 @@ export const useCollectInforController = () => {
   };
 
   useEffect(() => {
-    if (draftLoanLimit?.data) {
-      const formData = mapDraftToFormData(draftLoanLimit.data);
-      form.setFieldsValue(formData as unknown as CustomerCollectFormDTO);
-    }
     if (genderOptions) {
-      form.setFieldsValue({
+      const baseFormData = {
         customerName: customerData?.name,
         genderName: customerData?.genderCategory?.name,
         genderCode: customerData?.genderCategory?.code,
@@ -704,6 +700,15 @@ export const useCollectInforController = () => {
         customerId: customerData?.id,
         orderId: customerData?.orderId,
         campaignId: customerData?.campaignId,
+      };
+
+      const draftFormData = draftLoanLimit?.data
+        ? mapDraftToFormData(draftLoanLimit.data)
+        : {};
+
+      form.setFieldsValue({
+        ...baseFormData,
+        ...draftFormData,
       });
     }
   }, [form, genderOptions, customerData, draftLoanLimit]);
@@ -713,7 +718,7 @@ export const useCollectInforController = () => {
     firstItems,
     secondItems,
     thirdItems,
-    loanLimit: Number(draftLoanLimit?.data?.finalMaxLoan) ?? 0,
+    loanLimit: Number(draftLoanLimit?.data?.finalMaxLoan ?? 0),
     loading,
     handleFormValuesChange,
     saveDraft,
