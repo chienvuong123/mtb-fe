@@ -10,6 +10,7 @@ export interface ApproachResultDTO extends BaseEntity {
   note: string;
   resultDetail: string;
   rateCampaign: string;
+  called: boolean;
 }
 
 export interface ApproachResultStepDTO {
@@ -40,7 +41,9 @@ export interface ApproachFormData {
   approachStatus: string;
   rate?: number;
   note?: string;
-  [key: string]: ApproachStepFormValue | string | number | undefined;
+  campaignScriptId?: string;
+  called?: boolean;
+  [key: string]: ApproachStepFormValue | string | number | boolean | undefined;
 }
 
 export interface ApproachScriptDTO extends BaseEntity {
@@ -74,6 +77,7 @@ export interface ApproachResultCreateRequest {
     note?: string;
     resultDetail?: string;
     rateCampaign?: string;
+    called?: boolean;
   };
   approachResultStep: {
     id?: string;

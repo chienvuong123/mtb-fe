@@ -23,12 +23,17 @@ interface ApproachResult {
   note: string;
   status: string;
   rateCampaign: string;
+  called: boolean;
 }
+
+const arraysEqualWithSet = (a: string[], b: string[]) =>
+  a.length === b.length && new Set(a).size === new Set([...a, ...b]).size;
 
 const getChangedSteps = (
   approachData: ApproachFormData,
   initialValue: ApproachFormData,
   oldApproachResultSteps: ApproachScriptAttributeDTO[],
+  isCalledChange: boolean,
 ): ApproachResultStep[] => {
   return Object.entries(approachData)
     .filter(([key]) => !Number.isNaN(Number(key)))
@@ -38,7 +43,8 @@ const getChangedSteps = (
 
       return (
         !isEqual(initial?.attributes, current.attributes) ||
-        initial?.note !== current.note
+        initial?.note !== current.note ||
+        isCalledChange
       );
     })
     .map(([approachStepId, value]) => {
@@ -59,6 +65,7 @@ const createApproachResult = (
   customerId: string,
   campaignScriptId: string,
   oldApproachResult?: ApproachScriptDTO,
+  calledIds?: string[],
 ): ApproachResult => {
   return {
     id: oldApproachResult?.approachResult?.id,
@@ -70,6 +77,7 @@ const createApproachResult = (
     note: approachData.note?.toString() || '',
     status: approachData.status?.toString() || '',
     rateCampaign: approachData.rateCampaign?.toString() || '',
+    called: Boolean(calledIds?.includes(campaignScriptId)),
   };
 };
 
@@ -78,7 +86,17 @@ export const transformDataToSubmit = (
   initialValues: Record<string, ApproachFormData>,
   approachScriptData: ApproachScriptDTO[],
   customerId: string,
+  calledIds: string[],
 ) => {
+  const calledSteps = Object.values(initialValues)
+    .filter((i) => Boolean(i.called))
+    .map((i) => i.campaignScriptId);
+
+  const isCalledChange = !arraysEqualWithSet(
+    calledIds,
+    calledSteps as string[],
+  );
+
   return Object.entries(currentValues)
     .map(([campaignScriptId, approachData]) => {
       const oldApproachResult = approachScriptData?.find(
@@ -91,6 +109,7 @@ export const transformDataToSubmit = (
         approachData,
         initialValue,
         oldApproachResultSteps,
+        isCalledChange,
       );
 
       const approachResult = createApproachResult(
@@ -98,6 +117,7 @@ export const transformDataToSubmit = (
         customerId,
         campaignScriptId,
         oldApproachResult,
+        calledIds,
       );
 
       const initialApproachResult = createApproachResult(
@@ -105,6 +125,7 @@ export const transformDataToSubmit = (
         customerId,
         campaignScriptId,
         oldApproachResult,
+        calledIds,
       );
 
       const hasChanges =

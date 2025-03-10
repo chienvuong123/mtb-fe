@@ -19,12 +19,14 @@ const ScenarioScriptContainer: FC<{
   initialValues?: Record<string, ApproachFormData>;
   isFirstApproach?: boolean;
   isPreview?: boolean;
+  calledIds?: string[];
 }> = ({
   form,
   approach,
   initialValues,
   isFirstApproach = true,
   isPreview = false,
+  calledIds,
 }) => {
   const { token } = theme.useToken();
   const ref = useRef<HTMLDivElement>(null);
@@ -70,6 +72,7 @@ const ScenarioScriptContainer: FC<{
             form={form}
             approachId={approach?.id}
             initialValues={initialValues}
+            calledIds={calledIds ?? []}
           />
         )}
       </div>
