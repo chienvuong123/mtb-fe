@@ -10,7 +10,7 @@ import { ScenarioScriptContainer } from '@components/organisms';
 import CollectCustomerInformationModal from './CollectCustomerInformationModal';
 import { getInitialValues } from '../utils';
 
-const CustomerApproachPreview = () => {
+const CustomerApproachPreview = ({ calledIds }: { calledIds: string[] }) => {
   const { customerId } = useParams();
 
   const [openModal, setOpenModal] = useState(false);
@@ -102,6 +102,7 @@ const CustomerApproachPreview = () => {
               approach={approach}
               initialValues={initialValues}
               isFirstApproach={isFirstApproach}
+              calledIds={calledIds}
             />
           )}
         </div>

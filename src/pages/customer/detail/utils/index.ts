@@ -202,6 +202,8 @@ export const getInitialValues = (
       note: approachScript.approachResult?.note,
       status: approachScript.approachResult?.status || statusOptions[0].value,
       rateCampaign: approachScript.approachResult?.rateCampaign,
+      called: approachScript.approachResult?.called,
+      campaignScriptId: approachScript.id,
     },
   });
 

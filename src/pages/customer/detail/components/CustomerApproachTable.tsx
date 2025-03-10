@@ -6,15 +6,16 @@ import { useApproachScriptViewByCustomerQuery } from '@hooks/queries/approachScr
 import { getOptionLabel } from '@utils/objectHelper';
 import type { ColumnType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import { useState, type FC } from 'react';
+import { useEffect, type FC } from 'react';
 import { useParams } from 'react-router-dom';
 
 export type TApproachScriptRecord = Partial<ApproachScriptDTO>;
 
-const CustomerApproachTable: FC = () => {
+const CustomerApproachTable: FC<{
+  calledIds: string[];
+  setCalledIds: React.Dispatch<React.SetStateAction<string[]>>;
+}> = ({ calledIds, setCalledIds }) => {
   const { customerId } = useParams();
-
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   const { data: approachScriptData } =
     useApproachScriptViewByCustomerQuery(customerId);
@@ -79,12 +80,21 @@ const CustomerApproachTable: FC = () => {
     },
   ];
 
+  useEffect(() => {
+    if (approachScriptData) {
+      const ids = approachScriptData
+        .filter((i) => i.approachResult?.called)
+        .map((i) => i.id);
+      setCalledIds(ids);
+    }
+  }, [approachScriptData, setCalledIds]);
+
   return (
     <OTable<TApproachScriptRecord>
       columns={columns}
       data={approachScriptData || []}
-      selectedRowKeys={selectedRowKeys}
-      setSelectedRowKeys={setSelectedRowKeys}
+      selectedRowKeys={calledIds}
+      setSelectedRowKeys={setCalledIds}
       hideActions
       rowKey="id"
     />

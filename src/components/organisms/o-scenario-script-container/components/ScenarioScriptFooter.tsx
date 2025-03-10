@@ -24,6 +24,7 @@ interface IScenarioScriptFooterProps {
   approachId: string;
   initialValues?: Record<string, ApproachFormData>;
   isPreview?: boolean;
+  calledIds: string[];
 }
 
 const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
@@ -31,6 +32,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   approachId,
   initialValues,
   isPreview = false,
+  calledIds,
 }) => {
   const { customerId } = useParams();
   const { data: approachResultOptions } = useCategoryOptionsListQuery(
@@ -65,6 +67,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
         initialValues,
         approachScriptData,
         customerId as string,
+        calledIds,
       );
 
       createApproachResult(transformedDataArray, {
