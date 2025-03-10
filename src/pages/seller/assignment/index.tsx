@@ -14,6 +14,9 @@ const SellerAssignment: FC = () => {
   );
   const handleSearch = (values: AssignmentSellerSearchForm) => {
     setFilters(values);
+    setTimeout(() => {
+      refetch();
+    }, 0);
   };
 
   const handleClearAll = () => {
