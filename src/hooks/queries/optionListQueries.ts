@@ -6,10 +6,9 @@ import {
   locationApi,
   sellerApi,
 } from '@apis';
-import { CategoryType } from '@dtos';
+import { CategoryType, type CampaignListRequest } from '@dtos';
 import { useQuery } from '@tanstack/react-query';
 import { transformToF88Options, transformToOptions } from '@utils/objectHelper';
-import type { CampaignListRequest } from 'src/dtos/campaign-detail';
 
 export const useCategoryOptionsListQuery = (
   categoryTypeCode: CategoryType,

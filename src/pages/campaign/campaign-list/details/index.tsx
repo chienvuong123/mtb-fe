@@ -2,14 +2,13 @@ import Title from 'antd/lib/typography/Title';
 import { Flex } from 'antd';
 import { AButton } from '@components/atoms';
 import React, { useMemo } from 'react';
-import type { TCampaignDetailDTO } from 'src/dtos/campaign-detail';
+import { useNavigate, useParams } from 'react-router-dom';
+import { MANAGER_CAMPAIGN } from '@routers/path';
 import {
   useCampaignDetailViewQuery,
   useCampaignScriptQuery,
-} from '@hooks/queries/campaignDetailQueries';
-import { useNavigate, useParams } from 'react-router-dom';
-import { MANAGER_CAMPAIGN } from '@routers/path';
-import type { TId } from '@dtos';
+} from '@hooks/queries';
+import type { TCampaignDetailDTO, TId } from '@dtos';
 import CampaignDetailSearch from './components/CampaignDetailSearch';
 import CampaignDetailTable, {
   type TCampaignDetaillRecord,

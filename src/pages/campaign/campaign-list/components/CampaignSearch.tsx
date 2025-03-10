@@ -43,6 +43,7 @@ const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
         name: 'campaignCode',
         inputProps: {
           placeholder: 'Nhập...',
+          maxLength: 50,
         },
       },
       {
@@ -51,6 +52,7 @@ const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
         name: 'campaignName',
         inputProps: {
           placeholder: 'Nhập...',
+          maxLength: 50,
         },
       },
       {

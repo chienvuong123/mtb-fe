@@ -1,10 +1,9 @@
 import { OTable, type ITable } from '@components/organisms';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
-import type { TId } from '@dtos';
+import type { CampaignScriptDTO, TId } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import React, { useState } from 'react';
-import type { CampaignScriptDTO } from 'src/dtos/campaign-detail';
 import Title from 'antd/lib/typography/Title';
 import { useParams } from 'react-router-dom';
 
