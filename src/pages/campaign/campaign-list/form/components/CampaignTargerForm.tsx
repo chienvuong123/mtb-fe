@@ -2,8 +2,8 @@ import { OBaseForm } from '@components/organisms';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useEffect, type FC } from 'react';
 import { useForm } from 'antd/lib/form/Form';
-import type { CampaignTargetDTO } from 'src/dtos/campaign-detail';
 import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
+import type { CampaignTargetDTO } from '@dtos';
 
 const items: TFormItem[] = [
   {

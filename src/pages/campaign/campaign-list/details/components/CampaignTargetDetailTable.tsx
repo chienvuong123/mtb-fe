@@ -4,9 +4,8 @@ import { Flex } from 'antd';
 import type { ColumnType } from 'antd/es/table';
 import Title from 'antd/lib/typography/Title';
 import React, { useState, type Key } from 'react';
-import type { CampaignTargetDTO } from 'src/dtos/campaign-detail';
 import { useParams } from 'react-router-dom';
-import type { TId } from '@dtos';
+import type { CampaignTargetDTO, TId } from '@dtos';
 
 const BUTTON_TEXT = {
   ADD: 'Thêm mới',

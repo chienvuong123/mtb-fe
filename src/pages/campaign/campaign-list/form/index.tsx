@@ -3,28 +3,28 @@ import { Flex, type NotificationArgsProps } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { AButton } from '@components/atoms';
 import React, { useMemo, useState } from 'react';
-import type {
-  CampaignScriptDTO,
-  CampaignTargetDTO,
-  TCampaignDetailDTO,
-} from 'src/dtos/campaign-detail';
-import {
-  useCampaignDetailAddMutation,
-  useCampaignDetailEditMutation,
-  useCampaignDetailRemoveMutation,
-  useCampaignDetailViewQuery,
-  useCampaignScriptQuery,
-} from '@hooks/queries/campaignDetailQueries';
 import { useNotification } from '@libs/antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ODrawer } from '@components/organisms';
 import { MANAGER_CAMPAIGN } from '@routers/path';
 import type { TFormType } from '@types';
 import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import {
+  useCampaignAddMutation,
+  useCampaignDetailViewQuery,
+  useCampaignEditMutation,
+  useCampaignRemoveMutation,
+  useCampaignScriptQuery,
+} from '@hooks/queries';
 import dayjs from 'dayjs';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { useManageCategoryAddMutation } from '@hooks/queries/manageCategoryQueries';
-import type { TId } from '@dtos';
+import type {
+  CampaignScriptDTO,
+  CampaignTargetDTO,
+  TCampaignDetailDTO,
+  TId,
+} from '@dtos';
 import { validationHelper } from '@utils/validationHelper';
 import CategoryInsertForm from '@pages/campaign/category-list/components/CategoryInsert';
 import CampaignTargetForm from './components/CampaignTargerForm';
@@ -110,11 +110,10 @@ const CampaignCreate: React.FC = () => {
     notify({ message, type });
   };
 
-  const { mutate: mutationCreateCampaign } = useCampaignDetailAddMutation();
-  const { mutate: mutationUpdateCampaign } = useCampaignDetailEditMutation();
+  const { mutate: mutationCreateCampaign } = useCampaignAddMutation();
+  const { mutate: mutationUpdateCampaign } = useCampaignEditMutation();
   const { mutate: mutationCreateCategory } = useManageCategoryAddMutation();
-  const { mutate: mutationDeleteCampaignDetail } =
-    useCampaignDetailRemoveMutation();
+  const { mutate: mutationDeleteCampaign } = useCampaignRemoveMutation();
 
   const dataSourcesDetail: Partial<TCampaignDetailDTO> = useMemo(
     () => campaignDetailRes?.data ?? {},
@@ -242,7 +241,7 @@ const CampaignCreate: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    mutationDeleteCampaignDetail({ id });
+    mutationDeleteCampaign({ id });
   };
 
   const handleBack = () => {

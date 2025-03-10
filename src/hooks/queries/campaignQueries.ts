@@ -1,15 +1,19 @@
 import { campaignApi } from '@apis';
 import type {
   CampaignDTO,
+  CampaignScriptDTO,
+  CampaignScriptRequest,
   CampaignSearchRequest,
   CampaignSearchResponse,
+  TCampaignDetailDTO,
 } from 'src/dtos/campaign';
 import {
   useMutation,
   useQuery,
   type UseMutationOptions,
+  type UseQueryOptions,
 } from '@tanstack/react-query';
-import type { BaseResponse } from '@dtos';
+import type { BaseResponse, BaseSearchResponse, TId } from '@dtos';
 import type { AxiosProgressEvent, GenericAbortSignal } from 'axios';
 import { createBaseQueryHooks } from './baseQueries';
 
@@ -66,5 +70,31 @@ export const useCampaignExport = (params: CampaignSearchRequest) => {
     queryKey: [CAMPAIGN_KEY, 'export'],
     queryFn: () => campaignApi.export(params),
     enabled: false,
+  });
+};
+
+export const useCampaignScriptQuery = (
+  data: CampaignScriptRequest,
+  options?: UseQueryOptions<
+    BaseResponse<BaseSearchResponse<CampaignScriptDTO>>,
+    Error
+  >,
+) => {
+  return useQuery({
+    queryKey: ['campaign-script', data],
+    queryFn: () => campaignApi.campaignScript(data),
+    ...options,
+    enabled: !!data.id,
+  });
+};
+
+export const useCampaignDetailViewQuery = (
+  data: TId,
+  options?: Partial<UseQueryOptions<BaseResponse<TCampaignDetailDTO>, Error>>,
+) => {
+  return useQuery({
+    queryFn: () => campaignApi.campaignDetail(data),
+    queryKey: ['campaign-detail', data],
+    ...options,
   });
 };

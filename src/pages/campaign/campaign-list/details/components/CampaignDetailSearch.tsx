@@ -1,13 +1,13 @@
 import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
 import React, { useEffect } from 'react';
+import type { ITable } from '@components/organisms';
+import { useForm } from 'antd/es/form/Form';
+import dayjs from 'dayjs';
 import type {
   CampaignTargetDTO,
   TCampaignDetailDTO,
   TCampaignDetailSearchForm,
-} from 'src/dtos/campaign-detail';
-import type { ITable } from '@components/organisms';
-import { useForm } from 'antd/es/form/Form';
-import dayjs from 'dayjs';
+} from '@dtos';
 import CampaignTargetDetailTable from './CampaignTargetDetailTable';
 import type { TCampaignDetaillRecord } from './CampaignDetailTable';
 import { useCampaignFormItems } from '../hooks';
