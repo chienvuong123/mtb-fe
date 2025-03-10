@@ -82,7 +82,7 @@ const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
         inputProps: {
           placeholder: 'Chọn ngày...',
           className: 'date-picker-campaign',
-          minDate: startDate ? dayjs(startDate) : dayjs(),
+          minDate: startDate,
         },
       },
     ];
