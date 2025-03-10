@@ -77,7 +77,7 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
         inputProps: {
           placeholder: 'Chọn ngày...',
           className: 'date-picker-campaign',
-          minDate: startDate ? dayjs(startDate) : dayjs(),
+          minDate: startDate,
         },
       },
       {
