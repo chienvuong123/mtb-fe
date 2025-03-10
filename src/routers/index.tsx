@@ -162,6 +162,12 @@ const routes = createBrowserRouter(
                 () => import('@pages/category/customer-group-category'),
               ),
             },
+            {
+              path: CATEGORY.CAMPAIGN_TYPE,
+              element: createLazyElement(
+                () => import('@pages/category/campaign-type-catgegory'),
+              ),
+            },
           ],
         },
 

@@ -18,6 +18,7 @@ export enum CategoryType {
   CUSTOMER_SEGMENT = 'CUSTOMER_SEGMENT', // Danh mục phân khúc KH
   MB_GENDER = 'MB_GENDER', // Danh mục giới tính
   CUSTOMER_GROUP = 'CUSTOMER_GROUP', // Nhóm khách hàng
+  CAMPAIGN_TYPE = 'CAMPAIGN_TYPE', // Danh mục loại chiến dịch
 
   F88_IDENTIFICATION = 'F88_IDENTIFICATION', // "Danh mục giấy tờ định Danh F88"
   F88_JOB = 'F88_JOB', // "Danh mục nghề nghiệp F88"
