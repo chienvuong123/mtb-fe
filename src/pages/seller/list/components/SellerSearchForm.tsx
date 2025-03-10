@@ -10,6 +10,7 @@ import {
   useQueryCategoryList,
 } from '@hooks/queries';
 import { handleResetFields } from '@utils/formHelper';
+import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 
 const SellerSearchForm: FC<CBaseSearch<SellerSearchRequest>> = ({
   initialValues,
@@ -86,6 +87,7 @@ const SellerSearchForm: FC<CBaseSearch<SellerSearchRequest>> = ({
         label: 'Số điện thoại',
         name: 'phone',
         inputProps: { placeholder: 'Nhập...' },
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
       },
       {
         type: INPUT_TYPE.NUMBER,
