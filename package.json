@@ -34,6 +34,7 @@
     "react-error-boundary": "^4.0.13",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.23.1",
+    "recharts": "^2.15.1",
     "sass": "^1.77.5"
   },
   "devDependencies": {
@@ -43,8 +44,8 @@
     "@types/qs": "^6.9.18",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
-    "@typescript-eslint/eslint-plugin": "^8.20.0",
-    "@typescript-eslint/parser": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "8.26.0",
+    "@typescript-eslint/parser": "8.26.0",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",

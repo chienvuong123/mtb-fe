@@ -160,6 +160,9 @@ export const MultimediaAnimatedPage = React.lazy(
 export const NotFoundPage = React.lazy(() => import('@pages/404'));
 export const ServerErrorPage = React.lazy(() => import('@pages/500'));
 
+// ====================== DASHBOARD PAGES ======================
+export const DashboardPage = React.lazy(() => import('@pages/dashboard'));
+
 // Nhóm các components để dễ sử dụng
 export const Guards = {
   GuestGuard,

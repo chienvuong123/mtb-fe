@@ -1,0 +1,76 @@
+.pieChart {
+  &.container {
+    width: 510px;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  // legend
+  .custom-legend-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .custom-legend-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
+
+  .custom-legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+    min-width: 300px;
+  }
+
+  .legend-label {
+    display: flex;
+    align-items: center;
+  }
+
+  .legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+
+  .legend-text {
+    color: #626e7b;
+    font-size: 14px;
+  }
+
+  .legend-value {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  // tooltip
+  .tooltip-container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e8e8e8;
+  }
+
+  .tooltip-text {
+    margin: 0;
+    font-size: 14px;
+    color: #000;
+  }
+
+  .tooltip-title {
+    font-weight: bold;
+  }
+
+  .flex-clo {
+    display: 'flex';
+    flex-direction: column;
+    align-items: center;
+  }
+}

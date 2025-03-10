@@ -27,6 +27,7 @@ import {
   ScenarioPages,
   SellerPages,
   MultimediaPages,
+  DashboardPage,
 } from './lazy-imports';
 
 const routes = createBrowserRouter(
@@ -74,6 +75,17 @@ const routes = createBrowserRouter(
         </AuthGuard>
       ),
       children: [
+        // Dashboard Routes
+        {
+          path: ROUTES.DASHBOARD,
+          children: [
+            {
+              path: PATH_SEGMENT.ROOT,
+              element: <DashboardPage />,
+            },
+          ],
+        },
+
         // Category Routes
         {
           path: ROUTES.CATEGORY.ROOT,

@@ -12,7 +12,7 @@ import type { Rule } from 'antd/es/form';
 import type { TextAreaProps } from 'antd/es/input';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import type { ColumnType } from 'antd/lib/table';
-import type { Key } from 'react';
+import type { Key, ReactNode } from 'react';
 import type { GetRowKey } from 'antd/es/table/interface';
 import type { IModalConfirm } from '../o-modal';
 
@@ -69,6 +69,7 @@ export interface ITable<T> extends TableProps<T> {
   isCheckboxHidden?: boolean;
   blockingEditIds?: string[];
   blockingDeleteIds?: string[];
+  header?: ReactNode;
   onEdit?: (record: T) => void;
   onDeleteRow?: (key: Key) => void;
   setSelectedRowKeys?: React.Dispatch<React.SetStateAction<string[]>>;

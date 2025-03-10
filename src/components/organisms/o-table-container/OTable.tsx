@@ -31,6 +31,7 @@ const OTable = <T extends object>({
   rowSelection,
   blockingEditIds,
   blockingDeleteIds,
+  header,
   tableRowKey,
   onEdit,
   onDeleteRow,
@@ -204,6 +205,7 @@ const OTable = <T extends object>({
         scroll={{ x: 'max-content' }}
         locale={{ emptyText: 'Không có dữ liệu' }}
         rowKey={tableRowKey || ((record) => record[rowKey] as Key)}
+        title={header ? () => header : undefined}
         onChange={(_p, _f, s) => {
           const { field, order, column } = s as SorterResult<T>;
           const record = column as TColumnType<T>;
