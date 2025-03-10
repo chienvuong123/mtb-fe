@@ -184,6 +184,10 @@ const useMenuList = (onLogout?: () => void) => {
             key: `${CATEGORY.ROOT}/${CATEGORY.EXPERSITE_CATEGORY}`,
             label: 'Chuyên môn',
           },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.CAMPAIGN_TYPE}`,
+            label: 'Loại chiến dịch',
+          },
         ],
       },
       {
