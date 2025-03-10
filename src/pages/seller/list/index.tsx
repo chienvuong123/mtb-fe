@@ -43,7 +43,10 @@ const SellerPage: FC = () => {
 
   const handleSearch = (data: SellerSearchRequest) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters(data);
+    setFilters({
+      ...data,
+      totalCampaign: data?.totalCampaign?.toString(),
+    });
   };
 
   const handlePaginationChange = (data: TPagination) => {

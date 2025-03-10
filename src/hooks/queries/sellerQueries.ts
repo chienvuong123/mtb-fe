@@ -63,6 +63,6 @@ export const useSellerBeforeAssignQuery = (
         campaignId as string,
         customerGroupId as string,
       ),
-    enabled: !!campaignId,
+    enabled: false,
   });
 };
