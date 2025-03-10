@@ -2,7 +2,7 @@ import { AButton, ASelect } from '@components/atoms';
 import { ASegmented } from '@components/atoms/a-segmented';
 import { CategoryType, type ApproachScriptDTO } from '@dtos';
 import { Flex, Form, Input, Rate, Typography } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useApproachScriptViewByCustomerQuery } from '@hooks/queries/approachScriptQueries';
 import { useParams } from 'react-router-dom';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
@@ -26,6 +26,15 @@ const CustomerApproachPreview = () => {
 
   const isFistInitFlag = useRef(true);
 
+  const segmentOptions = useMemo(() => {
+    return (
+      approachScriptData?.map((x, index) => ({
+        label: index === 0 ? 'Kịch bản demo' : `Lần ${x.id}`,
+        value: x.id,
+      })) ?? []
+    );
+  }, [approachScriptData]);
+
   useEffect(() => {
     if (approachScriptData && statusOptions?.length) {
       const initValue = getInitialValues(approachScriptData, statusOptions);
@@ -40,8 +49,7 @@ const CustomerApproachPreview = () => {
 
   if (!approachScriptData || !approach) return null;
 
-  const isLastApproach =
-    approachScriptData[approachScriptData.length - 1].id === approach.id;
+  const isFirstApproach = approachScriptData[0].id === approach.id;
 
   return (
     <div>
@@ -49,10 +57,7 @@ const CustomerApproachPreview = () => {
         <Flex align="center" justify="space-between" className="mb-16">
           <ASegmented
             size="large"
-            options={approachScriptData?.map((x) => ({
-              label: `Lần ${x.id}`,
-              value: x.id,
-            }))}
+            options={segmentOptions}
             value={approach?.id}
             onChange={(value) => {
               setApproach(
@@ -96,7 +101,7 @@ const CustomerApproachPreview = () => {
               form={form}
               approach={approach}
               initialValues={initialValues}
-              isLastApproach={isLastApproach}
+              isFirstApproach={isFirstApproach}
             />
           )}
         </div>

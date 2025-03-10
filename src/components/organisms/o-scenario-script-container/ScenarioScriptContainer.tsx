@@ -17,13 +17,13 @@ const ScenarioScriptContainer: FC<{
   form: FormInstance;
   approach?: ApproachScriptDTO;
   initialValues?: Record<string, ApproachFormData>;
-  isLastApproach?: boolean;
+  isFirstApproach?: boolean;
   isPreview?: boolean;
 }> = ({
   form,
   approach,
   initialValues,
-  isLastApproach = true,
+  isFirstApproach = true,
   isPreview = false,
 }) => {
   const { token } = theme.useToken();
@@ -52,7 +52,7 @@ const ScenarioScriptContainer: FC<{
         <Typography.Title level={4} className="mt-24 mb-16">
           Kịch bản {approach?.name}
         </Typography.Title>
-        {isLastApproach ? (
+        {isFirstApproach ? (
           <Image src={DefaultScenario} preview={{ scaleStep: 1, mask: null }} />
         ) : (
           <ACollapse
