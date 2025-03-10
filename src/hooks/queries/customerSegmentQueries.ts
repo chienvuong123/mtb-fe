@@ -10,7 +10,6 @@ export const CUSTOMER_SEGMENT_CATEGORY_KEY = 'customer-segment-category';
 
 export const {
   useSearchQuery: useCustomerSegmentCategorySearchQuery,
-  useViewQuery: useCustomerSegmentCategoryViewQuery,
   useAddMutation: useCustomerSegmentCategoryAddMutation,
   useEditMutation: useCustomerSegmentCategoryEditMutation,
   useRemoveMutation: useCustomerSegmentCategoryRemoveMutation,

@@ -10,7 +10,6 @@ export const GROUP_CUSTOMER_KEY = 'group-customer';
 
 export const {
   useSearchQuery: useGroupCustomerSearchQuery,
-  useViewQuery: useGroupCustomerViewQuery,
   useAddMutation: useGroupCustomerAddMutation,
 } = createBaseQueryHooks<
   GroupCustomerDTO,
