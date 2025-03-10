@@ -13,7 +13,6 @@ export const MANAGE_CATEGORY = 'manager-category';
 
 export const {
   useSearchQuery: useManageCategorySearchQuery,
-  useViewQuery: useManageCategoryViewQuery,
   useAddMutation: useManageCategoryAddMutation,
   useEditMutation: useManageCategoryEditMutation,
   useRemoveMutation: useManagerCategoryRemoveMutation,

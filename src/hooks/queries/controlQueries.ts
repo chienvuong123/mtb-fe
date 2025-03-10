@@ -5,7 +5,6 @@ import { createBaseQueryHooks } from './baseQueries';
 export const CONTROL_TYPE = 'control-type';
 export const {
   useSearchQuery: useControlSearchQuery,
-  useViewQuery: useControlViewQuery,
   useAddMutation: useControlAddMutation,
   useEditMutation: useControlEditMutation,
   useRemoveMutation: useControlRemoveMutation,

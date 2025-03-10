@@ -2,7 +2,6 @@ export * from './category';
 export * from './common';
 export * from './auth';
 export * from './control';
-export * from './example';
 export * from './customer';
 export * from './scenario';
 export * from './attribute';
