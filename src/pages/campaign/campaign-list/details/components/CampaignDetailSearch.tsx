@@ -1,8 +1,8 @@
 import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
 import React, { useEffect } from 'react';
 import type { ITable } from '@components/organisms';
-import { useForm } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
+import type { FormInstance } from 'antd/lib';
 import type {
   CampaignTargetDTO,
   TCampaignDetailDTO,
@@ -20,6 +20,7 @@ interface ICampaignDetailSearch {
   isDisabled: boolean;
   onShowForm?: () => void;
   onShowTargetForm?: () => void;
+  form?: FormInstance;
 }
 
 const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
@@ -30,15 +31,15 @@ const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
   isDisabled,
   onShowForm,
   onShowTargetForm,
+  form,
 }) => {
-  const [form] = useForm();
   const items = useCampaignFormItems({
     isDisabled,
     onShowForm: onShowForm || (() => {}),
   });
 
   useEffect(() => {
-    if (initialValues) {
+    if (initialValues && form) {
       form.setFieldsValue({
         ...initialValues,
         startDate: initialValues?.startDate

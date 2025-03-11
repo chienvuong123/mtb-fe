@@ -16,12 +16,14 @@ const items: TFormItem[] = [
       filterOption: true,
     },
     name: 'name',
+    colProps: { span: 12 },
   },
   {
     type: INPUT_TYPE.TEXT,
     label: 'Giá trị mục tiêu',
     name: 'value',
     inputProps: { placeholder: 'Nhập...', maxLength: 100 },
+    colProps: { span: 12 },
   },
   {
     type: INPUT_TYPE.SELECT,
@@ -33,6 +35,7 @@ const items: TFormItem[] = [
       filterOption: true,
     },
     name: 'unit',
+    colProps: { span: 12 },
   },
 ];
 
