@@ -9,9 +9,16 @@ import DefaultScenario from '@assets/images/Scenario.png';
 import ScenarioScriptFooter from './components/ScenarioScriptFooter';
 import AttributeItem from './components/AttributeItem';
 
-const ExpandIcon: FC<{ isActive?: boolean }> = ({ isActive }) => (
-  <ArrowDown01RoundIcon rotate={isActive ? '90deg' : 0} />
-);
+const ExpandIcon: FC<{ isActive?: boolean }> = ({ isActive }) => {
+  return (
+    <ArrowDown01RoundIcon
+      style={{
+        rotate: isActive ? '180deg' : '0deg',
+        transition: 'rotate 0.2s',
+      }}
+    />
+  );
+};
 
 const ScenarioScriptContainer: FC<{
   form: FormInstance;

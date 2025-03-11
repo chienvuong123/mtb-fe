@@ -30,15 +30,6 @@ const SellerDetails: FC = () => {
     } as TSellerDetailsForm;
   }, [detailsData?.data]);
 
-  const dataSource = useMemo(() => {
-    return (
-      detailsData?.data?.campaigns?.map((i) => ({
-        ...i,
-        key: i.campaign.id,
-      })) ?? []
-    );
-  }, [detailsData?.data]);
-
   return (
     <div className="pt-32">
       <Title level={3} className="mb-24">
@@ -48,7 +39,7 @@ const SellerDetails: FC = () => {
       <Title level={3} className="mb-14 mt-20">
         Danh sách Campaign tham gia
       </Title>
-      <SellerDetailsTable dataSource={dataSource} />
+      <SellerDetailsTable dataSource={detailsData?.data?.campaigns ?? []} />
     </div>
   );
 };

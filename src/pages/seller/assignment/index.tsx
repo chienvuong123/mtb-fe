@@ -3,16 +3,22 @@ import Title from 'antd/es/typography/Title';
 import { useSellerBeforeAssignQuery } from '@hooks/queries';
 import type { AssignmentSellerSearchForm } from '@dtos';
 import useUrlParams from '@hooks/useUrlParams';
+import { useNotification } from '@libs/antd';
 import { SellerAsignmentTable, SellerAsignmentSearchForm } from './components';
 
 const SellerAssignment: FC = () => {
   const { filters, setFilters } = useUrlParams<AssignmentSellerSearchForm>();
+  const notify = useNotification();
 
   const { data: sellerRes, refetch } = useSellerBeforeAssignQuery(
     filters?.campaignId,
     filters?.cusGroup?.join(','),
   );
   const handleSearch = (values: AssignmentSellerSearchForm) => {
+    if (!values?.campaignId) {
+      notify({ message: 'Phải chọn thông tin campaign', type: 'error' });
+      return;
+    }
     setFilters(values);
     setTimeout(() => {
       refetch();

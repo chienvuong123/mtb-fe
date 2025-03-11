@@ -5,7 +5,10 @@ import { useForm } from 'antd/lib/form/Form';
 import { useEffect, type FC } from 'react';
 import type { CategoryDTO } from '@dtos';
 import { formatDate } from '@utils/dateHelper';
-import { ACCEPTING_NUMBER_SPACE_COMMA_PATTERN } from '@constants/regex';
+import {
+  ACCEPTING_NUMBER_SPACE_COMMA_PATTERN,
+  BLOCKING_NUMBER_SPACE_COMMA_PATTERN,
+} from '@constants/regex';
 
 export interface GenericCategoryEditFormProps {
   initialValues?: CategoryDTO | null;
@@ -37,6 +40,7 @@ const items: TFormItem[] = [
       },
     ],
     colProps: { span: 12 },
+    blockingPattern: BLOCKING_NUMBER_SPACE_COMMA_PATTERN,
   },
   {
     type: INPUT_TYPE.SELECT,

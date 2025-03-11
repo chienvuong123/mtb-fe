@@ -19,12 +19,14 @@ import { getFirstPathname } from '@utils/stringHelper';
 import { useLogoutMutation } from '@hooks/queries';
 import { LOGIN } from '@routers/path';
 import { useQueryClient } from '@tanstack/react-query';
+import { OPopup } from '@components/organisms';
 
 const { Sider } = Layout;
 
 const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
   const classAntd = clsx('l-slider', className);
 
+  const [isOpen, setIsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [actualActive, setActualAction] = useState(false);
 
@@ -37,6 +39,8 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
   const { pathname } = useLocation();
   const queryClient = useQueryClient();
   const { mutate: mutateLogout } = useLogoutMutation();
+
+  const { menu, menuBottom } = useMenuList();
 
   const handleLogout = () => {
     mutateLogout(
@@ -81,6 +85,12 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
     setSelectedKey([key]);
   };
 
+  const handleMenuBottomClick = ({ key }: { key: string }) => {
+    if (key === 'logout') {
+      setIsOpen(true);
+    }
+  };
+
   const handleOpenChange = (keys: string[]) => {
     setOpenKeys(keys);
   };
@@ -91,7 +101,6 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { menu, menuBottom } = useMenuList(handleLogout);
   return (
     <div className="pos-relative">
       {isShowIcon && (
@@ -134,15 +143,27 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
             />
           </div>
 
-          <div className="c-menu">
+          <div className="c-menu pos-sticky bottom-0 bg-white z-1000">
             <AMenu
               items={menuBottom}
               mode="inline"
               className="menu-not-active"
+              onClick={handleMenuBottomClick}
             />
           </div>
         </div>
       </Sider>
+      <OPopup
+        title="Đăng xuất"
+        description="Bạn có chắc muốn đăng xuất?"
+        cancelText="Huỷ"
+        okText="Xác nhận"
+        onOkModal={handleLogout}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      >
+        <span />
+      </OPopup>
     </div>
   );
 };
