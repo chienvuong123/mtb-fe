@@ -3,14 +3,24 @@ import qs from 'qs';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const useUrlParams = <T>() => {
+type TInitSort<T> = {
+  field?: keyof T;
+  direction?: 'asc' | 'desc';
+  unicode?: boolean;
+};
+
+type TInitFilters<T> = {
+  initSort?: TInitSort<T>;
+};
+
+const useUrlParams = <T>(props?: TInitFilters<T>) => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const {
     current = 1,
     pageSize = 10,
-    field,
-    direction,
+    field = props?.initSort?.field as string,
+    direction = props?.initSort?.direction as string,
     ...initFilters
   } = qs.parse(search.replace('?', '')) as T & PageParams & SortParams;
 

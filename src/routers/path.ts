@@ -62,8 +62,8 @@ const ROUTE_PATH = {
     ASSIGNMENT: 'assignment',
     DETAIL: ':id',
   },
-  MULTIMEDIA_WAREHOUSE: 'multimedia-warehouse',
-  ACCOUNT_MANAGEMENT: 'account-management',
+  MULTIMEDIA_WAREHOUSE: '/multimedia-warehouse',
+  ACCOUNT_MANAGEMENT: '/account-management',
 };
 
 export const {

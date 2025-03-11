@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   FloppyDiskIcon,
   FolderManagementIcon,
@@ -24,13 +23,11 @@ import {
   SETTING,
 } from '@routers/path';
 import { Link } from 'react-router-dom';
-import OPopup from '@components/organisms/o-popup/OPopup';
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useProfile } from '@stores';
 
-const useMenuList = (onLogout?: () => void) => {
-  const [isOpen, setIsOpen] = useState(false);
+const useMenuList = () => {
   const { isSellerManager, isSeller, isAuthenticated } = useProfile();
 
   const menuList = useMemo(() => {
@@ -236,19 +233,7 @@ const useMenuList = (onLogout?: () => void) => {
       },
       {
         key: 'logout',
-        label: (
-          <OPopup
-            title="Đăng xuất"
-            description="Bạn có chắc muốn đăng xuất?"
-            cancelText="Huỷ"
-            okText="Xác nhận"
-            onOkModal={onLogout}
-            isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
-          >
-            <span>Đăng xuất</span>
-          </OPopup>
-        ),
+        label: 'Đăng xuất',
         className: 'item-logout',
         icon: <LogoutIcon />,
       },
