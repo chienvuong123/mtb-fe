@@ -91,8 +91,7 @@ apiClient.interceptors.response.use(
           }
 
           const response = await refreshTokenPromise;
-
-          if (response) {
+          if (response.data.errorCode === '0') {
             localStorage.setItem('token', response.data.data.accessToken);
             localStorage.setItem(
               'refresh_token',
@@ -102,6 +101,9 @@ apiClient.interceptors.response.use(
           } else {
             localStorage.removeItem('token');
             localStorage.removeItem('refresh_token');
+            if (window.location.pathname !== LOGIN) {
+              window.location.href = LOGIN;
+            }
           }
 
           return apiClient(originalRequest);
