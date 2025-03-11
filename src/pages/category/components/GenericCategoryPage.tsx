@@ -43,7 +43,12 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
     setSort,
     filters,
     setFilters,
-  } = useUrlParams<Partial<CategoryDTO>>();
+  } = useUrlParams<Partial<CategoryDTO>>({
+    initSort: {
+      field: 'createdDate',
+      direction: 'desc',
+    },
+  });
 
   const [drawerMode, setDrawerMode] = useState<TFormType>();
 
