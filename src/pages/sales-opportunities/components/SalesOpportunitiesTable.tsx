@@ -4,6 +4,8 @@ import { ESalesOpportunities } from '@constants/masterData';
 import React, { useState, type ReactNode } from 'react';
 import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
 import type { CBaseTable } from '@types';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
+import dayjs from 'dayjs';
 
 export const statusSalesOpportunitiesObject: Record<
   ESalesOpportunities,
@@ -33,29 +35,21 @@ const columns: TColumnType<SalesOpportunitiesDTO>[] = [
     showSorterTooltip: false,
   },
   {
-    title: 'Trạng thái',
-    dataIndex: 'status',
-    minWidth: 164,
+    title: 'Trạng thái cơ hội bán',
+    dataIndex: 'mbOpportunityStt',
+    minWidth: 175,
     sorter: true,
     showSorterTooltip: false,
     render: (value: ESalesOpportunities) =>
       statusSalesOpportunitiesObject[value] ?? null,
   },
   {
-    title: 'Nhóm khách hàng',
-    dataIndex: 'customerGroup',
-    minWidth: 164,
+    title: 'Trạng thái cơ tiếp cận gần nhất',
+    dataIndex: 'customerApproachStatusDtl',
+    minWidth: 184,
     sorter: true,
     showSorterTooltip: false,
-    render: (customerGroup) => customerGroup?.name || ' ',
-  },
-  {
-    title: 'Phân khúc khách hàng',
-    dataIndex: 'customer',
-    minWidth: 164,
-    sorter: true,
-    showSorterTooltip: false,
-    render: (customer) => customer?.customerSegment.name || '',
+    render: (value) => value?.name,
   },
   {
     title: 'Họ và tên',
@@ -71,13 +65,7 @@ const columns: TColumnType<SalesOpportunitiesDTO>[] = [
     minWidth: 124,
     sorter: true,
     showSorterTooltip: false,
-  },
-  {
-    title: 'Email',
-    dataIndex: 'customerEmail',
-    minWidth: 164,
-    sorter: true,
-    showSorterTooltip: false,
+    render: (value) => dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY),
   },
   {
     title: 'Số điện thoại',
@@ -85,6 +73,14 @@ const columns: TColumnType<SalesOpportunitiesDTO>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
+  },
+  {
+    title: 'Seller',
+    dataIndex: 'customer',
+    minWidth: 164,
+    sorter: true,
+    showSorterTooltip: false,
+    render: (value) => value?.sellerEntity?.name,
   },
 ];
 
@@ -110,6 +106,7 @@ const SalesOpportunitiesTable: React.FC<CBaseTable<SalesOpportunitiesDTO>> = ({
         isCheckboxHidden
         onView={(id) => onView?.(id as string)}
         onSort={onSort}
+        scroll={{ y: 350, x: 1574 }}
       />
     </div>
   );

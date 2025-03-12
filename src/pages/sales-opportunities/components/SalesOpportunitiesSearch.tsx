@@ -1,5 +1,4 @@
 import { OSearchBaseForm } from '@components/organisms';
-import { STATUS_SALES_OPPORTUNITIES_OPTIONS } from '@constants/masterData';
 import { CategoryType } from '@dtos';
 import {
   useCategoryOptionsListQuery,
@@ -24,12 +23,11 @@ const SalesOpportunitiesSearch: React.FC<
 
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: campaignList } = useQueryCampaignList({ categoryId }, false);
-  const { data: customerSegmentList } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_SEGMENT,
-  );
-  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.JOB);
   const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
     campaignId ?? '',
+  );
+  const { data: customerApproachStatus } = useCategoryOptionsListQuery(
+    CategoryType.CUSTOMER_APPROACH_STATUS,
   );
 
   const items = useMemo(() => {
@@ -65,27 +63,22 @@ const SalesOpportunitiesSearch: React.FC<
       },
       {
         type: INPUT_TYPE.SELECT,
-        label: 'Nhóm khách hàng',
-        name: 'customerGroupId',
+        label: 'Trạng thái cơ hội bán',
+        name: 'mbOpportunitySttList',
         inputProps: {
+          title: 'Trạng thái',
           placeholder: 'Chọn...',
           mode: 'multiple',
-          showSearch: true,
-          filterOption: true,
-          disabled: unselectedCampaign,
-          options: groupCustomerList,
         },
       },
       {
         type: INPUT_TYPE.SELECT,
-        label: 'Phân khúc khách hàng',
-        name: 'cusSegment',
+        label: 'Trạng thái tiếp cận gần nhất',
+        name: 'customerApproachStatus',
         inputProps: {
+          title: 'Trạng thái',
           placeholder: 'Chọn...',
-          mode: 'multiple',
-          showSearch: true,
-          filterOption: true,
-          options: customerSegmentList,
+          options: customerApproachStatus,
         },
       },
       {
@@ -101,12 +94,6 @@ const SalesOpportunitiesSearch: React.FC<
         inputProps: { title: 'Mã', placeholder: 'Nhập...', maxLength: 20 },
       },
       {
-        type: INPUT_TYPE.TEXT,
-        label: 'Email',
-        name: 'cusEmail',
-        inputProps: { title: 'Email', placeholder: 'Nhập...', maxLength: 30 },
-      },
-      {
         type: INPUT_TYPE.NUMBER,
         label: 'Số điện thoại',
         name: 'cusPhone',
@@ -117,38 +104,9 @@ const SalesOpportunitiesSearch: React.FC<
           className: 'input-custom',
         },
       },
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Nghề nghiệp',
-        name: 'cusJob',
-        inputProps: {
-          title: 'Nghề nghiệp',
-          placeholder: 'Chọn...',
-          mode: 'multiple',
-          options: jobList,
-        },
-      },
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Trạng thái',
-        name: 'status',
-        inputProps: {
-          title: 'Trạng thái',
-          placeholder: 'Chọn...',
-          options: STATUS_SALES_OPPORTUNITIES_OPTIONS,
-        },
-      },
     ];
     return formItems;
-  }, [
-    categoryList,
-    campaignList,
-    unselectedCategory,
-    jobList,
-    customerSegmentList,
-    groupCustomerList,
-    unselectedCampaign,
-  ]);
+  }, [categoryList, campaignList, unselectedCategory, customerApproachStatus]);
 
   useEffect(() => {
     if (initialValues) {
