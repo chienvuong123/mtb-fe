@@ -2,7 +2,6 @@ import {
   FloppyDiskIcon,
   FolderManagementIcon,
   HelpCircleIcon,
-  LogoutIcon,
   MarketingIcon,
   MuslimIcon,
   PieChartIcon,
@@ -230,12 +229,6 @@ const useMenuList = () => {
         className: 'item-help',
         icon: <HelpCircleIcon />,
         disabled: true,
-      },
-      {
-        key: 'logout',
-        label: 'Đăng xuất',
-        className: 'item-logout',
-        icon: <LogoutIcon />,
       },
     ];
 

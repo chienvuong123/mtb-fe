@@ -16,17 +16,12 @@ import AMenu from '@components/atoms/a-menu/AMenu';
 import useMenuList from '@layouts/hooks/useMenuList';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getFirstPathname } from '@utils/stringHelper';
-import { useLogoutMutation } from '@hooks/queries';
-import { LOGIN } from '@routers/path';
-import { useQueryClient } from '@tanstack/react-query';
-import { OPopup } from '@components/organisms';
 
 const { Sider } = Layout;
 
 const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
   const classAntd = clsx('l-slider', className);
 
-  const [isOpen, setIsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [actualActive, setActualAction] = useState(false);
 
@@ -37,25 +32,8 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const queryClient = useQueryClient();
-  const { mutate: mutateLogout } = useLogoutMutation();
 
   const { menu, menuBottom } = useMenuList();
-
-  const handleLogout = () => {
-    mutateLogout(
-      {
-        refreshToken: localStorage.getItem('refresh_token') ?? '',
-      },
-      {
-        onSuccess: () => {
-          localStorage.clear();
-          navigate(LOGIN);
-          queryClient.clear();
-        },
-      },
-    );
-  };
 
   const handleMouseEnter = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -83,12 +61,6 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
   const handleMenuClick = ({ key }: { key: string }) => {
     navigate(key);
     setSelectedKey([key]);
-  };
-
-  const handleMenuBottomClick = ({ key }: { key: string }) => {
-    if (key === 'logout') {
-      setIsOpen(true);
-    }
   };
 
   const handleOpenChange = (keys: string[]) => {
@@ -148,22 +120,10 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
               items={menuBottom}
               mode="inline"
               className="menu-not-active"
-              onClick={handleMenuBottomClick}
             />
           </div>
         </div>
       </Sider>
-      <OPopup
-        title="Đăng xuất"
-        description="Bạn có chắc muốn đăng xuất?"
-        cancelText="Huỷ"
-        okText="Xác nhận"
-        onOkModal={handleLogout}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-      >
-        <span />
-      </OPopup>
     </div>
   );
 };
