@@ -26,6 +26,7 @@ const CampaignApproachForm: FC<CBaseForm<CampaignScriptDTO>> = ({
             filterOption: true,
           },
           name: 'name',
+          colProps: { span: 12 },
         },
         {
           type: INPUT_TYPE.SELECT,
@@ -37,12 +38,14 @@ const CampaignApproachForm: FC<CBaseForm<CampaignScriptDTO>> = ({
             filterOption: true,
             options: MOCK_CUSTOMER_OPTIONS,
           },
+          colProps: { span: 12 },
         },
         {
           type: INPUT_TYPE.TEXT,
           label: 'Ghi chú',
           inputProps: { placeholder: 'Nhập...', maxLength: 100 },
           name: 'note',
+          colProps: { span: 12 },
         },
       ] as TFormItem[],
     [],

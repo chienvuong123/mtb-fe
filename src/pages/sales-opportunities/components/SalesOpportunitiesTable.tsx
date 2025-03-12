@@ -51,10 +51,11 @@ const columns: TColumnType<SalesOpportunitiesDTO>[] = [
   },
   {
     title: 'Phân khúc khách hàng',
-    dataIndex: 'customerSegment',
+    dataIndex: 'customer',
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
+    render: (customer) => customer?.customerSegment.name || '',
   },
   {
     title: 'Họ và tên',

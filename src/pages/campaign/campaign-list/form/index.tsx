@@ -15,6 +15,7 @@ import {
   useCampaignEditMutation,
   useCampaignRemoveMutation,
   useCampaignScriptQuery,
+  useQueryCategoryList,
 } from '@hooks/queries';
 import dayjs from 'dayjs';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
@@ -67,6 +68,7 @@ const CampaignCreate: React.FC = () => {
   const { id: campaignId } = useParams<TId>();
 
   const [form] = useForm();
+  const [formCategory] = useForm();
 
   const navigate = useNavigate();
 
@@ -83,7 +85,7 @@ const CampaignCreate: React.FC = () => {
   };
 
   const handleResetCategory = ({ message, type }: NotificationArgsProps) => {
-    form.resetFields();
+    formCategory.resetFields();
     notify({ message, type });
   };
 
@@ -114,6 +116,7 @@ const CampaignCreate: React.FC = () => {
   const { mutate: mutationUpdateCampaign } = useCampaignEditMutation();
   const { mutate: mutationCreateCategory } = useManageCategoryAddMutation();
   const { mutate: mutationDeleteCampaign } = useCampaignRemoveMutation();
+  const { refetch: refetchCategory } = useQueryCategoryList(true);
 
   const dataSourcesDetail: Partial<TCampaignDetailDTO> = useMemo(
     () => campaignDetailRes?.data ?? {},
@@ -187,7 +190,7 @@ const CampaignCreate: React.FC = () => {
   };
 
   const handleSubmitInsertCategory = async () => {
-    const values = await form.validateFields();
+    const values = await formCategory.validateFields();
 
     const data: Partial<ManagerCategoryDTO> = {
       name: values.name,
@@ -205,11 +208,14 @@ const CampaignCreate: React.FC = () => {
     // create new category
     mutationCreateCategory(data, {
       onSuccess: (d) => {
-        validationHelper(d, notify, () => {
+        validationHelper(d, notify, async () => {
           handleResetCategory({
             type: 'success',
             message: 'Tạo mới thành công',
           });
+          await refetchCategory();
+          const responseData = d.data as unknown as { id: string };
+          form.setFieldsValue({ categoryName: responseData.id });
           handleCloseForm();
         });
       },
@@ -261,6 +267,7 @@ const CampaignCreate: React.FC = () => {
         onShowForm={handleShowForm}
         onShowTargetForm={handleShowTargetForm}
         isDisabled={false}
+        form={form}
       />
       <div className="mb-24" />
       <CampaignDetailTable
@@ -335,7 +342,7 @@ const CampaignCreate: React.FC = () => {
           onClose={handleCloseForm}
           onSubmit={handleSubmitInsertCategory}
           isDisabled={false}
-          form={form}
+          form={formCategory}
         />
       </ODrawer>
     </div>
