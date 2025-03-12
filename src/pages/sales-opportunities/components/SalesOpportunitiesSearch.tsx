@@ -1,4 +1,5 @@
 import { OSearchBaseForm } from '@components/organisms';
+import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import { CategoryType } from '@dtos';
 import {
   useCategoryOptionsListQuery,
@@ -94,15 +95,11 @@ const SalesOpportunitiesSearch: React.FC<
         inputProps: { title: 'Mã', placeholder: 'Nhập...', maxLength: 20 },
       },
       {
-        type: INPUT_TYPE.NUMBER,
+        type: INPUT_TYPE.TEXT,
         label: 'Số điện thoại',
         name: 'cusPhone',
-        inputProps: {
-          title: 'sdt',
-          placeholder: 'Nhập...',
-          maxLength: 10,
-          className: 'input-custom',
-        },
+        inputProps: { placeholder: 'Nhập...', maxLength: 10 },
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
       },
     ];
     return formItems;

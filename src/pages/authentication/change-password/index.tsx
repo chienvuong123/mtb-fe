@@ -136,7 +136,7 @@ const ChangePassword = () => {
     mutationChangePassword(result, {
       onSuccess: (response) => {
         if (response.data) {
-          localStorage.removeItem('token');
+          localStorage.clear();
           handleInValidate({
             alertTextValue: 'Thay đổi mật khẩu thành công',
           });
