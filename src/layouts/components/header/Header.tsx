@@ -1,12 +1,13 @@
 import { OPopup } from '@components/organisms';
-import { useRequestChangePassword } from '@hooks/queries';
-import { ACCOUNT } from '@routers/path';
+import { useLogoutMutation, useRequestChangePassword } from '@hooks/queries';
+import { ACCOUNT, LOGIN } from '@routers/path';
 import { useProfile } from '@stores';
 import { Divider, Flex, Layout, Spin } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LogoutIcon } from '@assets/icons';
+import { useQueryClient } from '@tanstack/react-query';
 import HeaderInfo from './HeaderInfo';
-import HeaderNotify from './HeaderNotify';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -16,6 +17,10 @@ const Header = () => {
   const { user } = useProfile();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isRequestSuccess, setIsRequestSuccess] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const queryClient = useQueryClient();
+  const { mutate: mutateLogout } = useLogoutMutation();
 
   const handleRequestChangePw = () => {
     mutateRequestChangePassword(undefined, {
@@ -30,6 +35,21 @@ const Header = () => {
     });
   };
 
+  const handleLogout = () => {
+    mutateLogout(
+      {
+        refreshToken: localStorage.getItem('refresh_token') ?? '',
+      },
+      {
+        onSuccess: () => {
+          localStorage.clear();
+          navigate(LOGIN);
+          queryClient.clear();
+        },
+      },
+    );
+  };
+
   const dropdownList = [
     { label: 'Profile', key: 'profile', onClick: () => navigate(ACCOUNT) },
     {
@@ -37,12 +57,19 @@ const Header = () => {
       key: 'reset-password',
       onClick: handleRequestChangePw,
     },
+    {
+      key: 'logout',
+      label: 'Đăng xuất',
+      className: 'text-logout',
+      icon: <LogoutIcon />,
+      onClick: () => setIsOpen(true),
+    },
   ];
 
   return (
     <Layout.Header className="bg-white h-75">
       <Flex justify="flex-end" align="center" className="h-full">
-        <HeaderNotify />
+        {/* <HeaderNotify /> */}
 
         <Divider type="vertical" className="h-40 mx-12" />
 
@@ -79,6 +106,18 @@ const Header = () => {
             <div />
           </OPopup>
         )}
+        <OPopup
+          title="Đăng xuất"
+          description="Bạn có chắc muốn đăng xuất?"
+          cancelText="Huỷ"
+          okText="Xác nhận"
+          onOkModal={handleLogout}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+        >
+          <span />
+        </OPopup>
+        ;
       </div>
     </Layout.Header>
   );
