@@ -14,7 +14,7 @@ import {
 import { useNotification } from '@libs/antd';
 import { useQueryClient } from '@tanstack/react-query';
 import { validationHelper } from '@utils/validationHelper';
-import { Flex, Form, Rate, Typography, type FormInstance } from 'antd';
+import { Col, Flex, Form, Row, type FormInstance } from 'antd';
 import { type FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { transformDataToSubmit } from '../utils';
@@ -41,6 +41,9 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   const { data: approachDetailOptions } = useCategoryOptionsListQuery(
     CategoryType.CUSTOMER_APPROACH_DETAIL,
   );
+  const { data: statusOptions } = useCategoryOptionsListQuery(
+    CategoryType.CUSTOMER_APPROACH_STATUS,
+  );
   const { data: approachScriptData } =
     useApproachScriptViewByCustomerQuery(customerId);
   const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
@@ -55,6 +58,8 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   const navigate = useNavigate();
 
   const handleSave = async () => {
+    await form.validateFields();
+
     try {
       if (!initialValues || !approachScriptData) return;
       const currentValues = form.getFieldsValue(true) as Record<
@@ -109,62 +114,71 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   };
 
   return (
-    <Flex gap={24} vertical className="mt-24">
-      <Flex gap={24} justify="space-between" align="flex-end">
-        <Flex gap={8} style={{ width: 140 }} vertical>
-          <Typography.Text>Kết quả tiếp cận</Typography.Text>
-          <Form.Item name={[approachId, 'result']} noStyle>
-            <ASelect options={approachResultOptions} placeholder="Chọn" />
-          </Form.Item>
-        </Flex>
-        <Flex gap={8} style={{ width: 140 }} vertical>
-          <Typography.Text>Kết quả tiếp cận chi tiết</Typography.Text>
-          <Form.Item name={[approachId, 'resultDetail']} noStyle>
-            <ASelect options={approachDetailOptions} placeholder="Chọn" />
-          </Form.Item>
-        </Flex>
-        <AButton
-          type="primary"
-          onClick={forwardBookingInfor}
-          disabled={Boolean(!draftLoanLimit?.data?.finalMaxLoan)}
-        >
-          Chuyển thông tin booking
-        </AButton>
-        <Flex gap={8} vertical>
-          <Typography.Text>Khách hàng đánh giá chiến dịch</Typography.Text>
-          <Form.Item name={[approachId, 'rate']} noStyle>
-            <Rate
-              style={{
-                fontSize: 38,
-              }}
-            />
-          </Form.Item>
-        </Flex>
-        <Flex gap={8} flex={1} vertical>
-          <Typography.Text>Ghi chú</Typography.Text>
-          <Form.Item name={[approachId, 'note']} noStyle>
-            <AInputArea
-              placeholder="Nhập..."
-              maxLength={100}
-              showCount={{
-                formatter: ({ count, maxLength }) => `(${count}/${maxLength})`,
-              }}
-              autoSize={{ minRows: 1, maxRows: 1 }}
-            />
-          </Form.Item>
-        </Flex>
-      </Flex>
+    <div className="mt-24">
+      <Form layout="vertical" className="dis-block h-full">
+        <Row gutter={[24, 24]} justify="space-between">
+          <Col span={8}>
+            <Form.Item
+              label="Trạng thái tiếp cận"
+              name={[approachId, 'status']}
+              rules={[{ required: true }]}
+            >
+              <ASelect options={statusOptions} placeholder="Chọn" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label="Kết quả tiếp cận"
+              name={[approachId, 'result']}
+              rules={[{ required: true }]}
+            >
+              <ASelect options={approachResultOptions} placeholder="Chọn" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label="Kết quả tiếp cận chi tiết"
+              name={[approachId, 'resultDetail']}
+            >
+              <ASelect options={approachDetailOptions} placeholder="Chọn" />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item label="Ghi chú" name={[approachId, 'note']}>
+              <AInputArea
+                placeholder="Nhập..."
+                maxLength={2000}
+                showCount={{
+                  formatter: ({ count, maxLength }) =>
+                    `(${count}/${maxLength})`,
+                }}
+                autoSize={{ minRows: 3, maxRows: 1 }}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+
       {!isPreview && (
-        <Flex gap={24} justify="flex-end">
-          <AButton variant="filled" color="primary" onClick={handleCancel}>
-            Hủy
+        <Flex justify="space-between" style={{ marginTop: 100 }}>
+          <AButton
+            type="primary"
+            onClick={forwardBookingInfor}
+            disabled={Boolean(!draftLoanLimit?.data?.finalMaxLoan)}
+          >
+            Chuyển thông tin booking
           </AButton>
-          <AButton type="primary" onClick={handleSave}>
-            Lưu
-          </AButton>
+          <Flex gap={24} justify="flex-end">
+            <AButton variant="filled" color="primary" onClick={handleCancel}>
+              Hủy
+            </AButton>
+            <AButton type="primary" onClick={handleSave}>
+              Lưu
+            </AButton>
+          </Flex>
         </Flex>
       )}
-    </Flex>
+    </div>
   );
 };
 

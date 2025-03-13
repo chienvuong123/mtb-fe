@@ -13,12 +13,13 @@ import { transformToF88Options, transformToOptions } from '@utils/objectHelper';
 export const useCategoryOptionsListQuery = (
   categoryTypeCode: CategoryType,
   combine?: boolean,
+  enabled?: boolean,
 ) => {
   return useQuery({
     queryKey: ['categoryList', categoryTypeCode],
     queryFn: () => categoryApi.getCategoryOptionsList(categoryTypeCode),
     select: ({ data }) => transformToOptions(data, combine),
-    enabled: !!categoryTypeCode,
+    enabled,
   });
 };
 
@@ -150,7 +151,6 @@ export const useQueryCampaignList = (
     queryKey: ['campaign', 'list', params],
     queryFn: () => campaignApi.campaignListOptions(params),
     select: ({ data }) => transformToOptions(data.content, combine),
-    enabled: !!params?.categoryCode || !!params?.categoryId,
   });
 };
 
@@ -174,11 +174,12 @@ export const useSellerOptionsListQuery = (combine?: boolean) => {
 export const useGroupCustomerOptionsListQuery = (
   campaignId: string,
   combine?: boolean,
+  enabled?: boolean,
 ) => {
   return useQuery({
     queryKey: ['customerGroupList', campaignId],
     queryFn: () => groupCustomerApi.list(campaignId),
     select: ({ data }) => transformToOptions(data, combine),
-    enabled: !!campaignId,
+    enabled,
   });
 };

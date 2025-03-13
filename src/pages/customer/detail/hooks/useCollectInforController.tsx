@@ -11,11 +11,12 @@ import {
   useCustomerViewQuery,
   useCustomerGetDraftLoanLimit,
   CUSTOMER_KEY,
+  useForwardBookingInforMutation,
 } from '@hooks/queries';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { Form } from 'antd';
+import { Form, Typography } from 'antd';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { CustomerCollectFormDTO } from 'src/dtos/customer-collect-info';
 import { useParams } from 'react-router-dom';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
@@ -23,6 +24,7 @@ import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import { validationHelper } from '@utils/validationHelper';
 import { useNotification } from '@libs/antd';
 import { useQueryClient } from '@tanstack/react-query';
+import { CloseIcon, PlusIcon } from '@assets/icons';
 import { mapDraftToFormData, mapFormDataToDTO } from '../utils';
 
 interface FieldChangeInfo {
@@ -113,6 +115,40 @@ export const useCollectInforController = () => {
   const { data: currentWardOptions } =
     useLocationOptionsListQuery(currentDistrictCode);
 
+  const { mutate: forwardBookingInforMutate } =
+    useForwardBookingInforMutation();
+
+  const [showPhone, setShowPhone] = useState({
+    mobileNumber2: false,
+    mobileNumber3: false,
+  });
+
+  const handleAddPhone = () => {
+    setShowPhone((pre) => ({
+      mobileNumber2: true,
+      mobileNumber3: pre.mobileNumber2,
+    }));
+  };
+
+  const fillByResidence = useCallback(() => {
+    form.setFieldValue(
+      'currentProvinceCode',
+      form.getFieldValue('residenceProvinceCode'),
+    );
+    form.setFieldValue(
+      'currentDistrictCode',
+      form.getFieldValue('residenceDistrictCode'),
+    );
+    form.setFieldValue(
+      'currentWardCode',
+      form.getFieldValue('residenceWardCode'),
+    );
+    form.setFieldValue(
+      'currentDetailedAddress',
+      form.getFieldValue('residenceDetailedAddress'),
+    );
+  }, [form]);
+
   const { firstItems, secondItems, thirdItems } = useMemo(() => {
     const basicItems: TFormItem[] = [
       {
@@ -147,6 +183,49 @@ export const useCollectInforController = () => {
         rules: [{ required: true }],
         colProps: { span: 12 },
         blockingPattern: BLOCKING_NUMBER_PARTERN,
+        surfixButton: {
+          icon: <PlusIcon color="#5E6371" />,
+          type: 'text',
+          disabled: showPhone.mobileNumber2 && showPhone.mobileNumber3,
+          onClick: handleAddPhone,
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Số điện thoại 2',
+        name: 'mobileNumber2',
+        inputProps: { placeholder: 'Nhập...', maxLength: 10 },
+        rules: [{ required: true }],
+        colProps: { span: 12 },
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
+        hidden: !showPhone.mobileNumber2,
+        surfixButton: {
+          icon: <CloseIcon />,
+          type: 'text',
+          disabled: showPhone.mobileNumber3,
+          onClick: () => {
+            setShowPhone((pre) => ({ ...pre, mobileNumber2: false }));
+            form.setFieldValue('mobileNumber2', undefined);
+          },
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Số điện thoại 3',
+        name: 'mobileNumber3',
+        inputProps: { placeholder: 'Nhập...', maxLength: 10 },
+        rules: [{ required: true }],
+        colProps: { span: 12 },
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
+        hidden: !showPhone.mobileNumber3,
+        surfixButton: {
+          icon: <CloseIcon />,
+          type: 'text',
+          onClick: () => {
+            setShowPhone((pre) => ({ ...pre, mobileNumber3: false }));
+            form.setFieldValue('mobileNumber3', undefined);
+          },
+        },
       },
       {
         type: INPUT_TYPE.LABEL,
@@ -195,8 +274,30 @@ export const useCollectInforController = () => {
         rules: [{ required: true }],
       },
       {
+        type: INPUT_TYPE.TEXT,
+        label: 'Địa chỉ chi tiết',
+        name: 'residenceDetailedAddress',
+        inputProps: {
+          placeholder: 'Nhập...',
+        },
+        colProps: { span: 24 },
+      },
+      {
         type: INPUT_TYPE.LABEL,
-        inputProps: { label: 'Địa chỉ nơi ở hiện tại' },
+        inputProps: {
+          label: (
+            <>
+              Địa chỉ nơi ở hiện tại
+              <Typography.Text
+                className="text-main1 ml-8 cursor-pointer"
+                style={{ textDecoration: 'underline' }}
+                onClick={fillByResidence}
+              >
+                Lấy thông tin địa chỉ thường trú
+              </Typography.Text>
+            </>
+          ),
+        },
         colProps: { span: 24 },
       },
       {
@@ -242,13 +343,22 @@ export const useCollectInforController = () => {
       },
       {
         type: INPUT_TYPE.TEXT,
+        label: 'Địa chỉ chi tiết',
+        name: 'currentDetailedAddress',
+        inputProps: {
+          placeholder: 'Nhập...',
+        },
+        colProps: { span: 24 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
         label: 'Thời điểm mở App',
         name: 'appDate',
         inputProps: {
           readOnly: true,
           disabled: true,
         },
-        colProps: { span: 8 },
+        colProps: { span: 12 },
         getValueProps: (value) => {
           return {
             value: dayjs(value).format(DATE_SLASH_FORMAT_DDMMYYYY),
@@ -257,76 +367,8 @@ export const useCollectInforController = () => {
       },
       {
         type: INPUT_TYPE.TEXT,
-        label: 'Số tháng có phát sinh nợ/có liên tiếp',
-        name: 'countOfTransaction',
-        inputProps: { readOnly: true, disabled: true },
-        colProps: { span: 8 },
-      },
-      {
-        type: INPUT_TYPE.TEXT,
         label: 'Cấp độ eKYC/KYC tại MB',
         name: 'ekycLevel',
-        inputProps: { readOnly: true, disabled: true },
-        colProps: { span: 8 },
-      },
-      {
-        type: INPUT_TYPE.TEXT,
-        label: 'Số lượng giao dịch trung bình/tháng trong 3 tháng gần nhất',
-        name: 'averageTransaction',
-        inputProps: { readOnly: true, disabled: true },
-        colProps: { span: 12 },
-      },
-      {
-        type: INPUT_TYPE.CURRENCY,
-        label: 'Số tiền giao dịch trung bình/tháng trong 3 tháng gần nhất',
-        name: 'averageCreditAmt',
-        inputProps: {
-          readOnly: true,
-          disabled: true,
-        },
-        colProps: { span: 12 },
-      },
-      {
-        type: INPUT_TYPE.TEXT,
-        label: 'Số tháng có phát sinh giao dịch Có liên tiếp',
-        name: 'averageCreditMonth',
-        inputProps: { readOnly: true, disabled: true },
-        colProps: { span: 12 },
-      },
-      {
-        type: INPUT_TYPE.CURRENCY,
-        label:
-          'Số tiền giao dịch phát sinh Nợ trung bình/tháng trong 3 tháng gần nhất',
-        name: 'averageDebitAmt',
-        inputProps: { readOnly: true, disabled: true },
-        colProps: { span: 12 },
-      },
-      {
-        type: INPUT_TYPE.TEXT,
-        label: 'Số tháng có phát sinh giao dịch Nợ liên tiếp',
-        name: 'averageDebitMonth',
-        inputProps: { readOnly: true, disabled: true },
-        colProps: { span: 12 },
-      },
-      {
-        type: INPUT_TYPE.CURRENCY,
-        label: 'Số dư CASA bình quân 3 tháng gần nhất',
-        name: 'averageCasa',
-        inputProps: { readOnly: true, disabled: true },
-        colProps: { span: 12 },
-      },
-      {
-        type: INPUT_TYPE.CURRENCY,
-        label:
-          'Lương trả qua tài khoản MB (trung bình/tháng trong 3 tháng gần nhất)',
-        name: 'averageSalary',
-        inputProps: { readOnly: true, disabled: true },
-        colProps: { span: 12 },
-      },
-      {
-        type: INPUT_TYPE.TEXT,
-        label: 'Số tháng nhận lương liên tiếp',
-        name: 'countOfSalary',
         inputProps: { readOnly: true, disabled: true },
         colProps: { span: 12 },
       },
@@ -417,7 +459,7 @@ export const useCollectInforController = () => {
           disabled: !assetInfoCode,
           maxLength: 50,
         },
-        rules: [{ required: true }],
+        // rules: [{ required: true }],
       },
     ];
 
@@ -429,6 +471,7 @@ export const useCollectInforController = () => {
         inputProps: {
           placeholder: 'Chọn',
           options: identityOptions,
+          disabled: true,
         },
         rules: [{ required: true }],
       },
@@ -439,6 +482,7 @@ export const useCollectInforController = () => {
         inputProps: {
           placeholder: 'Nhập...',
           maxLength: 20,
+          disabled: true,
         },
         getValueFromEvent: (e: React.ChangeEvent<HTMLInputElement>) => {
           return e.target.value.replace(/[^a-zA-Z0-9]/g, '');
@@ -449,7 +493,7 @@ export const useCollectInforController = () => {
         type: INPUT_TYPE.DATE_PICKER,
         label: 'Ngày cấp',
         name: 'issueDate',
-        inputProps: { placeholder: 'Chọn', maxDate: dayjs() },
+        inputProps: { placeholder: 'Chọn', maxDate: dayjs(), disabled: true },
         rules: [{ required: true }],
       },
       {
@@ -512,6 +556,7 @@ export const useCollectInforController = () => {
         name: 'loanMoney',
         inputProps: { placeholder: 'Nhập...' },
         rules: [{ required: true }],
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -525,7 +570,7 @@ export const useCollectInforController = () => {
       },
       {
         type: INPUT_TYPE.TEXT,
-        label: 'Thời hạn khách hàng muốn vay',
+        label: 'Thời hạn khách hàng muốn vay (Tháng)',
         name: 'tenor',
         inputProps: {
           placeholder: 'Nhập...',
@@ -569,6 +614,9 @@ export const useCollectInforController = () => {
     currentProvinceCode,
     currentDistrictCode,
     assetInfoCode,
+    showPhone,
+    form,
+    fillByResidence,
   ]);
 
   const handleFormValuesChange = useCallback(
@@ -677,6 +725,19 @@ export const useCollectInforController = () => {
     });
   };
 
+  const forwardBookingInfor = () => {
+    forwardBookingInforMutate(customerId as string, {
+      onSuccess: (d) => {
+        validationHelper(d, notify, () => {
+          notify({
+            message: 'Chuyển thông tin booking thành công',
+            type: 'success',
+          });
+        });
+      },
+    });
+  };
+
   useEffect(() => {
     if (genderOptions) {
       const baseFormData = {
@@ -723,5 +784,6 @@ export const useCollectInforController = () => {
     handleFormValuesChange,
     saveDraft,
     checkLoanLimit,
+    forwardBookingInfor,
   };
 };

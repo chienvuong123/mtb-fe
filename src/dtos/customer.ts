@@ -26,7 +26,6 @@ export interface CustomerDTO extends BaseEntity {
   cusGroup?: string;
   cusSegment?: string;
   job?: string;
-  hobbies?: string;
   identification: string;
   categoryId?: string;
   category?: CategoryDTO;
@@ -34,6 +33,7 @@ export interface CustomerDTO extends BaseEntity {
   group?: CustomerGroupDTO;
   segment?: CustomerSegmentDTO;
   seller?: string;
+  approachStatus?: string;
 
   identnDocType?: string;
   identnDocIssueDate?: string;
@@ -63,6 +63,12 @@ export interface CustomerDTO extends BaseEntity {
   categoryCampaign?: CategoryDTO;
   customerGroup?: CustomerGroupDTO;
   identnDocTypeCategory?: CategoryDTO;
+  approachResult?: {
+    id?: string;
+    categoryStatus?: BaseEntity & {
+      name?: string;
+    };
+  };
 }
 
 export interface CustomerSearchRequest extends BaseSearchParams {

@@ -1,4 +1,5 @@
 import type {
+  ButtonProps,
   CheckboxProps,
   ColProps,
   DatePickerProps,
@@ -13,6 +14,7 @@ import type {
 } from 'antd';
 import type { GetProps } from 'antd/lib';
 import type { TextAreaProps } from 'antd/lib/input';
+import type React from 'react';
 import type { CSSProperties } from 'react';
 import type { ReactQuillProps } from 'react-quill';
 
@@ -47,7 +49,7 @@ export type TBaseFormItem = FormItemProps & {
   colProps?: ColProps & {
     maxWidth?: CSSProperties['maxWidth']; // Only works without span prop
   };
-  onAddClick?: (field?: string) => void;
+  surfixButton?: boolean | ButtonProps;
   blockingPattern?: RegExp;
 };
 
@@ -95,7 +97,7 @@ export type TFormItem =
   | (TBaseFormItem & { type: INPUT_TYPE.BLANK; inputProps?: InputProps })
   | (TBaseFormItem & {
       type: INPUT_TYPE.LABEL;
-      inputProps?: InputProps & { label: string };
+      inputProps?: InputProps & { label: React.ReactNode };
     })
   | (TBaseFormItem & {
       type: INPUT_TYPE.CHECKBOX;

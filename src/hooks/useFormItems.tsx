@@ -15,6 +15,7 @@ import {
 import React, { useMemo, type FocusEvent } from 'react';
 
 import {
+  AAutoCompleteCurrency,
   AButton,
   AInputArea,
   AInputNumber,
@@ -74,15 +75,9 @@ const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
   [INPUT_TYPE.NUMBER]: (props: GetProps<typeof InputNumber>) => (
     <AInputNumber {...props} />
   ),
-  [INPUT_TYPE.CURRENCY]: (props: GetProps<typeof InputNumber>) => (
-    <AInputNumber
-      formatter={(value) => {
-        if (!value) return '';
-        return new Intl.NumberFormat('vi-VN').format(Number(value));
-      }}
-      {...props}
-    />
-  ),
+  [INPUT_TYPE.CURRENCY]: (
+    props: Omit<GetProps<typeof InputNumber>, 'form'>,
+  ) => <AAutoCompleteCurrency {...props} />,
   [INPUT_TYPE.SELECT]: ({
     filterOption,
     ...props
@@ -155,6 +150,8 @@ const useFormItems = ({ formItems, rowProps, form }: IFormItemsProps = {}) => {
           <Component
             className={className}
             onBlur={handleBlur}
+            form={form}
+            name={fieldName}
             {...inputProps}
           />
         ) : null;
@@ -172,7 +169,7 @@ const useFormItems = ({ formItems, rowProps, form }: IFormItemsProps = {}) => {
               inputProps,
               colProps,
               className,
-              onAddClick,
+              surfixButton,
               ...formItemProps
             }) => {
               const {
@@ -183,42 +180,48 @@ const useFormItems = ({ formItems, rowProps, form }: IFormItemsProps = {}) => {
                 maxWidth = '20%',
                 ...otherColProps
               } = colProps ?? {};
-              const showAddBtn = Boolean(onAddClick);
+              const showAddBtn = Boolean(surfixButton);
 
               return (
                 <Col
                   span={span}
                   flex={flex ?? (span ? undefined : '20%')}
                   style={{ maxWidth: span ? undefined : maxWidth, ...style }}
-                  className={clsx(
-                    { 'dis-flex gap-14 ai-flex-end': showAddBtn },
-                    colClassName,
-                  )}
-                  {...otherColProps}
+                  className={clsx({ 'pos-relative': showAddBtn }, colClassName)}
                   key={formItemProps.name}
+                  hidden={formItemProps?.hidden}
+                  {...otherColProps}
                 >
                   {type === INPUT_TYPE.LABEL ? (
-                    <Typography className="fw-500 fs-14">
+                    <Typography
+                      className={clsx('fw-500 fs-14', inputProps?.className)}
+                    >
                       {inputProps?.label}
                     </Typography>
                   ) : (
-                    <Form.Item
-                      className={clsx('mb-0 w-full', className)}
-                      {...formItemProps}
-                    >
-                      {getFormItem({
-                        type,
-                        props: inputProps,
-                        fieldName: formItemProps.name,
+                    <div
+                      className={clsx({
+                        'mr-57': showAddBtn,
                       })}
-                    </Form.Item>
+                    >
+                      <Form.Item
+                        className={clsx('mb-0 w-full', className)}
+                        {...formItemProps}
+                      >
+                        {getFormItem({
+                          type,
+                          props: inputProps,
+                          fieldName: formItemProps.name,
+                        })}
+                      </Form.Item>
+                    </div>
                   )}
-                  {showAddBtn && (
+                  {showAddBtn && !formItemProps?.hidden && (
                     <AButton
                       type="primary"
                       icon={<PlusIcon />}
-                      className="min-w-40 h-40"
-                      onClick={() => onAddClick?.(formItemProps.name)}
+                      className="min-w-40 h-40 pos-absolute right-8 top-26"
+                      {...(surfixButton !== true && surfixButton)}
                     />
                   )}
                 </Col>

@@ -1,4 +1,4 @@
-import { AButton, ASelect } from '@components/atoms';
+import { AButton } from '@components/atoms';
 import { ASegmented } from '@components/atoms/a-segmented';
 import { CategoryType, type ApproachScriptDTO } from '@dtos';
 import { Flex, Form, Input, Rate, Typography } from 'antd';
@@ -77,10 +77,16 @@ const CustomerApproachPreview = ({ calledIds }: { calledIds: string[] }) => {
                   />
                 </Form.Item>
               </Flex>
-              <Flex vertical gap={8} style={{ width: 300 }}>
-                <Typography.Text>Trạng thái tiếp cận</Typography.Text>
-                <Form.Item name={[approach?.id, 'status']} noStyle>
-                  <ASelect options={statusOptions} placeholder="Chọn" />
+              <Flex gap={8} vertical>
+                <Typography.Text>
+                  Khách hàng đánh giá chiến dịch
+                </Typography.Text>
+                <Form.Item name={[approach?.id, 'rate']} noStyle>
+                  <Rate
+                    style={{
+                      fontSize: 38,
+                    }}
+                  />
                 </Form.Item>
               </Flex>
             </Flex>

@@ -21,19 +21,27 @@ const CustomerSearchForm: FC<
   }
 > = ({ initialValues, onSearch, onClearAll, onCreate, onDeleteAll }) => {
   const [form] = useForm();
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { isAdmin, isCampaignManager, isSellerManager, isSeller } =
+    useProfile();
 
   const categoryId = useWatch(['categoryId'], form);
   const campaignId = useWatch(['campaignId'], form);
 
   const { data: categoryList } = useQueryCategoryList(true);
-  const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
+  const { data: campaignList } = useQueryCampaignList(
+    { categoryId: isSeller ? undefined : categoryId },
+    true,
+  );
   const { data: customerSegmentList } = useCategoryOptionsListQuery(
     CategoryType.CUSTOMER_SEGMENT,
+    false,
+    isAdmin || isCampaignManager || isSellerManager,
   );
   const { data: jobList } = useCategoryOptionsListQuery(CategoryType.JOB);
   const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
     campaignId ?? '',
+    false,
+    isAdmin || isCampaignManager || isSellerManager,
   );
 
   const items: TFormItem[] = useMemo(
@@ -50,6 +58,7 @@ const CustomerSearchForm: FC<
             options: categoryList,
             onChange: () => handleResetFields(['campaignId', 'cusGroup'], form),
           },
+          hidden: isSeller,
         },
         {
           type: INPUT_TYPE.SELECT,
@@ -60,7 +69,7 @@ const CustomerSearchForm: FC<
             showSearch: true,
             filterOption: true,
             options: campaignList,
-            disabled: !categoryId,
+            disabled: !isSeller && !categoryId,
             onChange: () => handleResetFields(['cusGroup'], form),
           },
         },
@@ -81,6 +90,7 @@ const CustomerSearchForm: FC<
           label: 'Email',
           name: 'email',
           inputProps: { placeholder: 'Nhập...' },
+          hidden: isSeller,
         },
         {
           type: INPUT_TYPE.SELECT,
@@ -92,6 +102,7 @@ const CustomerSearchForm: FC<
             filterOption: true,
             options: customerSegmentList,
           },
+          hidden: isSeller,
         },
         {
           type: INPUT_TYPE.TEXT,
@@ -112,6 +123,13 @@ const CustomerSearchForm: FC<
           },
         },
         {
+          type: INPUT_TYPE.TEXT,
+          label: 'Số lần gọi',
+          name: 'numberOfCalls',
+          inputProps: { placeholder: 'Nhập...', maxLength: 2 },
+          blockingPattern: BLOCKING_NUMBER_PARTERN,
+        },
+        {
           type: INPUT_TYPE.SELECT,
           label: 'Nhóm khách hàng',
           name: 'cusGroup',
@@ -123,6 +141,7 @@ const CustomerSearchForm: FC<
             options: groupCustomerList,
             disabled: !campaignId || !categoryId,
           },
+          hidden: isSeller,
         },
       ] as TFormItem[],
     [
@@ -134,6 +153,7 @@ const CustomerSearchForm: FC<
       jobList,
       groupCustomerList,
       form,
+      isSeller,
     ],
   );
 

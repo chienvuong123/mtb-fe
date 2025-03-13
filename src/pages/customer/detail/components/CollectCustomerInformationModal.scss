@@ -1,6 +1,11 @@
 .collect-customer-information-modal {
   .mbb-modal-content {
     background: #f5f6fa;
+    padding: 24px;
+    .mbb-modal-close {
+      top: 0;
+      right: 0;
+    }
   }
 
   .limit-loan-amount-card {
