@@ -39,11 +39,9 @@ const ScenarioScriptContainer: FC<{
   const ref = useRef<HTMLDivElement>(null);
   const [activeKeys, setActiveKeys] = useState<string[]>();
 
-  const attributeItems = useMemo(() => {
-    const activeKeysArr: string[] = [];
-    const result = approach?.approachStep?.map((attr, index) => {
-      activeKeysArr.push(attr.id);
-      return {
+  const attributeItems = useMemo(
+    () =>
+      approach?.approachStep?.map((attr, index) => ({
         key: attr.id,
         label: `${index + 1}. ${attr.attributeName}`,
         children: <AttributeItem data={attr} approachId={approach?.id} />,
@@ -53,11 +51,9 @@ const ScenarioScriptContainer: FC<{
           overflow: 'hidden',
           border: 'none',
         },
-      };
-    });
-    setActiveKeys(activeKeysArr);
-    return result;
-  }, [approach?.approachStep, approach?.id, token]);
+      })),
+    [approach?.approachStep, approach?.id, token],
+  );
 
   if (!approach) {
     return null;

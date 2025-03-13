@@ -115,7 +115,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
 
   return (
     <div className="mt-24">
-      <Form layout="vertical" className="dis-block h-full">
+      <Form form={form} layout="vertical" className="dis-block h-full">
         <Row gutter={[24, 24]} justify="space-between">
           <Col span={8}>
             <Form.Item

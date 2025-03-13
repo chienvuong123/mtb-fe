@@ -19,6 +19,12 @@ const formatAddressString = (
   return `${province} - ${district} - ${ward}`;
 };
 
+const formatCurrencyToNumber = (value: string | number) =>
+  Number(value.toString().replace(/\./g, ''));
+
+const parseNumberToCurrency = (value?: string | number) =>
+  value ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : value;
+
 export const mapFormDataToDTO = (
   formData: CustomerCollectFormDTO,
   options: {
@@ -135,6 +141,8 @@ export const mapFormDataToDTO = (
       DATE_SLASH_FORMAT_DDMMYYYY,
     ),
     appDate: dayjs(formData.appDate).format(DATE_SLASH_FORMAT_DDMMYYYY),
+    averageMonthlyIncome: formatCurrencyToNumber(formData.averageMonthlyIncome),
+    loanMoney: formatCurrencyToNumber(formData.loanMoney),
   };
 };
 
@@ -161,6 +169,8 @@ export const mapDraftToFormData = (dto: CustomerCollectInfoDTO) => {
     numberOfChildren: dto.numberOfChildren?.toString(),
     averageCreditMonth: dto.averageCreditMonth?.toString(),
     averageDebitMonth: dto.averageDebitMonth?.toString(),
+    loanMoney: parseNumberToCurrency(dto.loanMoney),
+    averageMonthlyIncome: parseNumberToCurrency(dto.averageMonthlyIncome),
   };
 };
 
