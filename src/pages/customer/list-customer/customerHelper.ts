@@ -46,7 +46,6 @@ export const destructCustomerData = (
     job,
     categoryName,
     campaignName,
-    hobbies,
     identnDocType,
   }: Partial<CustomerDTO>,
   isSearch?: boolean,
@@ -85,7 +84,6 @@ export const destructCustomerData = (
         job,
         categoryName,
         campaignName,
-        hobbies,
         identnDocType,
       };
 };

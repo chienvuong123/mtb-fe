@@ -38,7 +38,6 @@ const useCustomerForm = ({
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
   const { data: sellerList } = useSellerOptionsListQuery(true);
-  const { data: hobbiesList } = useCategoryOptionsListQuery(CategoryType.HOBBY);
   const { data: jobList } = useCategoryOptionsListQuery(CategoryType.JOB);
   const { data: identificationList } = useCategoryOptionsListQuery(
     CategoryType.MB_IDENTIFICATION,
@@ -189,16 +188,6 @@ const useCustomerForm = ({
           },
           {
             type: INPUT_TYPE.SELECT,
-            label: 'Sở thích',
-            name: 'hobbies',
-            inputProps: {
-              options: hobbiesList,
-              mode: 'multiple',
-              placeholder: 'Chọn...',
-            },
-          },
-          {
-            type: INPUT_TYPE.SELECT,
             label: 'Chi nhánh quản lý',
             name: 'branch',
             inputProps: {
@@ -239,7 +228,6 @@ const useCustomerForm = ({
       categoryList,
       campaignList,
       sellerList,
-      hobbiesList,
       jobList,
       customerSegmentList,
       identificationList,
@@ -252,23 +240,20 @@ const useCustomerForm = ({
 
   useEffect(() => {
     if (initialValues) {
-      const { birthday, hobbies, categoryCampaign, ...otherInit } =
-        initialValues ?? {};
+      const { birthday, categoryCampaign, ...otherInit } = initialValues ?? {};
       form.setFieldsValue({
         ...otherInit,
         categoryId: categoryCampaign?.id,
         birthday: birthday ? stringToDayjs(birthday) : undefined,
-        hobbies: hobbies?.split(',') ?? [],
       } as TCustomerForm);
     }
   }, [initialValues, form]);
 
-  const handleSubmit = ({ birthday, hobbies, ...values }: TCustomerForm) => {
+  const handleSubmit = ({ birthday, ...values }: TCustomerForm) => {
     onSubmit?.(
       {
         ...values,
         birthday: dayjsToString(birthday),
-        hobbies: hobbies?.join(','),
       } as CustomerDTO,
       form,
     );

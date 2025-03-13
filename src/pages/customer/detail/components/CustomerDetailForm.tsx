@@ -154,14 +154,6 @@ const CustomerDetailForm: FC = () => {
       },
       {
         type: INPUT_TYPE.TEXT,
-        label: 'Sở thích',
-        name: 'hobbies',
-        inputProps: {
-          disabled: true,
-        },
-      },
-      {
-        type: INPUT_TYPE.TEXT,
         label: 'Chi nhánh quản lý',
         name: 'branch',
         inputProps: {
@@ -190,16 +182,6 @@ const CustomerDetailForm: FC = () => {
 
   useEffect(() => {
     if (customerData) {
-      const hobbiesArray = customerData?.hobbies?.split(',') || [];
-      const hobbiesName = hobbiesArray
-        .map(
-          (hobbyId) =>
-            hobbyOptions?.find((option) => option.value === hobbyId)?.label ||
-            '',
-        )
-        .filter(Boolean)
-        .join(', ');
-
       form.setFieldsValue({
         categoryCode: customerData?.categoryCampaign?.code,
         categoryName: customerData?.categoryCampaign?.name,
@@ -217,7 +199,6 @@ const CustomerDetailForm: FC = () => {
         identnDocType: customerData?.identnDocTypeCategory?.name,
         identityCard: customerData?.identityCard,
         address: customerData?.address,
-        hobbies: hobbiesName,
         branch: customerData?.branchCategory?.name,
         seller: customerData?.sellerEntity?.name,
         orderId: customerData?.orderId,

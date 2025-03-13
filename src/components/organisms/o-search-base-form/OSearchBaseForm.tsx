@@ -45,8 +45,9 @@ const OSearchBaseForm = <T extends object>({
           </Typography.Text>
         ),
         getValueFromEvent: blockingPattern
-          ? ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
-              getValueFromEvent(value, blockingPattern)
+          ? (e: React.ChangeEvent<HTMLInputElement>) => {
+              return getValueFromEvent(e?.target?.value ?? e, blockingPattern);
+            }
           : undefined,
         ...others,
       })),

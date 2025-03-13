@@ -1,10 +1,10 @@
 import { ArrowDown01RoundIcon } from '@assets/icons';
 import { type ApproachFormData, type ApproachScriptDTO } from '@dtos';
-import { Divider, Form, Image, theme, Typography } from 'antd';
-import { useMemo, useRef, type FC } from 'react';
+import { Divider, Flex, Form, Image, theme, Typography } from 'antd';
+import { useMemo, useRef, useState, type FC } from 'react';
 import type { FormInstance } from 'antd/lib';
 
-import { ACollapse } from '@components/atoms';
+import { AButton, ACollapse } from '@components/atoms';
 import DefaultScenario from '@assets/images/Scenario.png';
 import ScenarioScriptFooter from './components/ScenarioScriptFooter';
 import AttributeItem from './components/AttributeItem';
@@ -37,19 +37,26 @@ const ScenarioScriptContainer: FC<{
 }) => {
   const { token } = theme.useToken();
   const ref = useRef<HTMLDivElement>(null);
+  const [activeKeys, setActiveKeys] = useState<string[]>();
 
   const attributeItems = useMemo(() => {
-    return approach?.approachStep?.map((attr, index) => ({
-      key: attr.id,
-      label: `${index + 1}. ${attr.attributeName}`,
-      children: <AttributeItem data={attr} approachId={approach?.id} />,
-      style: {
-        marginBottom: 16,
-        borderRadius: token.borderRadiusLG,
-        overflow: 'hidden',
-        border: 'none',
-      },
-    }));
+    const activeKeysArr: string[] = [];
+    const result = approach?.approachStep?.map((attr, index) => {
+      activeKeysArr.push(attr.id);
+      return {
+        key: attr.id,
+        label: `${index + 1}. ${attr.attributeName}`,
+        children: <AttributeItem data={attr} approachId={approach?.id} />,
+        style: {
+          marginBottom: 16,
+          borderRadius: token.borderRadiusLG,
+          overflow: 'hidden',
+          border: 'none',
+        },
+      };
+    });
+    setActiveKeys(activeKeysArr);
+    return result;
   }, [approach?.approachStep, approach?.id, token]);
 
   if (!approach) {
@@ -58,19 +65,31 @@ const ScenarioScriptContainer: FC<{
   return (
     <Form form={form}>
       <div ref={ref}>
-        <Typography.Title level={4} className="mt-24 mb-16">
-          Kịch bản {approach?.name}
-        </Typography.Title>
+        <Flex gap={14} align="center">
+          <Typography.Title level={4} className="mt-24 mb-16">
+            Kịch bản {approach?.name}
+          </Typography.Title>
+          <AButton
+            icon={<ExpandIcon isActive={!!activeKeys?.length} />}
+            type="text"
+            onClick={() =>
+              setActiveKeys((pre) =>
+                pre?.length ? [] : attributeItems?.map((i) => i.key),
+              )
+            }
+          />
+        </Flex>
         {isFirstApproach ? (
           <Image src={DefaultScenario} preview={{ scaleStep: 1, mask: null }} />
         ) : (
           <ACollapse
             bordered={false}
-            defaultActiveKey={attributeItems?.map((x) => x.key)}
+            activeKey={activeKeys}
             expandIconPosition="end"
             expandIcon={ExpandIcon}
             style={{ background: token.colorBgContainer }}
             items={attributeItems}
+            onChange={(values) => setActiveKeys(values)}
           />
         )}
         <Divider />

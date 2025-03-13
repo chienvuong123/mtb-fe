@@ -48,7 +48,6 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
         sorter: true,
         showSorterTooltip: false,
         unicodeSort: true,
-        // sortFieldName: 's.name',
       },
       {
         title: 'Nhóm khách hàng',
@@ -98,6 +97,14 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
         sorter: true,
         showSorterTooltip: false,
         hidden: isSeller,
+      },
+      {
+        title: 'Trạng thái tiếp cận',
+        dataIndex: ['approachResult', 'categoryStatus', 'name'],
+        width: 170,
+        minWidth: 170,
+        sorter: true,
+        showSorterTooltip: false,
       },
     ];
     return columnsTable;

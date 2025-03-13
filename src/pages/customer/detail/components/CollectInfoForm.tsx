@@ -17,8 +17,9 @@ export const CollectInfoForm = ({ form, items }: ICollectInfoForm) => {
         label: <Typography className="fw-500 fs-14">{label}</Typography>,
         colProps: { span: 12, ...colProps },
         getValueFromEvent: blockingPattern
-          ? ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
-              getValueFromEvent(value, blockingPattern)
+          ? (e: React.ChangeEvent<HTMLInputElement>) => {
+              return getValueFromEvent(e?.target?.value ?? e, blockingPattern);
+            }
           : undefined,
         ...others,
       })),
@@ -28,6 +29,7 @@ export const CollectInfoForm = ({ form, items }: ICollectInfoForm) => {
   const { formContent } = useFormItems({
     formItems: transformItems,
     rowProps: { gutter: [16, 20] },
+    form,
   });
 
   return (

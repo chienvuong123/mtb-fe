@@ -1,6 +1,6 @@
 import { AButton } from '@components/atoms';
 import { ACollapseForm } from '@components/atoms/a-collapse-form';
-import { Form, Modal } from 'antd';
+import { Flex, Form, Modal } from 'antd';
 import { type FC } from 'react';
 import './CollectCustomerInformationModal.scss';
 import { CollectInfoForm } from './CollectInfoForm';
@@ -26,7 +26,13 @@ const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
     handleFormValuesChange,
     saveDraft,
     checkLoanLimit,
+    forwardBookingInfor,
   } = useCollectInforController();
+
+  const handleCancel = () => {
+    form.resetFields();
+    onCancel();
+  };
 
   return (
     <Modal
@@ -34,15 +40,28 @@ const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
       width={1100}
       style={{ top: 20, bottom: 20 }}
       open={open}
-      onCancel={onCancel}
-      closeIcon={null}
+      onCancel={handleCancel}
       footer={[
-        <AButton color="primary" variant="filled" onClick={saveDraft}>
-          Lưu nháp
-        </AButton>,
-        <AButton type="primary" onClick={checkLoanLimit}>
-          Check hạn mức
-        </AButton>,
+        <Flex justify="space-between">
+          <AButton color="primary" variant="filled" onClick={handleCancel}>
+            Đóng
+          </AButton>
+          <Flex gap={14}>
+            <AButton color="primary" variant="filled" onClick={saveDraft}>
+              Lưu nháp
+            </AButton>
+            <AButton type="primary" onClick={checkLoanLimit}>
+              Check hạn mức
+            </AButton>
+            <AButton
+              type="primary"
+              onClick={forwardBookingInfor}
+              disabled={Boolean(!loanLimit)}
+            >
+              Chuyển thông tin booking
+            </AButton>
+          </Flex>
+        </Flex>,
       ]}
     >
       <Form.Provider

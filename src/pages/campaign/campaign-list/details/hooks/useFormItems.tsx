@@ -29,7 +29,7 @@ const useCampaignFormItems = ({
       type: INPUT_TYPE.SELECT,
       label: 'Category',
       name: 'categoryName',
-      onAddClick: isDisabled ? undefined : onShowForm,
+      surfixButton: isDisabled ? undefined : { onClick: onShowForm },
       inputProps: {
         placeholder: 'Chọn...',
         showSearch: true,

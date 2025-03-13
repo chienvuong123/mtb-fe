@@ -68,6 +68,7 @@ const columns: ColumnType<CampaignDTO>[] = [
     minWidth: 118,
     sorter: true,
     showSorterTooltip: false,
+    ellipsis: false,
   },
   {
     title: 'Khách hàng tham gia',
@@ -75,6 +76,7 @@ const columns: ColumnType<CampaignDTO>[] = [
     minWidth: 111,
     sorter: true,
     showSorterTooltip: false,
+    ellipsis: false,
   },
 ];
 
