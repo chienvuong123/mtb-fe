@@ -34,6 +34,7 @@ export interface CustomerDTO extends BaseEntity {
   segment?: CustomerSegmentDTO;
   seller?: string;
   approachStatus?: string;
+  numberOfCalls?: string;
 
   identnDocType?: string;
   identnDocIssueDate?: string;

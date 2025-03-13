@@ -27,7 +27,7 @@ const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
     saveDraft,
     checkLoanLimit,
     forwardBookingInfor,
-  } = useCollectInforController();
+  } = useCollectInforController(open);
 
   const handleCancel = () => {
     form.resetFields();
