@@ -4,7 +4,7 @@ import {
   useChangePassword,
   useVerifyTokenChangePassword,
 } from '@hooks/queries';
-import useFormItems from '@hooks/useFormItems';
+import { useFormItems } from '@hooks';
 import { EXPRIED_CHANGE_PASSWORD, HOME, LOGIN } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { Flex, Form, Spin, Typography } from 'antd';

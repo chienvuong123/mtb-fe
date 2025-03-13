@@ -1,6 +1,6 @@
 import { LogoOpenIcon } from '@assets/icons';
 import { INPUT_TYPE, type TFormItem } from '@types';
-import useFormItems from '@hooks/useFormItems';
+import { useFormItems } from '@hooks';
 import { Link, useNavigate } from 'react-router-dom';
 import { FORGOT_PASSWORD, HOME } from '@routers/path';
 import { useLoginMutation } from '@hooks/queries';

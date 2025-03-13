@@ -1,4 +1,4 @@
-import { OBaseDetailForm } from '@components/organisms/o-form-detail';
+import { OFormDetail } from '@components/organisms';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
@@ -87,8 +87,8 @@ const SellerDetailsForm: FC<ISellerDetailsForm> = ({ initialValues }) => {
   }, [initialValues, form]);
 
   return (
-    <div>
-      <OBaseDetailForm<TSellerDetailsForm> items={items} form={form} />
+    <div className="border-2 rounded-8 border-gray-border bg-white">
+      <OFormDetail<TSellerDetailsForm> items={items} form={form} />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useFormItems from '@hooks/useFormItems';
+import { useFormItems } from '@hooks';
 import { Avatar, Divider, Flex, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { AButton } from '@components/atoms';
