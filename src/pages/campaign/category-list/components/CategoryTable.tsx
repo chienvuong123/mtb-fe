@@ -27,14 +27,14 @@ const columns: ColumnType<TCategoryTableRecord>[] = [
     ellipsis: true,
   },
   {
-    title: 'Main Product',
+    title: 'Sản phẩm chính',
     dataIndex: 'mainProductName',
     minWidth: 156,
     sorter: true,
     showSorterTooltip: false,
   },
   {
-    title: 'Sub Product',
+    title: 'Sản phẩm phụ',
     dataIndex: 'subProductName',
     minWidth: 200,
     sorter: true,
