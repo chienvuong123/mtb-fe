@@ -92,7 +92,7 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
       },
       {
         type: INPUT_TYPE.SELECT,
-        label: 'Main Product ',
+        label: 'Sản phẩm chính ',
         name: 'mainProduct',
         inputProps: {
           placeholder: 'Chọn...',
@@ -103,7 +103,7 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
       },
       {
         type: INPUT_TYPE.SELECT,
-        label: 'Sub Product ',
+        label: 'Sản phẩm phụ ',
         name: 'subProduct',
         inputProps: {
           placeholder: 'Chọn...',

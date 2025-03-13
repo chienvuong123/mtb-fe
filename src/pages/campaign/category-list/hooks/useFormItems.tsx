@@ -130,7 +130,7 @@ const useCategoryFormItems = ({
     },
     {
       type: INPUT_TYPE.SELECT,
-      label: 'Main Product',
+      label: 'Sản phẩm chính',
       name: 'mainProduct',
       required: true,
       rules: [{ required: true }],
@@ -144,7 +144,7 @@ const useCategoryFormItems = ({
     },
     {
       type: INPUT_TYPE.SELECT,
-      label: 'Sub Product',
+      label: 'Sản phẩm phụ',
       name: 'subProduct',
       inputProps: {
         placeholder: 'Chọn...',

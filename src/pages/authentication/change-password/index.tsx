@@ -132,9 +132,11 @@ const ChangePassword = () => {
       newPassword: values.newPassword,
       token,
     };
+
     mutationChangePassword(result, {
       onSuccess: (response) => {
         if (response.data) {
+          localStorage.removeItem('token');
           handleInValidate({
             alertTextValue: 'Thay đổi mật khẩu thành công',
           });
@@ -151,7 +153,7 @@ const ChangePassword = () => {
         handleInValidate({
           typeAlertValue: 'error',
           alertTextValue: response.errorDesc,
-          pathRedirect: LOGIN,
+          pathRedirect: EXPRIED_CHANGE_PASSWORD,
         });
       },
     });
