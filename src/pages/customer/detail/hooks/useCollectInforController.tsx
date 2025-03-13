@@ -646,7 +646,8 @@ export const useCollectInforController = (opened?: boolean) => {
     id: customerId as string,
   });
   const customerData = customerQueryData?.data;
-  const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
+  const { data: draftLoanLimit, refetch: refectchLoanLimit } =
+    useCustomerGetDraftLoanLimit(customerId);
   const notify = useNotification();
   const queryClient = useQueryClient();
 
@@ -676,6 +677,7 @@ export const useCollectInforController = (opened?: boolean) => {
       {
         onSuccess: (data) => {
           validationHelper(data, notify, () => {
+            refectchLoanLimit();
             notify({
               type: 'success',
               message: 'Cập nhật thông tin thành công',

@@ -105,6 +105,7 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
         minWidth: 170,
         sorter: true,
         showSorterTooltip: false,
+        sortFieldName: 'approachResult',
       },
     ];
     return columnsTable;
