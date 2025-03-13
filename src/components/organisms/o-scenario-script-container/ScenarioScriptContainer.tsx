@@ -62,6 +62,7 @@ const ScenarioScriptContainer: FC<{
   if (!approach) {
     return null;
   }
+
   return (
     <Form form={form}>
       <div ref={ref}>
@@ -69,15 +70,17 @@ const ScenarioScriptContainer: FC<{
           <Typography.Title level={4} className="mt-24 mb-16">
             Kịch bản {approach?.name}
           </Typography.Title>
-          <AButton
-            icon={<ExpandIcon isActive={!!activeKeys?.length} />}
-            type="text"
-            onClick={() =>
-              setActiveKeys((pre) =>
-                pre?.length ? [] : attributeItems?.map((i) => i.key),
-              )
-            }
-          />
+          {!isFirstApproach && (
+            <AButton
+              icon={<ExpandIcon isActive={!!activeKeys?.length} />}
+              type="text"
+              onClick={() =>
+                setActiveKeys((pre) =>
+                  pre?.length ? [] : attributeItems?.map((i) => i.key),
+                )
+              }
+            />
+          )}
         </Flex>
         {isFirstApproach ? (
           <Image src={DefaultScenario} preview={{ scaleStep: 1, mask: null }} />

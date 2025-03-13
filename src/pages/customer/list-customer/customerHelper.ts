@@ -47,6 +47,7 @@ export const destructCustomerData = (
     categoryName,
     campaignName,
     identnDocType,
+    numberOfCalls,
   }: Partial<CustomerDTO>,
   isSearch?: boolean,
 ) => {
@@ -64,6 +65,7 @@ export const destructCustomerData = (
         phone,
         job,
         cusGroup,
+        numberOfCalls,
       }
     : {
         id,

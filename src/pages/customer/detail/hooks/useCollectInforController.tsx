@@ -53,7 +53,7 @@ const FIELD_DEPENDENCIES = {
   currentDistrictCode: ['currentWardCode'],
 } as const;
 
-export const useCollectInforController = () => {
+export const useCollectInforController = (opened?: boolean) => {
   const [form] = Form.useForm<CustomerCollectFormDTO>();
 
   // watch
@@ -68,7 +68,7 @@ export const useCollectInforController = () => {
   const currentDistrictCode = Form.useWatch(['currentDistrictCode'], form);
 
   const { data: identityOptions } = useF88OptionsListQuery(
-    CategoryType.F88_IDENTIFICATION,
+    CategoryType.MB_IDENTIFICATION,
   );
   const { data: jobOptions } = useF88OptionsListQuery(CategoryType.F88_JOB);
   const { data: debtRepaymentMethodOptions } = useF88OptionsListQuery(
@@ -179,7 +179,7 @@ export const useCollectInforController = () => {
         type: INPUT_TYPE.TEXT,
         label: 'Số điện thoại',
         name: 'mobileNumber',
-        inputProps: { placeholder: 'Nhập...', maxLength: 10 },
+        inputProps: { placeholder: 'Nhập...', maxLength: 10, disabled: true },
         rules: [{ required: true }],
         colProps: { span: 12 },
         blockingPattern: BLOCKING_NUMBER_PARTERN,
@@ -195,7 +195,6 @@ export const useCollectInforController = () => {
         label: 'Số điện thoại 2',
         name: 'mobileNumber2',
         inputProps: { placeholder: 'Nhập...', maxLength: 10 },
-        rules: [{ required: true }],
         colProps: { span: 12 },
         blockingPattern: BLOCKING_NUMBER_PARTERN,
         hidden: !showPhone.mobileNumber2,
@@ -214,7 +213,6 @@ export const useCollectInforController = () => {
         label: 'Số điện thoại 3',
         name: 'mobileNumber3',
         inputProps: { placeholder: 'Nhập...', maxLength: 10 },
-        rules: [{ required: true }],
         colProps: { span: 12 },
         blockingPattern: BLOCKING_NUMBER_PARTERN,
         hidden: !showPhone.mobileNumber3,
@@ -738,41 +736,47 @@ export const useCollectInforController = () => {
     });
   };
 
+  const handleFillInitialValues = useCallback(() => {
+    const baseFormData = {
+      customerName: customerData?.name,
+      genderName: customerData?.genderCategory?.name,
+      genderCode: customerData?.genderCategory?.code,
+      dateOfBirth: customerData?.birthday,
+      mobileNumber: customerData?.phone,
+      appDate: customerData?.activeAppTime,
+      countOfTransaction: customerData?.transationTime?.toString(),
+      ekycLevel: customerData?.levelKyc?.toString(),
+      averageTransaction: customerData?.transationAverage?.toString(),
+      averageCreditAmt: customerData?.crAmountAverage,
+      averageCreditMonth: customerData?.crAmountTime?.toString(),
+      averageDebitAmt: customerData?.drAmountAverage,
+      averageDebitMonth: customerData?.drAmountTime?.toString(),
+      averageCasa: customerData?.casaAverage,
+      averageSalary: customerData?.salaryAverage,
+      countOfSalary: customerData?.salaryTime?.toString(),
+      personalId: customerData?.identityCard,
+      customerId: customerData?.id,
+      orderId: customerData?.orderId,
+      campaignId: customerData?.campaignId,
+      typeOfIdCode: customerData?.identnDocTypeCategory?.code,
+      issueDate: customerData?.identnDocIssueDate,
+    };
+
+    const draftFormData = draftLoanLimit?.data
+      ? mapDraftToFormData(draftLoanLimit.data)
+      : {};
+
+    form.setFieldsValue({
+      ...baseFormData,
+      ...draftFormData,
+    });
+  }, [form, customerData, draftLoanLimit]);
+
   useEffect(() => {
-    if (genderOptions) {
-      const baseFormData = {
-        customerName: customerData?.name,
-        genderName: customerData?.genderCategory?.name,
-        genderCode: customerData?.genderCategory?.code,
-        dateOfBirth: customerData?.birthday,
-        mobileNumber: customerData?.phone,
-        appDate: customerData?.activeAppTime,
-        countOfTransaction: customerData?.transationTime?.toString(),
-        ekycLevel: customerData?.levelKyc?.toString(),
-        averageTransaction: customerData?.transationAverage?.toString(),
-        averageCreditAmt: customerData?.crAmountAverage,
-        averageCreditMonth: customerData?.crAmountTime?.toString(),
-        averageDebitAmt: customerData?.drAmountAverage,
-        averageDebitMonth: customerData?.drAmountTime?.toString(),
-        averageCasa: customerData?.casaAverage,
-        averageSalary: customerData?.salaryAverage,
-        countOfSalary: customerData?.salaryTime?.toString(),
-        personalId: customerData?.identityCard,
-        customerId: customerData?.id,
-        orderId: customerData?.orderId,
-        campaignId: customerData?.campaignId,
-      };
-
-      const draftFormData = draftLoanLimit?.data
-        ? mapDraftToFormData(draftLoanLimit.data)
-        : {};
-
-      form.setFieldsValue({
-        ...baseFormData,
-        ...draftFormData,
-      });
+    if (genderOptions && opened) {
+      handleFillInitialValues();
     }
-  }, [form, genderOptions, customerData, draftLoanLimit]);
+  }, [handleFillInitialValues, genderOptions, opened]);
 
   return {
     form,
