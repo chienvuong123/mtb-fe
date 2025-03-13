@@ -59,7 +59,7 @@ const OBaseForm = <T extends object>({
                 readOnly: true,
                 suffixIcon: null,
                 allowClear: false,
-                className: 'cursor-default',
+                className: 'cursor-default pointer-events-none',
               }
             : inputProps;
 
@@ -91,6 +91,7 @@ const OBaseForm = <T extends object>({
     formItems: transformItems,
     rowProps: { gutter: [14, 17] },
     form,
+    isViewMode,
   });
 
   const handleClear = () => {

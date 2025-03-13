@@ -4,6 +4,7 @@ import { AButton } from '@components/atoms';
 import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MANAGER_CAMPAIGN } from '@routers/path';
+import { useForm } from 'antd/lib/form/Form';
 import {
   useCampaignDetailViewQuery,
   useCampaignScriptQuery,
@@ -24,6 +25,7 @@ const ManagerCampaignDetail: React.FC = () => {
   const { id: campaignId } = useParams<TId>();
 
   const navigate = useNavigate();
+  const [form] = useForm();
 
   const { data: campaignDetailRes } = useCampaignDetailViewQuery({
     id: campaignId ?? '',
@@ -70,6 +72,7 @@ const ManagerCampaignDetail: React.FC = () => {
         initialValues={dataSourcesDetail}
         isDisabled
         dataSource={dataSourcesTarget.targets}
+        form={form}
       />
       <div className="mb-24" />
       <CampaignDetailTable dataSource={dataSources} />

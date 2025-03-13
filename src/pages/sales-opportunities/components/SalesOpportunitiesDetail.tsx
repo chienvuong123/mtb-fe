@@ -1,4 +1,4 @@
-import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
+import { OFormDetail } from '@components/organisms';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import React, { useEffect, useMemo } from 'react';

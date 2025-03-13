@@ -27,23 +27,35 @@ const OFormDetail = <T extends object>({
 }: IOFormDetail<T>) => {
   const transformItems = useMemo(
     () =>
-      items.map(({ label, colProps, ...others }) => ({
-        label: (
-          <Typography.Text ellipsis className="fw-600 fs-14">
-            {label}
-          </Typography.Text>
-        ),
-        colProps: {
-          ...colProps,
-        },
-        ...others,
-      })),
-    [items],
+      items.map(({ label, inputProps = {}, ...others }) => {
+        const modifiedInputProps = isViewMode
+          ? {
+              ...inputProps,
+              open: false,
+              readOnly: true,
+              suffixIcon: null,
+              allowClear: false,
+              className: 'cursor-default pointer-events-none',
+            }
+          : inputProps;
+        return {
+          label: (
+            <Typography.Text ellipsis className="fw-500 fs-14">
+              {label}
+            </Typography.Text>
+          ),
+          inputProps: modifiedInputProps,
+          ...others,
+        };
+      }) as TFormItem[],
+    [items, isViewMode],
   );
 
   const { formContent } = useFormItems({
     formItems: transformItems,
     rowProps: { gutter: [14, 17] },
+    isViewMode,
+    form,
   });
 
   const handleClose = () => {

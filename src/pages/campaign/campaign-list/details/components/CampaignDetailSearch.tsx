@@ -1,4 +1,4 @@
-import OFormDetail from '@components/organisms/o-form-detail/OFormDetail';
+import { OFormDetail } from '@components/organisms';
 import React, { useEffect } from 'react';
 import type { ITable } from '@components/organisms';
 import dayjs from 'dayjs';

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ArrowLeft01Icon, LogoOpenIcon } from '@assets/icons';
 import { useResetForgotPassword } from '@hooks/queries';
-import useFormItems from '@hooks/useFormItems';
+import { useFormItems } from '@hooks';
 import { LOGIN, OTP } from '@routers/path';
 import { getOTPCheck } from '@utils/otpHelper';
 import { Form } from 'antd';

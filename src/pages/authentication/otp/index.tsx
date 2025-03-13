@@ -4,7 +4,7 @@ import {
   useVerifyInfoUserForgotPassword,
   useVerifyOtpForgotPasswor,
 } from '@hooks/queries';
-import useFormItems from '@hooks/useFormItems';
+import { useFormItems } from '@hooks';
 import { CONFIRM_PASSWORD, FORGOT_PASSWORD } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { getOTPCheck, saveOTPCheck } from '@utils/otpHelper';

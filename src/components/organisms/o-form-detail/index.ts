@@ -1,1 +1,1 @@
-export { default as OBaseDetailForm } from './OBaseDetailForm';
+export { default as OFormDetail } from './OFormDetail';

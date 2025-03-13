@@ -1,7 +1,7 @@
 import { ArrowLeft01Icon, LogoOpenIcon } from '@assets/icons';
 import type { UserInfoOtpRequest } from '@dtos';
 import { useVerifyInfoUserForgotPassword } from '@hooks/queries';
-import useFormItems from '@hooks/useFormItems';
+import { useFormItems } from '@hooks';
 import { LOGIN, OTP } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { saveOTPCheck } from '@utils/otpHelper';
