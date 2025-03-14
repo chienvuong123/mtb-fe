@@ -199,7 +199,7 @@ export const getInitialValues = (
 
   const processApproachScript = (approachScript: ApproachScriptDTO) => ({
     [approachScript.id]: {
-      ...approachScript.approachStep.reduce(
+      ...(approachScript.approachStep || []).reduce(
         (stepAcc, step) => ({
           ...stepAcc,
           ...processApproachStep(step),

@@ -45,13 +45,14 @@ const useUrlParams = <T>(props?: TInitFilters<T>) => {
   );
 
   useEffect(() => {
-    navigate({
-      search: qs.stringify({
-        ...filters,
-        ...pagination,
-        ...sort,
-      }),
-    });
+    // TODO: Fix this
+    // navigate({
+    //   search: qs.stringify({
+    //     ...filters,
+    //     ...pagination,
+    //     ...sort,
+    //   }),
+    // });
   }, [filters, navigate, pagination, sort]);
 
   return {

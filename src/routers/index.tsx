@@ -297,6 +297,10 @@ const routes = createBrowserRouter(
               ),
             },
             {
+              path: SCENARIO.EDIT,
+              element: createLazyElement(() => import('@pages/scenario/edit')),
+            },
+            {
               path: SCENARIO.DETAIL,
               element: createLazyElement(
                 () => import('@pages/scenario/detail'),

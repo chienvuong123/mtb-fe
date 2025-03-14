@@ -29,7 +29,7 @@ const CustomerApproachPreview = ({ calledIds }: { calledIds: string[] }) => {
   const segmentOptions = useMemo(() => {
     return (
       approachScriptData?.map((x, index) => ({
-        label: index === 0 ? 'Kịch bản demo' : `Lần ${x.id}`,
+        label: index === 0 ? 'Kịch bản demo' : `Lần ${index + 1}`,
         value: x.id,
       })) ?? []
     );

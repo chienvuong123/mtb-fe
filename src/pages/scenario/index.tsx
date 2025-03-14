@@ -45,7 +45,7 @@ const ScenarioPage: FC = () => {
   };
 
   const handleEdit = (data: TScenarioRecord) => {
-    navigate(`${SCENARIO.ROOT}/${data.id}`);
+    navigate(`${SCENARIO.ROOT}/edit/${data.id}`);
   };
 
   const handleSearch = ({ status, ...values }: ScenarioSearchRequest) => {

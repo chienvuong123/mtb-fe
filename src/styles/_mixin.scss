@@ -55,7 +55,9 @@
     fill: $colorValue !important;
   }
   .svg-fill-#{$className} {
-    fill: $colorValue !important;
+    path {
+      fill: $colorValue !important;
+    }
   }
 }
 
