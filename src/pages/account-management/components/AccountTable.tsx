@@ -19,12 +19,14 @@ const columns: TColumnType<TAccountManagementRecord>[] = [
     dataIndex: 'employeeCode',
     minWidth: 104,
     showSorterTooltip: false,
+    sorter: true,
   },
   {
     title: 'Tên đăng nhập',
     dataIndex: 'username',
     minWidth: 213,
     showSorterTooltip: false,
+    sorter: true,
   },
   {
     title: 'Họ và tên',
@@ -39,6 +41,8 @@ const columns: TColumnType<TAccountManagementRecord>[] = [
     dataIndex: 'positionDtl',
     minWidth: 164,
     showSorterTooltip: false,
+    sorter: true,
+    unicodeSort: true,
     render: (value: CategoryDTO) => value?.name ?? '-',
   },
   {
@@ -46,6 +50,8 @@ const columns: TColumnType<TAccountManagementRecord>[] = [
     dataIndex: 'branchDtl',
     minWidth: 164,
     showSorterTooltip: false,
+    sorter: true,
+    unicodeSort: true,
     render: (value: CategoryDTO) => value?.name ?? '-',
   },
   {
@@ -53,6 +59,7 @@ const columns: TColumnType<TAccountManagementRecord>[] = [
     dataIndex: 'phoneNum',
     minWidth: 164,
     showSorterTooltip: false,
+    sorter: true,
   },
   {
     title: 'Phòng',
@@ -60,12 +67,15 @@ const columns: TColumnType<TAccountManagementRecord>[] = [
     minWidth: 164,
     showSorterTooltip: false,
     render: (value: CategoryDTO) => value?.name ?? '-',
+    sorter: true,
+    unicodeSort: true,
   },
   {
     title: 'Email',
     dataIndex: 'email',
     minWidth: 164,
     showSorterTooltip: false,
+    sorter: true,
   },
   {
     title: 'Trạng thái',
@@ -73,6 +83,7 @@ const columns: TColumnType<TAccountManagementRecord>[] = [
     minWidth: 164,
     showSorterTooltip: false,
     render: (value: EStatus) => STATUS_OBJECT_STATIC[value] ?? null,
+    sorter: true,
   },
 ];
 

@@ -3,7 +3,7 @@ import { useCategoryOptionsListQuery } from '@hooks/queries';
 import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
-import { ROLE_OPTIONS, STATUS_OPTIONS } from '@constants/masterData.tsx';
+import { ROLE_OPTIONS, STATUS_OPTIONS_STATIC } from '@constants/masterData.tsx';
 import { CategoryType, type UserDTO } from '@dtos';
 
 const AccountSearchForm: FC<CBaseSearch<UserDTO>> = ({
@@ -32,19 +32,19 @@ const AccountSearchForm: FC<CBaseSearch<UserDTO>> = ({
         type: INPUT_TYPE.TEXT,
         label: 'Mã nhân viên',
         name: 'employeeCode',
-        inputProps: { readOnly: true, placeholder: 'Nhập...' },
+        inputProps: { placeholder: 'Nhập...' },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Email',
         name: 'email',
-        inputProps: { readOnly: true, placeholder: 'Nhập...' },
+        inputProps: { placeholder: 'Nhập...' },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Họ và tên',
         name: 'fullName',
-        inputProps: { readOnly: true, placeholder: 'Nhập...' },
+        inputProps: { placeholder: 'Nhập...' },
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -84,7 +84,7 @@ const AccountSearchForm: FC<CBaseSearch<UserDTO>> = ({
         label: 'Trạng thái',
         name: 'status',
         inputProps: {
-          options: STATUS_OPTIONS,
+          options: STATUS_OPTIONS_STATIC,
           allowClear: false,
           placeholder: 'Chọn...',
         },

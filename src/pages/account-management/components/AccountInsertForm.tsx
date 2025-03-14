@@ -3,6 +3,11 @@ import { OBaseForm } from '@components/organisms';
 import { ERole, STATUS_OPTIONS } from '@constants/masterData';
 import { CategoryType, type UserDTO } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
+import {
+  validateEmail,
+  validatePhoneNumber,
+  validateTextAndNoCharacter,
+} from '@pages/authentication/utils';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import clsx from 'clsx';
@@ -63,7 +68,10 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               maxLength: 100,
               placeholder: 'Nhập...',
             },
-            rules: [{ required: true }],
+            rules: [
+              { required: true },
+              { validator: validateTextAndNoCharacter },
+            ],
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -73,14 +81,23 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               maxLength: 50,
               placeholder: 'Nhập...',
             },
-            rules: [{ required: true }],
+            rules: [{ required: true }, { validator: validateEmail }],
           },
           {
             type: INPUT_TYPE.TEXT,
             label: 'Số điện thoại',
             name: 'phoneNum',
-            inputProps: { placeholder: 'Nhập...', type: 'number' },
-            rules: [{ required: true }],
+            inputProps: {
+              placeholder: 'Nhập...',
+              maxLength: 10,
+              type: 'number',
+              onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
+                e.target.value = e.target.value
+                  .replace(/[^0-9]/g, '')
+                  .slice(0, 10);
+              },
+            },
+            rules: [{ required: true }, { validator: validatePhoneNumber }],
           },
           {
             type: INPUT_TYPE.SELECT,
