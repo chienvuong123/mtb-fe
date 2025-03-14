@@ -128,15 +128,15 @@ const routes = createBrowserRouter(
               ),
             },
             {
-              path: CATEGORY.HOBBY_CATEGORY,
+              path: CATEGORY.DEPLOYMENT_METHOD_CATEGORY,
               element: createLazyElement(
-                () => import('@pages/category/hobby-category'),
+                () => import('@pages/category/deployment-method-category'),
               ),
             },
             {
               path: CATEGORY.CUSTOMER_SEGMENT_CATEGORY,
               element: createLazyElement(
-                () => import('@pages/category/department-category'),
+                () => import('@pages/category/customer-segment-category'),
               ),
             },
             {
@@ -152,21 +152,34 @@ const routes = createBrowserRouter(
               ),
             },
             {
-              path: CATEGORY.JOB_CATEGORY,
+              path: CATEGORY.UNIT_OF_CALCULATION_CATEGORY,
               element: createLazyElement(
-                () => import('@pages/category/job-category'),
+                () => import('@pages/category/unit-of-calculation-category'),
               ),
             },
             {
-              path: CATEGORY.CUSTOMER_GROUP_CATEGORY,
+              path: CATEGORY.CUSTOMER_TYPE_CATEGORY,
               element: createLazyElement(
-                () => import('@pages/category/customer-group-category'),
+                () => import('@pages/category/customer-type-category'),
               ),
             },
             {
-              path: CATEGORY.CAMPAIGN_TYPE,
+              path: CATEGORY.TYPE_OF_IDENTIFICATION,
               element: createLazyElement(
-                () => import('@pages/category/campaign-type-catgegory'),
+                () =>
+                  import('@pages/category/type-of-identification-catgegory'),
+              ),
+            },
+            {
+              path: CATEGORY.APPROACH,
+              element: createLazyElement(
+                () => import('@pages/category/approach'),
+              ),
+            },
+            {
+              path: CATEGORY.MB_GENDER,
+              element: createLazyElement(
+                () => import('@pages/category/gender'),
               ),
             },
           ],

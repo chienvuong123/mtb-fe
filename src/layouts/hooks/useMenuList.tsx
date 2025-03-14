@@ -157,20 +157,20 @@ const useMenuList = () => {
             label: 'Chi nhánh',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.HOBBY_CATEGORY}`,
-            label: 'Sở thích',
+            key: `${CATEGORY.ROOT}/${CATEGORY.DEPLOYMENT_METHOD_CATEGORY}`,
+            label: 'Phương thức triển khai',
           },
           {
             key: `${CATEGORY.ROOT}/${CATEGORY.CUSTOMER_SEGMENT_CATEGORY}`,
             label: 'Phân khúc khách hàng',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.JOB_CATEGORY}`,
-            label: 'Nghề nghiệp',
+            key: `${CATEGORY.ROOT}/${CATEGORY.UNIT_OF_CALCULATION_CATEGORY}`,
+            label: 'Đơn vị tính',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.CUSTOMER_GROUP_CATEGORY}`,
-            label: 'Nhóm khách hàng',
+            key: `${CATEGORY.ROOT}/${CATEGORY.CUSTOMER_TYPE_CATEGORY}`,
+            label: 'Loại khách hàng',
           },
           {
             key: `${CATEGORY.ROOT}/${CATEGORY.DEPARTMENT_CATEGORY}`,
@@ -181,8 +181,16 @@ const useMenuList = () => {
             label: 'Chuyên môn',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.CAMPAIGN_TYPE}`,
-            label: 'Loại chiến dịch',
+            key: `${CATEGORY.ROOT}/${CATEGORY.TYPE_OF_IDENTIFICATION}`,
+            label: 'Loại giấy tờ định danh',
+          },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.APPROACH}`,
+            label: 'Phương thức tiếp cận',
+          },
+          {
+            key: `${CATEGORY.ROOT}/${CATEGORY.MB_GENDER}`,
+            label: 'Giới tính',
           },
         ],
       },
