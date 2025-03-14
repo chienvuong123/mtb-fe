@@ -38,7 +38,7 @@ const useCustomerForm = ({
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
   const { data: sellerList } = useSellerOptionsListQuery(true);
-  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.JOB);
+  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.F88_JOB);
   const { data: identificationList } = useCategoryOptionsListQuery(
     CategoryType.MB_IDENTIFICATION,
   );
