@@ -113,6 +113,7 @@ const useCustomerForm = ({
             name: 'phone',
             inputProps: { maxLength: 10 },
             blockingPattern: BLOCKING_NUMBER_PARTERN,
+            rules: [{ min: 10, message: 'Số điện thoại không hợp lệ' }],
           },
           {
             type: INPUT_TYPE.TEXT,
