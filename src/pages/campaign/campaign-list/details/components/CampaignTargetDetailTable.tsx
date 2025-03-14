@@ -86,6 +86,7 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
         hideActions={!!campaignId}
         selectedRowKeys={selectedRowKeys}
         setSelectedRowKeys={setSelectedRowKeys}
+        scroll={{ x: 1575, y: undefined }}
       />
     </div>
   );

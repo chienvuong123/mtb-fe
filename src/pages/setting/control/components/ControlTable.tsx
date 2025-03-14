@@ -67,6 +67,7 @@ const ControlTable: FC<CBaseTable<ControlDTO>> = ({
       onView={(key) => onView?.(key as string)}
       paginations={paginations}
       isCheckboxHidden
+      scroll={{ x: 1575 }}
     />
   );
 };

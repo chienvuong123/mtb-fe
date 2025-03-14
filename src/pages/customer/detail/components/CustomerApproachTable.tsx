@@ -97,6 +97,7 @@ const CustomerApproachTable: FC<{
       setSelectedRowKeys={setCalledIds}
       hideActions
       rowKey="id"
+      scroll={{ x: 1575, y: undefined }}
     />
   );
 };

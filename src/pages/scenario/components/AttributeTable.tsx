@@ -70,6 +70,7 @@ const AttributeTable: FC<IAttributeTable> = ({
       onEdit={onEdit}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={pagination}
+      scroll={{ x: 1575, y: undefined }}
     />
   );
 };
