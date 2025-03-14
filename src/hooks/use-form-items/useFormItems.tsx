@@ -51,15 +51,13 @@ const useFormItems = ({
         if (!isViewMode) {
           const Component = formItemComponents[type] as FormItemComponent;
           return (
-            <Form.Item name={fieldName} noStyle>
-              <Component
-                className={className}
-                onBlur={handleBlur}
-                form={form}
-                name={fieldName}
-                {...inputProps}
-              />
-            </Form.Item>
+            <Component
+              className={className}
+              onBlur={handleBlur}
+              form={form}
+              name={fieldName}
+              {...inputProps}
+            />
           );
         }
 

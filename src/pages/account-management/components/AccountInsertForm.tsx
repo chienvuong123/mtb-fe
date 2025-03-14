@@ -1,6 +1,10 @@
 import { ACCOUNT_MANAGEMENT_KEY } from '@apis';
 import { OBaseForm } from '@components/organisms';
 import { ERole, STATUS_OPTIONS } from '@constants/masterData';
+import {
+  BLOCKING_NUMBER_PARTERN,
+  BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
+} from '@constants/regex';
 import { CategoryType, type UserDTO } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
@@ -64,6 +68,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               placeholder: 'Nhập...',
             },
             rules: [{ required: true }],
+            blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -73,14 +78,24 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               maxLength: 50,
               placeholder: 'Nhập...',
             },
-            rules: [{ required: true }],
+            rules: [
+              { required: true },
+              { type: 'email', message: 'Email không hợp lệ' },
+            ],
           },
           {
             type: INPUT_TYPE.TEXT,
             label: 'Số điện thoại',
             name: 'phoneNum',
-            inputProps: { placeholder: 'Nhập...', type: 'number' },
-            rules: [{ required: true }],
+            inputProps: {
+              placeholder: 'Nhập...',
+              maxLength: 10,
+            },
+            rules: [
+              { required: true },
+              { min: 10, message: 'Số điện thoại không hợp lệ' },
+            ],
+            blockingPattern: BLOCKING_NUMBER_PARTERN,
           },
           {
             type: INPUT_TYPE.SELECT,

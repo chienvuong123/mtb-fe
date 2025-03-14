@@ -180,7 +180,10 @@ export const useCollectInforController = (opened?: boolean) => {
         label: 'Số điện thoại',
         name: 'mobileNumber',
         inputProps: { placeholder: 'Nhập...', maxLength: 10, disabled: true },
-        rules: [{ required: true }],
+        rules: [
+          { required: true },
+          { min: 10, message: 'Số điện thoại không hợp lệ' },
+        ],
         colProps: { span: 12 },
         blockingPattern: BLOCKING_NUMBER_PARTERN,
         surfixButton: {

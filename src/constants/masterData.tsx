@@ -278,3 +278,18 @@ export const ROLE_OPTIONS = Object.values(ERole).map((role) => ({
   label: role,
   value: role,
 }));
+
+export const STATUS_OPTIONS_STATIC = [
+  {
+    value: EStatus.ACTIVE,
+    label: <Typography.Text className="green">Hoạt động</Typography.Text>,
+  },
+  {
+    value: EStatus.INACTIVE,
+    label: <Typography.Text className="red">Không hoạt động</Typography.Text>,
+  },
+  {
+    value: null,
+    label: <Typography.Text>Tất cả</Typography.Text>,
+  },
+];
