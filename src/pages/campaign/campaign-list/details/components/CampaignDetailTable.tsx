@@ -77,7 +77,6 @@ const CampaignDetailTable: React.FC<ICampaignDetailTable> = ({
         isCheckboxHidden={!!campaignId}
         hideActions={!!campaignId}
         onEdit={onEdit}
-        scroll={{ x: 1575, y: undefined }}
       />
     </div>
   );

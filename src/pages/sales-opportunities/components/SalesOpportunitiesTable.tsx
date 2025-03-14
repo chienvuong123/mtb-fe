@@ -108,7 +108,7 @@ const SalesOpportunitiesTable: React.FC<CBaseTable<SalesOpportunitiesDTO>> = ({
         isCheckboxHidden
         onView={(id) => onView?.(id as string)}
         onSort={onSort}
-        scroll={{ x: 1574 }}
+        scroll={{ y: 350, x: 1574 }}
       />
     </div>
   );

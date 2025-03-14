@@ -21,7 +21,7 @@ const LayoutContent = () => {
 
   return (
     <Layout>
-      <Layout.Content className="pb-20 px-40">
+      <Layout.Content className="pb-40 px-40">
         {/* <Breadcrumb items={getBreadcrumbItems()} className="my-4" /> */}
         <Outlet />
       </Layout.Content>

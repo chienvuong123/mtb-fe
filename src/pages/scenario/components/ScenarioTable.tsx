@@ -110,7 +110,6 @@ const ScenarioTable: FC<CBaseTable<ApproachScriptDTO>> = ({
       paginations={paginations}
       onView={(id) => onView?.(id as string)}
       onSort={onSort}
-      scroll={{ x: 1575 }}
     />
   );
 };

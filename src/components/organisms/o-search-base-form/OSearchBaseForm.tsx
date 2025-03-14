@@ -3,7 +3,7 @@ import { useFormItems } from '@hooks/index';
 import type { TFormItem } from '@types';
 import { trimObjectValues } from '@utils/objectHelper';
 import { Divider, Flex, Form, type FormInstance, Typography } from 'antd';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 
 import './styles.scss';
 import { getValueFromEvent } from '@utils/formHelper';
@@ -36,7 +36,6 @@ const OSearchBaseForm = <T extends object>({
   onDeleteAll,
   onCreate,
 }: ISearchBaseForm<T>) => {
-  const ref = useRef<HTMLDivElement>(null);
   const transformItems = useMemo(
     () =>
       items.map(({ label, blockingPattern, ...others }) => ({
@@ -69,20 +68,8 @@ const OSearchBaseForm = <T extends object>({
     onSearch(trimObjectValues(values));
   };
 
-  useEffect(() => {
-    if (ref.current?.offsetHeight)
-      localStorage.setItem(
-        'searchFormHeight',
-        ref.current.offsetHeight.toString(),
-      );
-
-    return () => {
-      localStorage.setItem('searchFormHeight', '0');
-    };
-  }, [ref]);
-
   return (
-    <div className="border-2 rounded-8 border-gray-border bg-white" ref={ref}>
+    <div className="border-2 rounded-8 border-gray-border bg-white">
       <Form form={form} onFinish={handleSearch} layout="vertical">
         <div className="pa-24 pb-22">{formContent}</div>
         <Divider className="ma-0" />
