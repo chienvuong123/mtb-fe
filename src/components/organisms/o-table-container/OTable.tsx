@@ -4,7 +4,7 @@ import type {
   SorterResult,
   TableRowSelection,
 } from 'antd/es/table/interface';
-import { useEffect, useMemo, useState, type Key } from 'react';
+import { useMemo, useState, type Key } from 'react';
 
 import { MPagination } from '@components/molecules';
 import { SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
@@ -27,7 +27,6 @@ const OTable = <T extends object>({
   confirmProps,
   isCheckboxHidden,
   rowKey,
-  scroll,
   tableRowKey,
   onEdit,
   onDeleteRow,
@@ -40,30 +39,6 @@ const OTable = <T extends object>({
 }: ITable<T>) => {
   const [showModal, setShowModal] = useState(false);
   const [recordKey, setRecordKey] = useState<Key | null>(null);
-  const [tableHeight, setTableHeight] = useState(0);
-
-  useEffect(() => {
-    const tableHeadEl = document.querySelector('.mbb-table-thead');
-    if (!tableHeadEl) return;
-
-    const observer = new MutationObserver(() => {
-      if (tableHeadEl) {
-        const searchFormHeight = Number(
-          localStorage.getItem('searchFormHeight') ?? 0,
-        );
-        setTableHeight(tableHeadEl.clientHeight - 55 + 342 + searchFormHeight);
-      }
-    });
-
-    observer.observe(tableHeadEl, {
-      attributes: true,
-      childList: true,
-      subtree: true,
-    });
-
-    // eslint-disable-next-line consistent-return
-    return () => observer.disconnect();
-  }, []);
 
   const transformColumns: ColumnType<T>[] = useMemo(() => {
     const columnsWithSort: ColumnType<T>[] = sortDirection
@@ -210,11 +185,7 @@ const OTable = <T extends object>({
         rowClassName="editable-row"
         pagination={false}
         rowSelection={!isCheckboxHidden ? rowSelection : undefined}
-        scroll={{
-          x: 'max-content',
-          y: window.innerHeight - tableHeight,
-          ...scroll,
-        }}
+        scroll={{ x: 'max-content' }}
         locale={{ emptyText: 'Không có dữ liệu' }}
         rowKey={tableRowKey || ((record) => record[rowKey] as Key)}
         onChange={(_p, _f, s) => {
