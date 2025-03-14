@@ -24,6 +24,7 @@ export const PATH_SEGMENT = {
   DELETE: 'delete',
   GROUP: 'group',
   GROUP_CREATE: 'group-create',
+  COPY: 'copy',
   // Seller
   ASSIGNMENT: 'assignment',
   MANAGEMENT: 'management',
@@ -105,6 +106,7 @@ export const ROUTES = {
         PATH_SEGMENT.DELETE,
       ]),
     },
+    COPY: buildPath(PATH_SEGMENT.CAMPAIGN, [PATH_SEGMENT.COPY, ':id']),
   },
 
   CUSTOMER: {

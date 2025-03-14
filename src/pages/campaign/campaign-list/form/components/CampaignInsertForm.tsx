@@ -3,21 +3,25 @@ import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
 import type { FormInstance } from 'antd/lib';
 import type { TCampaignDetailDTO, TCampaignDetailSearchForm } from '@dtos';
-import { useCampaignFormItems } from '../hooks';
+import { useCampaignFormItems } from '../../details/hooks';
 
-interface ICampaignDetailSearch {
+interface ICampaignInsertForm {
   initialValues?: Partial<TCampaignDetailDTO>;
   isDisabled: boolean;
+  onShowForm?: () => void;
   form?: FormInstance;
 }
 
-const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
+const CampaignInsertForm: React.FC<ICampaignInsertForm> = ({
   initialValues,
   isDisabled,
+  onShowForm,
   form,
 }) => {
   const items = useCampaignFormItems({
     isDisabled,
+    onShowForm: onShowForm || (() => {}),
+    form,
   });
 
   useEffect(() => {
@@ -43,4 +47,4 @@ const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
   );
 };
 
-export default CampaignDetailSearch;
+export default CampaignInsertForm;

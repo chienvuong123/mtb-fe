@@ -47,7 +47,7 @@ const Campaign: React.FC = () => {
       },
       order: sort,
       ...filterObject(filters),
-      status: isSeller ? EStatusCampaign.INPROGRESS : '',
+      status: isSeller ? EStatusCampaign.INPROGRESS : filters.status,
     }),
     [current, pageSize, sort, filters, isSeller],
   );

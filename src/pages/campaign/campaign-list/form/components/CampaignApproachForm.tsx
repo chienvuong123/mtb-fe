@@ -1,17 +1,28 @@
 import { OBaseForm } from '@components/organisms';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useEffect, useMemo, type FC } from 'react';
-import { useForm } from 'antd/lib/form/Form';
-import { MOCK_CUSTOMER_OPTIONS } from '@mocks/customer';
-import type { CampaignScriptDTO } from '@dtos';
+import { CategoryType, type CampaignApproachPlanDTO } from '@dtos';
+import {
+  useCategoryOptionsListQuery,
+  useQueryApproachScriprtList,
+} from '@hooks/queries';
+import type { FormInstance } from 'antd';
 
-const CampaignApproachForm: FC<CBaseForm<CampaignScriptDTO>> = ({
+interface ICampaignTargetForm extends CBaseForm<CampaignApproachPlanDTO> {
+  form: FormInstance;
+}
+
+const CampaignApproachForm: FC<ICampaignTargetForm> = ({
   onClose,
   onSubmit,
   initialValues,
   mode,
+  form,
 }) => {
-  const [form] = useForm();
+  const { data: approachOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.APPROACH,
+  });
+  const { data: approachScriptOptions } = useQueryApproachScriprtList(true);
 
   const items: TFormItem[] = useMemo(
     () =>
@@ -20,25 +31,29 @@ const CampaignApproachForm: FC<CBaseForm<CampaignScriptDTO>> = ({
           type: INPUT_TYPE.SELECT,
           label: 'Phương thức tiếp cận',
           inputProps: {
-            options: MOCK_CUSTOMER_OPTIONS,
+            options: approachOptions,
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
           },
-          name: 'name',
+          name: 'approach',
           colProps: { span: 12 },
+          required: true,
+          rules: [{ required: true }],
         },
         {
           type: INPUT_TYPE.SELECT,
           label: 'Kịch bản tiếp cận',
-          name: 'script',
+          name: 'scriptId',
           inputProps: {
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: MOCK_CUSTOMER_OPTIONS,
+            options: approachScriptOptions,
           },
           colProps: { span: 12 },
+          required: true,
+          rules: [{ required: true }],
         },
         {
           type: INPUT_TYPE.TEXT,
@@ -48,7 +63,7 @@ const CampaignApproachForm: FC<CBaseForm<CampaignScriptDTO>> = ({
           colProps: { span: 12 },
         },
       ] as TFormItem[],
-    [],
+    [approachScriptOptions, approachOptions],
   );
 
   useEffect(() => {
@@ -59,7 +74,7 @@ const CampaignApproachForm: FC<CBaseForm<CampaignScriptDTO>> = ({
 
   return (
     <div>
-      <OBaseForm<CampaignScriptDTO>
+      <OBaseForm<CampaignApproachPlanDTO>
         mutationKey=""
         items={items}
         form={form}

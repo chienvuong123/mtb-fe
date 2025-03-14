@@ -1,26 +1,24 @@
-import { OTable, type ITable } from '@components/organisms';
+import { OTable } from '@components/organisms';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
 import type { ColumnType } from 'antd/es/table';
 import Title from 'antd/lib/typography/Title';
 import React, { useState, type Key } from 'react';
-import { useParams } from 'react-router-dom';
-import type { CampaignTargetDTO, TId } from '@dtos';
+import { CategoryType, type CampaignTargetDTO } from '@dtos';
+import type { CBaseTable } from '@types';
+import { useCategoryOptionsListQuery } from '@hooks/queries';
 
 const BUTTON_TEXT = {
   ADD: 'Thêm mới',
 } as const;
 
-export type TCampaignTargetDetailTableRecord = Partial<CampaignTargetDTO>;
-
-interface ICampaignTargetDetailTable {
-  dataSource: CampaignTargetDTO[];
-  onEdit: ITable<TCampaignTargetDetailTableRecord>['onEdit'];
-  onDelete?: (id: string) => void;
+export interface ICampaignTargetDetailTable
+  extends CBaseTable<CampaignTargetDTO> {
   onShowTargetForm?: () => void;
+  showAddButton?: boolean;
 }
 
-const columns: ColumnType<TCampaignTargetDetailTableRecord>[] = [
+const columns: ColumnType<CampaignTargetDTO>[] = [
   {
     title: 'Tên mục tiêu',
     dataIndex: 'name',
@@ -41,11 +39,15 @@ const columns: ColumnType<TCampaignTargetDetailTableRecord>[] = [
     minWidth: 213,
     sorter: true,
     showSorterTooltip: false,
+    render: (_, record) => {
+      return record.unitName;
+    },
   },
 ];
 
 const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
   dataSource,
+  showAddButton,
   onDelete,
   onEdit,
   onShowTargetForm,
@@ -57,7 +59,20 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
     }
   };
 
-  const { id: campaignId } = useParams<TId>();
+  const { data: unitCalculationOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.UNIT_OF_CALCULATION,
+  });
+
+  const mappedDataSource = dataSource.map((item) => {
+    const matchedApproachOption = unitCalculationOptions?.find(
+      (option) => option.value === item.unit,
+    );
+
+    return {
+      ...item,
+      unitName: matchedApproachOption?.label,
+    };
+  });
 
   return (
     <div className="px-40 py-28">
@@ -65,7 +80,7 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
         <Title level={4} className="mb-24">
           Mục tiêu
         </Title>
-        {!campaignId && (
+        {!showAddButton && (
           <AButton
             onClick={onShowTargetForm}
             type="primary"
@@ -76,14 +91,14 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
           </AButton>
         )}
       </Flex>
-      <OTable<TCampaignTargetDetailTableRecord>
+      <OTable<CampaignTargetDTO>
         rowKey="id"
         columns={columns}
-        data={dataSource}
+        data={mappedDataSource}
         onEdit={onEdit}
         onDeleteRow={deleteRecord}
-        isCheckboxHidden={!!campaignId}
-        hideActions={!!campaignId}
+        isCheckboxHidden={showAddButton}
+        hideActions={showAddButton}
         selectedRowKeys={selectedRowKeys}
         setSelectedRowKeys={setSelectedRowKeys}
       />

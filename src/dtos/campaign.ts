@@ -51,6 +51,18 @@ export interface CampaignTargetDTO extends BaseEntity {
   name: string;
   value: string;
   unit: string;
+  unitName?: string;
+}
+
+export interface CampaignApproachPlanDTO extends BaseEntity {
+  campaignId: string;
+  scriptId: string;
+  script: string;
+  order: string;
+  approach: string;
+  note: string;
+  approachName?: string;
+  scriptName?: string;
 }
 
 export interface TCampaignDetailDTO extends BaseEntity {
@@ -69,6 +81,7 @@ export interface TCampaignDetailDTO extends BaseEntity {
   implementationMethod: string;
   scopeImplementation: string;
   targets?: CampaignTargetDTO[];
+  campaignScript: CampaignApproachPlanDTO[];
 }
 
 export type TCampaignDetailSearchForm = {

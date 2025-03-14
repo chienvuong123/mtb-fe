@@ -2,7 +2,9 @@ import type {
   ApproachResultCreateRequest,
   ApproachScriptDTO,
   ApproachScriptSearchRequest,
+  BaseOptionListDTO,
   BaseResponse,
+  BaseSearchResponse,
 } from '@dtos';
 import { BaseApi } from './baseApi';
 import { apiRequest } from './apiClient';
@@ -28,6 +30,14 @@ class ApproachScriptApi extends BaseApi<
       url: `${this.endpoint}/save-resul-by-customer`,
       method: 'POST',
       data: params,
+    });
+  }
+
+  async approachScriptOptions() {
+    return apiRequest<BaseResponse<BaseSearchResponse<BaseOptionListDTO>>>({
+      url: `${this.endpoint}/list`,
+      method: 'GET',
+      params: { page: { pageSize: 200 } }, // TODO: will be fixed in milestone 2
     });
   }
 }
