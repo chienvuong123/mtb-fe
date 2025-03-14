@@ -37,9 +37,6 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
   const { data: mainProductOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.PRODUCT,
   });
-  const { data: subProductOptions } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.SUB_PRODUCT,
-  });
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [
@@ -110,12 +107,12 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
           placeholder: 'Chọn...',
           showSearch: true,
           filterOption: true,
-          options: subProductOptions,
+          options: mainProductOptions,
         },
       },
     ];
     return formItems;
-  }, [startDate, subProductOptions, mainProductOptions, endDate]);
+  }, [startDate, mainProductOptions, endDate]);
 
   return (
     <OSearchBaseForm<TManageCategorySearchForm>

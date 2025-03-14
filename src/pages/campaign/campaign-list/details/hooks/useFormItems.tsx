@@ -15,12 +15,14 @@ interface ICampaignFormItemsProps {
   isDisabled: boolean;
   onShowForm?: () => void;
   form?: FormInstance;
+  isNoEdit?: boolean;
 }
 
 const useCampaignFormItems = ({
   isDisabled,
   onShowForm,
   form,
+  isNoEdit,
 }: ICampaignFormItemsProps): TFormItem[] => {
   const startDate = useWatch('startDate', form);
   const endDate = useWatch('endDate', form);
@@ -138,7 +140,7 @@ const useCampaignFormItems = ({
             placeholder: 'Chọn...',
             options: STATUS_CAMPAIGN_OPTIONS,
             allowClear: false,
-            className: clsx({ 'pointer-events-none': isDisabled }),
+            className: clsx({ 'pointer-events-none': isDisabled || isNoEdit }),
           },
           required: true,
           rules: [{ required: true }],
@@ -175,7 +177,30 @@ const useCampaignFormItems = ({
             }),
           },
         },
+        {
+          type: INPUT_TYPE.TEXT_AREA,
+          label: 'Phạm vi triển khai',
+          name: 'scopeImplementation',
+          colProps: {
+            span: 12,
+          },
+          inputProps: {
+            placeholder: 'Nhập...',
+            maxLength: 1000,
+            className: clsx({
+              'pointer-events-none w-full no-resize': isDisabled,
+            }),
+            showCount: {
+              formatter: ({ count, maxLength }) => (
+                <span className="pos-absolute right-8 bottom-22 text-gray fs-12">
+                  ({count}/{maxLength})
+                </span>
+              ),
+            },
+          },
+        },
       ] as TFormItem[],
+
     [
       isDisabled,
       onShowForm,
@@ -184,6 +209,7 @@ const useCampaignFormItems = ({
       deploymentOptions,
       startDate,
       endDate,
+      isNoEdit,
     ],
   );
 };

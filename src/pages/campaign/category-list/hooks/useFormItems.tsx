@@ -31,9 +31,6 @@ const useCategoryFormItems = ({
   const { data: customerOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.CUSTOMER,
   });
-  const { data: subProductOptions } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.SUB_PRODUCT,
-  });
   const { data: deploymentOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.DEPLOYMENT_METHOD,
   });
@@ -151,7 +148,7 @@ const useCategoryFormItems = ({
         showSearch: true,
         filterOption: true,
         disabled: isDisabled,
-        options: subProductOptions,
+        options: mainProductOptions,
       },
     },
     {

@@ -10,6 +10,7 @@ interface ICampaignInsertForm {
   isDisabled: boolean;
   onShowForm?: () => void;
   form?: FormInstance;
+  isNoEdit?: boolean;
 }
 
 const CampaignInsertForm: React.FC<ICampaignInsertForm> = ({
@@ -17,11 +18,13 @@ const CampaignInsertForm: React.FC<ICampaignInsertForm> = ({
   isDisabled,
   onShowForm,
   form,
+  isNoEdit,
 }) => {
   const items = useCampaignFormItems({
     isDisabled,
     onShowForm: onShowForm || (() => {}),
     form,
+    isNoEdit,
   });
 
   useEffect(() => {

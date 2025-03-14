@@ -33,11 +33,11 @@ class ApproachScriptApi extends BaseApi<
     });
   }
 
-  async approachScriptOptions() {
+  async approachScriptOptions(categoryId: string) {
     return apiRequest<BaseResponse<BaseSearchResponse<BaseOptionListDTO>>>({
       url: `${this.endpoint}/list`,
       method: 'GET',
-      params: { page: { pageSize: 200 } }, // TODO: will be fixed in milestone 2
+      params: { page: { pageSize: 200 }, categoryId }, // TODO: will be fixed in milestone 2
     });
   }
 }

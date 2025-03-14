@@ -10,6 +10,7 @@ import type { FormInstance } from 'antd';
 
 interface ICampaignTargetForm extends CBaseForm<CampaignApproachPlanDTO> {
   form: FormInstance;
+  formInsert?: FormInstance;
 }
 
 const CampaignApproachForm: FC<ICampaignTargetForm> = ({
@@ -18,11 +19,19 @@ const CampaignApproachForm: FC<ICampaignTargetForm> = ({
   initialValues,
   mode,
   form,
+  formInsert,
 }) => {
+  const categoryId = formInsert
+    ? formInsert.getFieldValue('categoryId')
+    : undefined;
+
   const { data: approachOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.APPROACH,
   });
-  const { data: approachScriptOptions } = useQueryApproachScriprtList(true);
+  const { data: approachScriptOptions } = useQueryApproachScriprtList(
+    categoryId,
+    true,
+  );
 
   const items: TFormItem[] = useMemo(
     () =>
