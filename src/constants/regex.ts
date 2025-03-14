@@ -13,3 +13,6 @@ export const ACCEPTING_NUMBER_SPACE_COMMA_PATTERN = /^[\p{L}0-9\s,]+$/u;
 
 // others
 export const REMOVE_ACCENTS_REGEX = /[\u0300-\u036f]/g;
+
+export const URL_REGEX =
+  /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;

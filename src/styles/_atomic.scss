@@ -24,6 +24,7 @@ $dimension-values: (
   'min': min-content,
   'max': max-content,
   'fit': fit-content,
+  'half': 50%,
 );
 
 @each $name, $value in $dimension-values {

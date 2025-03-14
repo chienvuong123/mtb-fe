@@ -1,75 +1,46 @@
-import type { IMPagination } from '@components/molecules';
 import { OTable, type ITable } from '@components/organisms';
-import { DATE_SLASH_FORMAT } from '@constants/dateFormat';
-import type { AttributeDTO } from '@dtos';
+import type { ApproachScriptAttributeDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
-import dayjs from 'dayjs';
-import { useState, type FC, type Key } from 'react';
-
-export type TAttributeRecord = AttributeDTO;
+import { type FC, type Key } from 'react';
 
 interface IAttributeTable {
-  dataSource: TAttributeRecord[];
-  pagination: IMPagination;
-  onEdit: ITable<TAttributeRecord>['onEdit'];
+  dataSource: ApproachScriptAttributeDTO[];
+  onEdit: ITable<ApproachScriptAttributeDTO>['onEdit'];
   onDelete: (id: string) => void;
+  onView: (id: string) => void;
 }
 
-const columns: ColumnType<TAttributeRecord>[] = [
+const columns: ColumnType<ApproachScriptAttributeDTO>[] = [
   {
-    title: 'Mã',
-    dataIndex: 'code',
-    minWidth: 104,
+    title: 'Tên Attribute',
+    dataIndex: 'attributeName',
+    minWidth: 621,
   },
   {
-    title: 'Tên',
-    dataIndex: 'name',
-    minWidth: 150,
-  },
-  {
-    title: 'Ngày tạo',
-    dataIndex: 'createdDate',
-    render: (date: string) => dayjs(date).format(DATE_SLASH_FORMAT),
-  },
-  {
-    title: 'Người tạo',
-    dataIndex: 'createdBy',
-    minWidth: 120,
-  },
-  {
-    title: 'Ngày cập nhật',
-    dataIndex: 'updatedDate',
-    render: (date: string) => dayjs(date).format(DATE_SLASH_FORMAT),
-  },
-  {
-    title: 'Người cập nhật',
-    dataIndex: 'updatedBy',
-    minWidth: 120,
+    title: 'Control',
+    dataIndex: 'controlName',
+    minWidth: 621,
   },
 ];
 
 const AttributeTable: FC<IAttributeTable> = ({
   dataSource,
-  pagination,
   onEdit,
   onDelete,
+  onView,
 }) => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-
   const deleteRecord = (key: Key) => {
     onDelete(key as string);
   };
 
   return (
-    <OTable<TAttributeRecord>
+    <OTable<ApproachScriptAttributeDTO>
       rowKey="id"
       columns={columns}
       data={dataSource}
-      selectedRowKeys={selectedRowKeys}
       onDeleteRow={deleteRecord}
       onEdit={onEdit}
-      setSelectedRowKeys={setSelectedRowKeys}
-      paginations={pagination}
+      onView={(id) => onView?.(id as string)}
     />
   );
 };

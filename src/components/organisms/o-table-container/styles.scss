@@ -6,18 +6,3 @@
     border-bottom-right-radius: 0;
   }
 }
-
-.action-btn {
-  .action-btn-icon {
-    path {
-      fill: #667085;
-    }
-  }
-  &[disabled] {
-    .action-btn-icon {
-      path {
-        fill: #00000026;
-      }
-    }
-  }
-}

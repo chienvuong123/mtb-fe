@@ -55,11 +55,7 @@ const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
   return (
     <div className="no-resize border-2 rounded-8 border-gray-border bg-white">
       {form && (
-        <OFormDetail<TCampaignDetailSearchForm>
-          items={items}
-          form={form}
-          isViewMode
-        />
+        <OFormDetail<TCampaignDetailSearchForm> items={items} form={form} />
       )}
       <hr className="border-t border-[#EAEAEA] mx-40" />
       <CampaignTargetDetailTable

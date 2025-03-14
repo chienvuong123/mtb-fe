@@ -56,6 +56,7 @@ const ROUTE_PATH = {
     LIST: 'list',
     ROOT: '/scenario',
     CREATE: 'create',
+    EDIT: 'edit/:id',
     DETAIL: ':id',
   },
   SELLER: {

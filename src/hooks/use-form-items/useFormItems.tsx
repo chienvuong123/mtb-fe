@@ -126,11 +126,12 @@ const useFormItems = ({
                       className={clsx('mb-0 w-full', className)}
                       {...formItemProps}
                     >
-                      {renderFormItem({
-                        type,
-                        props: inputProps,
-                        fieldName: formItemProps.name,
-                      })}
+                      {formItemProps?.children ||
+                        renderFormItem({
+                          type,
+                          props: inputProps,
+                          fieldName: formItemProps.name,
+                        })}
                     </Form.Item>
                   </div>
                 )}
