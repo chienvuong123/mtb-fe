@@ -13,23 +13,27 @@ const ScenarioSearchForm: FC<CBaseSearch<ScenarioSearchRequest>> = ({
   onClearAll,
 }) => {
   const [form] = useForm();
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { isAdmin, isCampaignManager, isSeller } = useProfile();
 
   const { data: categoryList } = useQueryCategoryList(true);
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Category',
-        name: 'categoryId',
-        inputProps: {
-          placeholder: 'Chọn',
-          options: categoryList,
-          showSearch: true,
-          filterOption: true,
-        },
-      },
+      ...(isSeller
+        ? []
+        : [
+            {
+              type: INPUT_TYPE.SELECT,
+              label: 'Category',
+              name: 'categoryId',
+              inputProps: {
+                placeholder: 'Chọn',
+                options: categoryList,
+                showSearch: true,
+                filterOption: true,
+              },
+            } as const,
+          ]),
       {
         type: INPUT_TYPE.TEXT,
         label: 'Mã kịch bản',
@@ -53,7 +57,7 @@ const ScenarioSearchForm: FC<CBaseSearch<ScenarioSearchRequest>> = ({
       },
     ];
     return formItems;
-  }, [categoryList]);
+  }, [categoryList, isSeller]);
 
   return (
     <div>

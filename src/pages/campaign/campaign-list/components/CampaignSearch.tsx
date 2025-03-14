@@ -19,24 +19,28 @@ const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
   const [form] = useForm();
   const startDate = useWatch('startDate', form);
   const endDate = useWatch('endDate', form);
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { isAdmin, isCampaignManager, isSeller } = useProfile();
 
   const { data: categoryList } = useQueryCategoryList(true);
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Category',
-        name: 'categoryId',
-        inputProps: {
-          placeholder: 'Chọn...',
-          showSearch: true,
-          filterOption: true,
-          options: categoryList,
-          onChange: () => handleResetFields(['codeCampaign'], form),
-        },
-      },
+      ...(isSeller
+        ? []
+        : [
+            {
+              type: INPUT_TYPE.SELECT,
+              label: 'Category',
+              name: 'categoryId',
+              inputProps: {
+                placeholder: 'Chọn...',
+                showSearch: true,
+                filterOption: true,
+                options: categoryList || [],
+                onChange: () => handleResetFields(['campaignCode'], form),
+              },
+            } as const,
+          ]),
       {
         type: INPUT_TYPE.TEXT,
         label: 'Mã campaign',
@@ -87,7 +91,7 @@ const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
       },
     ];
     return formItems;
-  }, [categoryList, startDate, form, endDate]);
+  }, [categoryList, startDate, form, endDate, isSeller]);
 
   useEffect(() => {
     if (initialValues) {

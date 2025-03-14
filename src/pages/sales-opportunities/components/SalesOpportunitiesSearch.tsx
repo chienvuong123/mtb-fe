@@ -2,10 +2,10 @@ import { OSearchBaseForm } from '@components/organisms';
 import { CategoryType } from '@dtos';
 import {
   useCategoryOptionsListQuery,
-  useGroupCustomerOptionsListQuery,
   useQueryCampaignList,
   useQueryCategoryList,
 } from '@hooks/queries';
+import { useProfile } from '@stores';
 import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import React, { useEffect, useMemo } from 'react';
@@ -16,16 +16,14 @@ const SalesOpportunitiesSearch: React.FC<
 > = ({ initialValues, onSearch, onClearAll }) => {
   const [form] = useForm();
   const categoryId = useWatch('categoryId', form);
-  const campaignId = useWatch(['campaignId'], form);
 
-  const unselectedCategory = !categoryId;
-  const unselectedCampaign = !campaignId;
+  const { isSeller } = useProfile();
+
+  const unselectedCategory = !categoryId && !isSeller;
 
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: campaignList } = useQueryCampaignList({ categoryId }, false);
-  const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
-    campaignId ?? '',
-  );
+
   const { data: customerApproachStatus } = useCategoryOptionsListQuery(
     CategoryType.CUSTOMER_APPROACH_STATUS,
   );
@@ -38,17 +36,21 @@ const SalesOpportunitiesSearch: React.FC<
         name: 'orderId',
         inputProps: { title: 'Mã', placeholder: 'Nhập...', maxLength: 20 },
       },
-      {
-        type: INPUT_TYPE.SELECT,
-        label: 'Category',
-        name: 'categoryId',
-        inputProps: {
-          placeholder: 'Chọn...',
-          showSearch: true,
-          filterOption: true,
-          options: categoryList,
-        },
-      },
+      ...(isSeller
+        ? []
+        : [
+            {
+              type: INPUT_TYPE.SELECT,
+              label: 'Category',
+              name: 'categoryId',
+              inputProps: {
+                placeholder: 'Chọn...',
+                showSearch: true,
+                filterOption: true,
+                options: categoryList,
+              },
+            } as const,
+          ]),
       {
         type: INPUT_TYPE.SELECT,
         label: 'Campaign',
@@ -106,7 +108,13 @@ const SalesOpportunitiesSearch: React.FC<
       },
     ];
     return formItems;
-  }, [categoryList, campaignList, unselectedCategory, customerApproachStatus]);
+  }, [
+    categoryList,
+    campaignList,
+    unselectedCategory,
+    customerApproachStatus,
+    isSeller,
+  ]);
 
   useEffect(() => {
     if (initialValues) {
@@ -120,12 +128,6 @@ const SalesOpportunitiesSearch: React.FC<
       form.resetFields(['customerGroupId']);
     }
   }, [unselectedCategory, form, campaignList]);
-
-  useEffect(() => {
-    if (unselectedCampaign || !groupCustomerList?.length) {
-      form.resetFields(['customerGroupId']);
-    }
-  }, [unselectedCampaign, form, groupCustomerList]);
 
   return (
     <div className="search-oppportunites-wrapper">

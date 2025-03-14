@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import Title from 'antd/lib/typography/Title';
 import useUrlParams from '@hooks/useUrlParams';
-import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
+import { EStatusCampaign, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { IMPagination, TPagination } from '@components/molecules';
 import { downloadFileByGetMethod, filterObject } from '@utils/objectHelper';
 import type {
@@ -19,6 +19,7 @@ import { CUSTOMER, MANAGER_CAMPAIGN } from '@routers/path';
 import { ExportIcon } from '@assets/icons';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
+import { useProfile } from '@stores';
 import { useNotification } from '@libs/antd';
 import { dayjsToString } from '@utils/dateHelper';
 import type { TBaseTableSort } from '@types';
@@ -36,6 +37,7 @@ const Campaign: React.FC = () => {
 
   const navigate = useNavigate();
   const notify = useNotification();
+  const { isSeller } = useProfile();
 
   const searchParams: CampaignSearchRequest = useMemo(
     () => ({
@@ -45,8 +47,9 @@ const Campaign: React.FC = () => {
       },
       order: sort,
       ...filterObject(filters),
+      status: isSeller ? EStatusCampaign.INPROGRESS : '',
     }),
-    [current, pageSize, sort, filters],
+    [current, pageSize, sort, filters, isSeller],
   );
 
   const { data: campaignRes } = useCampaignSearchQuery(searchParams);
