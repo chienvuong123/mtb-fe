@@ -93,6 +93,7 @@ const SellerAddFormDrawer: FC<ISellerAddFormDrawer> = ({
           selectedRowKeys={selectedRowKeys}
           setSelectedRowKeys={setSelectedRowKeys}
           className="mt-16"
+          scroll={{ y: undefined }}
         />
       </OBaseForm>
     </ODrawer>
