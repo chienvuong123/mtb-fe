@@ -109,10 +109,6 @@ const SellerPage: FC = () => {
       updatedBy: record.user?.updatedBy,
       updatedDate: formatDate(record.user?.updatedDate),
       id: record.id,
-      createdBy: record.user?.createdBy,
-      updatedBy: record.user?.updatedBy,
-      createdDate: record.user?.createdDate,
-      updatedDate: record.user?.updatedDate,
     };
     setInitialValuesForm(userDTO);
   };

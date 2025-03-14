@@ -1,9 +1,11 @@
-import { OFormDetail } from '@components/organisms';
+import { OBaseForm } from '@components/organisms';
 import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
 import type { FormInstance } from 'antd/lib';
 import type { TCampaignDetailDTO, TCampaignDetailSearchForm } from '@dtos';
+import { CAMPAIGN_KEY } from '@hooks/queries';
 import { useCampaignFormItems } from '../../details/hooks';
+import '../../index.scss';
 
 interface ICampaignInsertForm {
   initialValues?: Partial<TCampaignDetailDTO>;
@@ -43,9 +45,15 @@ const CampaignInsertForm: React.FC<ICampaignInsertForm> = ({
   }, [initialValues, form]);
 
   return (
-    <div>
+    <div className="campaign form-wrapper">
       {form && (
-        <OFormDetail<TCampaignDetailSearchForm> items={items} form={form} />
+        <OBaseForm<TCampaignDetailSearchForm>
+          mutationKey={CAMPAIGN_KEY}
+          items={items}
+          form={form}
+          cancelBtnProps={{ hidden: true }}
+          saveBtnProps={{ hidden: true }}
+        />
       )}
     </div>
   );

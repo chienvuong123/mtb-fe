@@ -66,6 +66,12 @@ const OBaseForm = <T extends object>({
     }
   }, [mutatingCount]);
 
+  const handleSaveClick = async () => {
+    await form.validateFields();
+    setSubmitLoading(true);
+    form.submit();
+  };
+
   const transformItems = useMemo(
     () =>
       items.map(
@@ -161,10 +167,7 @@ const OBaseForm = <T extends object>({
                 htmlType="submit"
                 data-testid="submit-button"
                 disabled={disabledSubmit || submitLoading}
-                onClick={() => {
-                  setSubmitLoading(true);
-                  form.submit();
-                }}
+                onClick={handleSaveClick}
                 {...saveBtnProps}
               >
                 {BUTTON_TEXT.SAVE}

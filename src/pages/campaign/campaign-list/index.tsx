@@ -24,6 +24,7 @@ import { useNotification } from '@libs/antd';
 import { dayjsToString } from '@utils/dateHelper';
 import type { TBaseTableSort } from '@types';
 import { CampaignSearch, CampaignTable } from './components';
+import './index.scss';
 
 const Campaign: React.FC = () => {
   const {
@@ -112,7 +113,9 @@ const Campaign: React.FC = () => {
   const handleCustomerListView = (id: string) => {
     const item = campaignRes?.data.content.find((i) => i.id === id);
     if (item) {
-      navigate(`${ROUTES.CUSTOMER.LIST}?campaignId=${item.id}`);
+      navigate(
+        `${ROUTES.CUSTOMER.LIST}?campaignId=${item.id}&categoryId=${item.categoryId}`,
+      );
     }
   };
 

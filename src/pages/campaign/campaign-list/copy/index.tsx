@@ -1,6 +1,6 @@
 import Title from 'antd/lib/typography/Title';
 import { ROUTES } from '@routers/path';
-import { Divider, Flex, type NotificationArgsProps } from 'antd';
+import { Flex, type NotificationArgsProps } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { AButton } from '@components/atoms';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -54,12 +54,12 @@ const CampaignCopyPage: React.FC = () => {
   const notify = useNotification();
 
   const [isViewMode, setIsViewMode] = useState(false);
-  const [isViewModeTarget, setIsViewModeTarget] = useState(false);
+  const [isEditModeTarget, setIsEditModeTarget] = useState(false);
+  const [isEditModeApproach, setIsEditModeApproach] = useState(false);
 
   const [tempTargets, setTempTargets] = useState<CampaignTargetDTO | null>(
     null,
   );
-
   const [tempApproach, setTempApproach] =
     useState<CampaignApproachPlanDTO | null>(null);
 
@@ -77,9 +77,22 @@ const CampaignCopyPage: React.FC = () => {
   });
 
   useEffect(() => {
-    setInitTargetValues(campaignDetailRes?.data?.targets ?? []);
-    setInitApproachValues(campaignDetailRes?.data?.campaignScript ?? []);
-  }, [campaignDetailRes]);
+    if (campaignDetailRes?.data) {
+      setInitTargetValues(campaignDetailRes.data.targets ?? []);
+      setInitApproachValues(campaignDetailRes.data.campaignScript ?? []);
+      if (campaignId) {
+        form.setFieldsValue({
+          ...campaignDetailRes.data,
+          startDate: campaignDetailRes.data.startDate
+            ? dayjs(campaignDetailRes.data.startDate)
+            : undefined,
+          endDate: campaignDetailRes.data.endDate
+            ? dayjs(campaignDetailRes.data.endDate)
+            : undefined,
+        });
+      }
+    }
+  }, [campaignDetailRes, campaignId, form]);
 
   const handleShowForm = () => {
     setDrawerMode('add');
@@ -92,15 +105,20 @@ const CampaignCopyPage: React.FC = () => {
 
   const handleShowTargetForm = () => {
     setShowInsertTargetForm('add');
+    setIsEditModeTarget(false);
+    formTarget.resetFields();
   };
 
   const handleShowApproachForm = () => {
     setShowInsertApproachForm('add');
+    setIsEditModeApproach(false);
+    formApproach.resetFields();
   };
 
   const handleCloseForm = () => {
     setIsViewMode(false);
-    setIsViewModeTarget(false);
+    setIsEditModeTarget(false);
+    setIsEditModeApproach(false);
     setDrawerMode(undefined);
     setShowInsertTargetForm(undefined);
     setShowInsertApproachForm(undefined);
@@ -116,19 +134,20 @@ const CampaignCopyPage: React.FC = () => {
     setTempApproach(null);
     notify({ message, type });
   };
-
-  const { mutate: mutationCreateCampaign } = useCampaignAddMutation();
+  const { mutate: mutationCreateCampaign, isPending: isCreateLoading } =
+    useCampaignAddMutation();
   const { mutate: mutationCreateCategory } = useManageCategoryAddMutation();
   const { refetch: refetchCategory } = useQueryCategoryList(true);
 
   const dataSourcesDetail: Partial<TCampaignDetailDTO> = useMemo(
     () => ({
       ...campaignDetailRes?.data,
+      code: '',
     }),
     [campaignDetailRes],
   );
 
-  const handleCopy = async () => {
+  const handleSubmitInsert = async () => {
     const valueSearchForm = await form.validateFields();
 
     const data = {
@@ -136,8 +155,8 @@ const CampaignCopyPage: React.FC = () => {
       code: null,
       id: null,
       name: valueSearchForm?.name?.trim(),
-      targets: handleUpdateId(initTargetValues, true),
-      campaignScripts: handleUpdateId(initApproachValues, true),
+      targets: handleUpdateId(initTargetValues),
+      campaignScripts: handleUpdateId(initApproachValues),
     };
 
     if (!data.targets || data.targets.length === 0) {
@@ -212,10 +231,10 @@ const CampaignCopyPage: React.FC = () => {
   };
 
   const handleTargetEdit = (data: CampaignTargetDTO) => {
-    setTempTargets({
-      ...data,
-    });
+    setTempTargets({ ...data });
     setShowInsertTargetForm('edit');
+    setIsEditModeTarget(true);
+    formTarget.setFieldsValue(data);
   };
 
   const handleApproachEdit = (data: CampaignApproachPlanDTO) => {
@@ -223,6 +242,8 @@ const CampaignCopyPage: React.FC = () => {
       ...data,
     });
     setShowInsertApproachForm('edit');
+    setIsEditModeApproach(true);
+    formApproach.setFieldsValue(data);
   };
 
   const handleDeleteTarget = (id: string) => {
@@ -251,7 +272,7 @@ const CampaignCopyPage: React.FC = () => {
       content: (
         <CategoryInsertForm
           key={drawerMode ?? 'view'}
-          mode={drawerMode ? 'view' : 'add'}
+          mode={drawerMode === 'view' ? 'view' : 'add'}
           onClose={handleCloseForm}
           onSubmit={handleSubmitInsertCategory}
           isDisabled={false}
@@ -263,11 +284,11 @@ const CampaignCopyPage: React.FC = () => {
     if (showInsertTargetForm) {
       config = {
         title: 'mục tiêu',
-        mode: isViewMode ? 'view' : 'add',
+        mode: isEditModeTarget ? 'edit' : 'add',
         width: 1080,
         content: (
           <CampaignTargetForm
-            mode={isViewMode ? 'view' : 'add'}
+            mode={isEditModeTarget ? 'edit' : 'add'}
             onClose={handleCloseForm}
             initialValues={tempTargets}
             onSubmit={handleSaveTarget}
@@ -278,15 +299,16 @@ const CampaignCopyPage: React.FC = () => {
     } else if (showInsertApproachForm) {
       config = {
         title: 'kế hoạch tiếp cận',
-        mode: isViewModeTarget ? 'view' : 'add',
+        mode: isEditModeApproach ? 'edit' : 'add',
         width: 1080,
         content: (
           <CampaignApproachForm
-            mode={isViewModeTarget ? 'view' : 'add'}
+            mode={isEditModeApproach ? 'edit' : 'add'}
             onClose={handleCloseForm}
             initialValues={tempApproach}
             onSubmit={handleSaveApproach}
             form={formApproach}
+            formInsert={form}
           />
         ),
       };
@@ -300,7 +322,7 @@ const CampaignCopyPage: React.FC = () => {
   return (
     <div className="pt-32">
       <Title level={3} className="pb-24">
-        {campaignId ? 'Chỉnh sửa Campaign' : 'Tạo mới Campaign'}
+        Tạo mới Campaign
       </Title>
       <Flex
         vertical
@@ -309,10 +331,11 @@ const CampaignCopyPage: React.FC = () => {
         <CampaignInsertForm
           initialValues={dataSourcesDetail}
           isDisabled={false}
+          isNoEdit={!!campaignId}
           form={form}
           onShowForm={handleShowForm}
         />
-        <Divider className="mt-24 mb-0" />
+        <div className="px-24" />
         <CampaignTargetDetailTable
           dataSource={initTargetValues}
           onEdit={handleTargetEdit}
@@ -326,6 +349,7 @@ const CampaignCopyPage: React.FC = () => {
         dataSource={initApproachValues}
         onShowApproachForm={handleShowApproachForm}
         onDelete={handleDeleteApproach}
+        form={form}
       />
       <div
         className="fixed bottom-0 left-0 w-full bg-white shadow-md z-10 mt-20 py-10 pr-24"
@@ -336,7 +360,12 @@ const CampaignCopyPage: React.FC = () => {
             <AButton onClick={handleBack} variant="outlined">
               {BUTTON_TEXT.CANCEL}
             </AButton>
-            <AButton onClick={handleCopy} type="primary" variant="filled">
+            <AButton
+              onClick={handleSubmitInsert}
+              type="primary"
+              variant="filled"
+              disabled={isCreateLoading}
+            >
               {BUTTON_TEXT.SAVE}
             </AButton>
           </Flex>
