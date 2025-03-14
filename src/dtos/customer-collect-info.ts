@@ -7,8 +7,8 @@ export interface CustomerCollectInfoDTO {
   dateOfBirth: string;
   genderCode: string;
   mobileNumber: string;
+  mobileNumber1: string;
   mobileNumber2: string;
-  mobileNumber3: string;
   typeOfIdCode: string;
   typeOfIdName: string;
   personalId: string;
@@ -28,7 +28,7 @@ export interface CustomerCollectInfoDTO {
   residenceDistrictName: string;
   residenceWardCode: string;
   residenceWardName: string;
-  residenceDetailedAddress: string;
+  detailedAddressInformation: string;
   currentAddress: string;
   currentProvinceCode: string;
   currentProvinceName: string;
@@ -36,7 +36,7 @@ export interface CustomerCollectInfoDTO {
   currentDistrictName: string;
   currentWardCode: string;
   currentWardName: string;
-  currentDetailedAddress: string;
+  currentAddressDetails: string;
   loanMoney: number;
   tenor: string;
   paymentMethod: string;
@@ -78,16 +78,16 @@ export interface CustomerCollectFormDTO {
   genderName: string;
   dateOfBirth: string;
   mobileNumber: string;
+  mobileNumber1: string;
   mobileNumber2: string;
-  mobileNumber3: string;
   residenceProvinceCode: string;
   residenceDistrictCode: string;
   residenceWardCode: string;
-  residenceDetailedAddress: string;
+  detailedAddressInformation: string;
   currentProvinceCode: string;
   currentDistrictCode: string;
   currentWardCode: string;
-  currentDetailedAddress: string;
+  currentAddressDetails: string;
   appDate: string;
   countOfTransaction: string;
   ekycLevel: string;
