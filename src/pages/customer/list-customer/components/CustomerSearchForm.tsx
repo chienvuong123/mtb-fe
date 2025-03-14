@@ -37,7 +37,7 @@ const CustomerSearchForm: FC<
     false,
     isAdmin || isCampaignManager || isSellerManager,
   );
-  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.JOB);
+  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.F88_JOB);
   const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
     campaignId ?? '',
     false,

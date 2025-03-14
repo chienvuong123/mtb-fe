@@ -5,7 +5,13 @@ import {
   type GroupCustomerDTO,
 } from '@dtos';
 import { type NotificationArgsProps, type UploadFile } from 'antd';
-import { type FC, type SetStateAction, useMemo, useState } from 'react';
+import {
+  type FC,
+  type SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { UserGroupIcon } from '@assets/icons';
 import { AButton } from '@components/atoms';
@@ -18,6 +24,7 @@ import {
   useCustomerImportMutation,
   useCustomerRemoveMutation,
   useCustomerSearchQuery,
+  useCustomerViewQuery,
   useGroupCustomerAddMutation,
 } from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
@@ -58,6 +65,9 @@ const ListCustomerPage: FC = () => {
   const [drawerMode, setDrawerMode] = useState<TDrawerMode>(false);
   const [drawerWidth, setDrawerWidth] = useState<number>(DRAWER_WIDTH.list);
   const [initValues, setInitValues] = useState<CustomerDTO | null>(null);
+
+  const [customerId, setCustomerId] = useState<string | null>(null);
+
   const notify = useNotification();
   const navigate = useNavigate();
 
@@ -92,6 +102,7 @@ const ListCustomerPage: FC = () => {
   const handleCloseForm = () => {
     setDrawerMode(false);
     setIsViewMode(false);
+    setCustomerId(null);
     setTimeout(() => {
       setDrawerWidth(DRAWER_WIDTH.list);
     }, 100);
@@ -103,6 +114,10 @@ const ListCustomerPage: FC = () => {
     setInitValues(null);
   };
 
+  const { data: customerDetails } = useCustomerViewQuery(
+    { id: customerId as string },
+    { enabled: !!customerId },
+  );
   const { mutate: mutationCreateCustomer } = useCustomerAddMutation();
   const { mutate: mutationUpdateCustomer } = useCustomerEditMutation();
   const { mutate: mutationDeleteCustomer } = useCustomerRemoveMutation();
@@ -276,15 +291,8 @@ const ListCustomerPage: FC = () => {
     setFilters({});
   };
 
-  const handleView = (id: string) => {
-    const item = customerRes?.data.content.find((i) => i.id === id);
-    if (item) {
-      setIsViewMode(true);
-      setInitValues({
-        ...item,
-      });
-      handleOpenDrawer();
-    }
+  const handleView = async (id: string) => {
+    setCustomerId(id);
   };
 
   const handleCall = (record: CustomerDTO) => {
@@ -329,6 +337,17 @@ const ListCustomerPage: FC = () => {
       />
     );
   };
+
+  useEffect(() => {
+    // watch view mode
+    if (customerDetails && customerId) {
+      setIsViewMode(true);
+      setInitValues({
+        ...customerDetails.data,
+      });
+      handleOpenDrawer();
+    }
+  }, [customerId, customerDetails]);
 
   return (
     <div className="pt-32">

@@ -642,9 +642,10 @@ export const useCollectInforController = (opened?: boolean) => {
   const { mutate: checkLoanLimitMutation, isPending: loading } =
     useCustomerCheckLoanLimit();
 
-  const { data: customerQueryData } = useCustomerViewQuery({
-    id: customerId as string,
-  });
+  const { data: customerQueryData, refetch: refectchCustomer } =
+    useCustomerViewQuery({
+      id: customerId as string,
+    });
   const customerData = customerQueryData?.data;
   const { data: draftLoanLimit, refetch: refectchLoanLimit } =
     useCustomerGetDraftLoanLimit(customerId);
@@ -678,6 +679,7 @@ export const useCollectInforController = (opened?: boolean) => {
         onSuccess: (data) => {
           validationHelper(data, notify, () => {
             refectchLoanLimit();
+            refectchCustomer();
             notify({
               type: 'success',
               message: 'Cập nhật thông tin thành công',
