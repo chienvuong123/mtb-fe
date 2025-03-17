@@ -75,6 +75,14 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
         calledIds,
       );
 
+      if (transformedDataArray.length === 0) {
+        notify({
+          message: 'Lưu thành công',
+          type: 'success',
+        });
+        return;
+      }
+
       createApproachResult(transformedDataArray, {
         onSuccess: (d) => {
           validationHelper(d, notify, () => {
