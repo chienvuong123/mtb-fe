@@ -35,8 +35,19 @@ const getChangedSteps = (
   oldApproachResultSteps: ApproachScriptAttributeDTO[],
   isCalledChange: boolean,
 ): ApproachResultStep[] => {
+  const excludedKeys = [
+    'result',
+    'resultDetail',
+    'rate',
+    'note',
+    'status',
+    'rateCampaign',
+    'called',
+    'campaignScriptId',
+  ];
+
   return Object.entries(approachData)
-    .filter(([key]) => !Number.isNaN(Number(key)))
+    .filter(([key]) => !excludedKeys.includes(key))
     .filter(([key, value]) => {
       const initial = initialValue?.[key] as ApproachStepFormValue;
       const current = value as ApproachStepFormValue;
@@ -100,7 +111,7 @@ export const transformDataToSubmit = (
   return Object.entries(currentValues)
     .map(([campaignScriptId, approachData]) => {
       const oldApproachResult = approachScriptData?.find(
-        (i) => i.campaignScriptId === campaignScriptId,
+        (i) => i.id === campaignScriptId,
       );
       const oldApproachResultSteps = oldApproachResult?.approachStep || [];
       const initialValue = initialValues[campaignScriptId];

@@ -13,25 +13,19 @@ const items: TFormItem[] = [
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Mã Category',
-    name: 'categoryCode',
-    inputProps: { placeholder: 'Nhập...', maxLength: 100 },
-  },
-  {
-    type: INPUT_TYPE.TEXT,
     label: 'Tên Catagory',
     name: 'categoryName',
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Mã Campaign',
-    name: 'campaignCode',
+    label: 'Tên Campaign',
+    name: 'campaignName',
     inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Tên Campaign',
-    name: 'campaignName',
+    label: 'Seller',
+    name: 'seller',
     inputProps: { disabled: true },
   },
   {
@@ -47,9 +41,21 @@ const items: TFormItem[] = [
     inputProps: { disabled: true },
   },
   {
-    type: INPUT_TYPE.NUMBER,
-    label: 'Số điện thoại',
-    name: 'customerPhone',
+    type: INPUT_TYPE.TEXT,
+    label: 'Số điện thoại chính',
+    name: 'mobilePhone',
+    inputProps: { disabled: true },
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Số điện thoại 2',
+    name: 'mobilePhone2',
+    inputProps: { disabled: true },
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Số điện thoại 3',
+    name: 'mobilePhone3',
     inputProps: { disabled: true },
   },
   {
@@ -78,12 +84,6 @@ const items: TFormItem[] = [
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Phân khúc khách hàng',
-    name: 'customerSegment',
-    inputProps: { disabled: true },
-  },
-  {
-    type: INPUT_TYPE.TEXT,
     label: 'Loại giấy tờ định danh',
     name: 'identnDocType',
     inputProps: { disabled: true },
@@ -96,8 +96,15 @@ const items: TFormItem[] = [
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Hạn mức vay',
-    name: 'limitAmount',
+    label: 'Địa chỉ',
+    name: 'address',
+    inputProps: { disabled: true },
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Trạng thái tiếp cận gần nhất',
+    name: 'customerApproachStatus',
+    inputProps: { disabled: true },
   },
   {
     type: INPUT_TYPE.TEXT,
@@ -107,14 +114,8 @@ const items: TFormItem[] = [
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Seller',
-    name: 'seller',
-    inputProps: { disabled: true },
-  },
-  {
-    type: INPUT_TYPE.TEXT,
-    label: 'Địa chỉ',
-    name: 'address',
+    label: 'Phân khúc khách hàng',
+    name: 'customerSegment',
     inputProps: { disabled: true },
   },
   {
@@ -125,8 +126,13 @@ const items: TFormItem[] = [
   {
     type: INPUT_TYPE.TEXT,
     label: 'Trạng thái cơ hội bán',
-    name: 'mbOpportunityStt',
+    name: 'mbOpportunityStts',
     inputProps: { disabled: true },
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Hạn mức vay',
+    name: 'limitAmount',
   },
   {
     type: INPUT_TYPE.TEXT,

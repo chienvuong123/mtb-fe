@@ -29,6 +29,8 @@ export interface ApproachScriptAttributeDTO {
   description: string;
   content?: string | null;
   approachResultStep?: ApproachResultStepDTO;
+  controlCode?: string;
+  controlId?: string;
 }
 
 export interface ApproachStepFormValue {
@@ -46,17 +48,35 @@ export interface ApproachFormData {
   [key: string]: ApproachStepFormValue | string | number | boolean | undefined;
 }
 
+export interface ApproachStepCreateRequest {
+  controlCatalogCreateReq: {
+    controlType?: string;
+    name?: string;
+    content?: string;
+  };
+  name?: string;
+  ordered?: number;
+}
+
 export interface ApproachScriptDTO extends BaseEntity {
-  code: string;
-  name: string;
-  category: string;
-  status: EStatus;
-  description: string;
-  sellerName: string;
-  campaignName: string;
-  campaignScriptId: string;
-  approachResult: ApproachResultDTO | null;
-  approachStep: ApproachScriptAttributeDTO[];
+  code?: string;
+  name?: string;
+  category?: string;
+  status?: EStatus;
+  description?: string;
+  desc?: string;
+  sellerName?: string;
+  campaignName?: string;
+  campaignScriptId?: string;
+  approachResult?: ApproachResultDTO | null;
+  approachStep?: ApproachScriptAttributeDTO[];
+  approachSteps?: ApproachStepCreateRequest[];
+  approachScript?: {
+    name?: string;
+    category?: string;
+    desc?: string;
+    status?: EStatus;
+  };
 }
 
 export interface ApproachScriptSearchRequest extends BaseSearchParams {

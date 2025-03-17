@@ -42,22 +42,18 @@ const AttributeItem: FC<{
                 label: val,
                 value: String(idx),
               }))}
+              className="flex-column"
             />
           </Form.Item>
         );
       case EControlType.SWITCH:
         return (
-          <Form.Item name={[approachId, data.id, 'attributes']} noStyle>
-            <Switch
-              checkedChildren={
-                (config as ControlValue<EControlType.SWITCH>).options?.[0] ??
-                'Có'
-              }
-              unCheckedChildren={
-                (config as ControlValue<EControlType.SWITCH>).options?.[1] ??
-                'Không'
-              }
-            />
+          <Form.Item
+            name={[approachId, data.id, 'attributes']}
+            valuePropName="checked"
+            noStyle
+          >
+            <Switch />
           </Form.Item>
         );
       case EControlType.SELECT:
@@ -85,13 +81,17 @@ const AttributeItem: FC<{
                 label: val,
                 value: String(idx),
               }))}
+              className="flex-column dis-flex"
             />
           </Form.Item>
         );
       case EControlType.DATETIME:
         return (
           <Form.Item name={[approachId, data.id, 'attributes']} noStyle>
-            <DatePicker format={DATE_SLASH_FORMAT_DDMMYYYY} />
+            <DatePicker
+              format={DATE_SLASH_FORMAT_DDMMYYYY}
+              placeholder="Chọn ngày"
+            />
           </Form.Item>
         );
       case EControlType.NUMBER:
@@ -105,12 +105,6 @@ const AttributeItem: FC<{
           >
             <Input placeholder="Nhập số" className="w-100" />
           </Form.Item>
-        );
-      case EControlType.LINK:
-        return (
-          <a href={config.toString()} target="_blank" rel="noreferrer">
-            {config.toString()}
-          </a>
         );
       case EControlType.BUTTON: {
         const button = config as ControlValue<EControlType.BUTTON>;
@@ -126,17 +120,27 @@ const AttributeItem: FC<{
         );
       }
       case EControlType.IMAGE: {
+        // TODO: get image from s3
         const image = config as ControlValue<EControlType.IMAGE>;
-        return <Image alt={image.title} src={image.src} height={300} />;
+        return <Image alt={image.src} src={image.src} height={300} />;
       }
       default:
-        return config as string;
+        return (
+          <div>
+            {typeof config === 'object'
+              ? JSON.stringify(config)
+              : String(config)}
+          </div>
+        );
     }
   }, [data.controlType, data.id, data.content, approachId]);
 
   return (
     <>
-      <div dangerouslySetInnerHTML={{ __html: data.description || '' }} />
+      <div
+        className="ql-editor"
+        dangerouslySetInnerHTML={{ __html: data.description || '' }}
+      />
       <div className="mt-8">{content}</div>
       {data?.haveNote && (
         <div className="mt-8">

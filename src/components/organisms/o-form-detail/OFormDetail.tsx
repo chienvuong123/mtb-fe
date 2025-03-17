@@ -74,19 +74,21 @@ const OFormDetail = <T extends object>({
           {formContent}
         </div>
 
-        <div className="w-full btn-group" hidden={isViewMode}>
-          <Divider className="ma-0" />
-          <Flex justify="center" className="py-16 w-full" gap="middle">
-            <AButton
-              onClick={handleClose}
-              type="primary"
-              variant="filled"
-              data-testid="back-button"
-            >
-              {BUTTON_TEXT.BACK}
-            </AButton>
-          </Flex>
-        </div>
+        {onClose && (
+          <div className="w-full btn-group">
+            <Divider className="ma-0" />
+            <Flex justify="center" className="py-16 w-full" gap="middle">
+              <AButton
+                onClick={handleClose}
+                type="primary"
+                variant="filled"
+                data-testid="back-button"
+              >
+                {BUTTON_TEXT.BACK}
+              </AButton>
+            </Flex>
+          </div>
+        )}
       </div>
     </Form>
   );

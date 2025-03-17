@@ -119,14 +119,14 @@ export const useCollectInforController = (opened?: boolean) => {
     useForwardBookingInforMutation();
 
   const [showPhone, setShowPhone] = useState({
+    mobileNumber1: false,
     mobileNumber2: false,
-    mobileNumber3: false,
   });
 
   const handleAddPhone = () => {
     setShowPhone((pre) => ({
-      mobileNumber2: true,
-      mobileNumber3: pre.mobileNumber2,
+      mobileNumber1: true,
+      mobileNumber2: pre.mobileNumber1,
     }));
   };
 
@@ -144,8 +144,8 @@ export const useCollectInforController = (opened?: boolean) => {
       form.getFieldValue('residenceWardCode'),
     );
     form.setFieldValue(
-      'currentDetailedAddress',
-      form.getFieldValue('residenceDetailedAddress'),
+      'currentAddressDetails',
+      form.getFieldValue('detailedAddressInformation'),
     );
   }, [form]);
 
@@ -180,19 +180,40 @@ export const useCollectInforController = (opened?: boolean) => {
         label: 'Số điện thoại',
         name: 'mobileNumber',
         inputProps: { placeholder: 'Nhập...', maxLength: 10, disabled: true },
-        rules: [{ required: true }],
+        rules: [
+          { required: true },
+          { min: 10, message: 'Số điện thoại không hợp lệ' },
+        ],
         colProps: { span: 12 },
         blockingPattern: BLOCKING_NUMBER_PARTERN,
         surfixButton: {
           icon: <PlusIcon color="#5E6371" />,
           type: 'text',
-          disabled: showPhone.mobileNumber2 && showPhone.mobileNumber3,
+          disabled: showPhone.mobileNumber1 && showPhone.mobileNumber2,
           onClick: handleAddPhone,
         },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Số điện thoại 2',
+        name: 'mobileNumber1',
+        inputProps: { placeholder: 'Nhập...', maxLength: 10 },
+        colProps: { span: 12 },
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
+        hidden: !showPhone.mobileNumber1,
+        surfixButton: {
+          icon: <CloseIcon />,
+          type: 'text',
+          disabled: showPhone.mobileNumber2,
+          onClick: () => {
+            setShowPhone((pre) => ({ ...pre, mobileNumber1: false }));
+            form.setFieldValue('mobileNumber2', undefined);
+          },
+        },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Số điện thoại 3',
         name: 'mobileNumber2',
         inputProps: { placeholder: 'Nhập...', maxLength: 10 },
         colProps: { span: 12 },
@@ -201,27 +222,9 @@ export const useCollectInforController = (opened?: boolean) => {
         surfixButton: {
           icon: <CloseIcon />,
           type: 'text',
-          disabled: showPhone.mobileNumber3,
           onClick: () => {
             setShowPhone((pre) => ({ ...pre, mobileNumber2: false }));
             form.setFieldValue('mobileNumber2', undefined);
-          },
-        },
-      },
-      {
-        type: INPUT_TYPE.TEXT,
-        label: 'Số điện thoại 3',
-        name: 'mobileNumber3',
-        inputProps: { placeholder: 'Nhập...', maxLength: 10 },
-        colProps: { span: 12 },
-        blockingPattern: BLOCKING_NUMBER_PARTERN,
-        hidden: !showPhone.mobileNumber3,
-        surfixButton: {
-          icon: <CloseIcon />,
-          type: 'text',
-          onClick: () => {
-            setShowPhone((pre) => ({ ...pre, mobileNumber3: false }));
-            form.setFieldValue('mobileNumber3', undefined);
           },
         },
       },
@@ -274,7 +277,7 @@ export const useCollectInforController = (opened?: boolean) => {
       {
         type: INPUT_TYPE.TEXT,
         label: 'Địa chỉ chi tiết',
-        name: 'residenceDetailedAddress',
+        name: 'detailedAddressInformation',
         inputProps: {
           placeholder: 'Nhập...',
         },
@@ -342,7 +345,7 @@ export const useCollectInforController = (opened?: boolean) => {
       {
         type: INPUT_TYPE.TEXT,
         label: 'Địa chỉ chi tiết',
-        name: 'currentDetailedAddress',
+        name: 'currentAddressDetails',
         inputProps: {
           placeholder: 'Nhập...',
         },
@@ -642,9 +645,10 @@ export const useCollectInforController = (opened?: boolean) => {
   const { mutate: checkLoanLimitMutation, isPending: loading } =
     useCustomerCheckLoanLimit();
 
-  const { data: customerQueryData } = useCustomerViewQuery({
-    id: customerId as string,
-  });
+  const { data: customerQueryData, refetch: refectchCustomer } =
+    useCustomerViewQuery({
+      id: customerId as string,
+    });
   const customerData = customerQueryData?.data;
   const { data: draftLoanLimit, refetch: refectchLoanLimit } =
     useCustomerGetDraftLoanLimit(customerId);
@@ -678,6 +682,7 @@ export const useCollectInforController = (opened?: boolean) => {
         onSuccess: (data) => {
           validationHelper(data, notify, () => {
             refectchLoanLimit();
+            refectchCustomer();
             notify({
               type: 'success',
               message: 'Cập nhật thông tin thành công',
@@ -767,6 +772,11 @@ export const useCollectInforController = (opened?: boolean) => {
     const draftFormData = draftLoanLimit?.data
       ? mapDraftToFormData(draftLoanLimit.data)
       : {};
+
+    if (draftLoanLimit?.data?.mobileNumber1)
+      setShowPhone((pre) => ({ ...pre, mobileNumber1: true }));
+    if (draftLoanLimit?.data?.mobileNumber2)
+      setShowPhone((pre) => ({ ...pre, mobileNumber2: true }));
 
     form.setFieldsValue({
       ...baseFormData,

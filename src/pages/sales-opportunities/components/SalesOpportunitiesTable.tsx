@@ -73,6 +73,8 @@ const columns: TColumnType<SalesOpportunitiesDTO>[] = [
     minWidth: 164,
     sorter: true,
     showSorterTooltip: false,
+    render: (_, record) =>
+      record.mobilePhone3 || record.mobilePhone2 || record.mobilePhone || '',
   },
   {
     title: 'Seller',

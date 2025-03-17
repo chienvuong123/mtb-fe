@@ -38,7 +38,7 @@ const useCustomerForm = ({
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
   const { data: sellerList } = useSellerOptionsListQuery(true);
-  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.JOB);
+  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.F88_JOB);
   const { data: identificationList } = useCategoryOptionsListQuery(
     CategoryType.MB_IDENTIFICATION,
   );
@@ -113,6 +113,7 @@ const useCustomerForm = ({
             name: 'phone',
             inputProps: { maxLength: 10 },
             blockingPattern: BLOCKING_NUMBER_PARTERN,
+            rules: [{ min: 10, message: 'Số điện thoại không hợp lệ' }],
           },
           {
             type: INPUT_TYPE.TEXT,

@@ -51,15 +51,13 @@ const useFormItems = ({
         if (!isViewMode) {
           const Component = formItemComponents[type] as FormItemComponent;
           return (
-            <Form.Item name={fieldName} noStyle>
-              <Component
-                className={className}
-                onBlur={handleBlur}
-                form={form}
-                name={fieldName}
-                {...inputProps}
-              />
-            </Form.Item>
+            <Component
+              className={className}
+              onBlur={handleBlur}
+              form={form}
+              name={fieldName}
+              {...inputProps}
+            />
           );
         }
 
@@ -128,11 +126,12 @@ const useFormItems = ({
                       className={clsx('mb-0 w-full', className)}
                       {...formItemProps}
                     >
-                      {renderFormItem({
-                        type,
-                        props: inputProps,
-                        fieldName: formItemProps.name,
-                      })}
+                      {formItemProps?.children ||
+                        renderFormItem({
+                          type,
+                          props: inputProps,
+                          fieldName: formItemProps.name,
+                        })}
                     </Form.Item>
                   </div>
                 )}

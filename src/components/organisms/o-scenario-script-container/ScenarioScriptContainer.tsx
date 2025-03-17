@@ -89,6 +89,11 @@ const ScenarioScriptContainer: FC<{
             style={{ background: token.colorBgContainer }}
             items={attributeItems}
             onChange={(values) => setActiveKeys(values)}
+            defaultActiveKey={
+              isPreview && approach?.approachStep
+                ? approach.approachStep.map((e) => e.id)
+                : []
+            }
           />
         )}
         <Divider />

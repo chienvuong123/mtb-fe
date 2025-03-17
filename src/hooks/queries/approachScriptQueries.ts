@@ -14,6 +14,8 @@ export const {
   useSearchQuery: useApproachScriptSearchQuery,
   useViewQuery: useApproachScriptViewQuery,
   useRemoveMutation: useApproachScriptRemoveMutation,
+  useAddMutation: useApproachScriptAddMutation,
+  useEditMutation: useApproachScriptEditMutation,
 } = createBaseQueryHooks<
   ApproachScriptDTO,
   ApproachScriptSearchRequest,

@@ -6,13 +6,11 @@ export const convertInitValues = (
   const convertData = {
     key: initValues.id,
     orderId: initValues?.orderId,
-    categoryCode: initValues?.categoryCampaign?.code,
-    categoryName: initValues?.categoryCampaign?.name,
-    campaignCode: initValues?.customer?.campaign?.code,
-    campaignName: initValues?.customer?.campaign?.name,
+    categoryName: `${initValues?.categoryCampaign?.code} - ${initValues?.categoryCampaign?.name}`,
+    campaignName: `${initValues?.campaign?.code} - ${initValues?.campaign?.name}`,
     customerCode: initValues?.customer?.code,
     customerName: initValues?.customer?.name,
-    customerPhone: initValues?.customer?.phone,
+    mobilePhone: initValues?.mobilePhone,
     customerEmail: initValues?.customer?.email,
     birthDate: initValues?.customer?.birthday,
     gender: initValues?.customer?.genderCategory?.name,
@@ -31,6 +29,9 @@ export const convertInitValues = (
     loanStatusDtl: initValues?.loanStatusDtl,
     mbOpportunityStt: initValues?.mbOpportunityStt,
     quickOfferStatus: initValues?.quickOfferStatus,
+    mobilePhone2: initValues?.mobilePhone2,
+    mobilePhone3: initValues?.mobilePhone3,
+    customerApproachStatus: initValues?.customerApproachStatusDtl.name,
   } as Partial<SalesOpportunitiesDTO>;
 
   return convertData;
