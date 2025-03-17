@@ -40,6 +40,7 @@ export enum INPUT_TYPE {
   LABEL,
   CHECKBOX,
   EDITOR,
+  NUMBER_RANGE,
 }
 
 export type TOTPProps = GetProps<typeof Input.OTP>;
@@ -51,6 +52,12 @@ export type TBaseFormItem = FormItemProps & {
   };
   surfixButton?: boolean | ButtonProps;
   blockingPattern?: RegExp;
+};
+
+export type TInputRange = {
+  start?: InputProps & { formItemProps?: FormItemProps };
+  end?: InputProps & { formItemProps?: FormItemProps };
+  form?: FormInstance;
 };
 
 export type TFormItem =
@@ -106,4 +113,8 @@ export type TFormItem =
   | (TBaseFormItem & {
       type: INPUT_TYPE.EDITOR;
       inputProps?: ReactQuillProps;
+    })
+  | (TBaseFormItem & {
+      type: INPUT_TYPE.NUMBER_RANGE;
+      inputProps?: InputProps & TInputRange;
     });

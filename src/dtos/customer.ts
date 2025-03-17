@@ -35,6 +35,9 @@ export interface CustomerDTO extends BaseEntity {
   seller?: string;
   approachStatus?: string;
   numberOfCalls?: string;
+  startNumberOfCalls?: string;
+  endNumberOfCalls?: string;
+  approachResultStatus?: string;
 
   identnDocType?: string;
   identnDocIssueDate?: string;

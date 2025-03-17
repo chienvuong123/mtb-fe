@@ -55,6 +55,7 @@ const OSearchBaseForm = <T extends object>({
   );
 
   const { formContent } = useFormItems({
+    form,
     formItems: transformItems,
     rowProps: { gutter: [14, 17] },
   });

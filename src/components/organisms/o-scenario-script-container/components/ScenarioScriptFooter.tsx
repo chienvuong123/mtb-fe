@@ -113,6 +113,12 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
     });
   };
 
+  const handleResetFields = (fields: string[][]) => {
+    fields.forEach((field) => {
+      form.setFieldValue(field, undefined);
+    });
+  };
+
   return (
     <div className="mt-24">
       <Form form={form} layout="vertical" className="dis-block h-full">
@@ -123,7 +129,16 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
               name={[approachId, 'status']}
               rules={[{ required: true }]}
             >
-              <ASelect options={statusOptions} placeholder="Chọn" />
+              <ASelect
+                options={statusOptions}
+                placeholder="Chọn"
+                onSelect={() =>
+                  handleResetFields([
+                    [approachId, 'result'],
+                    [approachId, 'resultDetail'],
+                  ])
+                }
+              />
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -132,7 +147,13 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
               name={[approachId, 'result']}
               rules={[{ required: true }]}
             >
-              <ASelect options={approachResultOptions} placeholder="Chọn" />
+              <ASelect
+                options={approachResultOptions}
+                placeholder="Chọn"
+                onSelect={() =>
+                  handleResetFields([[approachId, 'resultDetail']])
+                }
+              />
             </Form.Item>
           </Col>
           <Col span={8}>

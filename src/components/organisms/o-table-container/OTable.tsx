@@ -11,6 +11,7 @@ import { SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
 import type { ColumnType } from 'antd/es/table';
 import clsx from 'clsx';
 import { getTableIndex } from '@pages/category/utils';
+import { useIsFetching } from '@tanstack/react-query';
 import { OModalConfirm } from '../o-modal';
 import type { FixedType, ITable, TColumnType } from './OTabletype';
 import './styles.scss';
@@ -39,6 +40,8 @@ const OTable = <T extends object>({
 }: ITable<T>) => {
   const [showModal, setShowModal] = useState(false);
   const [recordKey, setRecordKey] = useState<Key | null>(null);
+
+  const isLoading = useIsFetching();
 
   const transformColumns: ColumnType<T>[] = useMemo(() => {
     const columnsWithSort: ColumnType<T>[] = sortDirection
@@ -178,6 +181,7 @@ const OTable = <T extends object>({
         {...confirmProps}
       />
       <Table<T>
+        loading={isLoading > 0}
         className={clsx('o-table', { 'with-pagination': !!paginations })}
         bordered={false}
         dataSource={data}
