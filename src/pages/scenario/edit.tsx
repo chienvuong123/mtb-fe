@@ -51,7 +51,7 @@ const ScenarioEditPage: FC = () => {
         scenarioData: scenario.data,
         attributeList: (scenario.data.approachStep || []).map((e) => ({
           ...e,
-          content: JSON.parse(e.content || ''),
+          content: e?.content ? JSON.parse(e?.content) : '',
           controlCode: e.controlId,
         })),
       });
