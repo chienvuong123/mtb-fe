@@ -151,12 +151,8 @@ const ListCustomerPage: FC = () => {
     handleOpenDrawer();
   };
 
-  const handleEdit = (data: CustomerDTO) => {
-    setInitValues({
-      ...destructCustomerData({}), // reset fields
-      ...data,
-    });
-    handleOpenDrawer();
+  const handleEdit = ({ id }: CustomerDTO) => {
+    setCustomerId(id);
   };
 
   const handleSearch = (values: Partial<TCustomerSearchForm>) => {
@@ -293,6 +289,7 @@ const ListCustomerPage: FC = () => {
 
   const handleView = async (id: string) => {
     setCustomerId(id);
+    setIsViewMode(true);
   };
 
   const handleCall = (record: CustomerDTO) => {
@@ -339,9 +336,8 @@ const ListCustomerPage: FC = () => {
   };
 
   useEffect(() => {
-    // watch view mode
+    // watch edit/view mode
     if (customerDetails && customerId) {
-      setIsViewMode(true);
       setInitValues({
         ...customerDetails.data,
       });

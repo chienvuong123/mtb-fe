@@ -8,6 +8,8 @@ import {
   Upload,
   type GetProps,
   type FormInstance,
+  Flex,
+  Form,
 } from 'antd';
 import React from 'react';
 
@@ -20,7 +22,12 @@ import {
   ASelect,
 } from '@components/atoms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
-import { INPUT_TYPE, type TOTPProps, type TPasswordProps } from '@types';
+import {
+  INPUT_TYPE,
+  type TInputRange,
+  type TOTPProps,
+  type TPasswordProps,
+} from '@types';
 import clsx from 'clsx';
 import type { ReactQuillProps } from 'react-quill';
 import ReactQuill from 'react-quill';
@@ -132,4 +139,29 @@ export const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
     <Checkbox {...props} />
   ),
   [INPUT_TYPE.EDITOR]: (props: ReactQuillProps) => <ReactQuill {...props} />,
+  [INPUT_TYPE.NUMBER_RANGE]: ({
+    start,
+    end,
+  }: GetProps<typeof Input> & TInputRange) => {
+    const {
+      formItemProps: startFormItemProps,
+      name: startName,
+      ...startProps
+    } = start || {};
+    const {
+      formItemProps: endFormItemProps,
+      name: endName,
+      ...endProps
+    } = end || {};
+    return (
+      <Flex gap={12}>
+        <Form.Item name={startName} {...startFormItemProps}>
+          <Input {...startProps} />
+        </Form.Item>
+        <Form.Item name={endName} {...endFormItemProps}>
+          <Input {...endProps} />
+        </Form.Item>
+      </Flex>
+    );
+  },
 };

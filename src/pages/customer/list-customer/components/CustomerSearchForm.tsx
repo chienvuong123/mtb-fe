@@ -11,9 +11,12 @@ import {
 } from '@hooks/queries';
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import { useProfile } from '@stores';
-import { handleResetFields } from '@utils/formHelper';
+import { getValueFromEvent, handleResetFields } from '@utils/formHelper';
 import { parseCustomerObj } from '../customerHelper';
 import type { TCustomerSearchForm } from '../customer.type';
+
+const handleGetValueFromEvent = (e: React.ChangeEvent<HTMLInputElement>) =>
+  getValueFromEvent(e?.target?.value ?? e, BLOCKING_NUMBER_PARTERN);
 
 const CustomerSearchForm: FC<
   CBaseSearch<CustomerDTO, TCustomerSearchForm> & {
@@ -37,7 +40,9 @@ const CustomerSearchForm: FC<
     false,
     isAdmin || isCampaignManager || isSellerManager,
   );
-  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.F88_JOB);
+  const { data: statusOptions } = useCategoryOptionsListQuery(
+    CategoryType.CUSTOMER_APPROACH_STATUS,
+  );
   const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
     campaignId ?? '',
     false,
@@ -113,20 +118,37 @@ const CustomerSearchForm: FC<
         },
         {
           type: INPUT_TYPE.SELECT,
-          label: 'Nghề nghiệp',
-          name: 'job',
+          label: 'Trạng thái tiếp cận',
+          name: 'approachResultStatus',
           inputProps: {
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: jobList,
+            options: statusOptions,
           },
         },
         {
-          type: INPUT_TYPE.TEXT,
+          type: INPUT_TYPE.NUMBER_RANGE,
           label: 'Số lần gọi',
           name: 'numberOfCalls',
-          inputProps: { placeholder: 'Nhập...', maxLength: 2 },
+          inputProps: {
+            start: {
+              placeholder: 'Từ...',
+              maxLength: 10,
+              formItemProps: {
+                name: 'startNumberOfCalls',
+                getValueFromEvent: handleGetValueFromEvent,
+              },
+            },
+            end: {
+              placeholder: 'Đến...',
+              maxLength: 10,
+              formItemProps: {
+                name: 'endNumberOfCalls',
+                getValueFromEvent: handleGetValueFromEvent,
+              },
+            },
+          },
           blockingPattern: BLOCKING_NUMBER_PARTERN,
         },
         {
@@ -150,7 +172,7 @@ const CustomerSearchForm: FC<
       categoryList,
       campaignList,
       customerSegmentList,
-      jobList,
+      statusOptions,
       groupCustomerList,
       form,
       isSeller,
