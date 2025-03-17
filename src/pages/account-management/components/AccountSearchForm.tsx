@@ -32,19 +32,19 @@ const AccountSearchForm: FC<CBaseSearch<UserDTO>> = ({
         type: INPUT_TYPE.TEXT,
         label: 'Mã nhân viên',
         name: 'employeeCode',
-        inputProps: { placeholder: 'Nhập...' },
+        inputProps: { placeholder: 'Nhập...', maxLength: 20 },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Email',
         name: 'email',
-        inputProps: { placeholder: 'Nhập...' },
+        inputProps: { placeholder: 'Nhập...', maxLength: 50 },
       },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Họ và tên',
         name: 'fullName',
-        inputProps: { placeholder: 'Nhập...' },
+        inputProps: { placeholder: 'Nhập...', maxLength: 100 },
       },
       {
         type: INPUT_TYPE.SELECT,

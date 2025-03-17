@@ -171,6 +171,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               filterOption: true,
               placeholder: 'Chọn...',
             },
+            rules: [{ required: true }],
           },
           {
             type: INPUT_TYPE.TEXT,
