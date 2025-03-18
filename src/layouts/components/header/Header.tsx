@@ -54,7 +54,7 @@ const Header = () => {
     {
       label: 'Profile',
       key: 'profile',
-      onClick: () => navigate(ROUTES.ACCOUNT_PROFILE),
+      onClick: () => navigate(ROUTES.PROFILE),
     },
     {
       label: 'Đổi mật khẩu',
