@@ -2,6 +2,7 @@ import { ACCOUNT_MANAGEMENT_KEY } from '@apis';
 import { OBaseForm } from '@components/organisms';
 import { ERole, STATUS_OPTIONS } from '@constants/masterData';
 import {
+  ACCEPTING_ALPHA_NUMERIC_COMMA_PATTERN,
   BLOCKING_NUMBER_PARTERN,
   BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
 } from '@constants/regex';
@@ -44,11 +45,17 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
             type: INPUT_TYPE.TEXT,
             label: 'Mã nhân viên',
             name: 'employeeCode',
-            rules: [{ required: true }],
             inputProps: {
               maxLength: 20,
               placeholder: 'Nhập...',
             },
+            rules: [
+              { required: true },
+              {
+                pattern: ACCEPTING_ALPHA_NUMERIC_COMMA_PATTERN,
+                message: 'Không được nhập ký tự đặc biệt',
+              },
+            ],
           },
           {
             type: INPUT_TYPE.TEXT,

@@ -24,6 +24,8 @@ import { validateInsertCategory } from '@pages/category/utils';
 import { useNotification } from '@libs/antd';
 import { createNavigatePath } from '@routers/utils';
 import { ROUTES } from '@routers/path';
+import { formatDate } from '@utils/dateHelper';
+import { useProfile } from '@stores';
 import SellerInsertForm from './components/SellerInsertForm';
 import { SellerSearchForm, SellerTable } from './components';
 
@@ -42,6 +44,7 @@ const SellerPage: FC = () => {
 
   const navigate = useNavigate();
   const notify = useNotification();
+  const { user } = useProfile();
 
   const { data: sellerRes, isLoading } = useSellerSearchQuery({
     page: {
@@ -80,6 +83,10 @@ const SellerPage: FC = () => {
       ...prevValues,
       role: ERole.SELLER,
       status: EStatus.ACTIVE,
+      createdBy: user?.username,
+      updatedBy: user?.username,
+      createdDate: formatDate(),
+      updatedDate: formatDate(),
     }));
   };
 
