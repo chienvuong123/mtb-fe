@@ -347,5 +347,8 @@ const permissionMatrix1: PermissionMatrix = {
   },
 };
 
+const mockMileStone1 = localStorage.getItem('mileStone1');
 export const permissionMatrix =
-  IS_MILESTONE1 === 'true' ? permissionMatrix1 : permissionMatrix2;
+  IS_MILESTONE1 === 'true' || mockMileStone1 === 'true'
+    ? permissionMatrix1
+    : permissionMatrix2;
