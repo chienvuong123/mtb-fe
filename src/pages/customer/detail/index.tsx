@@ -8,6 +8,8 @@ import './index.scss';
 
 const CustomerDetailPage: FC = () => {
   const [calledIds, setCalledIds] = useState<string[]>([]);
+  const [activeId, setActiveId] = useState<string>();
+
   return (
     <div className="pt-32">
       <Title level={3} className="mb-16">
@@ -20,11 +22,13 @@ const CustomerDetailPage: FC = () => {
       <CustomerApproachTable
         calledIds={calledIds}
         setCalledIds={setCalledIds}
+        activeId={activeId}
+        setActiveId={setActiveId}
       />
       <Title level={3} className="mt-32 mb-16">
         Thông tin tiếp cận
       </Title>
-      <CustomerApproachPreview calledIds={calledIds} />
+      <CustomerApproachPreview calledIds={calledIds} activeId={activeId} />
     </div>
   );
 };

@@ -28,6 +28,7 @@ const OTable = <T extends object>({
   confirmProps,
   isCheckboxHidden,
   rowKey,
+  rowSelection,
   tableRowKey,
   onEdit,
   onDeleteRow,
@@ -150,13 +151,14 @@ const OTable = <T extends object>({
     });
   };
 
-  const rowSelection: TableRowSelection<T> = {
+  const transformRowSelection: TableRowSelection<T> = {
     selectedRowKeys,
     columnWidth: 73,
     onSelect: onSelectChange,
     getCheckboxProps: () => ({
       className: 'table-form-checkbox px-15',
     }),
+    ...rowSelection,
   };
 
   const handleCloseModal = () => {
@@ -188,7 +190,7 @@ const OTable = <T extends object>({
         columns={transformColumns}
         rowClassName="editable-row"
         pagination={false}
-        rowSelection={!isCheckboxHidden ? rowSelection : undefined}
+        rowSelection={!isCheckboxHidden ? transformRowSelection : undefined}
         scroll={{ x: 'max-content' }}
         locale={{ emptyText: 'Không có dữ liệu' }}
         rowKey={tableRowKey || ((record) => record[rowKey] as Key)}

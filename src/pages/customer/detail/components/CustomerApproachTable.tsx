@@ -14,7 +14,9 @@ export type TApproachScriptRecord = Partial<ApproachScriptDTO>;
 const CustomerApproachTable: FC<{
   calledIds: string[];
   setCalledIds: React.Dispatch<React.SetStateAction<string[]>>;
-}> = ({ calledIds, setCalledIds }) => {
+  activeId?: string;
+  setActiveId?: React.Dispatch<React.SetStateAction<string | undefined>>;
+}> = ({ calledIds, activeId, setActiveId, setCalledIds }) => {
   const { id: customerId } = useParams();
 
   const { data: approachScriptData } =
@@ -86,8 +88,13 @@ const CustomerApproachTable: FC<{
         .filter((i) => i.approachResult?.called)
         .map((i) => i.id);
       setCalledIds(ids);
+
+      const findActiveId = approachScriptData.filter(
+        (i) => !i.approachResult?.called,
+      )?.[0]?.id;
+      setActiveId?.(findActiveId);
     }
-  }, [approachScriptData, setCalledIds]);
+  }, [approachScriptData, setCalledIds, setActiveId]);
 
   return (
     <OTable<TApproachScriptRecord>
@@ -95,6 +102,12 @@ const CustomerApproachTable: FC<{
       data={approachScriptData || []}
       selectedRowKeys={calledIds}
       setSelectedRowKeys={setCalledIds}
+      rowSelection={{
+        getCheckboxProps: (record) => ({
+          className: 'table-form-checkbox px-15',
+          disabled: record.id ? activeId !== record.id : false,
+        }),
+      }}
       hideActions
       rowKey="id"
     />

@@ -18,6 +18,7 @@ import { Col, Flex, Form, Row, type FormInstance } from 'antd';
 import { type FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@routers/path';
+import { handleResetFields } from '@utils/formHelper';
 import { transformDataToSubmit } from '../utils';
 
 interface IScenarioScriptFooterProps {
@@ -26,6 +27,7 @@ interface IScenarioScriptFooterProps {
   initialValues?: Record<string, ApproachFormData>;
   isPreview?: boolean;
   calledIds: string[];
+  disabled?: boolean;
 }
 
 const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
@@ -34,6 +36,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   initialValues,
   isPreview = false,
   calledIds,
+  disabled,
 }) => {
   const { id: customerId } = useParams();
   const { data: approachResultOptions } = useCategoryOptionsListQuery(
@@ -122,15 +125,14 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
     });
   };
 
-  const handleResetFields = (fields: string[][]) => {
-    fields.forEach((field) => {
-      form.setFieldValue(field, undefined);
-    });
-  };
-
   return (
     <div className="mt-24">
-      <Form form={form} layout="vertical" className="dis-block h-full">
+      <Form
+        form={form}
+        layout="vertical"
+        className="dis-block h-full"
+        disabled={disabled}
+      >
         <Row gutter={[24, 24]} justify="space-between">
           <Col span={8}>
             <Form.Item
@@ -142,10 +144,13 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
                 options={statusOptions}
                 placeholder="Chọn"
                 onSelect={() =>
-                  handleResetFields([
-                    [approachId, 'result'],
-                    [approachId, 'resultDetail'],
-                  ])
+                  handleResetFields(
+                    [
+                      [approachId, 'result'],
+                      [approachId, 'resultDetail'],
+                    ],
+                    form,
+                  )
                 }
               />
             </Form.Item>
@@ -160,7 +165,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
                 options={approachResultOptions}
                 placeholder="Chọn"
                 onSelect={() =>
-                  handleResetFields([[approachId, 'resultDetail']])
+                  handleResetFields([[approachId, 'resultDetail']], form)
                 }
               />
             </Form.Item>
@@ -182,7 +187,6 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
                   formatter: ({ count, maxLength }) =>
                     `(${count}/${maxLength})`,
                 }}
-                autoSize={{ minRows: 3, maxRows: 1 }}
               />
             </Form.Item>
           </Col>
