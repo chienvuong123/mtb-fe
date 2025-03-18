@@ -33,12 +33,12 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
     }
   }, [startDate, form]);
 
-  const { data: mainProductOptions } = useCategoryOptionsListQuery(
-    CategoryType.PRODUCT,
-  );
-  const { data: subProductOptions } = useCategoryOptionsListQuery(
-    CategoryType.SUB_PRODUCT,
-  );
+  const { data: mainProductOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.PRODUCT,
+  });
+  const { data: subProductOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.SUB_PRODUCT,
+  });
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [

@@ -42,13 +42,13 @@ const CustomerSearchForm: FC<
     true,
   );
   const { data: customerSegmentList } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_SEGMENT,
+    { categoryTypeCode: CategoryType.CUSTOMER_SEGMENT },
     false,
     isAdmin || isCampaignManager || isSellerManager,
   );
-  const { data: statusOptions } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_APPROACH_STATUS,
-  );
+  const { data: statusOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.CUSTOMER_APPROACH_STATUS,
+  });
   const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
     campaignId ?? '',
     false,

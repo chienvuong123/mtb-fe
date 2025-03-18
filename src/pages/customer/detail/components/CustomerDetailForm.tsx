@@ -18,9 +18,9 @@ const CustomerDetailForm: FC = () => {
   });
   const customerData = customerQueryData?.data;
 
-  const { data: hobbyOptions } = useCategoryOptionsListQuery(
-    CategoryType.HOBBY,
-  );
+  const { data: hobbyOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.HOBBY,
+  });
 
   const items = useMemo(() => {
     const configItems: TFormItem[] = [

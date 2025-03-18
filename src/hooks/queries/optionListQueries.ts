@@ -11,13 +11,17 @@ import { useQuery } from '@tanstack/react-query';
 import { transformToF88Options, transformToOptions } from '@utils/objectHelper';
 
 export const useCategoryOptionsListQuery = (
-  categoryTypeCode: CategoryType,
+  {
+    categoryTypeCode,
+    parentId,
+  }: { categoryTypeCode: CategoryType; parentId?: string },
   combine?: boolean,
   enabled?: boolean,
 ) => {
   return useQuery({
-    queryKey: ['categoryList', categoryTypeCode],
-    queryFn: () => categoryApi.getCategoryOptionsList(categoryTypeCode),
+    queryKey: ['categoryList', categoryTypeCode, parentId],
+    queryFn: () =>
+      categoryApi.getCategoryOptionsList(categoryTypeCode, parentId),
     select: ({ data }) => transformToOptions(data, combine),
     enabled,
   });

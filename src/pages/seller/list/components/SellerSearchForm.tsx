@@ -25,15 +25,15 @@ const SellerSearchForm: FC<CBaseSearch<SellerSearchRequest>> = ({
 
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
-  const { data: departmentList } = useCategoryOptionsListQuery(
-    CategoryType.DEPARTMENT,
-  );
-  const { data: positionList } = useCategoryOptionsListQuery(
-    CategoryType.POSITION,
-  );
-  const { data: branchList } = useCategoryOptionsListQuery(
-    CategoryType.BRANCHES,
-  );
+  const { data: departmentList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.DEPARTMENT,
+  });
+  const { data: positionList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.POSITION,
+  });
+  const { data: branchList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.BRANCHES,
+  });
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [

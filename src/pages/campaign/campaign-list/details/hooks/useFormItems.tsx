@@ -17,12 +17,12 @@ const useCampaignFormItems = ({
   onShowForm,
 }: ICampaignFormItemsProps): TFormItem[] => {
   const { data: categoryList } = useQueryCategoryList(true);
-  const { data: branchesOptions } = useCategoryOptionsListQuery(
-    CategoryType.BRANCHES,
-  );
-  const { data: deploymentOptions } = useCategoryOptionsListQuery(
-    CategoryType.DEPLOYMENT_METHOD,
-  );
+  const { data: branchesOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.BRANCHES,
+  });
+  const { data: deploymentOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.DEPLOYMENT_METHOD,
+  });
 
   return [
     {

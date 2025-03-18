@@ -20,21 +20,21 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
 }) => {
   const [form] = useForm();
 
-  const { data: departmentList } = useCategoryOptionsListQuery(
-    CategoryType.DEPARTMENT,
-  );
+  const { data: departmentList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.DEPARTMENT,
+  });
 
-  const { data: positionList } = useCategoryOptionsListQuery(
-    CategoryType.POSITION,
-  );
+  const { data: positionList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.POSITION,
+  });
 
-  const { data: branchList } = useCategoryOptionsListQuery(
-    CategoryType.BRANCHES,
-  );
+  const { data: branchList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.BRANCHES,
+  });
 
-  const { data: expertiseList } = useCategoryOptionsListQuery(
-    CategoryType.EXPERTISE,
-  );
+  const { data: expertiseList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.EXPERTISE,
+  });
 
   const items = useMemo(
     () =>

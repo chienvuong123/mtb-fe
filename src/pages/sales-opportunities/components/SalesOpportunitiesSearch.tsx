@@ -25,9 +25,9 @@ const SalesOpportunitiesSearch: React.FC<
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: campaignList } = useQueryCampaignList({ categoryId }, false);
 
-  const { data: customerApproachStatus } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_APPROACH_STATUS,
-  );
+  const { data: customerApproachStatus } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.CUSTOMER_APPROACH_STATUS,
+  });
 
   const items = useMemo(() => {
     const formItems: TFormItem[] = [

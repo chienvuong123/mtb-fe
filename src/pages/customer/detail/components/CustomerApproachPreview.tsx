@@ -26,9 +26,9 @@ const CustomerApproachPreview = ({
 
   const { data: approachScriptData } =
     useApproachScriptViewByCustomerQuery(customerId);
-  const { data: statusOptions } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_APPROACH_STATUS,
-  );
+  const { data: statusOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.CUSTOMER_APPROACH_STATUS,
+  });
 
   const isFistInitFlag = useRef(true);
 

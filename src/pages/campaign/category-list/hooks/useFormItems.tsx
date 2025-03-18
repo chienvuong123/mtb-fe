@@ -25,18 +25,18 @@ const useCategoryFormItems = ({
     }
   }, [startDate, form]);
 
-  const { data: mainProductOptions } = useCategoryOptionsListQuery(
-    CategoryType.PRODUCT,
-  );
-  const { data: customerOptions } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER,
-  );
-  const { data: subProductOptions } = useCategoryOptionsListQuery(
-    CategoryType.SUB_PRODUCT,
-  );
-  const { data: deploymentOptions } = useCategoryOptionsListQuery(
-    CategoryType.DEPLOYMENT_METHOD,
-  );
+  const { data: mainProductOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.PRODUCT,
+  });
+  const { data: customerOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.CUSTOMER,
+  });
+  const { data: subProductOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.SUB_PRODUCT,
+  });
+  const { data: deploymentOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.DEPLOYMENT_METHOD,
+  });
 
   return [
     {
