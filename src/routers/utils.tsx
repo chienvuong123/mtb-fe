@@ -35,7 +35,7 @@ export const buildPath = (base: string, segments: string[] = []): string => {
  * @returns The object containing the common routes
  */
 export const createCommonRoutes = (basePath: string) => {
-  const { LIST, CREATE, EDIT, DETAIL } = PATH_SEGMENT;
+  const { LIST, CREATE, EDIT, DETAIL, DELETE } = PATH_SEGMENT;
 
   return {
     ROOT: buildPath(basePath),
@@ -43,5 +43,6 @@ export const createCommonRoutes = (basePath: string) => {
     CREATE: buildPath(basePath, [CREATE]),
     EDIT: buildPath(basePath, [EDIT, ':id']),
     DETAIL: buildPath(basePath, [DETAIL, ':id']),
+    DELETE: buildPath(basePath, [DELETE]),
   };
 };
