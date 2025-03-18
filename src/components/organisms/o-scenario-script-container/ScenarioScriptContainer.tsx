@@ -1,7 +1,7 @@
 import { ArrowDown01RoundIcon } from '@assets/icons';
 import { type ApproachFormData, type ApproachScriptDTO } from '@dtos';
 import { Divider, Flex, Form, Image, theme, Typography } from 'antd';
-import { useMemo, useRef, useState, type FC } from 'react';
+import { useEffect, useMemo, useRef, useState, type FC } from 'react';
 import type { FormInstance } from 'antd/lib';
 
 import { AButton, ACollapse } from '@components/atoms';
@@ -27,6 +27,7 @@ const ScenarioScriptContainer: FC<{
   isFirstApproach?: boolean;
   isPreview?: boolean;
   calledIds?: string[];
+  activeId?: string;
 }> = ({
   form,
   approach,
@@ -34,10 +35,15 @@ const ScenarioScriptContainer: FC<{
   isFirstApproach = true,
   isPreview = false,
   calledIds,
+  activeId,
 }) => {
   const { token } = theme.useToken();
   const ref = useRef<HTMLDivElement>(null);
   const [activeKeys, setActiveKeys] = useState<string[]>();
+
+  useEffect(() => {
+    setActiveKeys([]);
+  }, [approach?.id]);
 
   const attributeItems = useMemo(
     () =>
@@ -60,7 +66,7 @@ const ScenarioScriptContainer: FC<{
   }
 
   return (
-    <Form form={form}>
+    <Form form={form} disabled={approach?.id !== activeId}>
       <div ref={ref}>
         <Flex gap={14} align="center">
           <Typography.Title level={4} className="mt-24 mb-16">
@@ -75,6 +81,7 @@ const ScenarioScriptContainer: FC<{
                   pre?.length ? [] : attributeItems?.map((i) => i.key),
                 )
               }
+              disabled={false}
             />
           )}
         </Flex>
@@ -103,6 +110,7 @@ const ScenarioScriptContainer: FC<{
             approachId={approach?.id}
             initialValues={initialValues}
             calledIds={calledIds ?? []}
+            disabled={approach?.id !== activeId}
           />
         )}
       </div>

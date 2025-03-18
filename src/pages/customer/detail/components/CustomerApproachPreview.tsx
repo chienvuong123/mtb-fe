@@ -10,7 +10,13 @@ import { ScenarioScriptContainer } from '@components/organisms';
 import CollectCustomerInformationModal from './CollectCustomerInformationModal';
 import { getInitialValues } from '../utils';
 
-const CustomerApproachPreview = ({ calledIds }: { calledIds: string[] }) => {
+const CustomerApproachPreview = ({
+  calledIds,
+  activeId,
+}: {
+  calledIds: string[];
+  activeId?: string;
+}) => {
   const { id: customerId } = useParams();
 
   const [openModal, setOpenModal] = useState(false);
@@ -39,13 +45,16 @@ const CustomerApproachPreview = ({ calledIds }: { calledIds: string[] }) => {
     if (approachScriptData && statusOptions?.length) {
       const initValue = getInitialValues(approachScriptData, statusOptions);
       setInitialValues(initValue);
-      if (isFistInitFlag.current) {
-        setApproach(approachScriptData[0]);
+      if (isFistInitFlag.current && activeId) {
+        setApproach(
+          approachScriptData.find((i) => i.id === activeId) ??
+            approachScriptData[0],
+        );
         form.setFieldsValue(initValue);
         isFistInitFlag.current = false;
       }
     }
-  }, [approachScriptData, form, statusOptions]);
+  }, [approachScriptData, form, statusOptions, activeId]);
 
   if (!approachScriptData || !approach) return null;
 
@@ -65,7 +74,7 @@ const CustomerApproachPreview = ({ calledIds }: { calledIds: string[] }) => {
               );
             }}
           />
-          <Form form={form}>
+          <Form form={form} disabled={activeId !== approach?.id}>
             <Flex gap={24}>
               <Flex vertical gap={8}>
                 <Typography.Text>Đánh giá chiến dịch</Typography.Text>
@@ -109,6 +118,7 @@ const CustomerApproachPreview = ({ calledIds }: { calledIds: string[] }) => {
               initialValues={initialValues}
               isFirstApproach={isFirstApproach}
               calledIds={calledIds}
+              activeId={activeId}
             />
           )}
         </div>
