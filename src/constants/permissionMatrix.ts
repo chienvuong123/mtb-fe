@@ -256,6 +256,10 @@ const permissionMatrix1: PermissionMatrix = {
   },
 
   // Campaign
+  [ROUTES.CAMPAIGN.ROOT]: {
+    [ERole.ADMIN]: true,
+    [ERole.SELLER]: true,
+  },
   [ROUTES.CAMPAIGN.LIST]: {
     [ERole.ADMIN]: true,
     [ERole.SELLER]: true,
