@@ -2,6 +2,7 @@ import { OSearchBaseForm } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import { useQueryCategoryList } from '@hooks/queries';
+import { ROUTES } from '@routers/path';
 import { useProfile } from '@stores';
 import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { handleResetFields } from '@utils/formHelper';
@@ -19,7 +20,7 @@ const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
   const [form] = useForm();
   const startDate = useWatch('startDate', form);
   const endDate = useWatch('endDate', form);
-  const { isAdmin, isCampaignManager, isSeller } = useProfile();
+  const { isSeller, hasPermission } = useProfile();
 
   const { data: categoryList } = useQueryCategoryList(true);
 
@@ -113,7 +114,7 @@ const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
       form={form}
       onSearch={onSearch}
       onClearAll={onClearAll}
-      onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
+      onCreate={hasPermission(ROUTES.CAMPAIGN.CREATE) ? onCreate : undefined}
     />
   );
 };

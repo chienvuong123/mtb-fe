@@ -1,6 +1,7 @@
 import { OTable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { EStatusCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
+import { ROUTES } from '@routers/path';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import type { ColumnType } from 'antd/lib/table';
@@ -92,7 +93,7 @@ const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   const deleteRecord = (key: Key) => {
     onDelete?.(key as string);
@@ -104,8 +105,10 @@ const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
-      onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
+      onDeleteRow={
+        hasPermission(ROUTES.CAMPAIGN.DELETE) ? deleteRecord : undefined
+      }
+      onEdit={hasPermission(ROUTES.CAMPAIGN.DELETE) ? onEdit : undefined}
       onList={(id) => onList?.(id as string)}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}

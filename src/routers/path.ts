@@ -20,6 +20,7 @@ export const PATH_SEGMENT = {
   DETAIL: 'detail',
   CREATE: 'create',
   EDIT: 'edit',
+  DELETE: 'delete',
   GROUP: 'group',
   GROUP_CREATE: 'group-create',
   // Seller
