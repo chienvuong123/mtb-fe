@@ -4,6 +4,8 @@ stages:
     - notify
 build:
     stage: build
+    environment:
+        name: sit
     script:
         - export PATH=/opt/instantclient_21_4:/home/gitlab-runner/.nvm/versions/node/v22.13.1/bin:/opt/maven/bin:/opt/jdk/jdk-21.0.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
         - echo "Start build!"
