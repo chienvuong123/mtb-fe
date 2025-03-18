@@ -14,6 +14,9 @@ export const SELLER_KEY = 'seller';
 export const {
   useSearchQuery: useSellerSearchQuery,
   useViewQuery: useSellerViewQuery,
+  useAddMutation: useSellerAddMutation,
+  useEditMutation: useSellerEditMutation,
+  useRemoveMutation: useSellerRemoveMutation,
 } = createBaseQueryHooks<
   SellerDTO,
   CategorySearchRequest,

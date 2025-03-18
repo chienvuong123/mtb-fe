@@ -1,15 +1,30 @@
-import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import { type SellerSearchRequest } from '@dtos';
-import { useEffect, type FC } from 'react';
+import { ERole, EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
+import {
+  type BaseResponse,
+  type CreateSellerDTO,
+  type SellerDTO,
+  type SellerSearchRequest,
+  type UserDTO,
+} from '@dtos';
+import { useEffect, useState, type FC } from 'react';
 
 import type { IMPagination, TPagination } from '@components/molecules';
 import useUrlParams from '@hooks/useUrlParams';
 import { filterObject } from '@utils/objectHelper';
-import { OTitleBlock } from '@components/organisms';
+import { ODrawer, OTitleBlock } from '@components/organisms';
 import { useNavigate } from 'react-router-dom';
-import { useSellerSearchQuery } from '@hooks/queries';
-import { ROUTES, createNavigatePath } from '@routers/path';
-import type { TBaseTableSort } from '@types';
+import {
+  useSellerAddMutation,
+  useSellerEditMutation,
+  useSellerRemoveMutation,
+  useSellerSearchQuery,
+} from '@hooks/queries';
+import type { TBaseTableSort, TFormType } from '@types';
+import { validateInsertCategory } from '@pages/category/utils';
+import { useNotification } from '@libs/antd';
+import { createNavigatePath } from '@routers/utils';
+import { ROUTES } from '@routers/path';
+import SellerInsertForm from './components/SellerInsertForm';
 import { SellerSearchForm, SellerTable } from './components';
 
 const SellerPage: FC = () => {
@@ -21,8 +36,12 @@ const SellerPage: FC = () => {
     filters,
     setFilters,
   } = useUrlParams<Partial<SellerSearchRequest>>();
+  const [drawerMode, setDrawerMode] = useState<TFormType>();
+  const [initialValuesForm, setInitialValuesForm] =
+    useState<Partial<UserDTO> | null>(null);
 
   const navigate = useNavigate();
+  const notify = useNotification();
 
   const { data: sellerRes, isLoading } = useSellerSearchQuery({
     page: {
@@ -33,12 +52,54 @@ const SellerPage: FC = () => {
     ...filterObject(filters),
   });
 
-  const handleCreate = () => {
-    // navigate here
+  const handleCloseForm = () => {
+    setDrawerMode(undefined);
+    setInitialValuesForm(null);
   };
 
-  const handleEdit = () => {
-    // navigate here
+  const handleInvalidate = (data?: BaseResponse<boolean>, message?: string) => {
+    if (data)
+      validateInsertCategory(data, notify, () => {
+        notify({
+          message,
+          type: 'success',
+        });
+        handleCloseForm();
+        setInitialValuesForm(null);
+      });
+  };
+
+  const { mutate: mutationCreateSeller } = useSellerAddMutation();
+  const { mutate: mutationEditSeller } = useSellerEditMutation();
+
+  const { mutate: mutationRemoveSeller } = useSellerRemoveMutation();
+
+  const handleCreate = () => {
+    setDrawerMode('add');
+    setInitialValuesForm((prevValues) => ({
+      ...prevValues,
+      role: ERole.SELLER,
+      status: EStatus.ACTIVE,
+    }));
+  };
+
+  const handleEdit = (record: Partial<SellerDTO>) => {
+    setDrawerMode('edit');
+    const userDTO: Partial<UserDTO> = {
+      employeeCode: record.user?.employeeCode,
+      username: record.user?.username,
+      fullName: record.name,
+      email: record.user?.email,
+      phoneNum: record.user?.phoneNum,
+      status: record.user?.status,
+      role: record.user?.role,
+      position: record.position?.id,
+      branch: record.branch?.id,
+      department: record.department?.id,
+      expertise: record.user?.expertise,
+      id: record.id,
+    };
+    setInitialValuesForm(userDTO);
   };
 
   const handleSearch = (data: SellerSearchRequest) => {
@@ -72,6 +133,49 @@ const SellerPage: FC = () => {
     setFilters({});
   };
 
+  const handleSubmitInsert = ({
+    employeeCode,
+    username,
+    fullName,
+    email,
+    status,
+    role,
+    position,
+    branch,
+    department,
+    phoneNum,
+    expertise,
+    id,
+  }: Partial<UserDTO>) => {
+    const data: Partial<CreateSellerDTO> = {
+      employeeCode,
+      username,
+      fullName,
+      email,
+      status: status as EStatus,
+      role,
+      position,
+      branch,
+      department,
+      phoneNum,
+      expertise,
+      id,
+    };
+
+    // create new seller
+    if (drawerMode === 'add') {
+      mutationCreateSeller(data as Partial<SellerDTO>, {
+        onSuccess: (resData) => handleInvalidate(resData, 'Tạo mới thành công'),
+      });
+    } else {
+      // update seller
+      mutationEditSeller(data as Partial<SellerDTO>, {
+        onSuccess: (resData) =>
+          handleInvalidate(resData, 'Cập nhật thành công'),
+      });
+    }
+  };
+
   const handleView = (id: string) => {
     navigate(createNavigatePath(ROUTES.SELLER.DETAIL, { id }));
   };
@@ -95,6 +199,16 @@ const SellerPage: FC = () => {
       }));
     }
   }, [sellerRes, setPagination, current, isLoading]);
+
+  const handleDelete = (id: string) => {
+    mutationRemoveSeller(
+      { id },
+      {
+        onSuccess: (resData) =>
+          handleInvalidate(resData, 'Xóa Seller thành công'),
+      },
+    );
+  };
 
   return (
     <div className="pt-32 category-product">
@@ -123,7 +237,24 @@ const SellerPage: FC = () => {
         onEdit={handleEdit}
         onView={handleView}
         onSort={handleSort}
+        onDelete={handleDelete}
       />
+      <ODrawer
+        usePrefixTitle
+        title="Seller"
+        mode={drawerMode}
+        onClose={handleCloseForm}
+        open={!!drawerMode}
+        width={1025}
+      >
+        <SellerInsertForm
+          key={drawerMode ?? 'view'}
+          mode={drawerMode ?? 'view'}
+          initialValues={initialValuesForm as UserDTO}
+          onClose={handleCloseForm}
+          onSubmit={handleSubmitInsert}
+        />
+      </ODrawer>
     </div>
   );
 };

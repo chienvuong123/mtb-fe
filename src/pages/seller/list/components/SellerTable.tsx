@@ -2,7 +2,7 @@ import { OTable, type TColumnType } from '@components/organisms';
 import type { SellerDTO } from '@dtos';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
-import { useState, type FC } from 'react';
+import { useState, type FC, type Key } from 'react';
 
 const columns: TColumnType<SellerDTO>[] = [
   {
@@ -79,8 +79,12 @@ const SellerTable: FC<CBaseTable<SellerDTO>> = ({
   onEdit,
   onView,
   onSort,
+  onDelete,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  const deleteRecord = (key: Key) => {
+    onDelete?.(key as string);
+  };
   const { isAdmin, isCampaignManager, isSellerManager } = useProfile();
 
   const activeAction = isAdmin || isCampaignManager || isSellerManager;
@@ -93,6 +97,7 @@ const SellerTable: FC<CBaseTable<SellerDTO>> = ({
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
       onEdit={activeAction ? onEdit : undefined}
+      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}
