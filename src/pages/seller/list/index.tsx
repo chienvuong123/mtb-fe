@@ -8,7 +8,7 @@ import { filterObject } from '@utils/objectHelper';
 import { OTitleBlock } from '@components/organisms';
 import { useNavigate } from 'react-router-dom';
 import { useSellerSearchQuery } from '@hooks/queries';
-import { SELLER } from '@routers/path';
+import { ROUTES, createNavigatePath } from '@routers/path';
 import type { TBaseTableSort } from '@types';
 import { SellerSearchForm, SellerTable } from './components';
 
@@ -73,7 +73,7 @@ const SellerPage: FC = () => {
   };
 
   const handleView = (id: string) => {
-    navigate(`${SELLER.ROOT}/${id}`);
+    navigate(createNavigatePath(ROUTES.SELLER.DETAIL, { id }));
   };
 
   const handleSort = ({ direction, field, unicodeSort }: TBaseTableSort) => {

@@ -5,7 +5,7 @@ import {
   useVerifyOtpForgotPasswor,
 } from '@hooks/queries';
 import { useFormItems } from '@hooks';
-import { CONFIRM_PASSWORD, FORGOT_PASSWORD } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { getOTPCheck, saveOTPCheck } from '@utils/otpHelper';
 import { useCallback, useMemo, useState } from 'react';
@@ -85,7 +85,7 @@ const OTP = () => {
             ...valueValidOtp,
             otp: values.otp,
           });
-          navigate(CONFIRM_PASSWORD);
+          navigate(ROUTES.CONFIRM_PASSWORD);
           return;
         }
         if (res.errorCode === 'AUTH0009') {
@@ -128,7 +128,10 @@ const OTP = () => {
           }
           textButton="Tiếp tục"
           textLink={
-            <Link to={FORGOT_PASSWORD} className="dis-flex ai-center gap-6">
+            <Link
+              to={ROUTES.FORGOT_PASSWORD}
+              className="dis-flex ai-center gap-6"
+            >
               <ArrowLeft01Icon className="w-16 h-16" />
               Quay lại
             </Link>

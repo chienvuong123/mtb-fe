@@ -14,7 +14,7 @@ import {
 } from '@hooks/queries/manageCategoryQueries';
 import type { TCampaignSearchForm } from 'src/dtos/campaign';
 import { useNavigate } from 'react-router-dom';
-import { MANAGER_CAMPAIGN } from '@routers/path';
+import { createNavigatePath, ROUTES } from '@routers/path';
 import { Flex, type NotificationArgsProps } from 'antd';
 import { AButton } from '@components/atoms';
 import { useForm } from 'antd/lib/form/Form';
@@ -189,9 +189,7 @@ const ManageCategoryPage: React.FC = () => {
   const handleView = (id: string) => {
     const item = manageCategoryRes?.data.content.find((i) => i.id === id);
     if (item) {
-      navigate(
-        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/${id}`,
-      );
+      navigate(createNavigatePath(ROUTES.CAMPAIGN.CATEGORY.DETAIL, { id }));
     }
   };
 

@@ -8,6 +8,7 @@ import {
 import { validationHelper } from '@utils/validationHelper';
 import { useNotification } from '@libs/antd';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '@routers/path';
 import ScenarioForm from './components/ScenarioForm';
 
 const ScenarioEditPage: FC = () => {
@@ -38,7 +39,7 @@ const ScenarioEditPage: FC = () => {
               message: 'Cập nhật thành công',
               type: 'success',
             });
-            navigate('/scenario/list');
+            navigate(ROUTES.SCENARIO.LIST);
           });
         },
       },

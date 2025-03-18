@@ -34,7 +34,7 @@ import { ODrawer, OTitleBlock } from '@components/organisms';
 import { downloadBase64File } from '@utils/fileHelper';
 import { useProfile } from '@stores';
 import { useNotification } from '@libs/antd';
-import { CUSTOMER } from '@routers/path';
+import { ROUTES, createNavigatePath } from '@routers/path';
 import { useNavigate } from 'react-router-dom';
 import { validationHelper } from '@utils/validationHelper';
 import type { TBaseTableSort } from '@types';
@@ -293,7 +293,7 @@ const ListCustomerPage: FC = () => {
   };
 
   const handleCall = (record: CustomerDTO) => {
-    navigate(`${CUSTOMER.ROOT}/${record.id}`);
+    navigate(createNavigatePath(ROUTES.CUSTOMER.DETAIL, { id: record.id }));
   };
 
   const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {

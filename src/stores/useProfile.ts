@@ -1,7 +1,8 @@
 import { ERole } from '@constants/masterData';
+import { permissionMatrix } from '@constants/permissionMatrix';
 import { useUserInfoQuery } from '@hooks/queries';
-import { LOGIN } from '@routers/path';
-import { useEffect } from 'react';
+import { ROUTES } from '@routers/path';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const useProfile = () => {
@@ -12,9 +13,16 @@ const useProfile = () => {
   const refreshToken = localStorage.getItem('refresh_token') ?? '';
   const userData = userInfo?.data;
 
+  const hasPermission = useCallback(
+    (key: string) => {
+      return permissionMatrix?.[key]?.[userData?.role as ERole] || false;
+    },
+    [userData?.role],
+  );
+
   useEffect(() => {
     if (!token) {
-      navigate(LOGIN);
+      navigate(ROUTES.LOGIN);
     }
   }, [navigate, token]);
 
@@ -27,6 +35,7 @@ const useProfile = () => {
     isCampaignManager: userData?.role === ERole.CAMPAIGN_MANAGER,
     isSellerManager: userData?.role === ERole.SELLER_MANAGER,
     isSeller: userData?.role === ERole.SELLER,
+    hasPermission,
   };
 };
 

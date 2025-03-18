@@ -2,7 +2,7 @@
 import { ArrowLeft01Icon, LogoOpenIcon } from '@assets/icons';
 import { useResetForgotPassword } from '@hooks/queries';
 import { useFormItems } from '@hooks';
-import { LOGIN, OTP } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { getOTPCheck } from '@utils/otpHelper';
 import { Form } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
@@ -89,7 +89,7 @@ const ConfirmPassword = () => {
           setIsReset(true);
           localStorage.removeItem('token');
           localStorage.removeItem('refreshToken');
-          navigate(LOGIN);
+          navigate(ROUTES.LOGIN);
           return;
         }
         setAlert(res.errorDesc);
@@ -103,14 +103,14 @@ const ConfirmPassword = () => {
   });
 
   const handleRedirectOTP = () => {
-    navigate(OTP, { state: { resendOTP: true } });
+    navigate(ROUTES.OTP, { state: { resendOTP: true } });
   };
 
   useEffect(() => {
     if (!isReset) return;
 
     setTimeout(() => {
-      navigate(LOGIN);
+      navigate(ROUTES.LOGIN);
     }, 3000);
   }, [isReset]);
 

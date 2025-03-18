@@ -7,6 +7,7 @@ import type { TFormType } from '@types';
 import { Flex, Form, Modal } from 'antd';
 import { useNotification } from '@libs/antd';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@routers/path';
 import AttributeInsertForm from './AttributeInsertForm';
 import AttributeTable from './AttributeTable';
 import ScenarioInsertForm from './ScenarioInsertForm';
@@ -150,7 +151,7 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
         'Bạn có chắc chắn muốn hủy? Tất cả các thay đổi sẽ không được lưu.',
       okText: 'Đồng ý',
       cancelText: 'Không',
-      onOk: () => navigate('/scenario/list'),
+      onOk: () => navigate(ROUTES.SCENARIO.LIST),
     });
   };
 

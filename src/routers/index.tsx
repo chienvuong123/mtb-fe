@@ -1,376 +1,276 @@
-import { ERole } from '@constants/masterData';
-import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-
+import { ROUTES, PATH_SEGMENT } from '@routers/path';
 import {
-  ACCOUNT,
-  CATEGORY,
-  CHANGE_PASSWORD,
-  CONFIRM_PASSWORD,
-  CUSTOMER,
-  EXAMPLE,
-  FORGOT_PASSWORD,
-  LOGIN,
-  OTP,
-  SALES_OPPORTUNITIES,
-  MANAGER_CAMPAIGN,
-  SCENARIO,
-  EXPRIED_CHANGE_PASSWORD,
-  SELLER,
-  SETTING,
-  ACCOUNT_MANAGEMENT,
-} from './path';
-
-const GuestGuard = React.lazy(() => import('./guards/GuestGuard'));
-const AuthGuard = React.lazy(() => import('./guards/AuthGuard'));
-const VerifyGuard = React.lazy(() => import('./guards/VerifyGuard'));
-const RoleBasedGuard = React.lazy(() => import('./guards/RoleBasedGuard'));
-
-const allRole = [
-  ERole.ADMIN,
-  ERole.CAMPAIGN_MANAGER,
-  ERole.SELLER_MANAGER,
-  ERole.SELLER,
-];
-
-const createLazyElement = (
-  importFn: () => Promise<{ default: React.ComponentType }>,
-) => {
-  const Component = React.lazy(importFn);
-  return <Component />;
-};
+  // Guards
+  GuestGuard,
+  AuthGuard,
+  VerifyGuard,
+  // Layout
+  LayoutWrapper,
+  // Pages
+  LoginPage,
+  ForgotPasswordPage,
+  ConfirmPasswordPage,
+  ChangePasswordPage,
+  ExpiredLinkPage,
+  OtpPage,
+  AccountProfilePage,
+  AccountManagementPage,
+  SettingControlPage,
+  SalesOpportunitiesPage,
+  NotFoundPage,
+  ServerErrorPage,
+  // Categories
+  CategoryPages,
+  CampaignPages,
+  CustomerPages,
+  ScenarioPages,
+  SellerPages,
+} from './lazy-imports';
 
 const routes = createBrowserRouter(
   [
+    // Auth routes
     {
-      path: LOGIN,
+      path: ROUTES.LOGIN,
       element: (
         <GuestGuard>
-          {createLazyElement(() => import('@pages/authentication/login'))}
+          <LoginPage />
         </GuestGuard>
       ),
     },
     {
-      path: FORGOT_PASSWORD,
-      element: createLazyElement(
-        () => import('@pages/authentication/forgot-password'),
-      ),
+      path: ROUTES.FORGOT_PASSWORD,
+      element: <ForgotPasswordPage />,
     },
     {
-      path: CONFIRM_PASSWORD,
-      element: createLazyElement(
-        () => import('@pages/authentication/confirm-password'),
-      ),
+      path: ROUTES.CONFIRM_PASSWORD,
+      element: <ConfirmPasswordPage />,
     },
     {
-      path: CHANGE_PASSWORD,
-      element: createLazyElement(
-        () => import('@pages/authentication/change-password'),
-      ),
+      path: ROUTES.CHANGE_PASSWORD,
+      element: <ChangePasswordPage />,
     },
     {
-      path: EXPRIED_CHANGE_PASSWORD,
-      element: createLazyElement(
-        () => import('@pages/authentication/expried-link'),
-      ),
+      path: ROUTES.EXPIRED_PASSWORD,
+      element: <ExpiredLinkPage />,
     },
     {
-      path: OTP,
+      path: ROUTES.OTP,
       element: (
         <VerifyGuard>
-          {createLazyElement(() => import('@pages/authentication/otp'))}
+          <OtpPage />
         </VerifyGuard>
       ),
     },
+
+    // Main Authenticated Layout
     {
       path: '',
       element: (
         <AuthGuard>
-          {createLazyElement(() => import('@layouts/LayoutWrapper'))}
+          <LayoutWrapper />
         </AuthGuard>
       ),
       children: [
+        // Category Routes
         {
-          path: EXAMPLE,
-          element: createLazyElement(() => import('../pages/example')),
-        },
-
-        {
-          path: CATEGORY.ROOT,
-          element: (
-            <RoleBasedGuard
-              accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
-            />
-          ),
+          path: ROUTES.CATEGORY.ROOT,
           children: [
             {
-              path: CATEGORY.PRODUCT_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/product-category'),
-              ),
+              path: ROUTES.CATEGORY.PRODUCT,
+              element: <CategoryPages.ProductCategoryPage />,
             },
             {
-              path: CATEGORY.MEDIA_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/media-category'),
-              ),
+              path: ROUTES.CATEGORY.MEDIA,
+              element: <CategoryPages.MediaCategoryPage />,
             },
             {
-              path: CATEGORY.POSITON_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/positon-category'),
-              ),
+              path: ROUTES.CATEGORY.POSITION,
+              element: <CategoryPages.PositionCategoryPage />,
             },
             {
-              path: CATEGORY.BRANCH_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/branch-category'),
-              ),
+              path: ROUTES.CATEGORY.BRANCH,
+              element: <CategoryPages.BranchCategoryPage />,
             },
             {
-              path: CATEGORY.DEPLOYMENT_METHOD_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/deployment-method-category'),
-              ),
+              path: ROUTES.CATEGORY.DEPLOYMENT_METHOD,
+              element: <CategoryPages.DeploymentMethodCategoryPage />,
             },
             {
-              path: CATEGORY.CUSTOMER_SEGMENT_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/customer-segment-category'),
-              ),
+              path: ROUTES.CATEGORY.CUSTOMER_SEGMENT,
+              element: <CategoryPages.CustomerSegmentCategoryPage />,
             },
             {
-              path: CATEGORY.DEPARTMENT_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/department-category'),
-              ),
+              path: ROUTES.CATEGORY.DEPARTMENT,
+              element: <CategoryPages.DepartmentCategoryPage />,
             },
             {
-              path: CATEGORY.EXPERSITE_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/expertise-category'),
-              ),
+              path: ROUTES.CATEGORY.EXPERTISE,
+              element: <CategoryPages.ExpertiseCategoryPage />,
             },
             {
-              path: CATEGORY.UNIT_OF_CALCULATION_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/unit-of-calculation-category'),
-              ),
+              path: ROUTES.CATEGORY.UNIT_CALCULATION,
+              element: <CategoryPages.UnitCalculationCategoryPage />,
             },
             {
-              path: CATEGORY.CUSTOMER_TYPE_CATEGORY,
-              element: createLazyElement(
-                () => import('@pages/category/customer-type-category'),
-              ),
+              path: ROUTES.CATEGORY.CUSTOMER_TYPE,
+              element: <CategoryPages.CustomerTypeCategoryPage />,
             },
             {
-              path: CATEGORY.TYPE_OF_IDENTIFICATION,
-              element: createLazyElement(
-                () =>
-                  import('@pages/category/type-of-identification-catgegory'),
-              ),
+              path: ROUTES.CATEGORY.IDENTIFICATION_TYPE,
+              element: <CategoryPages.IdentificationTypeCategoryPage />,
             },
             {
-              path: CATEGORY.APPROACH,
-              element: createLazyElement(
-                () => import('@pages/category/approach'),
-              ),
+              path: ROUTES.CATEGORY.APPROACH,
+              element: <CategoryPages.ApproachCategoryPage />,
             },
             {
-              path: CATEGORY.MB_GENDER,
-              element: createLazyElement(
-                () => import('@pages/category/gender'),
-              ),
+              path: ROUTES.CATEGORY.GENDER,
+              element: <CategoryPages.GenderCategoryPage />,
             },
           ],
         },
 
+        // Campaign Routes
         {
-          path: SETTING.ROOT,
-          element: <RoleBasedGuard accessibleRoles={allRole} />,
-        },
-
-        {
-          path: MANAGER_CAMPAIGN.ROOT,
-          element: <RoleBasedGuard accessibleRoles={allRole} />,
+          path: ROUTES.CAMPAIGN.ROOT,
           children: [
             {
-              path: MANAGER_CAMPAIGN.CAMPAIGN,
-              element: createLazyElement(
-                () => import('@pages/campaign/campaign-list'),
-              ),
+              path: PATH_SEGMENT.LIST,
+              element: <CampaignPages.CampaignListPage />,
             },
             {
-              path: `${MANAGER_CAMPAIGN.CAMPAIGN_DETAIL}/:id`,
-              element: createLazyElement(
-                () => import('@pages/campaign/campaign-list/details'),
-              ),
+              path: `${PATH_SEGMENT.DETAIL}/:id`,
+              element: <CampaignPages.CampaignDetailsPage />,
             },
             {
-              path: `${MANAGER_CAMPAIGN.CREATE_CAMPAIGN}`,
-              element: createLazyElement(
-                () => import('@pages/campaign/campaign-list/form'),
-              ),
+              path: PATH_SEGMENT.CREATE,
+              element: <CampaignPages.CampaignFormPage />,
             },
             {
-              path: `${MANAGER_CAMPAIGN.EDIT_CAMPAIGN}/:id`,
-              element: createLazyElement(
-                () => import('@pages/campaign/campaign-list/form'),
-              ),
+              path: `${PATH_SEGMENT.EDIT}/:id`,
+              element: <CampaignPages.CampaignFormPage />,
             },
             {
-              path: '',
-              element: (
-                <RoleBasedGuard
-                  accessibleRoles={[
-                    ERole.ADMIN,
-                    ERole.CAMPAIGN_MANAGER,
-                    ERole.SELLER_MANAGER,
-                  ]}
-                />
-              ),
+              path: PATH_SEGMENT.CATEGORY,
               children: [
                 {
-                  path: `${MANAGER_CAMPAIGN.CATEGORY}`,
-                  element: createLazyElement(
-                    () => import('@pages/campaign/category-list'),
-                  ),
+                  path: PATH_SEGMENT.LIST,
+                  element: <CampaignPages.CampaignCategoryListPage />,
+                },
+                {
+                  path: `${PATH_SEGMENT.DETAIL}/:id`,
+                  element: <CampaignPages.CampaignCategoryDetailsPage />,
                 },
               ],
             },
-            {
-              path: `${MANAGER_CAMPAIGN.CATEGORY_DETAIL}/:id`,
-              element: createLazyElement(
-                () => import('@pages/campaign/category-list/details'),
-              ),
-            },
           ],
         },
-        {
-          path: CUSTOMER.ROOT,
-          element: <RoleBasedGuard accessibleRoles={allRole} />,
-          children: [
-            {
-              path: CUSTOMER.CUSTOMER_CAMPAIGN_LIST,
-              element: createLazyElement(
-                () => import('@pages/customer/list-customer'),
-              ),
-            },
 
-            {
-              path: CUSTOMER.CUSTOMER_GROUP_CAMPAIGN_LIST,
-              element: createLazyElement(
-                () => import('@pages/customer/group-customer'),
-              ),
-            },
-            {
-              path: CUSTOMER.DETAIL,
-              element: createLazyElement(
-                () => import('@pages/customer/detail'),
-              ),
-            },
-          ],
-        },
+        // Customer Routes
         {
-          path: SALES_OPPORTUNITIES,
+          path: ROUTES.CUSTOMER.ROOT,
           children: [
             {
-              path: SALES_OPPORTUNITIES,
-              element: createLazyElement(
-                () => import('@pages/sales-opportunities'),
-              ),
+              path: PATH_SEGMENT.LIST,
+              element: <CustomerPages.CustomerListPage />,
+            },
+            {
+              path: PATH_SEGMENT.GROUP,
+              element: <CustomerPages.CustomerGroupPage />,
+            },
+            {
+              path: `${PATH_SEGMENT.DETAIL}/:id`,
+              element: <CustomerPages.CustomerDetailPage />,
             },
           ],
         },
+
+        // Scenario Routes
         {
-          path: SCENARIO.ROOT,
-          element: <RoleBasedGuard accessibleRoles={allRole} />,
+          path: ROUTES.SCENARIO.ROOT,
           children: [
             {
-              path: SCENARIO.LIST,
-              element: createLazyElement(() => import('@pages/scenario')),
+              path: PATH_SEGMENT.LIST,
+              element: <ScenarioPages.ScenarioListPage />,
             },
             {
-              path: SCENARIO.CREATE,
-              element: createLazyElement(
-                () => import('@pages/scenario/create'),
-              ),
+              path: PATH_SEGMENT.CREATE,
+              element: <ScenarioPages.ScenarioCreatePage />,
             },
             {
-              path: SCENARIO.EDIT,
-              element: createLazyElement(() => import('@pages/scenario/edit')),
+              path: `${PATH_SEGMENT.EDIT}/:id`,
+              element: <ScenarioPages.ScenarioEditPage />,
             },
             {
-              path: SCENARIO.DETAIL,
-              element: createLazyElement(
-                () => import('@pages/scenario/detail'),
-              ),
+              path: `${PATH_SEGMENT.DETAIL}/:id`,
+              element: <ScenarioPages.ScenarioDetailPage />,
             },
           ],
         },
+
+        // Seller Routes
         {
-          path: SETTING.ROOT,
-          element: (
-            <RoleBasedGuard
-              accessibleRoles={[ERole.ADMIN, ERole.CAMPAIGN_MANAGER]}
-            />
-          ),
+          path: ROUTES.SELLER.ROOT,
           children: [
             {
-              path: SETTING.CONTROL,
-              element: createLazyElement(
-                () => import('@pages/setting/control'),
-              ),
+              path: PATH_SEGMENT.LIST,
+              element: <SellerPages.SellerListPage />,
+            },
+            {
+              path: `${PATH_SEGMENT.DETAIL}/:id`,
+              element: <SellerPages.SellerDetailsPage />,
+            },
+            {
+              path: PATH_SEGMENT.ASSIGNMENT,
+              element: <SellerPages.SellerAssignmentPage />,
             },
           ],
         },
+
+        // Setting Routes
         {
-          path: ACCOUNT,
-          element: createLazyElement(() => import('../pages/account')),
-        },
-        {
-          path: SALES_OPPORTUNITIES,
-          element: createLazyElement(
-            () => import('@pages/sales-opportunities'),
-          ),
-        },
-        {
-          path: SELLER.ROOT,
-          element: (
-            <RoleBasedGuard
-              accessibleRoles={[
-                ERole.ADMIN,
-                ERole.CAMPAIGN_MANAGER,
-                ERole.SELLER_MANAGER,
-              ]}
-            />
-          ),
+          path: ROUTES.SETTING.ROOT,
           children: [
             {
-              path: SELLER.LIST,
-              element: createLazyElement(() => import('@pages/seller/list')),
+              path: PATH_SEGMENT.CONTROL,
+              element: <SettingControlPage />,
             },
+          ],
+        },
+
+        // Sales Routes
+        {
+          path: ROUTES.SALES.ROOT,
+          children: [
             {
-              path: SELLER.DETAIL,
-              element: createLazyElement(() => import('@pages/seller/details')),
-            },
-            {
-              path: SELLER.ASSIGNMENT,
-              element: createLazyElement(
-                () => import('@pages/seller/assignment'),
-              ),
+              path: PATH_SEGMENT.OPPORTUNITIES,
+              element: <SalesOpportunitiesPage />,
             },
           ],
         },
         {
-          path: ACCOUNT_MANAGEMENT,
-          element: createLazyElement(() => import('@pages/account-management')),
+          path: ROUTES.SALES.OPPORTUNITIES,
+          element: <SalesOpportunitiesPage />,
+        },
+
+        // Account Routes
+        {
+          path: ROUTES.ACCOUNT_PROFILE,
+          element: <AccountProfilePage />,
+        },
+        {
+          path: ROUTES.ACCOUNT_MANAGEMENT,
+          element: <AccountManagementPage />,
         },
       ],
     },
+
+    // Error Routes
     {
       path: '*',
-      element: createLazyElement(() => import('@pages/404')),
+      element: <NotFoundPage />,
     },
     {
       path: '/403',
@@ -378,7 +278,7 @@ const routes = createBrowserRouter(
     },
     {
       path: '/500',
-      element: createLazyElement(() => import('@pages/500')),
+      element: <ServerErrorPage />,
     },
   ],
   {
@@ -387,4 +287,5 @@ const routes = createBrowserRouter(
     },
   },
 );
+
 export default routes;

@@ -641,7 +641,7 @@ export const useCollectInforController = (opened?: boolean) => {
     [form],
   );
 
-  const { customerId } = useParams();
+  const { id: customerId } = useParams();
   const { mutate: checkLoanLimitMutation, isPending: loading } =
     useCustomerCheckLoanLimit();
 

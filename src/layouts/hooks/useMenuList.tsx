@@ -10,29 +10,56 @@ import {
   UserSettingsIcon,
 } from '@assets/icons';
 import { Divider } from 'antd';
-import {
-  ACCOUNT_MANAGEMENT,
-  CATEGORY,
-  CUSTOMER,
-  MANAGER_CAMPAIGN,
-  MULTIMEDIA_WAREHOUSE,
-  SALES_OPPORTUNITIES,
-  SCENARIO,
-  SELLER,
-  SETTING,
-} from '@routers/path';
-import { Link } from 'react-router-dom';
+import { ROUTES } from '@routers/path';
 import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useProfile } from '@stores';
 
 const useMenuList = () => {
-  const { isSellerManager, isSeller, isAuthenticated } = useProfile();
+  const { isAuthenticated, hasPermission } = useProfile();
+
+  const addPermissionCheck = useCallback(
+    (items: ItemType<MenuItemType>[]) => {
+      return items.map((item) => {
+        if (!item) return item;
+
+        if (
+          typeof item.key === 'string' &&
+          (item.key === 'main' ||
+            item.key === 'settings' ||
+            item.key.startsWith('divider'))
+        ) {
+          return item;
+        }
+
+        if ('children' in item && item.children) {
+          const newItem = {
+            ...item,
+            disabled: !hasPermission(item.key as string),
+          };
+          newItem.children = addPermissionCheck(
+            newItem.children as ItemType<MenuItemType>[],
+          );
+          return newItem;
+        }
+
+        if (typeof item.key === 'string') {
+          return {
+            ...item,
+            disabled: !hasPermission(item.key),
+          };
+        }
+
+        return item;
+      });
+    },
+    [hasPermission],
+  );
 
   const menuList = useMemo(() => {
     if (!isAuthenticated) return { menu: [], menuBottom: [] };
 
-    const menu: ItemType<MenuItemType>[] = [
+    const menuItems: ItemType<MenuItemType>[] = [
       {
         key: 'main',
         className: 'item-category',
@@ -44,152 +71,136 @@ const useMenuList = () => {
         ),
       },
       {
-        key: '/',
+        key: ROUTES.DASHBOARD,
         label: 'Dashboard',
         icon: <PieChartIcon />,
-        disabled: true,
       },
       {
-        key: 'category',
+        key: ROUTES.CAMPAIGN.ROOT,
         label: 'Quản lý chiến dịch',
         icon: <FolderManagementIcon />,
         children: [
           {
-            key: `${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN}`,
+            key: ROUTES.CAMPAIGN.LIST,
             label: 'Danh sách Campaign',
           },
           {
-            key: `${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY}`,
+            key: ROUTES.CAMPAIGN.CATEGORY.LIST,
             label: 'Danh sách Category',
-            disabled: isSeller,
           },
         ],
       },
       {
-        key: CUSTOMER.ROOT,
+        key: ROUTES.CUSTOMER.ROOT,
         label: 'Quản lý khách hàng',
         icon: <MuslimIcon />,
         children: [
           {
-            key: `${CUSTOMER.ROOT}/${CUSTOMER.CUSTOMER_CAMPAIGN_LIST}`,
+            key: ROUTES.CUSTOMER.LIST,
             label: 'DS khách hàng Campaign',
           },
           {
-            key: `${CUSTOMER.ROOT}/${CUSTOMER.CUSTOMER_GROUP_CAMPAIGN_LIST}`,
+            key: ROUTES.CUSTOMER.GROUP,
             label: 'Danh sách nhóm khách hàng theo Campaign',
           },
         ],
       },
       {
-        key: SALES_OPPORTUNITIES,
+        key: ROUTES.SALES.OPPORTUNITIES,
         label: 'Quản lý cơ hội bán',
         icon: <MarketingIcon />,
       },
       {
-        key: SCENARIO.ROOT,
+        key: ROUTES.SCENARIO.ROOT,
         label: 'Quản lý kịch bản',
         icon: <Target02Icon />,
         children: [
           {
-            key: `${SCENARIO.ROOT}/${SCENARIO.LIST}`,
+            key: ROUTES.SCENARIO.LIST,
             label: 'Danh sách kịch bản',
           },
-          // {
-          //   key: `${SCENARIO.ROOT}/${SCENARIO.CREATE}`,
-          //   label: 'Tạo kịch bản',
-          //   disabled: isSeller || isSellerManager,
-          // },
-          // {
-          //   key: `${SCENARIO.ROOT}/${SCENARIO.DETAIL}`,
-          //   label: 'Chi tiết kịch bản',
-          // },
         ],
       },
       {
-        key: SELLER.ROOT,
+        key: ROUTES.SELLER.ROOT,
         label: 'Quản lý Seller',
         icon: <MuslimIcon />,
-        disabled: isSeller,
         children: [
           {
-            key: `${SELLER.ROOT}/${SELLER.LIST}`,
+            key: ROUTES.SELLER.LIST,
             label: 'Danh sách Seller',
           },
           {
-            key: `${SELLER.ROOT}/${SELLER.ASSIGNMENT}`,
+            key: ROUTES.SELLER.ASSIGNMENT,
             label: 'Phân công Seller',
           },
         ],
       },
       {
-        key: MULTIMEDIA_WAREHOUSE,
+        key: ROUTES.MULTIMEDIA_WAREHOUSE,
         label: 'Kho đa phương tiện',
         icon: <FloppyDiskIcon />,
-        disabled: isSellerManager || isSeller,
       },
       {
-        key: ACCOUNT_MANAGEMENT,
+        key: ROUTES.ACCOUNT_MANAGEMENT,
         label: 'Quản lý tài khoản',
         icon: <UserSettingsIcon />,
-        disabled: isSellerManager || isSeller,
       },
       {
-        key: CATEGORY.ROOT,
+        key: ROUTES.CATEGORY.ROOT,
         label: 'Quản lý danh mục',
         icon: <FolderManagementIcon />,
-        disabled: isSellerManager || isSeller,
         children: [
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.PRODUCT_CATEGORY}`,
+            key: ROUTES.CATEGORY.PRODUCT,
             label: 'Sản phẩm',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.MEDIA_CATEGORY}`,
+            key: ROUTES.CATEGORY.MEDIA,
             label: 'Loại đa phương tiện',
-            disabled: isSeller,
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.POSITON_CATEGORY}`,
+            key: ROUTES.CATEGORY.POSITION,
             label: 'Chức vụ',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.BRANCH_CATEGORY}`,
+            key: ROUTES.CATEGORY.BRANCH,
             label: 'Chi nhánh',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.DEPLOYMENT_METHOD_CATEGORY}`,
+            key: ROUTES.CATEGORY.DEPLOYMENT_METHOD,
             label: 'Phương thức triển khai',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.CUSTOMER_SEGMENT_CATEGORY}`,
+            key: ROUTES.CATEGORY.CUSTOMER_SEGMENT,
             label: 'Phân khúc khách hàng',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.UNIT_OF_CALCULATION_CATEGORY}`,
+            key: ROUTES.CATEGORY.UNIT_CALCULATION,
             label: 'Đơn vị tính',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.CUSTOMER_TYPE_CATEGORY}`,
+            key: ROUTES.CATEGORY.CUSTOMER_TYPE,
             label: 'Loại khách hàng',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.DEPARTMENT_CATEGORY}`,
+            key: ROUTES.CATEGORY.DEPARTMENT,
             label: 'Phòng ban',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.EXPERSITE_CATEGORY}`,
+            key: ROUTES.CATEGORY.EXPERTISE,
             label: 'Chuyên môn',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.TYPE_OF_IDENTIFICATION}`,
+            key: ROUTES.CATEGORY.IDENTIFICATION_TYPE,
             label: 'Loại giấy tờ định danh',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.APPROACH}`,
+            key: ROUTES.CATEGORY.APPROACH,
             label: 'Phương thức tiếp cận',
           },
           {
-            key: `${CATEGORY.ROOT}/${CATEGORY.MB_GENDER}`,
+            key: ROUTES.CATEGORY.GENDER,
             label: 'Giới tính',
           },
         ],
@@ -198,10 +209,9 @@ const useMenuList = () => {
         key: 'help',
         label: 'Trợ giúp',
         icon: <MarketingIcon />,
-        disabled: true,
       },
       {
-        key: 'settings',
+        key: ROUTES.SETTING.ROOT,
         className: 'item-category',
         label: (
           <>
@@ -209,26 +219,15 @@ const useMenuList = () => {
             <span>SETTINGS</span>
           </>
         ),
-        disabled: isSeller || isSellerManager,
       },
       {
-        key: `${SETTING.ROOT}/${SETTING.CONTROL}`,
+        key: ROUTES.SETTING.CONTROL,
         label: 'Cài đặt',
         icon: <Setting02Icon />,
-        disabled: isSeller || isSellerManager,
-      },
-      {
-        key: 'example',
-        label: (
-          <>
-            Example
-            <Link to="/example" />
-          </>
-        ),
-        icon: <HelpCircleIcon />,
-        disabled: true,
       },
     ];
+
+    const menu = addPermissionCheck(menuItems);
 
     const menuBottom = [
       {
@@ -241,7 +240,7 @@ const useMenuList = () => {
     ];
 
     return { menu, menuBottom };
-  }, [isSeller, isSellerManager, isAuthenticated]);
+  }, [isAuthenticated, addPermissionCheck]);
 
   return menuList;
 };

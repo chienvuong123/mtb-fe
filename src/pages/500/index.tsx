@@ -1,5 +1,5 @@
 import { ServerError } from '@assets/icons';
-import { HOME } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { Flex, Typography } from 'antd';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ const ServerErrorPage: FC = () => {
         <Typography.Text className="error-gray mt-12">
           Thử làm mới trang và vui lòng liên hệ nếu sự cố vẫn tiếp diễn
           <br />
-          <Link to={HOME} className="mt-8">
+          <Link to={ROUTES.HOME} className="mt-8">
             Quay vể trang chủ
           </Link>
         </Typography.Text>

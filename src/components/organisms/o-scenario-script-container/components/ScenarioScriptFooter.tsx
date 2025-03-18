@@ -17,6 +17,7 @@ import { validationHelper } from '@utils/validationHelper';
 import { Col, Flex, Form, Row, type FormInstance } from 'antd';
 import { type FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '@routers/path';
 import { transformDataToSubmit } from '../utils';
 
 interface IScenarioScriptFooterProps {
@@ -34,7 +35,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   isPreview = false,
   calledIds,
 }) => {
-  const { customerId } = useParams();
+  const { id: customerId } = useParams();
   const { data: approachResultOptions } = useCategoryOptionsListQuery(
     CategoryType.CUSTOMER_APPROACH_RESULT,
   );
@@ -105,7 +106,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   };
 
   const handleCancel = () => {
-    navigate(`/customer/list`);
+    navigate(ROUTES.CUSTOMER.LIST);
   };
 
   const forwardBookingInfor = () => {

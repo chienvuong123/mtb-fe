@@ -1,5 +1,6 @@
 import { OSearchBaseForm } from '@components/organisms';
 import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
+import { ROUTES } from '@routers/path';
 import { useProfile } from '@stores';
 import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { handleResetFields } from '@utils/formHelper';
@@ -14,7 +15,7 @@ const GroupCustomerSearchForm: FC<CBaseSearch<GroupCustomerDTO>> = ({
   onCreate,
 }) => {
   const [form] = useForm();
-  const { isAdmin, isCampaignManager, isSellerManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   const categoryId = useWatch('categoryId', form);
 
@@ -89,7 +90,7 @@ const GroupCustomerSearchForm: FC<CBaseSearch<GroupCustomerDTO>> = ({
         onSearch={onSearch}
         onClearAll={onClearAll}
         onCreate={
-          isAdmin || isCampaignManager || isSellerManager
+          hasPermission(ROUTES.CUSTOMER.GROUP_CREATE)
             ? () => onCreate?.(form.getFieldsValue())
             : undefined
         }

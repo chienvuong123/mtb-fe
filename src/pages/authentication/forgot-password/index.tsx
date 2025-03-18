@@ -2,7 +2,7 @@ import { ArrowLeft01Icon, LogoOpenIcon } from '@assets/icons';
 import type { UserInfoOtpRequest } from '@dtos';
 import { useVerifyInfoUserForgotPassword } from '@hooks/queries';
 import { useFormItems } from '@hooks';
-import { LOGIN, OTP } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { saveOTPCheck } from '@utils/otpHelper';
 import { Form } from 'antd';
@@ -77,7 +77,7 @@ const ForgotPassword = () => {
     mutateVerifyInfoUser(data, {
       onSuccess: (res) => {
         if (res.data) {
-          navigate(OTP);
+          navigate(ROUTES.OTP);
           saveOTPCheck(data);
           return;
         }
@@ -99,7 +99,7 @@ const ForgotPassword = () => {
           textButton="Tiếp tục"
           alertText={alert}
           textLink={
-            <Link to={LOGIN} className="dis-flex ai-center gap-6">
+            <Link to={ROUTES.LOGIN} className="dis-flex ai-center gap-6">
               <ArrowLeft01Icon className="w-16 h-16" />
               Quay lại
             </Link>

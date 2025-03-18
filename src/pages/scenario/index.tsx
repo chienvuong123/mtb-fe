@@ -10,7 +10,7 @@ import {
 } from '@hooks/queries';
 import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import useUrlParams from '@hooks/useUrlParams';
-import { SCENARIO } from '@routers/path';
+import { ROUTES, createNavigatePath } from '@routers/path';
 import { useNavigate } from 'react-router-dom';
 import { filterObject } from '@utils/objectHelper';
 import { useNotification } from '@libs/antd';
@@ -41,11 +41,11 @@ const ScenarioPage: FC = () => {
   const { mutate: removeScenarioMutation } = useApproachScriptRemoveMutation();
 
   const handleCreate = () => {
-    navigate(`${SCENARIO.ROOT}/${SCENARIO.CREATE}`);
+    navigate(ROUTES.SCENARIO.CREATE);
   };
 
   const handleEdit = (data: TScenarioRecord) => {
-    navigate(`${SCENARIO.ROOT}/edit/${data.id}`);
+    navigate(createNavigatePath(ROUTES.SCENARIO.EDIT, { id: data.id }));
   };
 
   const handleSearch = ({ status, ...values }: ScenarioSearchRequest) => {
@@ -79,7 +79,7 @@ const ScenarioPage: FC = () => {
   };
 
   const handleView = (id: string) => {
-    navigate(`${SCENARIO.ROOT}/${id}`);
+    navigate(createNavigatePath(ROUTES.SCENARIO.DETAIL, { id }));
   };
 
   const handleSort = ({ field, direction }: TBaseTableSort) => {

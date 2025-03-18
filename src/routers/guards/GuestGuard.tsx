@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { HOME } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { useProfile } from '../../stores';
 
 interface IGuestGuard {
@@ -10,7 +10,7 @@ interface IGuestGuard {
 const GuestGuard: React.FC<IGuestGuard> = ({ children }) => {
   const { isAuthenticated } = useProfile();
 
-  if (isAuthenticated) return <Navigate to={HOME} />;
+  if (isAuthenticated) return <Navigate to={ROUTES.HOME} />;
 
   return children;
 };

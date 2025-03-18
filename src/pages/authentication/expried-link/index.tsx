@@ -1,5 +1,5 @@
 import { ArrowLeftBlue, LogoDisplay, LogoOpenIcon } from '@assets/icons';
-import { LOGIN } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { useNavigate } from 'react-router-dom';
 import { LayoutWrapper } from '../components';
 import { FooterAuth } from '../components/footer';
@@ -9,7 +9,7 @@ import './index.scss';
 const ExpriedLinkChangePassword = () => {
   const navigate = useNavigate();
   const handleRedirectLogin = () => {
-    navigate(LOGIN);
+    navigate(ROUTES.LOGIN);
   };
   return (
     <div>
