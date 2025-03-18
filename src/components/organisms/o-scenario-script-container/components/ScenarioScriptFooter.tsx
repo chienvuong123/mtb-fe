@@ -28,7 +28,7 @@ interface IScenarioScriptFooterProps {
   initialValues?: Record<string, ApproachFormData>;
   isPreview?: boolean;
   calledIds: string[];
-  disabled?: boolean;
+  activeId?: string;
 }
 
 const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
@@ -37,7 +37,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   initialValues,
   isPreview = false,
   calledIds,
-  disabled,
+  activeId,
 }) => {
   const { id: customerId } = useParams();
   const { data: statusOptions } = useCategoryOptionsListQuery({
@@ -60,7 +60,8 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
     useApproachScriptViewByCustomerQuery(customerId);
   const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
 
-  const { mutate: createApproachResult } = useApproachScriptResultMutation();
+  const { mutate: createApproachResult, isPending: saveLoading } =
+    useApproachScriptResultMutation();
 
   const { mutate: forwardBookingInforMutate } =
     useForwardBookingInforMutation();
@@ -74,10 +75,12 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
 
     try {
       if (!initialValues || !approachScriptData) return;
-      const currentValues = form.getFieldsValue(true) as Record<
-        string,
-        ApproachFormData
-      >;
+
+      const currentValues = form.getFieldsValue(
+        form.getFieldsValue([activeId]),
+      ) as Record<string, ApproachFormData>;
+
+      if (!currentValues) return;
 
       const transformedDataArray = transformDataToSubmit(
         currentValues,
@@ -139,7 +142,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
         form={form}
         layout="vertical"
         className="dis-block h-full"
-        disabled={disabled}
+        disabled={activeId !== approachId}
       >
         <Row gutter={[24, 24]} justify="space-between">
           <Col span={8}>
@@ -217,7 +220,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
             <AButton variant="filled" color="primary" onClick={handleCancel}>
               Hủy
             </AButton>
-            <AButton type="primary" onClick={handleSave}>
+            <AButton type="primary" onClick={handleSave} loading={saveLoading}>
               Lưu
             </AButton>
           </Flex>
