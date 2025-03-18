@@ -22,13 +22,13 @@ const CustomerApproachTable: FC<{
   const { data: approachScriptData } =
     useApproachScriptViewByCustomerQuery(customerId);
 
-  const { data: approachResultOptions } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_APPROACH_RESULT,
-  );
+  const { data: approachResultOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.CUSTOMER_APPROACH_RESULT,
+  });
 
-  const { data: approachDetailOptions } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_APPROACH_DETAIL,
-  );
+  const { data: approachDetailOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.CUSTOMER_APPROACH_DETAIL,
+  });
 
   const columns: ColumnType<TApproachScriptRecord>[] = [
     {

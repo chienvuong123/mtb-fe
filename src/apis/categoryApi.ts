@@ -14,9 +14,13 @@ class CategoryApi extends BaseApi<CategoryDTO, CategorySearchRequest> {
     super('/category/v1.0');
   }
 
-  async getCategoryOptionsList(categoryTypeCode: CategoryType) {
+  async getCategoryOptionsList(
+    categoryTypeCode: CategoryType,
+    parentId?: string,
+  ) {
     return apiRequest<BaseResponse<CategoryDTO[]>>({
-      url: `${this.endpoint}/category-by-type?categoryTypeCode=${categoryTypeCode}`,
+      url: `${this.endpoint}/category-by-type`,
+      params: { categoryTypeCode, parentId },
       method: 'GET',
     });
   }

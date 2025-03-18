@@ -38,19 +38,21 @@ const useCustomerForm = ({
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: campaignList } = useQueryCampaignList({ categoryId }, true);
   const { data: sellerList } = useSellerOptionsListQuery(true);
-  const { data: jobList } = useCategoryOptionsListQuery(CategoryType.F88_JOB);
-  const { data: identificationList } = useCategoryOptionsListQuery(
-    CategoryType.MB_IDENTIFICATION,
-  );
-  const { data: customerSegmentList } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_SEGMENT,
-  );
-  const { data: branchList } = useCategoryOptionsListQuery(
-    CategoryType.BRANCHES,
-  );
-  const { data: genderList } = useCategoryOptionsListQuery(
-    CategoryType.MB_GENDER,
-  );
+  const { data: jobList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.F88_JOB,
+  });
+  const { data: identificationList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.MB_IDENTIFICATION,
+  });
+  const { data: customerSegmentList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.CUSTOMER_SEGMENT,
+  });
+  const { data: branchList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.BRANCHES,
+  });
+  const { data: genderList } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.MB_GENDER,
+  });
   const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
     campaignId ?? '',
   );

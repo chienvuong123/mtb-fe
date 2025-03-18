@@ -19,6 +19,7 @@ import { type FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@routers/path';
 import { handleResetFields } from '@utils/formHelper';
+import { useWatch } from 'antd/es/form/Form';
 import { transformDataToSubmit } from '../utils';
 
 interface IScenarioScriptFooterProps {
@@ -39,15 +40,22 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   disabled,
 }) => {
   const { id: customerId } = useParams();
-  const { data: approachResultOptions } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_APPROACH_RESULT,
-  );
-  const { data: approachDetailOptions } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_APPROACH_DETAIL,
-  );
-  const { data: statusOptions } = useCategoryOptionsListQuery(
-    CategoryType.CUSTOMER_APPROACH_STATUS,
-  );
+  const { data: statusOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.CUSTOMER_APPROACH_STATUS,
+  });
+
+  const statusId = useWatch([approachId, 'status'], form);
+  const approachResultId = useWatch([approachId, 'result'], form);
+
+  const { data: approachResultOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.CUSTOMER_APPROACH_RESULT,
+    parentId: statusId,
+  });
+  const { data: approachDetailOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.CUSTOMER_APPROACH_DETAIL,
+    parentId: approachResultId,
+  });
+
   const { data: approachScriptData } =
     useApproachScriptViewByCustomerQuery(customerId);
   const { data: draftLoanLimit } = useCustomerGetDraftLoanLimit(customerId);
@@ -175,7 +183,10 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
               label="Kết quả tiếp cận chi tiết"
               name={[approachId, 'resultDetail']}
             >
-              <ASelect options={approachDetailOptions} placeholder="Chọn" />
+              <ASelect
+                options={approachResultId ? approachDetailOptions : []}
+                placeholder="Chọn"
+              />
             </Form.Item>
           </Col>
           <Col span={24}>
