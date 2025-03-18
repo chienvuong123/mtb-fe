@@ -15,7 +15,7 @@ import {
   useCampaignSearchQuery,
 } from '@hooks/queries';
 import { useNavigate } from 'react-router-dom';
-import { CUSTOMER, MANAGER_CAMPAIGN } from '@routers/path';
+import { createNavigatePath, ROUTES } from '@routers/path';
 import { ExportIcon } from '@assets/icons';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
@@ -58,14 +58,12 @@ const Campaign: React.FC = () => {
   const { refetch: campaignExport } = useCampaignExport(searchParams);
 
   const handleCreate = () => {
-    navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CREATE_CAMPAIGN}`);
+    navigate(ROUTES.CAMPAIGN.CREATE);
   };
 
   const handleEdit = (data: CampaignDTO) => {
     if (data?.id) {
-      navigate(
-        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.EDIT_CAMPAIGN}/${data.id}`,
-      );
+      navigate(createNavigatePath(ROUTES.CAMPAIGN.EDIT, { id: data.id }));
     }
   };
 
@@ -104,18 +102,14 @@ const Campaign: React.FC = () => {
   const handleView = (id: string) => {
     const item = campaignRes?.data.content.find((i) => i.id === id);
     if (item) {
-      navigate(
-        `/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN_DETAIL}/${id}`,
-      );
+      navigate(createNavigatePath(ROUTES.CAMPAIGN.DETAIL, { id }));
     }
   };
 
   const handleCustomerListView = (id: string) => {
     const item = campaignRes?.data.content.find((i) => i.id === id);
     if (item) {
-      navigate(
-        `${CUSTOMER.ROOT}/${CUSTOMER.CUSTOMER_CAMPAIGN_LIST}?categoryId=${item.categoryId}&campaignId=${item.id}`,
-      );
+      navigate(`${ROUTES.CUSTOMER.LIST}?campaignId=${item.id}`);
     }
   };
 

@@ -6,7 +6,7 @@ import React, { useMemo, useState } from 'react';
 import { useNotification } from '@libs/antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ODrawer } from '@components/organisms';
-import { MANAGER_CAMPAIGN } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import type { TFormType } from '@types';
 import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
 import {
@@ -169,7 +169,7 @@ const CampaignCreate: React.FC = () => {
               type: 'success',
               message: 'Thay đổi thành công',
             });
-            navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN}`);
+            navigate(ROUTES.CAMPAIGN.LIST);
           });
         },
       });
@@ -183,7 +183,7 @@ const CampaignCreate: React.FC = () => {
             type: 'success',
             message: 'Thêm mới thành công',
           });
-          navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN}`);
+          navigate(ROUTES.CAMPAIGN.LIST);
         });
       },
     });
@@ -251,7 +251,7 @@ const CampaignCreate: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN}`);
+    navigate(ROUTES.CAMPAIGN.LIST);
   };
 
   return (

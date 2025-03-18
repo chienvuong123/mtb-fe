@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 
 const CustomerDetailForm: FC = () => {
   const [form] = useForm();
-  const { customerId } = useParams();
+  const { id: customerId } = useParams();
 
   const { data: customerQueryData } = useCustomerViewQuery({
     id: customerId as string,

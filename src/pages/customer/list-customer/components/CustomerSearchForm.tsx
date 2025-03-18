@@ -12,6 +12,7 @@ import {
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import { useProfile } from '@stores';
 import { getValueFromEvent, handleResetFields } from '@utils/formHelper';
+import { ROUTES } from '@routers/path';
 import { parseCustomerObj } from '../customerHelper';
 import type { TCustomerSearchForm } from '../customer.type';
 
@@ -24,8 +25,13 @@ const CustomerSearchForm: FC<
   }
 > = ({ initialValues, onSearch, onClearAll, onCreate, onDeleteAll }) => {
   const [form] = useForm();
-  const { isAdmin, isCampaignManager, isSellerManager, isSeller } =
-    useProfile();
+  const {
+    isAdmin,
+    isCampaignManager,
+    isSellerManager,
+    isSeller,
+    hasPermission,
+  } = useProfile();
 
   const categoryId = useWatch(['categoryId'], form);
   const campaignId = useWatch(['campaignId'], form);
@@ -193,7 +199,7 @@ const CustomerSearchForm: FC<
         onSearch={onSearch}
         onClearAll={onClearAll}
         onCreate={
-          isAdmin || isCampaignManager
+          hasPermission(ROUTES.CUSTOMER.CREATE)
             ? () => onCreate?.(form.getFieldsValue() as CustomerDTO)
             : undefined
         }

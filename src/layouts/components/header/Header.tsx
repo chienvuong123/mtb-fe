@@ -1,6 +1,6 @@
 import { OPopup } from '@components/organisms';
 import { useLogoutMutation, useRequestChangePassword } from '@hooks/queries';
-import { ACCOUNT, LOGIN } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { useProfile } from '@stores';
 import { Divider, Flex, Layout, Spin } from 'antd';
 import { useState } from 'react';
@@ -43,7 +43,7 @@ const Header = () => {
       {
         onSuccess: () => {
           localStorage.clear();
-          navigate(LOGIN);
+          navigate(ROUTES.LOGIN);
           queryClient.clear();
         },
       },
@@ -51,7 +51,11 @@ const Header = () => {
   };
 
   const dropdownList = [
-    { label: 'Profile', key: 'profile', onClick: () => navigate(ACCOUNT) },
+    {
+      label: 'Profile',
+      key: 'profile',
+      onClick: () => navigate(ROUTES.ACCOUNT_PROFILE),
+    },
     {
       label: 'Đổi mật khẩu',
       key: 'reset-password',

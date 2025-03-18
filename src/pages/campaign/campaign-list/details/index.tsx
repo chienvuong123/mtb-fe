@@ -3,7 +3,7 @@ import { Flex } from 'antd';
 import { AButton } from '@components/atoms';
 import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MANAGER_CAMPAIGN } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { useForm } from 'antd/lib/form/Form';
 import {
   useCampaignDetailViewQuery,
@@ -60,7 +60,7 @@ const ManagerCampaignDetail: React.FC = () => {
   }, [campaignScriptQuery]);
 
   const handleBack = () => {
-    navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CAMPAIGN}`);
+    navigate(ROUTES.CAMPAIGN.LIST);
   };
 
   return (

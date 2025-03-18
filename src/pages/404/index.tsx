@@ -1,5 +1,5 @@
 import { NotFound } from '@assets/icons';
-import { HOME } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { Flex, Typography } from 'antd';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ const NotFoundPage: FC = () => {
         <Typography.Text className="error-gray mt-12">
           Rất tiếc, không thể tìm thấy trang bạn yêu cầu. Vui lòng quay lại
           &nbsp;
-          <Link to={HOME}>trang chủ</Link>
+          <Link to={ROUTES.HOME}>trang chủ</Link>
         </Typography.Text>
       </div>
     </Flex>

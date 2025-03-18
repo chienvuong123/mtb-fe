@@ -7,7 +7,7 @@ import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { IMPagination, TPagination } from '@components/molecules';
 import type { TCategoryDetailDTO } from 'src/dtos/manage-category-detail';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MANAGER_CAMPAIGN } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { type TId } from '@dtos';
 import { useCategoryDetailViewQuery } from '@hooks/queries/manageCategoryQueries';
 import { useCampaignSearchQuery } from '@hooks/queries';
@@ -91,7 +91,7 @@ const ManagerCategoryDetail: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigate(`/${MANAGER_CAMPAIGN.ROOT}/${MANAGER_CAMPAIGN.CATEGORY}`);
+    navigate(ROUTES.CAMPAIGN.CATEGORY.LIST);
   };
 
   return (

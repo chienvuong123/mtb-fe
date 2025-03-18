@@ -1,92 +1,147 @@
-const ROUTE_PATH = {
+import { buildPath, createCommonRoutes, createNavigatePath } from './utils';
+
+export const PATH_SEGMENT = {
+  // Base paths (level 1)
+  ROOT: '',
+  AUTH: 'auth',
+  DASHBOARD: 'dashboard',
+  CAMPAIGN: 'campaign',
+  CATEGORY: 'category',
+  CUSTOMER: 'customer',
+  SCENARIO: 'scenario',
+  SELLER: 'seller',
+  SALES: 'sales',
+  SETTING: 'setting',
+  MULTIMEDIA: 'multimedia',
+  ACCOUNT: 'account',
+
+  // Common sub-paths (level 2)
+  LIST: 'list',
+  DETAIL: 'detail',
+  CREATE: 'create',
+  EDIT: 'edit',
+  GROUP: 'group',
+  GROUP_CREATE: 'group-create',
+  // Seller
+  ASSIGNMENT: 'assignment',
+  MANAGEMENT: 'management',
+  // Setting
+  CONTROL: 'control',
+  // Sales
+  OPPORTUNITIES: 'opportunities',
+
+  // Categories
+  PRODUCT: 'product',
+  MEDIA: 'media',
+  POSITION: 'position',
+  BRANCH: 'branch',
+  DEPLOYMENT_METHOD: 'deployment-method',
+  CUSTOMER_SEGMENT: 'customer-segment',
+  UNIT_CALCULATION: 'unit-calculation',
+  CUSTOMER_TYPE: 'customer-type',
+  DEPARTMENT: 'department',
+  EXPERTISE: 'expertise',
+  IDENTIFICATION_TYPE: 'identification-type',
+  APPROACH: 'approach',
+  GENDER: 'gender',
+
+  // Auth related
+  LOGIN: 'login',
+  REGISTER: 'register',
+  FORGOT_PASSWORD: 'forgot-password',
+  CONFIRM_PASSWORD: 'confirm-password',
+  CHANGE_PASSWORD: 'change-password',
+  EXPIRED_PASSWORD: 'expired-password',
+  OTP: 'otp',
+};
+
+// Tạo các đường dẫn cho toàn bộ ứng dụng
+export const ROUTES = {
+  // Main routes
   HOME: '/',
+  DASHBOARD: buildPath(PATH_SEGMENT.DASHBOARD),
 
-  LOGIN: '/login',
-  FORGOT_PASSWORD: '/forgot-password',
-  OTP: '/otp',
-  CONFIRM_PASSWORD: '/confirm-password',
-  CHANGE_PASSWORD: '/change-password',
-  EXPRIED_CHANGE_PASSWORD: '/expried-change-password',
-  REGISTER: '/register',
-  ACCOUNT: '/account',
+  // Authentication routes
+  LOGIN: buildPath(PATH_SEGMENT.LOGIN),
+  REGISTER: buildPath(PATH_SEGMENT.REGISTER),
+  FORGOT_PASSWORD: buildPath(PATH_SEGMENT.FORGOT_PASSWORD),
+  CONFIRM_PASSWORD: buildPath(PATH_SEGMENT.CONFIRM_PASSWORD),
+  CHANGE_PASSWORD: buildPath(PATH_SEGMENT.CHANGE_PASSWORD),
+  EXPIRED_PASSWORD: buildPath(PATH_SEGMENT.EXPIRED_PASSWORD),
+  OTP: buildPath(PATH_SEGMENT.OTP),
+  ACCOUNT_PROFILE: buildPath(PATH_SEGMENT.ACCOUNT),
 
-  EXAMPLE: '/example',
-
-  CATEGORY: {
-    ROOT: '/category',
-    PRODUCT_CATEGORY: `product-category`,
-    MEDIA_CATEGORY: `media-category`,
-    POSITON_CATEGORY: `positon-category`,
-    BRANCH_CATEGORY: `branch-category`,
-    DEPLOYMENT_METHOD_CATEGORY: `deployment-method-category`,
-    CUSTOMER_SEGMENT_CATEGORY: `customer-segment-category`,
-    UNIT_OF_CALCULATION_CATEGORY: `unit-of-calculation-category`,
-    CUSTOMER_TYPE_CATEGORY: `customer-type-category`,
-    CUSTOMER_CATEGORY: `customer-category`,
-    DEPARTMENT_CATEGORY: `department-category`,
-    EXPERSITE_CATEGORY: `expertise-category`,
-    TYPE_OF_IDENTIFICATION: `type-of-identification-category`,
-    APPROACH: `approach-category`,
-    MB_GENDER: `gender-category`,
+  // Module routes with children
+  CAMPAIGN: {
+    ...createCommonRoutes(PATH_SEGMENT.CAMPAIGN),
+    CATEGORY: {
+      LIST: buildPath(PATH_SEGMENT.CAMPAIGN, [
+        PATH_SEGMENT.CATEGORY,
+        PATH_SEGMENT.LIST,
+      ]),
+      DETAIL: buildPath(PATH_SEGMENT.CAMPAIGN, [
+        PATH_SEGMENT.CATEGORY,
+        PATH_SEGMENT.DETAIL,
+        ':id',
+      ]),
+    },
   },
 
-  MANAGER_CAMPAIGN: {
-    ROOT: 'manager-category',
-    CAMPAIGN: `campaign`,
-    CAMPAIGN_DETAIL: `campaign-detail`,
-    CREATE_CAMPAIGN: `campaign-create`,
-    EDIT_CAMPAIGN: `campaign-edit`,
-    CATEGORY: `category`,
-    CATEGORY_DETAIL: `category-detail`,
+  CUSTOMER: {
+    ...createCommonRoutes(PATH_SEGMENT.CUSTOMER),
+    GROUP: buildPath(PATH_SEGMENT.CUSTOMER, [PATH_SEGMENT.GROUP]),
+    GROUP_CREATE: buildPath(PATH_SEGMENT.CUSTOMER, [PATH_SEGMENT.GROUP_CREATE]),
+  },
+
+  SCENARIO: createCommonRoutes(PATH_SEGMENT.SCENARIO),
+
+  SELLER: {
+    ...createCommonRoutes(PATH_SEGMENT.SELLER),
+    ASSIGNMENT: buildPath(PATH_SEGMENT.SELLER, [PATH_SEGMENT.ASSIGNMENT]),
+  },
+
+  CATEGORY: {
+    ROOT: buildPath(PATH_SEGMENT.CATEGORY),
+    PRODUCT: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.PRODUCT]),
+    MEDIA: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.MEDIA]),
+    POSITION: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.POSITION]),
+    BRANCH: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.BRANCH]),
+    DEPLOYMENT_METHOD: buildPath(PATH_SEGMENT.CATEGORY, [
+      PATH_SEGMENT.DEPLOYMENT_METHOD,
+    ]),
+    CUSTOMER_SEGMENT: buildPath(PATH_SEGMENT.CATEGORY, [
+      PATH_SEGMENT.CUSTOMER_SEGMENT,
+    ]),
+    UNIT_CALCULATION: buildPath(PATH_SEGMENT.CATEGORY, [
+      PATH_SEGMENT.UNIT_CALCULATION,
+    ]),
+    CUSTOMER_TYPE: buildPath(PATH_SEGMENT.CATEGORY, [
+      PATH_SEGMENT.CUSTOMER_TYPE,
+    ]),
+    DEPARTMENT: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.DEPARTMENT]),
+    EXPERTISE: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.EXPERTISE]),
+    IDENTIFICATION_TYPE: buildPath(PATH_SEGMENT.CATEGORY, [
+      PATH_SEGMENT.IDENTIFICATION_TYPE,
+    ]),
+    APPROACH: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.APPROACH]),
+    GENDER: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.GENDER]),
+  },
+
+  SALES: {
+    ROOT: buildPath(PATH_SEGMENT.SALES),
+    OPPORTUNITIES: buildPath(PATH_SEGMENT.SALES, [PATH_SEGMENT.OPPORTUNITIES]),
   },
 
   SETTING: {
-    ROOT: '/setting',
-    CONTROL: 'control',
+    ROOT: buildPath(PATH_SEGMENT.SETTING),
+    CONTROL: buildPath(PATH_SEGMENT.SETTING, [PATH_SEGMENT.CONTROL]),
   },
-  SALES_OPPORTUNITIES: '/sales-opportunities',
 
-  CUSTOMER: {
-    ROOT: '/customer',
-    CUSTOMER_CAMPAIGN_LIST: 'list',
-    CUSTOMER_GROUP_CAMPAIGN_LIST: 'group-list',
-    DETAIL: ':customerId',
-  },
-  SCENARIO: {
-    LIST: 'list',
-    ROOT: '/scenario',
-    CREATE: 'create',
-    EDIT: 'edit/:id',
-    DETAIL: ':id',
-  },
-  SELLER: {
-    ROOT: '/seller',
-    LIST: 'list',
-    ASSIGNMENT: 'assignment',
-    DETAIL: ':id',
-  },
-  MULTIMEDIA_WAREHOUSE: '/multimedia-warehouse',
-  ACCOUNT_MANAGEMENT: '/account-management',
+  MULTIMEDIA_WAREHOUSE: buildPath(PATH_SEGMENT.MULTIMEDIA),
+
+  ACCOUNT_MANAGEMENT: buildPath(PATH_SEGMENT.ACCOUNT, [
+    PATH_SEGMENT.MANAGEMENT,
+  ]),
 };
 
-export const {
-  HOME,
-  LOGIN,
-  FORGOT_PASSWORD,
-  CONFIRM_PASSWORD,
-  CHANGE_PASSWORD,
-  EXPRIED_CHANGE_PASSWORD,
-  OTP,
-  REGISTER,
-  ACCOUNT,
-  EXAMPLE,
-  CATEGORY,
-  SETTING,
-  SALES_OPPORTUNITIES,
-  CUSTOMER,
-  MANAGER_CAMPAIGN,
-  SCENARIO,
-  SELLER,
-  MULTIMEDIA_WAREHOUSE,
-  ACCOUNT_MANAGEMENT,
-} = ROUTE_PATH;
+export { createNavigatePath };

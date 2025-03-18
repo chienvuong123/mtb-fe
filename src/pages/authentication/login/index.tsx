@@ -2,7 +2,7 @@ import { LogoOpenIcon } from '@assets/icons';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { useFormItems } from '@hooks';
 import { Link, useNavigate } from 'react-router-dom';
-import { FORGOT_PASSWORD, HOME } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { useLoginMutation } from '@hooks/queries';
 import { useState } from 'react';
 import { FooterAuth } from '../components/footer';
@@ -52,7 +52,7 @@ const LoginPage = () => {
         onSuccess(value) {
           localStorage.setItem('token', value.data.accessToken);
           localStorage.setItem('refresh_token', value.data.refreshToken);
-          navigate(HOME);
+          navigate(ROUTES.HOME);
         },
         onError() {
           setAlert('Thông tin đăng nhập không đúng');
@@ -72,7 +72,7 @@ const LoginPage = () => {
           textButton="Đăng nhập"
           alertText={alert}
           isLoading={isPending}
-          textLink={<Link to={FORGOT_PASSWORD}>Quên mật khẩu?</Link>}
+          textLink={<Link to={ROUTES.FORGOT_PASSWORD}>Quên mật khẩu?</Link>}
           formContent={formContent}
           onFinish={handleLogin}
         />

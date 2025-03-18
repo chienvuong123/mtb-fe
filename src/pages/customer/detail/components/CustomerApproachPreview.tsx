@@ -11,7 +11,7 @@ import CollectCustomerInformationModal from './CollectCustomerInformationModal';
 import { getInitialValues } from '../utils';
 
 const CustomerApproachPreview = ({ calledIds }: { calledIds: string[] }) => {
-  const { customerId } = useParams();
+  const { id: customerId } = useParams();
 
   const [openModal, setOpenModal] = useState(false);
   const [approach, setApproach] = useState<ApproachScriptDTO | null>();

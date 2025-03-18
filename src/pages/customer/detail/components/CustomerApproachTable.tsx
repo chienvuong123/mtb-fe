@@ -15,7 +15,7 @@ const CustomerApproachTable: FC<{
   calledIds: string[];
   setCalledIds: React.Dispatch<React.SetStateAction<string[]>>;
 }> = ({ calledIds, setCalledIds }) => {
-  const { customerId } = useParams();
+  const { id: customerId } = useParams();
 
   const { data: approachScriptData } =
     useApproachScriptViewByCustomerQuery(customerId);

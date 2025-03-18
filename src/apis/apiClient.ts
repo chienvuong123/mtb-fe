@@ -3,8 +3,10 @@
 import axios from 'axios';
 import qs from 'qs';
 import type { AxiosError, AxiosRequestConfig } from 'axios';
-import { BASE_URL } from '@constants/baseUrl';
-import { LOGIN } from '@routers/path';
+import { BASE_URL } from '@constants/env';
+import { ROUTES } from '@routers/path';
+
+const { LOGIN } = ROUTES;
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;

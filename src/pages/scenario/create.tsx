@@ -4,6 +4,7 @@ import { useApproachScriptAddMutation } from '@hooks/queries';
 import { validationHelper } from '@utils/validationHelper';
 import { useNotification } from '@libs/antd';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@routers/path';
 import ScenarioForm from './components/ScenarioForm';
 
 const ScenarioCreatePage: FC = () => {
@@ -19,7 +20,7 @@ const ScenarioCreatePage: FC = () => {
             message: 'Lưu thành công',
             type: 'success',
           });
-          navigate('/scenario/list');
+          navigate(ROUTES.SCENARIO.LIST);
         });
       },
     });

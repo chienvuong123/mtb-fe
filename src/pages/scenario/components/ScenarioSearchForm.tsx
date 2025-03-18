@@ -2,6 +2,7 @@ import { OSearchBaseForm } from '@components/organisms';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import type { ScenarioSearchRequest } from '@dtos';
 import { useQueryCategoryList } from '@hooks/queries';
+import { ROUTES } from '@routers/path';
 import { useProfile } from '@stores';
 import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
@@ -13,7 +14,7 @@ const ScenarioSearchForm: FC<CBaseSearch<ScenarioSearchRequest>> = ({
   onClearAll,
 }) => {
   const [form] = useForm();
-  const { isAdmin, isCampaignManager, isSeller } = useProfile();
+  const { isSeller, hasPermission } = useProfile();
 
   const { data: categoryList } = useQueryCategoryList(true);
 
@@ -64,7 +65,7 @@ const ScenarioSearchForm: FC<CBaseSearch<ScenarioSearchRequest>> = ({
       <OSearchBaseForm<ScenarioSearchRequest>
         items={items}
         form={form}
-        onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
+        onCreate={hasPermission(ROUTES.SCENARIO.CREATE) ? onCreate : undefined}
         onSearch={onSearch}
         onClearAll={onClearAll}
       />

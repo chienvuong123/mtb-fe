@@ -5,7 +5,7 @@ import {
   useVerifyTokenChangePassword,
 } from '@hooks/queries';
 import { useFormItems } from '@hooks';
-import { EXPRIED_CHANGE_PASSWORD, HOME, LOGIN } from '@routers/path';
+import { ROUTES } from '@routers/path';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { Flex, Form, Spin, Typography } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
@@ -97,12 +97,12 @@ const ChangePassword = () => {
   });
 
   const handleCancel = () => {
-    navigate(HOME);
+    navigate(ROUTES.HOME);
   };
 
   const handleInValidate = ({
     alertTextValue,
-    pathRedirect = LOGIN,
+    pathRedirect = ROUTES.LOGIN,
     typeAlertValue = 'success',
     isRedirect = true,
   }: TInValidate) => {
@@ -153,7 +153,7 @@ const ChangePassword = () => {
         handleInValidate({
           typeAlertValue: 'error',
           alertTextValue: response.errorDesc,
-          pathRedirect: EXPRIED_CHANGE_PASSWORD,
+          pathRedirect: ROUTES.EXPIRED_PASSWORD,
         });
       },
     });
@@ -161,7 +161,7 @@ const ChangePassword = () => {
 
   useEffect(() => {
     if (!token) {
-      navigate(LOGIN);
+      navigate(ROUTES.LOGIN);
       return;
     }
 
@@ -171,7 +171,7 @@ const ChangePassword = () => {
         onSuccess: (res) => {
           setIsChecking(false);
           if (!res.data) {
-            navigate(EXPRIED_CHANGE_PASSWORD);
+            navigate(ROUTES.EXPIRED_PASSWORD);
           }
         },
       },
