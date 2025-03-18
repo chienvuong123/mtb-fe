@@ -14,6 +14,7 @@ export const PATH_SEGMENT = {
   SETTING: 'setting',
   MULTIMEDIA: 'multimedia',
   ACCOUNT: 'account',
+  PROFILE: 'profile',
 
   // Common sub-paths (level 2)
   LIST: 'list',
@@ -70,7 +71,12 @@ export const ROUTES = {
   CHANGE_PASSWORD: buildPath(PATH_SEGMENT.CHANGE_PASSWORD),
   EXPIRED_PASSWORD: buildPath(PATH_SEGMENT.EXPIRED_PASSWORD),
   OTP: buildPath(PATH_SEGMENT.OTP),
-  ACCOUNT_PROFILE: buildPath(PATH_SEGMENT.ACCOUNT),
+  PROFILE: buildPath(PATH_SEGMENT.PROFILE),
+
+  ACCOUNT: {
+    ROOT: buildPath(PATH_SEGMENT.ACCOUNT),
+    MANAGEMENT: buildPath(PATH_SEGMENT.ACCOUNT, [PATH_SEGMENT.MANAGEMENT]),
+  },
 
   // Module routes with children
   CAMPAIGN: {
@@ -139,10 +145,6 @@ export const ROUTES = {
   },
 
   MULTIMEDIA_WAREHOUSE: buildPath(PATH_SEGMENT.MULTIMEDIA),
-
-  ACCOUNT_MANAGEMENT: buildPath(PATH_SEGMENT.ACCOUNT, [
-    PATH_SEGMENT.MANAGEMENT,
-  ]),
 };
 
 export { createNavigatePath };

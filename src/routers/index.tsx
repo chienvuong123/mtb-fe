@@ -257,11 +257,11 @@ const routes = createBrowserRouter(
 
         // Account Routes
         {
-          path: ROUTES.ACCOUNT_PROFILE,
+          path: ROUTES.PROFILE,
           element: <AccountProfilePage />,
         },
         {
-          path: ROUTES.ACCOUNT_MANAGEMENT,
+          path: ROUTES.ACCOUNT.MANAGEMENT,
           element: <AccountManagementPage />,
         },
       ],

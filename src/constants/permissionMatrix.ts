@@ -27,6 +27,13 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.SELLER]: true,
   },
 
+  [ROUTES.PROFILE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.SELLER_MANAGER]: true,
+    [ERole.SELLER]: true,
+  },
+
   // Campaign
   [ROUTES.CAMPAIGN.LIST]: {
     [ERole.ADMIN]: true,
@@ -141,6 +148,12 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
   },
+  [ROUTES.CUSTOMER.CREATE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.SELLER_MANAGER]: true,
+    [ERole.SELLER]: true,
+  },
   [ROUTES.CUSTOMER.DETAIL]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
@@ -236,13 +249,13 @@ const permissionMatrix2: PermissionMatrix = {
   },
 
   // System account management
-  [ROUTES.ACCOUNT_PROFILE]: {
+  [ROUTES.ACCOUNT.ROOT]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
   },
-  [ROUTES.ACCOUNT_MANAGEMENT]: {
+  [ROUTES.ACCOUNT.MANAGEMENT]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
@@ -252,6 +265,13 @@ const permissionMatrix1: PermissionMatrix = {
   // Home
   [ROUTES.HOME]: {
     [ERole.ADMIN]: true,
+    [ERole.SELLER]: true,
+  },
+
+  [ROUTES.PROFILE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
   },
 
@@ -345,9 +365,13 @@ const permissionMatrix1: PermissionMatrix = {
   },
 
   // System account management
-  [ROUTES.ACCOUNT_PROFILE]: {
+  [ROUTES.ACCOUNT.ROOT]: {
     [ERole.ADMIN]: true,
     [ERole.SELLER]: true,
+  },
+  [ROUTES.ACCOUNT.MANAGEMENT]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
   },
 };
 
