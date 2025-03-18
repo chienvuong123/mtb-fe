@@ -110,7 +110,7 @@ const ScenarioScriptContainer: FC<{
             approachId={approach?.id}
             initialValues={initialValues}
             calledIds={calledIds ?? []}
-            disabled={approach?.id !== activeId}
+            activeId={activeId}
           />
         )}
       </div>
