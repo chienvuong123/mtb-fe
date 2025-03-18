@@ -44,7 +44,7 @@ const columns: TColumnType<SalesOpportunitiesDTO>[] = [
       statusSalesOpportunitiesObject[value] ?? null,
   },
   {
-    title: 'Trạng thái cơ tiếp cận gần nhất',
+    title: 'Trạng thái tiếp cận gần nhất',
     dataIndex: 'customerApproachStatusDtl',
     minWidth: 184,
     sorter: true,

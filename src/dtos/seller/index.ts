@@ -52,6 +52,22 @@ export type SellerDTO = {
   totalCampaign: number;
 };
 
+export type CreateSellerDTO = Omit<
+  SellerDTO,
+  'branch' | 'position' | 'department'
+> & {
+  branch: string;
+  position: string;
+  department: string;
+  employeeCode: string;
+  username: string;
+  fullName: string;
+  email: string;
+  role: string;
+  phoneNum: string;
+  expertise: string;
+};
+
 // seller details
 interface SellerCampaign extends BaseEntity {
   campaignManagerId: string;
