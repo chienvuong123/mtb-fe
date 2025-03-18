@@ -2,7 +2,8 @@ import { ACCOUNT_MANAGEMENT_KEY } from '@apis';
 import { OBaseForm } from '@components/organisms';
 import { ERole, STATUS_OPTIONS } from '@constants/masterData';
 import {
-  ACCEPTING_ALPHA_NUMERIC_COMMA_PATTERN,
+  BLOCKING_ALPHA_NUMERIC_COMMA_PATTERN,
+  BLOCKING_CHARACTERS_PARTERN,
   BLOCKING_NUMBER_PARTERN,
   BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
 } from '@constants/regex';
@@ -49,13 +50,8 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
               maxLength: 20,
               placeholder: 'Nhập...',
             },
-            rules: [
-              { required: true },
-              {
-                pattern: ACCEPTING_ALPHA_NUMERIC_COMMA_PATTERN,
-                message: 'Không được nhập ký tự đặc biệt',
-              },
-            ],
+            rules: [{ required: true }],
+            blockingPattern: BLOCKING_CHARACTERS_PARTERN,
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -63,8 +59,10 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
             name: 'username',
             inputProps: {
               placeholder: 'Nhập...',
+              maxLength: 50,
             },
             rules: [{ required: true }],
+            blockingPattern: BLOCKING_ALPHA_NUMERIC_COMMA_PATTERN,
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -76,6 +74,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
             },
             rules: [{ required: true }],
             blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
+            normalize: (value: string) => value.trim(),
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -132,6 +131,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
               allowClear: false,
               placeholder: 'Chọn...',
               initialValue: STATUS_OPTIONS[0].value,
+              disabled: true,
             },
             rules: [{ required: true }],
           },
