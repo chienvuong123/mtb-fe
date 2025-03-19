@@ -11,6 +11,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:preuat": "tsc && vite build --mode preuat",
+    "build:sit": "tsc && vite build --mode sit",
     "lint": "eslint .",
     "lint:fix": "eslint \"./src/**/*.{js,jsx,ts,tsx,json}\" --fix",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,css,scss,md,html,json}\"",

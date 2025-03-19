@@ -7,11 +7,8 @@ build:
     environment:
         name: sit
     script:
-        - export PATH=/opt/instantclient_21_4:/home/gitlab-runner/.nvm/versions/node/v22.13.1/bin:/opt/maven/bin:/opt/jdk/jdk-21.0.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
-        - echo "Start build!"
-        - pwd
-        - yarn
-        - yarn build
+        - echo "start build image!"
+        - docker build -t cm-fe:latest .
     artifacts:
         paths:
             - dist/
@@ -27,15 +24,10 @@ build:
 deploy:
     stage: deploy
     script:
-        - echo "start build image!"
-        - docker build -t cm-fe:latest .
-
         - echo "kill old container!"
         - docker ps -a -q --filter "name=cm-fe" | xargs -r docker rm -f
-
         - echo "start run container!"
-        - docker run -d -p 127.0.0.1:8000:80 --name cm-fe -e VITE_BASE_URL=${VITE_BASE_URL} cm-fe:latest
-
+        - docker run -d -p 127.0.0.1:8000:80 --name cm-fe cm-fe:latest
         - echo "deploy done!"
         - docker ps -a -f "name=cm-fe"
         - docker logs cm-fe
