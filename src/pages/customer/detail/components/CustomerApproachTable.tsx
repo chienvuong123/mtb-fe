@@ -89,9 +89,10 @@ const CustomerApproachTable: FC<{
         .map((i) => i.id);
       setCalledIds(ids);
 
-      const findActiveId = approachScriptData.filter(
-        (i) => !i.approachResult?.called,
-      )?.[0]?.id;
+      const findActiveId =
+        approachScriptData.filter((i) => !i.approachResult?.called)?.[0]?.id ||
+        'pass-all';
+
       setActiveId?.(findActiveId);
     }
   }, [approachScriptData, setCalledIds, setActiveId]);
