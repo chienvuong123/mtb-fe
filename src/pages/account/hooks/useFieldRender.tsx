@@ -65,15 +65,6 @@ const useFieldRender = () => {
     },
     {
       type: INPUT_TYPE.TEXT,
-      label: 'Chuyên môn',
-      name: 'expertise',
-      inputProps: {
-        disabled: true,
-      },
-      colProps: { span: 8, className: 'fw-500' },
-    },
-    {
-      type: INPUT_TYPE.TEXT,
       label: 'Chức vụ',
       name: 'position',
       inputProps: {
