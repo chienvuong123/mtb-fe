@@ -656,6 +656,8 @@ export const useCollectInforController = (opened?: boolean) => {
   const queryClient = useQueryClient();
 
   const saveDraft = async () => {
+    await form.validateFields();
+
     const formData = form.getFieldsValue(true);
 
     const collectInfo = mapFormDataToDTO(formData, {
