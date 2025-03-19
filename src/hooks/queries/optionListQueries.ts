@@ -1,4 +1,5 @@
 import {
+  approachScriptApi,
   assetApi,
   campaignApi,
   categoryApi,
@@ -143,6 +144,14 @@ export const useQueryCategoryList = (combine?: boolean) => {
   return useQuery({
     queryKey: ['category', 'list'],
     queryFn: () => categoryApi.categoryListOptions(),
+    select: ({ data }) => transformToOptions(data.content, combine),
+  });
+};
+
+export const useQueryApproachScriprtList = (combine?: boolean) => {
+  return useQuery({
+    queryKey: ['approachScript', 'list'],
+    queryFn: () => approachScriptApi.approachScriptOptions(),
     select: ({ data }) => transformToOptions(data.content, combine),
   });
 };

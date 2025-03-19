@@ -1,4 +1,5 @@
 import Title from 'antd/lib/typography/Title';
+import { ROUTES } from '@routers/path';
 import { Flex, type NotificationArgsProps } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { AButton } from '@components/atoms';
@@ -6,13 +7,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNotification } from '@libs/antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ODrawer } from '@components/organisms';
-import { createNavigatePath, ROUTES } from '@routers/path';
 import type { TFormType } from '@types';
 import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
 import {
   useCampaignAddMutation,
   useCampaignDetailViewQuery,
-  useCampaignEditMutation,
   useQueryCategoryList,
 } from '@hooks/queries';
 import dayjs from 'dayjs';
@@ -26,11 +25,11 @@ import type {
 } from '@dtos';
 import { validationHelper } from '@utils/validationHelper';
 import CategoryInsertForm from '@pages/campaign/category-list/components/CategoryInsert';
-import CampaignTargetForm from './components/CampaignTargerForm';
-import CampaignApproachForm from './components/CampaignApproachForm';
-import CampaignInsertForm from './components/CampaignInsertForm';
+import CampaignInsertForm from '../form/components/CampaignInsertForm';
 import { CampaignTargetDetailTable } from '../details/components';
 import CampaignApproachDetailTable from '../details/components/CampaignApproachDetailTable';
+import CampaignTargetForm from '../form/components/CampaignTargerForm';
+import { CampaignApproachForm } from '../form/components';
 import { handleSaveItem, handleUpdateId } from '../utils/util';
 
 const BUTTON_TEXT = {
@@ -40,7 +39,7 @@ const BUTTON_TEXT = {
   COPY: 'Tạo bản sao',
 } as const;
 
-const CampaignCreate: React.FC = () => {
+const CampaignCopyPage: React.FC = () => {
   const [showInsertTargetForm, setShowInsertTargetForm] = useState<TFormType>();
   const [showInsertApproachForm, setShowInsertApproachForm] =
     useState<TFormType>();
@@ -119,7 +118,6 @@ const CampaignCreate: React.FC = () => {
   };
 
   const { mutate: mutationCreateCampaign } = useCampaignAddMutation();
-  const { mutate: mutationUpdateCampaign } = useCampaignEditMutation();
   const { mutate: mutationCreateCategory } = useManageCategoryAddMutation();
   const { refetch: refetchCategory } = useQueryCategoryList(true);
 
@@ -130,13 +128,15 @@ const CampaignCreate: React.FC = () => {
     [campaignDetailRes],
   );
 
-  const handleSubmitInsert = async () => {
+  const handleCopy = async () => {
     const valueSearchForm = await form.validateFields();
 
     const data = {
       ...valueSearchForm,
-      targets: handleUpdateId(initTargetValues),
-      campaignScripts: handleUpdateId(initApproachValues),
+      code: null,
+      id: null,
+      targets: handleUpdateId(initTargetValues, true),
+      campaignScripts: handleUpdateId(initApproachValues, true),
     };
 
     if (!data.targets || data.targets.length === 0) {
@@ -155,24 +155,6 @@ const CampaignCreate: React.FC = () => {
       return;
     }
 
-    // update campaign
-    if (campaignId) {
-      mutationUpdateCampaign(
-        { ...data, id: campaignId },
-        {
-          onSuccess: (d) => {
-            validationHelper(d, notify, () => {
-              handleReset({
-                type: 'success',
-                message: 'Thay đổi thành công',
-              });
-              navigate(ROUTES.CAMPAIGN.LIST);
-            });
-          },
-        },
-      );
-      return;
-    }
     // create new campaign
     mutationCreateCampaign(data, {
       onSuccess: (d) => {
@@ -218,15 +200,6 @@ const CampaignCreate: React.FC = () => {
         });
       },
     });
-  };
-
-  const handleCreateCopy = async () => {
-    const newUrl = createNavigatePath(ROUTES.CAMPAIGN.COPY, {
-      id: campaignId || '',
-    });
-
-    // Mở tab mới
-    window.open(newUrl, '_blank');
   };
 
   const handleSaveTarget = (value: CampaignTargetDTO) => {
@@ -359,23 +332,10 @@ const CampaignCreate: React.FC = () => {
       >
         <Flex justify="between" className="py-4 w-full px-6" gap="middle">
           <Flex className="ml-auto" gap="middle">
-            {campaignId && (
-              <AButton
-                onClick={handleCreateCopy}
-                color="green"
-                variant="filled"
-              >
-                {BUTTON_TEXT.COPY}
-              </AButton>
-            )}
             <AButton onClick={handleBack} variant="outlined">
               {BUTTON_TEXT.CANCEL}
             </AButton>
-            <AButton
-              onClick={handleSubmitInsert}
-              type="primary"
-              variant="filled"
-            >
+            <AButton onClick={handleCopy} type="primary" variant="filled">
               {BUTTON_TEXT.SAVE}
             </AButton>
           </Flex>
@@ -397,4 +357,4 @@ const CampaignCreate: React.FC = () => {
   );
 };
 
-export default CampaignCreate;
+export default CampaignCopyPage;

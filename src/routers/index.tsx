@@ -153,6 +153,10 @@ const routes = createBrowserRouter(
               element: <CampaignPages.CampaignFormPage />,
             },
             {
+              path: `${PATH_SEGMENT.COPY}/:id`,
+              element: <CampaignPages.CampaignCopyPage />,
+            },
+            {
               path: PATH_SEGMENT.CATEGORY,
               children: [
                 {

@@ -5,15 +5,11 @@ import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@routers/path';
 import { useForm } from 'antd/lib/form/Form';
-import {
-  useCampaignDetailViewQuery,
-  useCampaignScriptQuery,
-} from '@hooks/queries';
+import { useCampaignDetailViewQuery } from '@hooks/queries';
 import type { TCampaignDetailDTO, TId } from '@dtos';
 import CampaignDetailSearch from './components/CampaignDetailSearch';
-import CampaignDetailTable, {
-  type TCampaignDetaillRecord,
-} from './components/CampaignDetailTable';
+import { CampaignTargetDetailTable } from './components';
+import CampaignApproachDetailTable from './components/CampaignApproachDetailTable';
 
 const BUTTON_TEXT = {
   CANCEL: 'Hủy',
@@ -31,33 +27,19 @@ const ManagerCampaignDetail: React.FC = () => {
     id: campaignId ?? '',
   });
 
-  const { data: campaignScriptQuery } = useCampaignScriptQuery({
-    id: campaignId ?? '',
-  });
-
   const dataSourcesDetail: Partial<TCampaignDetailDTO> = useMemo(
     () => campaignDetailRes?.data ?? {},
     [campaignDetailRes],
   );
 
-  const dataSourcesTarget: Partial<TCampaignDetailDTO> = useMemo(() => {
-    const safeTargets = Array.isArray(campaignDetailRes?.data?.targets)
-      ? [...campaignDetailRes.data.targets]
-      : [];
-
-    return {
+  const campaignDetailData: Partial<TCampaignDetailDTO> = useMemo(
+    () => ({
       ...campaignDetailRes?.data,
-      targets: safeTargets,
-    };
-  }, [campaignDetailRes]);
-
-  const dataSources: TCampaignDetaillRecord[] = useMemo(() => {
-    const safeData = Array.isArray(campaignScriptQuery?.data?.content)
-      ? campaignScriptQuery.data.content
-      : [];
-
-    return safeData;
-  }, [campaignScriptQuery]);
+      targets: campaignDetailRes?.data?.targets || [],
+      campaignScript: campaignDetailRes?.data?.campaignScript || [],
+    }),
+    [campaignDetailRes],
+  );
 
   const handleBack = () => {
     navigate(ROUTES.CAMPAIGN.LIST);
@@ -68,14 +50,26 @@ const ManagerCampaignDetail: React.FC = () => {
       <Title level={3} className="pb-24">
         Chi tiết Campaign
       </Title>
-      <CampaignDetailSearch
-        initialValues={dataSourcesDetail}
-        isDisabled
-        dataSource={dataSourcesTarget.targets}
-        form={form}
-      />
+      <Flex
+        vertical
+        className="no-resize border-2 rounded-8 border-gray-border bg-white"
+      >
+        <CampaignDetailSearch
+          initialValues={dataSourcesDetail}
+          isDisabled
+          form={form}
+        />
+        <hr className="border-t border-[#EAEAEA] mx-40" />
+        <CampaignTargetDetailTable
+          dataSource={campaignDetailData.targets || []}
+          showAddButton
+        />
+      </Flex>
       <div className="mb-24" />
-      <CampaignDetailTable dataSource={dataSources} />
+      <CampaignApproachDetailTable
+        dataSource={campaignDetailData.campaignScript || []}
+        showAddButton
+      />
       <div className="fixed bottom-0 left-0 w-full bg-white shadow-md z-10 mt-20 py-10 px-4">
         <Flex justify="between" className="py-4 w-full px-6" gap="middle">
           <AButton

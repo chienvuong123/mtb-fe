@@ -1,10 +1,6 @@
 import { ACCOUNT_MANAGEMENT_KEY } from '@apis';
 import { OBaseForm } from '@components/organisms';
-import {
-  ERole,
-  STATUS_OPTIONS,
-  STATUS_OPTIONS_WITHOUT_ALL,
-} from '@constants/masterData';
+import { ERole, STATUS_OPTIONS_WITHOUT_ALL } from '@constants/masterData';
 import {
   BLOCKING_NUMBER_PARTERN,
   BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
@@ -120,7 +116,6 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               options: STATUS_OPTIONS_WITHOUT_ALL,
               allowClear: false,
               placeholder: 'Chọn...',
-              initialValue: STATUS_OPTIONS[0].value,
             },
             rules: [{ required: true }],
           },
@@ -217,7 +212,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
   ) as TFormItem[];
 
   useEffect(() => {
-    if (initialValues && (mode === 'view' || mode === 'edit')) {
+    if (initialValues) {
       form.setFieldsValue({ ...initialValues });
       return;
     }

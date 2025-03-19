@@ -83,6 +83,9 @@ export const CampaignCategoryListPage = React.lazy(
 export const CampaignCategoryDetailsPage = React.lazy(
   () => import('@pages/campaign/category-list/details'),
 );
+export const CampaignCopyPage = React.lazy(
+  () => import('@pages/campaign/campaign-list/copy'),
+);
 
 // ====================== CUSTOMER PAGES ======================
 export const CustomerListPage = React.lazy(
@@ -165,6 +168,7 @@ export const CampaignPages = {
   CampaignFormPage,
   CampaignCategoryListPage,
   CampaignCategoryDetailsPage,
+  CampaignCopyPage,
 };
 
 export const CustomerPages = {

@@ -3,7 +3,7 @@ import type {
   TPagination,
 } from '@components/molecules/m-pagination/MPagination.type';
 import { ODrawer } from '@components/organisms';
-import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
+import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { BaseResponse } from '@dtos';
 import {
   useAccountManagementSearchQuery,
@@ -77,6 +77,9 @@ const AccountManagementPage = () => {
     useAccountManagementRemoveMutation();
 
   const handleCreate = () => {
+    setInitialValuesForm({
+      status: EStatus.ACTIVE,
+    });
     setDrawerMode('add');
   };
 
