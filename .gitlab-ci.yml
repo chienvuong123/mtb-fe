@@ -10,8 +10,6 @@ build:
         - echo "start build image!"
         - docker build -t cm-fe:latest .
     artifacts:
-        paths:
-            - dist/
         expire_in: 1 week
         reports:
             dotenv: build_status.env
