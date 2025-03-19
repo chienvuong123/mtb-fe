@@ -278,6 +278,17 @@ const SellerTable: FC<ISellerTable> = ({
       );
   };
 
+  const handleReset = () => {
+    const updates = tableRecords.reduce(
+      (acc, { sellerId }) => ({
+        ...acc,
+        [`quantity_${sellerId}`]: 0,
+      }),
+      {},
+    );
+    form.setFieldsValue(updates);
+  };
+
   return (
     <div>
       <OModalConfirm
@@ -318,7 +329,7 @@ const SellerTable: FC<ISellerTable> = ({
         />
         <Flex justify="end" className="bg-white pr-32 py-16">
           <Flex gap={24}>
-            <AButton color="primary" variant="filled">
+            <AButton color="primary" variant="filled" onClick={handleReset}>
               Huỷ
             </AButton>
             <AButton
