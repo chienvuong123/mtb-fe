@@ -1,4 +1,4 @@
-import { ASelect, AButton, AInputArea } from '@components/atoms';
+import { ASelect, AButton, AInputArea, AAuthImage } from '@components/atoms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { EControlType } from '@constants/masterData';
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
@@ -11,7 +11,6 @@ import {
   DatePicker,
   Typography,
   Form,
-  Image,
   Input,
 } from 'antd';
 import { type FC, useMemo } from 'react';
@@ -120,9 +119,8 @@ const AttributeItem: FC<{
         );
       }
       case EControlType.IMAGE: {
-        // TODO: get image from s3
         const image = config as ControlValue<EControlType.IMAGE>;
-        return <Image alt={image.src} src={image.src} height={300} />;
+        return <AAuthImage alt={image.src} src={image.src} height={300} />;
       }
       default:
         return (

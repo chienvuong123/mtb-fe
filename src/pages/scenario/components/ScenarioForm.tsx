@@ -16,7 +16,7 @@ import '../index.scss';
 interface ScenarioFormProps {
   title: string;
   initialData?: {
-    scenarioData?: ApproachScriptDTO;
+    scenarioData?: Partial<ApproachScriptDTO>;
     attributeList?: ApproachScriptAttributeDTO[];
   };
   onSubmit: (data: Partial<ApproachScriptDTO>) => void;
@@ -37,17 +37,16 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
   const notify = useNotification();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (initialData?.scenarioData) {
-      scenarioForm.setFieldsValue(initialData.scenarioData);
-    }
-    if (initialData?.attributeList?.length) {
-      setAttributeList(initialData.attributeList);
-    }
-  }, [initialData, scenarioForm]);
+  const categoryCampaignId = Form.useWatch(['category'], scenarioForm);
 
   const handleOpenAttributeForm = () => {
-    setSelectedAttribute({});
+    if (!categoryCampaignId) {
+      notify({
+        message: 'Vui lòng chọn Category trước khi tạo Attribute',
+        type: 'error',
+      });
+      return;
+    }
     setDrawerMode('add');
   };
 
@@ -155,6 +154,15 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
     });
   };
 
+  useEffect(() => {
+    if (initialData?.scenarioData) {
+      scenarioForm.setFieldsValue(initialData.scenarioData);
+    }
+    if (initialData?.attributeList?.length) {
+      setAttributeList(initialData.attributeList);
+    }
+  }, [initialData, scenarioForm]);
+
   return (
     <div className="pt-32">
       <Title level={3} className="mb-24">
@@ -211,6 +219,7 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
           initialValues={selectedAttribute}
           onSubmit={handleSaveAttribute}
           mode={drawerMode}
+          categoryCampaignId={categoryCampaignId}
         />
       </ODrawer>
     </div>

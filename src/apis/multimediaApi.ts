@@ -6,7 +6,7 @@ import type {
 } from '@dtos';
 import type { AxiosRequestConfig } from 'axios';
 import { BaseApi } from './baseApi';
-import { apiRequestFile } from './apiClient';
+import { apiRequest, apiRequestFile } from './apiClient';
 
 const getFormData = ({
   id,
@@ -50,6 +50,13 @@ class MultimediaApi extends BaseApi<MultimediaDTO, MultimediaSearchRequest> {
       method: 'POST',
       data: getFormData(data),
       ...config,
+    });
+  }
+
+  getResource(src: string) {
+    return apiRequest<BaseResponse<string>>({
+      url: `${this.endpoint}/resource/${src}`,
+      responseType: 'blob',
     });
   }
 }

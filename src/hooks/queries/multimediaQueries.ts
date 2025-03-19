@@ -1,6 +1,6 @@
 import type { MultimediaDTO, MultimediaSearchRequest } from '@dtos';
 import { multimediaApi } from '@apis';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const MULTIMEDIA_CATEGORY_KEY = 'multimedia';
@@ -30,5 +30,16 @@ export const useMultimediaEditMutation = () => {
   return useMutation({
     mutationKey: [MULTIMEDIA_CATEGORY_KEY, 'edit'],
     mutationFn: (data: MultimediaDTO) => multimediaApi.edit(data),
+  });
+};
+
+export const useMultimediaResourceQuery = (src: string) => {
+  return useQuery({
+    queryKey: [MULTIMEDIA_CATEGORY_KEY, 'resource', src],
+    queryFn: () => multimediaApi.getResource(src),
+    enabled: !!src,
+    select: (data) => {
+      return data ? URL.createObjectURL(data as unknown as Blob) : undefined;
+    },
   });
 };

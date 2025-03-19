@@ -2,11 +2,11 @@ import type { UploadFile } from 'antd';
 import type { BaseEntity, BaseSearchParams } from '../common';
 
 export enum EMediaType {
-  image = 'IMAGE',
-  audio = 'AUDIO',
-  video = 'VIDEO',
-  document = 'DOCUMENT',
-  animated = 'ANIMATED',
+  IMAGE = 'IMAGE',
+  AUDIO = 'AUDIO',
+  VIDEO = 'VIDEO',
+  DOCUMENT = 'DOCUMENT',
+  ANIMATED = 'ANIMATED',
 }
 export interface MultimediaDTO extends Omit<BaseEntity, 'status'> {
   name: string;
@@ -25,4 +25,5 @@ export interface MultimediaSearchRequest extends BaseSearchParams {
   code?: string;
   name?: string;
   type: EMediaType;
+  categoryCampaignId?: string;
 }

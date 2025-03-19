@@ -1,13 +1,16 @@
 import { OBaseForm } from '@components/organisms';
 import { QUILL_TOOLBARS } from '@constants/editor';
 import { EControlType } from '@constants/masterData';
-import type { ApproachScriptAttributeDTO } from '@dtos';
+import { EMediaType, type ApproachScriptAttributeDTO } from '@dtos';
 import { INPUT_TYPE, type TFormItem, type TFormType } from '@types';
 import { useForm, useWatch } from 'antd/lib/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
 
 import './AttributeInsertForm.scss';
-import { useControlSearchQuery } from '@hooks/queries';
+import {
+  useControlSearchQuery,
+  useMultimediaSearchQuery,
+} from '@hooks/queries';
 import {
   Button,
   Card,
@@ -40,6 +43,7 @@ interface IAttributeInsertForm {
   initialValues?: Partial<ApproachScriptAttributeDTO> | null;
   onClose: () => void;
   onSubmit: (values: ApproachScriptAttributeDTO) => void;
+  categoryCampaignId?: string;
 }
 
 const AttributeInsertForm: FC<IAttributeInsertForm> = ({
@@ -47,6 +51,7 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
   onSubmit,
   initialValues,
   mode,
+  categoryCampaignId,
 }) => {
   const [form] = useForm();
   const controlCode = useWatch('controlCode', form);
@@ -62,6 +67,16 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
     },
   });
 
+  const { data: imageOptionsData } = useMultimediaSearchQuery(
+    {
+      categoryCampaignId,
+      type: EMediaType.IMAGE,
+    },
+    {
+      enabled: !!categoryCampaignId,
+    },
+  );
+
   const controlTypeOptions = useMemo(() => {
     return (
       controlTypeOptionsData?.data.content.map((item) => ({
@@ -76,6 +91,15 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
       (item) => item.id === controlCode,
     )?.type;
   }, [controlTypeOptionsData, controlCode]);
+
+  const imageOptions = useMemo(() => {
+    return (
+      imageOptionsData?.data.content.map((item) => ({
+        label: item.name,
+        value: item.url,
+      })) ?? []
+    );
+  }, [imageOptionsData]);
 
   const previewData = useMemo(() => {
     const contentString = content ? JSON?.stringify(content) : '';
@@ -229,20 +253,7 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
             name: ['content', 'src'],
             inputProps: {
               placeholder: 'Chọn...',
-              options: [
-                {
-                  label: 'Ảnh 1',
-                  value: 'https://picsum.photos/id/1/200/300',
-                },
-                {
-                  label: 'Ảnh 2',
-                  value: 'https://picsum.photos/id/2/200/300',
-                },
-                {
-                  label: 'Ảnh 3',
-                  value: 'https://picsum.photos/id/3/200/300',
-                },
-              ],
+              options: imageOptions,
             },
             rules: [{ required: true }],
             colProps: { span: 12 },
@@ -265,7 +276,7 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
       default:
         return baseItems;
     }
-  }, [controlType, controlTypeOptions]);
+  }, [controlType, controlTypeOptions, imageOptions]);
 
   const handleSubmit = () => {
     form.validateFields();

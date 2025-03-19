@@ -261,7 +261,6 @@ const permissionMatrix2: PermissionMatrix = {
   [ROUTES.SETTING.CONTROL]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
-    [ERole.SELLER_MANAGER]: true,
   },
 
   // System account management

@@ -5,6 +5,7 @@ import { validationHelper } from '@utils/validationHelper';
 import { useNotification } from '@libs/antd';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@routers/path';
+import { EStatus } from '@constants/masterData';
 import ScenarioForm from './components/ScenarioForm';
 
 const ScenarioCreatePage: FC = () => {
@@ -26,7 +27,17 @@ const ScenarioCreatePage: FC = () => {
     });
   };
 
-  return <ScenarioForm title="Tạo mới kịch bản" onSubmit={handleSubmit} />;
+  return (
+    <ScenarioForm
+      title="Tạo mới kịch bản"
+      onSubmit={handleSubmit}
+      initialData={{
+        scenarioData: {
+          status: EStatus.ACTIVE,
+        },
+      }}
+    />
+  );
 };
 
 export default ScenarioCreatePage;
