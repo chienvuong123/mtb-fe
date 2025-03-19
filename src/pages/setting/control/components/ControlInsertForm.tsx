@@ -40,6 +40,8 @@ const ControlInsertForm: FC<CBaseForm<ControlDTO>> = ({
   useEffect(() => {
     if (initialValues) {
       form.setFieldsValue({ ...initialValues });
+    } else {
+      form.resetFields();
     }
   }, [initialValues, form]);
 
