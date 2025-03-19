@@ -42,20 +42,22 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
       },
       {
         title: 'Họ và tên',
-        dataIndex: 'name',
+        dataIndex: 'customerName',
         width: 157,
         minWidth: 157,
         sorter: true,
         showSorterTooltip: false,
+        sortFieldName: 'name',
         // unicodeSort: true, TODO: will be fixed by BE
       },
       {
         title: 'Nhóm khách hàng',
-        dataIndex: ['customerGroup', 'name'],
+        dataIndex: 'groupName',
         width: 157,
         minWidth: 157,
         sorter: true,
         showSorterTooltip: false,
+        sortFieldName: 'customerGroup.name',
       },
       {
         title: 'Năm sinh',
@@ -91,21 +93,22 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
       },
       {
         title: 'Seller',
-        dataIndex: ['sellerEntity', 'name'],
+        dataIndex: 'sellerName',
         width: 157,
         minWidth: 157,
         sorter: true,
         showSorterTooltip: false,
         hidden: isSeller,
+        sortFieldName: 'sellerEntity.name',
       },
       {
         title: 'Trạng thái tiếp cận',
-        dataIndex: ['approachResult', 'categoryStatus', 'name'],
+        dataIndex: 'approachStatusName',
         width: 170,
         minWidth: 170,
         sorter: true,
         showSorterTooltip: false,
-        sortFieldName: 'approachResult',
+        sortFieldName: 'priority',
       },
     ];
     return columnsTable;
