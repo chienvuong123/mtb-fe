@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/root/.yarn \
 
 COPY . .
 
-RUN yarn build:preuat \
+RUN yarn build:sit \
     && rm -rf node_modules
 
 FROM nginx:stable-alpine-slim
