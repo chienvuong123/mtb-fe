@@ -1,9 +1,9 @@
 import type { BaseResponse, ControlDTO, ControlSearchRequest } from '@dtos';
 import Title from 'antd/lib/typography/Title';
 import { type FC, useEffect, useState } from 'react';
-
+import type { TBaseTableSort, TFormType } from '@types';
 import type { IMPagination, TPagination } from '@components/molecules';
-
+import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import {
   useControlAddMutation,
   useControlEditMutation,
@@ -12,7 +12,6 @@ import {
 } from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
 import { filterObject } from '@utils/objectHelper';
-import type { TFormType } from '@types';
 import { useNotification } from '@libs/antd';
 import { validationHelper } from '@utils/validationHelper';
 import { ODrawer } from '@components/organisms';
@@ -33,6 +32,7 @@ const SettingControlPage: FC = () => {
     pagination: { current, pageSize },
     setPagination,
     sort,
+    setSort,
     filters,
     setFilters,
   } = useUrlParams<ControlSearchRequest>();
@@ -52,6 +52,7 @@ const SettingControlPage: FC = () => {
 
   const handleCloseForm = () => {
     setDrawerMode(undefined);
+    setInitValues(null);
   };
 
   const handleInvalidate = (
@@ -101,6 +102,13 @@ const SettingControlPage: FC = () => {
       ...paginationData,
       current:
         paginationData.pageSize !== pageSize ? 1 : paginationData.current,
+    });
+  };
+  const handleSort = ({ direction, field }: TBaseTableSort) => {
+    setPagination((pre) => ({ ...pre, current: 1 }));
+    setSort({
+      field,
+      direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
     });
   };
 
@@ -155,7 +163,7 @@ const SettingControlPage: FC = () => {
   return (
     <div className="pt-32">
       <Title level={3} className="mb-24">
-        Danh mục Control Attribute
+        Danh mục Control
       </Title>
       <ControlSearchForm onSearch={handleSearch} onCreate={handleCreate} />
       <div className="mt-24" />
@@ -164,6 +172,7 @@ const SettingControlPage: FC = () => {
         dataSource={controlList?.data?.content ?? []}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onSort={handleSort}
         onView={handleView}
       />
 
