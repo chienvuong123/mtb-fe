@@ -8,7 +8,7 @@ import './index.scss';
 
 const CustomerDetailPage: FC = () => {
   const [calledIds, setCalledIds] = useState<string[]>([]);
-  const [activeId, setActiveId] = useState<string>();
+  const [activeId, setActiveId] = useState<string | 'pass-all'>();
 
   return (
     <div className="pt-32">

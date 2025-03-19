@@ -47,7 +47,7 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
         minWidth: 157,
         sorter: true,
         showSorterTooltip: false,
-        unicodeSort: true,
+        // unicodeSort: true, TODO: will be fixed by BE
       },
       {
         title: 'Nhóm khách hàng',
