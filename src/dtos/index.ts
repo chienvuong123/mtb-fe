@@ -16,3 +16,4 @@ export * from './customer-collect-info';
 export * from './group-customer';
 export * from './seller';
 export * from './approach-script';
+export * from './multimedia';
