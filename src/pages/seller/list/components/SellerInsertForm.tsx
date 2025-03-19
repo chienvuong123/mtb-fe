@@ -88,6 +88,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
               { required: true },
               { type: 'email', message: 'Email không hợp lệ' },
             ],
+            normalize: (value: string) => value.trim(),
           },
           {
             type: INPUT_TYPE.TEXT,
