@@ -91,6 +91,19 @@ export const ROUTES = {
         PATH_SEGMENT.DETAIL,
         ':id',
       ]),
+      CREATE: buildPath(PATH_SEGMENT.CAMPAIGN, [
+        PATH_SEGMENT.CATEGORY,
+        PATH_SEGMENT.CREATE,
+      ]),
+      EDIT: buildPath(PATH_SEGMENT.CAMPAIGN, [
+        PATH_SEGMENT.CATEGORY,
+        PATH_SEGMENT.EDIT,
+        ':id',
+      ]),
+      DELETE: buildPath(PATH_SEGMENT.CAMPAIGN, [
+        PATH_SEGMENT.CATEGORY,
+        PATH_SEGMENT.DELETE,
+      ]),
     },
   },
 
