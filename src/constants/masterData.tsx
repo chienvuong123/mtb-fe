@@ -244,10 +244,6 @@ export const CONTROL_TYPE_OPTIONS = [
     label: optionElementWrapper('Switch', CONTROL_ELEMENTS.ON_OFF_SWITCH),
   },
   {
-    value: 'LINK',
-    label: optionElementWrapper('Liên kết', CONTROL_ELEMENTS.LINK),
-  },
-  {
     value: 'BUTTON',
     label: optionElementWrapper('Nút', CONTROL_ELEMENTS.BUTTON),
   },

@@ -11,7 +11,8 @@ const items: TFormItem[] = [
     type: INPUT_TYPE.TEXT,
     label: 'Tên',
     name: 'name',
-    inputProps: { placeholder: 'Nhập...', maxLength: 100 },
+    inputProps: { placeholder: 'Nhập...', maxLength: 50 },
+
     required: true,
     rules: [{ required: true }],
     colProps: { span: 12 },
@@ -24,6 +25,7 @@ const items: TFormItem[] = [
       options: CONTROL_TYPE_OPTIONS,
     },
     colProps: { span: 12 },
+    rules: [{ required: true }],
   },
 ];
 

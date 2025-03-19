@@ -221,9 +221,15 @@ const useMenuList = () => {
         ),
       },
       {
-        key: ROUTES.SETTING.CONTROL,
+        key: ROUTES.SETTING.ROOT,
         label: 'Cài đặt',
         icon: <Setting02Icon />,
+        children: [
+          {
+            key: ROUTES.SETTING.CONTROL,
+            label: 'Danh mục control',
+          },
+        ],
       },
     ];
 
