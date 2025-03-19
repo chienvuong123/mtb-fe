@@ -22,8 +22,6 @@ export const PATH_SEGMENT = {
   CREATE: 'create',
   EDIT: 'edit',
   DELETE: 'delete',
-  GROUP: 'group',
-  GROUP_CREATE: 'group-create',
   COPY: 'copy',
   // Seller
   ASSIGNMENT: 'assignment',
@@ -56,6 +54,12 @@ export const PATH_SEGMENT = {
   CHANGE_PASSWORD: 'change-password',
   EXPIRED_PASSWORD: 'expired-password',
   OTP: 'otp',
+
+  // Customer
+  IMPORT: 'import',
+  EXPORT: 'export',
+  GROUP: 'group',
+  GROUP_CREATE: 'group-create',
 };
 
 // Tạo các đường dẫn cho toàn bộ ứng dụng
@@ -113,6 +117,8 @@ export const ROUTES = {
     ...createCommonRoutes(PATH_SEGMENT.CUSTOMER),
     GROUP: buildPath(PATH_SEGMENT.CUSTOMER, [PATH_SEGMENT.GROUP]),
     GROUP_CREATE: buildPath(PATH_SEGMENT.CUSTOMER, [PATH_SEGMENT.GROUP_CREATE]),
+    IMPORT: buildPath(PATH_SEGMENT.CUSTOMER, [PATH_SEGMENT.IMPORT]),
+    EXPORT: buildPath(PATH_SEGMENT.CUSTOMER, [PATH_SEGMENT.EXPORT]),
   },
 
   SCENARIO: createCommonRoutes(PATH_SEGMENT.SCENARIO),

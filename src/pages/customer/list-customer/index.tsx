@@ -81,7 +81,7 @@ const ListCustomerPage: FC = () => {
   } = useUrlParams<Partial<CustomerDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
-  const { isAdmin, isCampaignManager, isSellerManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   const searchParams: CustomerSearchRequest = useMemo(() => {
     const { cusGroup, ...rest } = filters;
@@ -349,7 +349,8 @@ const ListCustomerPage: FC = () => {
     <div className="pt-32">
       <OTitleBlock
         title="Danh sách khách hàng"
-        showImport={isAdmin || isCampaignManager}
+        showImport={hasPermission(ROUTES.CUSTOMER.IMPORT)}
+        showExport={hasPermission(ROUTES.CUSTOMER.EXPORT)}
         exportLoading={exportLoading}
         onExport={() => downloadFileByGetMethod(customerExport, 'DSKH.xlsx')}
         onImport={handleImportCustomer}
@@ -365,7 +366,7 @@ const ListCustomerPage: FC = () => {
           templateDownloadLoading,
         }}
       >
-        {(isAdmin || isCampaignManager || isSellerManager) && (
+        {hasPermission(ROUTES.CUSTOMER.GROUP_CREATE) && (
           <AButton
             variant="filled"
             color="primary"
