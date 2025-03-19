@@ -32,10 +32,6 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
     categoryTypeCode: CategoryType.BRANCHES,
   });
 
-  const { data: expertiseList } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.EXPERTISE,
-  });
-
   const items = useMemo(
     () =>
       (
@@ -126,17 +122,6 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           },
           {
             type: INPUT_TYPE.SELECT,
-            label: 'Chuyên môn',
-            name: 'expertise',
-            inputProps: {
-              options: expertiseList,
-              showSearch: true,
-              filterOption: true,
-              placeholder: 'Chọn...',
-            },
-          },
-          {
-            type: INPUT_TYPE.SELECT,
             label: 'Chức vụ',
             name: 'position',
             inputProps: {
@@ -145,7 +130,6 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               filterOption: true,
               placeholder: 'Chọn...',
             },
-            rules: [{ required: true }],
           },
           {
             type: INPUT_TYPE.SELECT,
@@ -157,7 +141,6 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               filterOption: true,
               placeholder: 'Chọn...',
             },
-            rules: [{ required: true }],
           },
           {
             type: INPUT_TYPE.SELECT,
@@ -169,7 +152,6 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               filterOption: true,
               placeholder: 'Chọn...',
             },
-            rules: [{ required: true }],
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -227,7 +209,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
         }
         return item;
       }),
-    [mode, departmentList, positionList, branchList, expertiseList],
+    [mode, departmentList, positionList, branchList],
   ) as TFormItem[];
 
   useEffect(() => {
