@@ -195,14 +195,14 @@ const permissionMatrix2: PermissionMatrix = {
   [ROUTES.SCENARIO.CREATE]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
-    [ERole.SELLER_MANAGER]: true,
-    [ERole.SELLER]: true,
   },
   [ROUTES.SCENARIO.EDIT]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
-    [ERole.SELLER_MANAGER]: true,
-    [ERole.SELLER]: true,
+  },
+  [ROUTES.SCENARIO.DELETE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
   },
   [ROUTES.SCENARIO.DETAIL]: {
     [ERole.ADMIN]: true,

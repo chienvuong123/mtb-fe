@@ -1,6 +1,7 @@
 import { OTable } from '@components/organisms';
 import { EStatus, STATUS_OBJECT } from '@constants/masterData';
 import type { ApproachScriptDTO } from '@dtos';
+import { ROUTES } from '@routers/path';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import { formatDate } from '@utils/dateHelper';
@@ -86,7 +87,7 @@ const ScenarioTable: FC<CBaseTable<ApproachScriptDTO>> = ({
   onView,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const { isAdmin, isCampaignManager, isSellerManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   const deleteRecord = (key: Key) => {
     onDelete?.(key as string);
@@ -100,11 +101,9 @@ const ScenarioTable: FC<CBaseTable<ApproachScriptDTO>> = ({
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
       onDeleteRow={
-        isAdmin || isCampaignManager || isSellerManager
-          ? deleteRecord
-          : undefined
+        hasPermission(ROUTES.SCENARIO.DELETE) ? deleteRecord : undefined
       }
-      onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
+      onEdit={hasPermission(ROUTES.SCENARIO.EDIT) ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       sortDirection={sortDirection}
       paginations={paginations}
