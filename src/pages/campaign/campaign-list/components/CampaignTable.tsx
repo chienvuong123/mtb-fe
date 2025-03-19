@@ -108,7 +108,7 @@ const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
       onDeleteRow={
         hasPermission(ROUTES.CAMPAIGN.DELETE) ? deleteRecord : undefined
       }
-      onEdit={hasPermission(ROUTES.CAMPAIGN.DELETE) ? onEdit : undefined}
+      onEdit={hasPermission(ROUTES.CAMPAIGN.EDIT) ? onEdit : undefined}
       onList={(id) => onList?.(id as string)}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
