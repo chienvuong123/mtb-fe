@@ -163,7 +163,6 @@ const CustomerSearchForm: FC<
           name: 'cusGroup',
           inputProps: {
             placeholder: 'Chọn...',
-            mode: 'multiple',
             showSearch: true,
             filterOption: true,
             options: groupCustomerList,
