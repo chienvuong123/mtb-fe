@@ -1,6 +1,7 @@
 import { OTable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { EStatusCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
+import { ROUTES } from '@routers/path';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import type { ColumnType } from 'antd/lib/table';
@@ -90,7 +91,7 @@ const CategoryTable: React.FC<CBaseTable<TCategoryTableRecord>> = ({
   onSort,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   const deleteRecord = (key: Key) => {
     onDelete?.(key as string);
@@ -103,8 +104,12 @@ const CategoryTable: React.FC<CBaseTable<TCategoryTableRecord>> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
-      onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
+      onDeleteRow={
+        hasPermission(ROUTES.CAMPAIGN.CATEGORY.DELETE)
+          ? deleteRecord
+          : undefined
+      }
+      onEdit={hasPermission(ROUTES.CAMPAIGN.CATEGORY.EDIT) ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}

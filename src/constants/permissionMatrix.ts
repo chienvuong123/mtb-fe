@@ -75,6 +75,18 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
   },
+  [ROUTES.CAMPAIGN.CATEGORY.CREATE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.CAMPAIGN.CATEGORY.EDIT]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.CAMPAIGN.CATEGORY.DELETE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
 
   [ROUTES.CATEGORY.ROOT]: {
     [ERole.ADMIN]: true,
