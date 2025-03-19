@@ -13,3 +13,4 @@ export * from './manageCategoryApi';
 export * from './sellerApi';
 export * from './approachScriptApi';
 export * from './accountManagementApi';
+export * from './multimediaApi';

@@ -10,3 +10,4 @@ export * from './groupCustomerQueries';
 export * from './sellerQueries';
 export * from './approachScriptQueries';
 export * from './salesOpportunitiesQueries';
+export * from './multimediaQueries';
