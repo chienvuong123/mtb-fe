@@ -183,7 +183,7 @@ const SellerTable: FC<ISellerTable> = ({
     }, {} as AnyObject);
     form.setFieldsValue(sellerObj);
     setTableRecords(
-      tableRec.sort((a, b) => a.sellerId.localeCompare(b.sellerId)),
+      tableRec.sort((a, b) => a.sellerId?.localeCompare(b.sellerId)),
     );
   }, [dataSource, form]);
 
