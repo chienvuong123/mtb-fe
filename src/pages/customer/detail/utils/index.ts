@@ -16,11 +16,11 @@ const formatAddressString = (
   district: string,
   ward: string,
 ) => {
-  return `${province} - ${district} - ${ward}`;
+  return [province, district, ward].filter(Boolean).join(' - ');
 };
 
-const formatCurrencyToNumber = (value: string | number) =>
-  Number(value.toString().replace(/\./g, ''));
+const formatCurrencyToNumber = (value?: string | number) =>
+  value ? Number(value.toString().replace(/\./g, '')) : 0;
 
 const parseNumberToCurrency = (value?: string | number) =>
   value ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : value;
