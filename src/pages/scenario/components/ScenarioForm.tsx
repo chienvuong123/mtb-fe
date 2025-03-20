@@ -88,17 +88,9 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
   };
 
   const handleDeleteAttribute = (id: string) => {
-    Modal.confirm({
-      title: 'Xác nhận xóa',
-      content: 'Bạn có chắc chắn muốn xóa attribute này?',
-      okText: 'Xóa',
-      cancelText: 'Hủy',
-      onOk: () => {
-        setAttributeList(
-          (prevData) => prevData?.filter((attr) => attr.id !== id) || [],
-        );
-      },
-    });
+    setAttributeList(
+      (prevData) => prevData?.filter((attr) => attr.id !== id) || [],
+    );
   };
 
   const handleSaveScenario = async () => {
