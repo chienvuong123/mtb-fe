@@ -165,13 +165,6 @@ const useCategoryFormItems = ({
         placeholder: 'Nhập...',
         maxLength: 1000,
         disabled: isDisabled,
-        showCount: {
-          formatter: ({ count, maxLength }) => (
-            <span className="pos-absolute right-8 bottom-22 text-gray fs-12">
-              ({count}/{maxLength})
-            </span>
-          ),
-        },
         className: 'w-full no-resize',
       },
     },
@@ -186,13 +179,6 @@ const useCategoryFormItems = ({
         placeholder: 'Nhập...',
         maxLength: 1000,
         disabled: isDisabled,
-        showCount: {
-          formatter: ({ count, maxLength }) => (
-            <span className="pos-absolute right-8 bottom-22 text-gray fs-12">
-              ({count}/{maxLength})
-            </span>
-          ),
-        },
         className: 'w-full no-resize',
       },
     },
