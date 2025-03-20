@@ -41,6 +41,7 @@ const AttributeTable: FC<IAttributeTable> = ({
       onDeleteRow={deleteRecord}
       onEdit={onEdit}
       onView={(id) => onView?.(id as string)}
+      isCheckboxHidden
     />
   );
 };

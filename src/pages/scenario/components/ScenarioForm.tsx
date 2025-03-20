@@ -39,15 +39,13 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
 
   const categoryCampaignId = Form.useWatch(['category'], scenarioForm);
 
-  const handleOpenAttributeForm = () => {
-    if (!categoryCampaignId) {
-      notify({
-        message: 'Vui lòng chọn Category trước khi tạo Attribute',
-        type: 'error',
-      });
-      return;
+  const handleOpenAttributeForm = async () => {
+    try {
+      await scenarioForm.validateFields();
+      setDrawerMode('add');
+    } catch (error) {
+      console.error('Validation failed:', error);
     }
-    setDrawerMode('add');
   };
 
   const handleCloseAttributeForm = () => setDrawerMode(undefined);

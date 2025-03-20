@@ -27,16 +27,16 @@ const ScenarioInsertForm: FC<IScenarioInsertForm> = ({ form }) => {
       },
       {
         type: INPUT_TYPE.TEXT,
-        label: 'Tên kịch bản',
-        name: 'name',
-        inputProps: { placeholder: 'Nhập...' },
-        rules: [{ required: true }],
+        label: 'Mã kịch bản',
+        name: 'code',
+        inputProps: { disabled: true },
       },
       {
         type: INPUT_TYPE.TEXT,
-        label: 'Mô tả',
-        name: 'desc',
-        inputProps: { placeholder: 'Nhập...' },
+        label: 'Tên kịch bản',
+        name: 'name',
+        inputProps: { placeholder: 'Nhập...', maxLength: 100 },
+        rules: [{ required: true }],
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -47,6 +47,13 @@ const ScenarioInsertForm: FC<IScenarioInsertForm> = ({ form }) => {
           options: STATUS_OPTIONS_WITHOUT_ALL,
         },
         rules: [{ required: true }],
+      },
+      {
+        type: INPUT_TYPE.TEXT_AREA,
+        label: 'Mô tả',
+        name: 'desc',
+        inputProps: { placeholder: 'Nhập...', maxLength: 100 },
+        colProps: { span: 24 },
       },
     ];
 
