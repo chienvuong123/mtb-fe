@@ -4,7 +4,7 @@ import { EControlType } from '@constants/masterData';
 import { EMediaType, type ApproachScriptAttributeDTO } from '@dtos';
 import { INPUT_TYPE, type TFormItem, type TFormType } from '@types';
 import { useForm, useWatch } from 'antd/lib/form/Form';
-import { useEffect, useMemo, type FC } from 'react';
+import { useEffect, useMemo, useCallback, type FC } from 'react';
 
 import './AttributeInsertForm.scss';
 import {
@@ -123,49 +123,58 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
     initialValues?.id,
   ]);
 
-  const renderDynamicOptions = (
-    name: string | number | (string | number)[],
-  ) => (
-    <Form.List name={name}>
-      {(fields, { add, remove }) => (
-        <div className="dynamic-options-container">
-          {fields.map((field, index) => (
-            <Form.Item
-              label={`Giá trị ${index + 1}`}
-              required
-              key={field.key}
-              className="dynamic-option-item mb-0"
-            >
-              <Flex gap={8}>
-                <Form.Item
-                  {...field}
-                  name={field.name}
-                  className="dynamic-option-form-item"
-                  rules={[{ required: true }]}
+  const renderDynamicOptions = useCallback(
+    (name: string | number | (string | number)[]) => (
+      <Form.List name={name}>
+        {(fields, { add, remove }) => (
+          <div className="dynamic-options-container">
+            {fields.map((field, index) => (
+              <Form.Item
+                label={`Giá trị ${index + 1}`}
+                required
+                key={field.key}
+                className="dynamic-option-item mb-0"
+              >
+                <Flex gap={8}>
+                  <Form.Item
+                    {...field}
+                    name={field.name}
+                    className="dynamic-option-form-item"
+                    rules={[{ required: true }]}
+                  >
+                    <Input
+                      placeholder="Nhập..."
+                      maxLength={100}
+                      disabled={mode === 'view'}
+                    />
+                  </Form.Item>
+                  {mode !== 'view' && (
+                    <TrashIcon
+                      onClick={() => remove(field.name)}
+                      className="dynamic-option-delete-icon cursor-pointer"
+                    />
+                  )}
+                </Flex>
+              </Form.Item>
+            ))}
+            {mode !== 'view' && (
+              <Form.Item className="dynamic-option-add-button">
+                <Button
+                  type="dashed"
+                  onClick={() => add()}
+                  block
+                  className="dis-flex"
                 >
-                  <Input placeholder="Nhập..." maxLength={100} />
-                </Form.Item>
-                <TrashIcon
-                  onClick={() => remove(field.name)}
-                  className="dynamic-option-delete-icon cursor-pointer"
-                />
-              </Flex>
-            </Form.Item>
-          ))}
-          <Form.Item className="dynamic-option-add-button">
-            <Button
-              type="dashed"
-              onClick={() => add()}
-              block
-              className="dis-flex"
-            >
-              <PlusIcon className="svg-fill-black" />
-              Thêm lựa chọn
-            </Button>
-          </Form.Item>
-        </div>
-      )}
-    </Form.List>
+                  <PlusIcon className="svg-fill-black" />
+                  Thêm lựa chọn
+                </Button>
+              </Form.Item>
+            )}
+          </div>
+        )}
+      </Form.List>
+    ),
+    [mode],
   );
 
   const items = useMemo(() => {
@@ -275,7 +284,7 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
       default:
         return baseItems;
     }
-  }, [controlType, controlTypeOptions, imageOptions]);
+  }, [controlType, controlTypeOptions, imageOptions, renderDynamicOptions]);
 
   const handleSubmit = () => {
     form.validateFields();

@@ -44,6 +44,7 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
       await scenarioForm.validateFields();
       setDrawerMode('add');
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Validation failed:', error);
     }
   };
@@ -129,6 +130,7 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
 
       onSubmit(scenarioData);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Validation failed:', error);
     }
   };
@@ -138,8 +140,8 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
       title: 'Xác nhận hủy',
       content:
         'Bạn có chắc chắn muốn hủy? Tất cả các thay đổi sẽ không được lưu.',
-      okText: 'Đồng ý',
-      cancelText: 'Không',
+      okText: 'Tiếp tục',
+      cancelText: 'Hủy',
       onOk: () => navigate(ROUTES.SCENARIO.LIST),
     });
   };
