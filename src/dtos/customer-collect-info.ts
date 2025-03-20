@@ -1,3 +1,5 @@
+import type dayjs from 'dayjs';
+
 export interface CustomerCollectInfoDTO {
   saveDraft?: boolean;
   customerId?: string;
@@ -112,7 +114,7 @@ export interface CustomerCollectFormDTO {
   // Bank Info (Third Form)
   typeOfIdCode: string;
   personalId: string;
-  issueDate: string;
+  issueDate: dayjs.Dayjs;
   jobCode: string;
   averageMonthlyIncome: number;
   incomeProofCode: string;

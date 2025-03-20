@@ -780,7 +780,10 @@ export const useCollectInforController = (opened?: boolean) => {
       orderId: customerData?.orderId,
       campaignId: customerData?.campaignId,
       typeOfIdCode: customerData?.identnDocTypeCategory?.code,
-      issueDate: customerData?.identnDocIssueDate,
+      issueDate: dayjs(
+        customerData?.identnDocIssueDate,
+        DATE_SLASH_FORMAT_DDMMYYYY,
+      ),
       mbAddress: customerData?.address,
     };
 
