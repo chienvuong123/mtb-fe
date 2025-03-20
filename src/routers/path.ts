@@ -46,6 +46,13 @@ export const PATH_SEGMENT = {
   APPROACH: 'approach',
   GENDER: 'gender',
 
+  // Multimedia
+  IMAGE: 'image',
+  VIDEO: 'video',
+  AUDIO: 'audio',
+  DOCUMENT: 'document',
+  ANIMATED: 'animated',
+
   // Auth related
   LOGIN: 'login',
   REGISTER: 'register',
@@ -165,7 +172,10 @@ export const ROUTES = {
     CONTROL: buildPath(PATH_SEGMENT.SETTING, [PATH_SEGMENT.CONTROL]),
   },
 
-  MULTIMEDIA_WAREHOUSE: buildPath(PATH_SEGMENT.MULTIMEDIA),
+  MULTIMEDIA: {
+    ROOT: buildPath(PATH_SEGMENT.MULTIMEDIA),
+    IMAGE: buildPath(PATH_SEGMENT.MULTIMEDIA, [PATH_SEGMENT.IMAGE]),
+  },
 };
 
 export { createNavigatePath };

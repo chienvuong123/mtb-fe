@@ -13,6 +13,7 @@ export const ACCEPTING_CONTAIN_LETTER_AND_NUMBER_PATTERN =
 export const ACCEPTING_NUMBER_SPACE_COMMA_PATTERN = /^[\p{L}0-9\s,]+$/u;
 
 // others
+export const ACCEPTING_FULL_ALPHA_NUMERIC_PATTERN = /^[a-zA-Z0-9]+$/;
 export const REMOVE_ACCENTS_REGEX = /[\u0300-\u036f]/g;
 
 export const URL_REGEX =

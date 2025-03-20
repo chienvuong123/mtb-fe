@@ -33,6 +33,10 @@ import type { ReactQuillProps } from 'react-quill';
 import ReactQuill from 'react-quill';
 import type { DefaultOptionType } from 'antd/es/select';
 import { REMOVE_ACCENTS_REGEX } from '@constants/regex';
+import {
+  MMultimediaUpload,
+  type TUploadMultimedia,
+} from '@components/molecules';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FormItemComponent<P = any> = (props: P) => React.ReactElement;
@@ -164,4 +168,7 @@ export const formItemComponents: Record<INPUT_TYPE, FormItemComponent> = {
       </Flex>
     );
   },
+  [INPUT_TYPE.MULTIMEDIA_UPLOAD]: (props: TUploadMultimedia) => (
+    <MMultimediaUpload {...props} />
+  ),
 };

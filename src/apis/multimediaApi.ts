@@ -6,7 +6,7 @@ import type {
 } from '@dtos';
 import type { AxiosRequestConfig } from 'axios';
 import { BaseApi } from './baseApi';
-import { apiRequest, apiRequestFile } from './apiClient';
+import { apiRequestAll, apiRequestFile } from './apiClient';
 
 const getFormData = ({
   id,
@@ -53,11 +53,25 @@ class MultimediaApi extends BaseApi<MultimediaDTO, MultimediaSearchRequest> {
     });
   }
 
-  getResource(src: string) {
-    return apiRequest<BaseResponse<string>>({
+  async getResource(src: string) {
+    const response = await apiRequestAll<BaseResponse<string>>({
       url: `${this.endpoint}/resource/${src}`,
       responseType: 'blob',
     });
+    const contentDisposition = response.headers['content-disposition'];
+    let filename = 'downloaded-file';
+
+    if (contentDisposition) {
+      const match = contentDisposition.match(/filename="?(.+?)"?$/);
+      if (match) {
+        // eslint-disable-next-line prefer-destructuring
+        filename = match[1];
+      }
+    }
+    return {
+      data: response.data,
+      filename,
+    };
   }
 }
 

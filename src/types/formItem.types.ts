@@ -1,3 +1,4 @@
+import type { TUploadMultimedia } from '@components/molecules';
 import type {
   ButtonProps,
   CheckboxProps,
@@ -41,6 +42,7 @@ export enum INPUT_TYPE {
   CHECKBOX,
   EDITOR,
   NUMBER_RANGE,
+  MULTIMEDIA_UPLOAD,
 }
 
 export type TOTPProps = GetProps<typeof Input.OTP>;
@@ -117,4 +119,8 @@ export type TFormItem =
   | (TBaseFormItem & {
       type: INPUT_TYPE.NUMBER_RANGE;
       inputProps?: InputProps & TInputRange;
+    })
+  | (TBaseFormItem & {
+      type: INPUT_TYPE.MULTIMEDIA_UPLOAD;
+      inputProps?: TUploadMultimedia;
     });

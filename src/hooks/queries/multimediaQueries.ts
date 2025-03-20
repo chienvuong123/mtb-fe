@@ -1,4 +1,8 @@
-import type { MultimediaDTO, MultimediaSearchRequest } from '@dtos';
+import type {
+  BaseResponse,
+  MultimediaDTO,
+  MultimediaSearchRequest,
+} from '@dtos';
 import { multimediaApi } from '@apis';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createBaseQueryHooks } from './baseQueries';
@@ -13,7 +17,8 @@ export const {
   useRemoveMutation: useMultimediaRemoveMutation,
 } = createBaseQueryHooks<
   MultimediaDTO,
-  MultimediaSearchRequest
+  MultimediaSearchRequest,
+  BaseResponse<MultimediaDTO>
   // if you need to transform the view response
   // ExampleViewResponse,
   // if you need to transform the search response
@@ -38,8 +43,9 @@ export const useMultimediaResourceQuery = (src: string) => {
     queryKey: [MULTIMEDIA_CATEGORY_KEY, 'resource', src],
     queryFn: () => multimediaApi.getResource(src),
     enabled: !!src,
-    select: (data) => {
-      return data ? URL.createObjectURL(data as unknown as Blob) : undefined;
-    },
+    select: ({ data, filename }) => ({
+      url: data ? URL.createObjectURL(data as unknown as Blob) : undefined,
+      filename,
+    }),
   });
 };

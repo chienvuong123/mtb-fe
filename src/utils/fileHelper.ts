@@ -1,3 +1,7 @@
+import type { GetProp, UploadProps } from 'antd';
+
+export type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+
 export const MIME_TYPE = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 };
@@ -34,3 +38,11 @@ export const downloadBase64File = (
     console.error('Lỗi khi tải xuống file:', error);
   }
 };
+
+export const getBase64FromFile = (file: FileType): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });

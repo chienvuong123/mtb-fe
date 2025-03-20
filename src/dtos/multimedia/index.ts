@@ -19,6 +19,7 @@ export interface MultimediaDTO extends Omit<BaseEntity, 'status'> {
   categoryCampaignId?: string;
 
   fileUpload?: UploadFile;
+  filename?: string;
 }
 
 export interface MultimediaSearchRequest extends BaseSearchParams {

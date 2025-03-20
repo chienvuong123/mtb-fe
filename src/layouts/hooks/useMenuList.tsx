@@ -137,7 +137,7 @@ const useMenuList = () => {
         ],
       },
       {
-        key: ROUTES.MULTIMEDIA_WAREHOUSE,
+        key: ROUTES.MULTIMEDIA.ROOT,
         label: 'Kho đa phương tiện',
         icon: <FloppyDiskIcon />,
       },
