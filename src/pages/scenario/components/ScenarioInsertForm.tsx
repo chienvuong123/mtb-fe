@@ -22,6 +22,8 @@ const ScenarioInsertForm: FC<IScenarioInsertForm> = ({ form }) => {
         inputProps: {
           placeholder: 'Chọn',
           options: categoryList,
+          showSearch: true,
+          filterOption: true,
         },
         rules: [{ required: true }],
       },
