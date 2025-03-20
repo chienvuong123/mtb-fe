@@ -41,6 +41,10 @@ const AttributeTable: FC<IAttributeTable> = ({
       onDeleteRow={deleteRecord}
       onEdit={onEdit}
       onView={(id) => onView?.(id as string)}
+      isCheckboxHidden
+      confirmProps={{
+        title: 'Xóa attribute\\kịch bản',
+      }}
     />
   );
 };

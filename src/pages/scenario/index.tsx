@@ -25,7 +25,12 @@ import './index.scss';
 const ScenarioPage: FC = () => {
   const navigate = useNavigate();
   const { filters, setFilters, pagination, setPagination, sort, setSort } =
-    useUrlParams<ScenarioSearchRequest>();
+    useUrlParams<ScenarioSearchRequest>({
+      initSort: {
+        field: 'code',
+        direction: 'asc',
+      },
+    });
 
   const notify = useNotification();
 

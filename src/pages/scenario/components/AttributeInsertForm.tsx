@@ -174,7 +174,7 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
         type: INPUT_TYPE.TEXT,
         label: 'Tên',
         name: 'attributeName',
-        inputProps: { placeholder: 'Nhập...', maxLength: 100 },
+        inputProps: { placeholder: 'Nhập...', maxLength: 400 },
         rules: [{ required: true }],
         colProps: { span: 12 },
       },
@@ -201,7 +201,6 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
         label: 'Nội dung',
         name: 'description',
         inputProps: {
-          placeholder: 'Nhập...',
           modules: {
             toolbar: QUILL_TOOLBARS,
             clipboard: { matchVisual: false },
