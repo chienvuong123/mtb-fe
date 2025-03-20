@@ -156,13 +156,6 @@ const useCampaignFormItems = ({
           className: clsx({
             'pointer-events-none w-full no-resize': isDisabled,
           }),
-          showCount: {
-            formatter: ({ count, maxLength }) => (
-              <span className="pos-absolute right-8 bottom-22 text-gray fs-12">
-                ({count}/{maxLength})
-              </span>
-            ),
-          },
         },
       },
       {
@@ -178,13 +171,6 @@ const useCampaignFormItems = ({
           className: clsx({
             'pointer-events-none w-full no-resize': isDisabled,
           }),
-          showCount: {
-            formatter: ({ count, maxLength }) => (
-              <span className="pos-absolute right-8 bottom-22 text-gray fs-12">
-                ({count}/{maxLength})
-              </span>
-            ),
-          },
         },
       },
     ],

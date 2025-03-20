@@ -6,5 +6,6 @@ module.exports = {
   ],
   rules: {
     'body-max-line-length': [0],
+    'subject-case': [0],
   },
 };

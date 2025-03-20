@@ -55,6 +55,7 @@ const ScenarioSearchForm: FC<CBaseSearch<ScenarioSearchRequest>> = ({
           placeholder: 'Chọn',
           options: STATUS_OPTIONS,
         },
+        initialValue: STATUS_OPTIONS[0].value,
       },
     ];
     return formItems;

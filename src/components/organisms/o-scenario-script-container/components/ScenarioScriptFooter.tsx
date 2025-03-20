@@ -194,14 +194,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
           </Col>
           <Col span={24}>
             <Form.Item label="Ghi chú" name={[approachId, 'note']}>
-              <AInputArea
-                placeholder="Nhập..."
-                maxLength={2000}
-                showCount={{
-                  formatter: ({ count, maxLength }) =>
-                    `(${count}/${maxLength})`,
-                }}
-              />
+              <AInputArea placeholder="Nhập..." maxLength={2000} />
             </Form.Item>
           </Col>
         </Row>

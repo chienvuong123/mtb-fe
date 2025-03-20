@@ -147,9 +147,6 @@ const AttributeItem: FC<{
             <AInputArea
               placeholder="Nhập..."
               maxLength={1000}
-              showCount={{
-                formatter: ({ count, maxLength }) => `(${count}/${maxLength})`,
-              }}
               autoSize={{ minRows: 2 }}
             />
           </Form.Item>
