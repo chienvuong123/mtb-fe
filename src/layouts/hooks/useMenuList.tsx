@@ -211,7 +211,7 @@ const useMenuList = () => {
         icon: <MarketingIcon />,
       },
       {
-        key: ROUTES.SETTING.ROOT,
+        key: 'settings',
         className: 'item-category',
         label: (
           <>
