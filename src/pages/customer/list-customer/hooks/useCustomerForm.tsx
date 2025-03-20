@@ -243,6 +243,8 @@ const useCustomerForm = ({
 
   useEffect(() => {
     if (initialValues) {
+      form.resetFields(); // reset cache
+
       const { birthday, categoryCampaign, ...otherInit } = initialValues ?? {};
       form.setFieldsValue({
         ...otherInit,
