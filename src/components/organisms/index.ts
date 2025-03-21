@@ -6,3 +6,4 @@ export * from './o-drawer';
 export * from './o-title-block';
 export * from './o-scenario-script-container';
 export * from './o-form-detail';
+export * from './o-action-footer';

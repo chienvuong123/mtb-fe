@@ -2,12 +2,12 @@ import Title from 'antd/lib/typography/Title';
 import { useEffect, useState, type FC } from 'react';
 import { AButton } from '@components/atoms';
 import type { ApproachScriptAttributeDTO, ApproachScriptDTO } from '@dtos';
-import { ODrawer } from '@components/organisms';
+import { OActionFooter, ODrawer } from '@components/organisms';
 import type { TFormType } from '@types';
 import { Flex, Form, Modal } from 'antd';
 import { useNotification } from '@libs/antd';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '@routers/path';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { PATH_SEGMENT, ROUTES } from '@routers/path';
 import AttributeInsertForm from './AttributeInsertForm';
 import AttributeTable from './AttributeTable';
 import ScenarioInsertForm from './ScenarioInsertForm';
@@ -27,17 +27,21 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
   initialData,
   onSubmit,
 }) => {
+  const notify = useNotification();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isViewMode = location.pathname.includes('/detail/');
+  const { id: scenarioId } = useParams<{ id: string }>();
+
+  const [scenarioForm] = Form.useForm<ApproachScriptDTO>();
+  const categoryCampaignId = Form.useWatch(['category'], scenarioForm);
+
   const [attributeList, setAttributeList] = useState<
     ApproachScriptAttributeDTO[]
   >([]);
   const [selectedAttribute, setSelectedAttribute] =
     useState<Partial<ApproachScriptAttributeDTO>>();
   const [drawerMode, setDrawerMode] = useState<TFormType>();
-  const [scenarioForm] = Form.useForm<ApproachScriptDTO>();
-  const notify = useNotification();
-  const navigate = useNavigate();
-
-  const categoryCampaignId = Form.useWatch(['category'], scenarioForm);
 
   const handleOpenAttributeForm = async () => {
     try {
@@ -135,6 +139,10 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
     }
   };
 
+  const handleBack = () => {
+    navigate(ROUTES.SCENARIO.LIST);
+  };
+
   const handleCancel = () => {
     Modal.confirm({
       title: 'Xác nhận hủy',
@@ -142,7 +150,7 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
         'Bạn có chắc chắn muốn hủy? Tất cả các thay đổi sẽ không được lưu.',
       okText: 'Tiếp tục',
       cancelText: 'Hủy',
-      onOk: () => navigate(ROUTES.SCENARIO.LIST),
+      onOk: handleBack,
     });
   };
 
@@ -157,18 +165,35 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
 
   return (
     <div className="pt-32">
-      <Title level={3} className="mb-24">
-        {title}
-      </Title>
+      <Flex justify="space-between" align="center" className="mb-16">
+        <Title level={3} className="mb-0">
+          {title}
+        </Title>
+        {isViewMode && (
+          <AButton
+            color="primary"
+            variant="filled"
+            onClick={() =>
+              navigate(
+                `${ROUTES.SCENARIO.ROOT}/${PATH_SEGMENT.PREVIEW}/${scenarioId}`,
+              )
+            }
+          >
+            Xem trước
+          </AButton>
+        )}
+      </Flex>
       <ScenarioInsertForm form={scenarioForm} />
       <div className="mt-24" />
       <Flex className="mt-24" justify="space-between" align="center">
         <Title level={4} style={{ margin: 0 }}>
           Danh sách Attribute
         </Title>
-        <AButton onClick={handleOpenAttributeForm} type="primary">
-          Tạo mới Attribute
-        </AButton>
+        {!isViewMode && (
+          <AButton onClick={handleOpenAttributeForm} type="primary">
+            Tạo mới Attribute
+          </AButton>
+        )}
       </Flex>
       <div className="mt-24" />
       <AttributeTable
@@ -178,25 +203,11 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
         onView={handleViewAttribute}
       />
       <div className="mt-96" />
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 265,
-          right: 0,
-          zIndex: 1000,
-        }}
-      >
-        <Flex gap={16} justify="end" className="px-40 py-24 bg-white z-1000">
-          <AButton color="primary" variant="filled" onClick={handleCancel}>
-            Hủy
-          </AButton>
-          <AButton type="primary" onClick={handleSaveScenario}>
-            Lưu
-          </AButton>
-        </Flex>
-      </div>
-
+      <OActionFooter
+        onBack={isViewMode ? handleBack : undefined}
+        onCancel={isViewMode ? undefined : handleCancel}
+        onSave={isViewMode ? undefined : handleSaveScenario}
+      />
       <ODrawer
         destroyOnClose
         onClose={handleCloseAttributeForm}

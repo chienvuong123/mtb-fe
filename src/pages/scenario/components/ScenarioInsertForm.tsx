@@ -5,6 +5,7 @@ import { useQueryCategoryList } from '@hooks/queries';
 import type { FormInstance } from 'antd/lib';
 import { STATUS_OPTIONS_WITHOUT_ALL } from '@constants/masterData';
 import { OFormDetail } from '@components/organisms';
+import { useLocation } from 'react-router-dom';
 
 interface IScenarioInsertForm {
   form: FormInstance<ApproachScriptDTO>;
@@ -12,6 +13,8 @@ interface IScenarioInsertForm {
 
 const ScenarioInsertForm: FC<IScenarioInsertForm> = ({ form }) => {
   const { data: categoryList } = useQueryCategoryList(true);
+  const location = useLocation();
+  const isViewMode = location.pathname.includes('/detail/');
 
   const items = useMemo(() => {
     const configItems: TFormItem[] = [
@@ -64,7 +67,11 @@ const ScenarioInsertForm: FC<IScenarioInsertForm> = ({ form }) => {
 
   return (
     <div className="border-2 rounded-8 border-gray-border bg-white">
-      <OFormDetail<ApproachScriptDTO> items={items} form={form} />
+      <OFormDetail<ApproachScriptDTO>
+        items={items}
+        form={form}
+        isViewMode={isViewMode}
+      />
     </div>
   );
 };
