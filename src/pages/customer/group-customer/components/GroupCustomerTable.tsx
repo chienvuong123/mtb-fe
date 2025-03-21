@@ -25,7 +25,7 @@ const columns: ColumnType<GroupCustomerDTO>[] = [
   },
   {
     title: 'Tên Campaign',
-    dataIndex: 'nameCampaign',
+    dataIndex: ['campaign', 'name'],
     minWidth: 164,
     showSorterTooltip: false,
   },
