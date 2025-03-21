@@ -135,6 +135,24 @@ export const AccountManagementPage = React.lazy(
   () => import('@pages/account-management'),
 );
 
+// ====================== MULTIMEDIA PAGES ======================
+export const MultimediaPage = React.lazy(() => import('@pages/multimedia'));
+export const MultimediaImagePage = React.lazy(
+  () => import('@pages/multimedia/images'),
+);
+export const MultimediaVideoPage = React.lazy(
+  () => import('@pages/multimedia/video'),
+);
+export const MultimediaAudioPage = React.lazy(
+  () => import('@pages/multimedia/audio'),
+);
+export const MultimediaDocumentPage = React.lazy(
+  () => import('@pages/multimedia/document'),
+);
+export const MultimediaAnimatedPage = React.lazy(
+  () => import('@pages/multimedia/animated'),
+);
+
 // ====================== ERROR PAGES ======================
 export const NotFoundPage = React.lazy(() => import('@pages/404'));
 export const ServerErrorPage = React.lazy(() => import('@pages/500'));
@@ -193,4 +211,13 @@ export const SellerPages = {
 export const ErrorPages = {
   NotFoundPage,
   ServerErrorPage,
+};
+
+export const MultimediaPages = {
+  MultimediaPage,
+  MultimediaImagePage,
+  MultimediaVideoPage,
+  MultimediaAudioPage,
+  MultimediaAnimatedPage,
+  MultimediaDocumentPage,
 };

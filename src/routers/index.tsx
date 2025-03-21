@@ -26,6 +26,7 @@ import {
   CustomerPages,
   ScenarioPages,
   SellerPages,
+  MultimediaPages,
 } from './lazy-imports';
 
 const routes = createBrowserRouter(
@@ -229,6 +230,37 @@ const routes = createBrowserRouter(
             {
               path: PATH_SEGMENT.ASSIGNMENT,
               element: <SellerPages.SellerAssignmentPage />,
+            },
+          ],
+        },
+
+        // Multimedia Routes
+        {
+          path: ROUTES.MULTIMEDIA.ROOT,
+          children: [
+            {
+              path: '',
+              element: <MultimediaPages.MultimediaPage />,
+            },
+            {
+              path: PATH_SEGMENT.IMAGE,
+              element: <MultimediaPages.MultimediaImagePage />,
+            },
+            {
+              path: PATH_SEGMENT.AUDIO,
+              element: <MultimediaPages.MultimediaAudioPage />,
+            },
+            {
+              path: PATH_SEGMENT.VIDEO,
+              element: <MultimediaPages.MultimediaVideoPage />,
+            },
+            {
+              path: PATH_SEGMENT.DOCUMENT,
+              element: <MultimediaPages.MultimediaDocumentPage />,
+            },
+            {
+              path: PATH_SEGMENT.ANIMATED,
+              element: <MultimediaPages.MultimediaAnimatedPage />,
             },
           ],
         },

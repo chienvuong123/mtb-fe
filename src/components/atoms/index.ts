@@ -12,3 +12,5 @@ export * from './a-input-number';
 export * from './a-collapse';
 export * from './a-auto-complete';
 export * from './a-auth-image';
+export * from './a-audio';
+export * from './a-video';

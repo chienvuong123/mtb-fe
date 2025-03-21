@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
 import qs from 'qs';
-import type { AxiosError, AxiosRequestConfig } from 'axios';
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { BASE_URL } from '@constants/env';
 import { ROUTES } from '@routers/path';
 
@@ -126,6 +126,13 @@ apiClient.interceptors.response.use(
 export async function apiRequest<T>(config: AxiosRequestConfig): Promise<T> {
   const response = await apiClient(config);
   return response.data;
+}
+
+export async function apiRequestAll<T>(
+  config: AxiosRequestConfig,
+): Promise<AxiosResponse<T>> {
+  const response = await apiClient(config);
+  return response;
 }
 
 export async function apiRequestFile<T>({

@@ -260,7 +260,7 @@ const permissionMatrix2: PermissionMatrix = {
   },
 
   // Multimedia warehouse
-  [ROUTES.MULTIMEDIA_WAREHOUSE]: {
+  [ROUTES.MULTIMEDIA.ROOT]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,

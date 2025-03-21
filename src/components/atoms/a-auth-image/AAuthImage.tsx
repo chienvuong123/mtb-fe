@@ -12,7 +12,7 @@ const AAuthImage: React.FC<ImageProps> = ({
 
   return (
     <Image
-      src={resourceSrc}
+      src={resourceSrc?.url}
       preview={preview}
       fallback={FallbackImage}
       {...props}
