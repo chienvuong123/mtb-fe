@@ -197,6 +197,8 @@ export const getInitialValues = (
     },
   });
 
+  const notContactStatus = statusOptions.find((i) => i.code === '01');
+
   const processApproachScript = (approachScript: ApproachScriptDTO) => ({
     [approachScript.id]: {
       ...(approachScript.approachStep || []).reduce(
@@ -210,7 +212,7 @@ export const getInitialValues = (
       resultDetail: approachScript.approachResult?.resultDetail,
       rate: approachScript.approachResult?.rate,
       note: approachScript.approachResult?.note,
-      status: approachScript.approachResult?.status || statusOptions[0].value,
+      status: approachScript.approachResult?.status || notContactStatus?.value,
       rateCampaign: approachScript.approachResult?.rateCampaign,
       called: approachScript.approachResult?.called,
       campaignScriptId: approachScript.id,

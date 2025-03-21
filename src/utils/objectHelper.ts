@@ -57,6 +57,7 @@ const transformToOptions = <T extends Omit<BaseOptionListDTO, 'active'>>(
   data.map((item) => ({
     label: combine ? `${item.code ?? item.id} - ${item.name}` : item.name,
     value: item.id as string,
+    code: item?.code,
   })) ?? [];
 
 const transformToF88Options = <T extends Omit<BaseOptionListDTO, 'active'>>(
