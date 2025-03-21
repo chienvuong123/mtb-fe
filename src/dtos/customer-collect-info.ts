@@ -17,7 +17,7 @@ export interface CustomerCollectInfoDTO {
   issueDate: string;
   jobCode: string;
   jobName: string;
-  averageMonthlyIncome: number;
+  averageMonthlyIncome?: number;
   incomeProofCode: string;
   incomeProofName: string;
   customerMaritalStatusCode: string;
@@ -39,8 +39,8 @@ export interface CustomerCollectInfoDTO {
   currentWardCode: string;
   currentWardName: string;
   currentAddressDetails: string;
-  loanMoney: number;
-  tenor: string;
+  loanMoney?: number;
+  tenor?: string;
   paymentMethod: string;
   assetCategoryCode: string;
   assetCategoryName: string;
