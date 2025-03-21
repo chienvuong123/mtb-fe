@@ -263,7 +263,6 @@ const permissionMatrix2: PermissionMatrix = {
   [ROUTES.MULTIMEDIA.ROOT]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
-    [ERole.SELLER_MANAGER]: true,
   },
 
   // Setting

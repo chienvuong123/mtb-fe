@@ -33,13 +33,13 @@ const MultimediaSearchForm: FC<CBaseSearch<MultimediaDTO>> = ({
         },
         {
           type: INPUT_TYPE.TEXT,
-          label: 'Mã',
+          label: 'Mã đa phương tiện',
           name: 'code',
           inputProps: { placeholder: 'Nhập...', maxLength: 20 },
         },
         {
           type: INPUT_TYPE.TEXT,
-          label: 'Tên',
+          label: 'Tên đa phương tiện',
           name: 'name',
           inputProps: { placeholder: 'Nhập...', maxLength: 100 },
         },
