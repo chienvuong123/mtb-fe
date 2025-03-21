@@ -6,13 +6,13 @@ import {
   type GetProps,
   type FormInstance,
 } from 'antd';
-import React, { useMemo, type FocusEvent } from 'react';
+import React, { useMemo } from 'react';
 
 import { AButton } from '@components/atoms';
 import { INPUT_TYPE, type TFormItem } from '@types';
 import clsx from 'clsx';
 import { PlusIcon } from '@assets/icons';
-import { formItemComponents, trimField, type FormItemComponent } from './util';
+import { formItemComponents, type FormItemComponent } from './util';
 import NativeTooltipFormItem from './NativeTooltipFormItem';
 
 interface IFormItemsProps {
@@ -41,19 +41,20 @@ const useFormItems = ({
       }) => {
         const { className, ...inputProps } = props ?? {};
 
-        const handleBlur = [INPUT_TYPE.TEXT, INPUT_TYPE.TEXT_AREA].includes(
-          type,
-        )
-          ? (e: FocusEvent<HTMLInputElement>) =>
-              trimField(e.target.value, fieldName, form)
-          : undefined;
+        // const handleBlur = [INPUT_TYPE.TEXT, INPUT_TYPE.TEXT_AREA].includes(
+        //   type,
+        // )
+        //   ? (e: FocusEvent<HTMLInputElement>) => {
+        //       if (typeof e.target.value !== 'undefined')
+        //         trimField(e.target.value, fieldName, form);
+        //     }
+        //   : undefined;
 
         if (!isViewMode) {
           const Component = formItemComponents[type] as FormItemComponent;
           return (
             <Component
               className={className}
-              onBlur={handleBlur}
               form={form}
               name={fieldName}
               {...inputProps}
@@ -69,7 +70,7 @@ const useFormItems = ({
             form={form}
             isViewMode={isViewMode}
             className={className}
-            handleBlur={handleBlur}
+            // handleBlur={handleBlur}
           />
         );
       },

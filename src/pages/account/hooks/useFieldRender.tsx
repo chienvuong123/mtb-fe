@@ -1,3 +1,7 @@
+import {
+  BLOCKING_NUMBER_PARTERN,
+  BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
+} from '@constants/regex';
 import { INPUT_TYPE, type TFormItem } from '@types';
 
 const useFieldRender = () => {
@@ -26,6 +30,8 @@ const useFieldRender = () => {
       name: 'fullName',
       inputProps: { placeholder: 'Nhập...' },
       colProps: { span: 8, className: 'fw-500' },
+      rules: [{ required: true }],
+      blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
     },
     {
       type: INPUT_TYPE.TEXT,
@@ -33,13 +39,22 @@ const useFieldRender = () => {
       name: 'email',
       inputProps: { placeholder: 'Nhập...' },
       colProps: { span: 8, className: 'fw-500' },
+      rules: [
+        { required: true },
+        { type: 'email', message: 'Định dạng email không hợp lệ' },
+      ],
     },
     {
       type: INPUT_TYPE.TEXT,
       label: 'Số điện thoại',
       name: 'phoneNum',
-      inputProps: { placeholder: 'Nhập...', type: 'number' },
+      inputProps: { placeholder: 'Nhập...', maxLength: 10 },
       colProps: { span: 8, className: 'fw-500' },
+      rules: [
+        { required: true },
+        { min: 10, message: 'Số điện thoại không hợp lệ' },
+      ],
+      blockingPattern: BLOCKING_NUMBER_PARTERN,
     },
     {
       type: INPUT_TYPE.TEXT,
@@ -50,6 +65,7 @@ const useFieldRender = () => {
         placeholder: 'Nhập...',
         readOnly: true,
         className: 'green',
+        disabled: true,
       },
       colProps: { span: 8, className: 'fw-500' },
     },

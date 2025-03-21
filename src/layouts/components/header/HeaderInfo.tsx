@@ -20,7 +20,7 @@ const MHeaderInfo: React.FC<IMHeaderInfo> = ({ itemsDropdown }) => {
       >
         <Flex gap={12} align="center">
           <Badge dot offset={[-5, 45]} color="green">
-            <Avatar>{user?.firstName?.charAt(0).toLocaleUpperCase()}</Avatar>
+            <Avatar>{user?.fullName?.charAt(0).toLocaleUpperCase()}</Avatar>
           </Badge>
 
           <Flex vertical>

@@ -3,11 +3,13 @@ import { userApi } from '@apis';
 import { useQuery } from '@tanstack/react-query';
 import { createBaseQueryHooks } from './baseQueries';
 
+export const USER_KEY = 'user';
+
 export const { useEditMutation: useUserEditMutation } = createBaseQueryHooks<
   UserDTO,
   UserRequest,
   UserViewResponse
->('user', userApi);
+>(USER_KEY, userApi);
 
 export const useUserInfoQuery = () => {
   return useQuery({
