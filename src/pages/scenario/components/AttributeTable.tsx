@@ -15,6 +15,8 @@ const columns: ColumnType<ApproachScriptAttributeDTO>[] = [
     title: 'Tên Attribute',
     dataIndex: 'attributeName',
     minWidth: 621,
+    render: (text: string) =>
+      text.length > 100 ? `${text.slice(0, 100)}...` : text,
   },
   {
     title: 'Control',
