@@ -74,7 +74,6 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
             },
             rules: [{ required: true }],
             blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
-            normalize: (value: string) => value.trim(),
           },
           {
             type: INPUT_TYPE.TEXT,

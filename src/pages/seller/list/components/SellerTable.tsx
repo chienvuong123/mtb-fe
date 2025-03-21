@@ -1,8 +1,13 @@
 import { OTable, type TColumnType } from '@components/organisms';
+import type { IModalConfirm } from '@components/organisms/o-modal';
 import type { SellerDTO } from '@dtos';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import { useState, type FC, type Key } from 'react';
+
+const confirmProps: IModalConfirm = {
+  title: 'Xoá Seller',
+};
 
 const columns: TColumnType<SellerDTO>[] = [
   {
@@ -104,6 +109,7 @@ const SellerTable: FC<CBaseTable<SellerDTO>> = ({
       onView={(id) => onView?.(id as string)}
       onSort={onSort}
       scroll={{ x: 1575 }}
+      confirmProps={confirmProps}
     />
   );
 };
