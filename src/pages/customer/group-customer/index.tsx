@@ -11,7 +11,7 @@ import type { TBaseTableSort, TFormType } from '@types';
 
 import { validateInsertCategory } from '@pages/category/utils';
 import Title from 'antd/lib/typography/Title';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { GroupCustomerDTO } from 'src/dtos/group-customer';
 import { useNotification } from '@libs/antd';
 import {
@@ -67,21 +67,17 @@ const GroupCustomerPage = () => {
 
   const handleClearAll = () => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({
-      campaignId: '',
-      nameCampaign: '',
-      categoryId: '',
-      nameCategory: '',
-      code: '',
-      name: '',
-    });
+    setFilters({});
   };
 
   const handleView = (id: string) => {
     const item = groupCustomerRes?.data.content.find((i) => i.id === id);
     if (item) {
       setDrawerMode('view');
-      setInitialValuesForm({ ...item });
+      setInitialValuesForm({
+        ...item,
+        categoryId: item.campaign.categoryCampaign?.id ?? '',
+      });
     }
   };
 
@@ -138,18 +134,6 @@ const GroupCustomerPage = () => {
     });
   };
 
-  const dataSources: GroupCustomerDTO[] =
-    useMemo(
-      () =>
-        groupCustomerRes?.data?.content?.map((i) => ({
-          ...i,
-          nameCampaign: i.campaign?.name ?? '',
-          nameCategory: i.category?.name ?? '',
-          categoryCode: i.category?.code ?? '',
-        })),
-      [groupCustomerRes],
-    ) ?? [];
-
   const paginations: IMPagination = {
     pagination: {
       ...pagination,
@@ -188,7 +172,7 @@ const GroupCustomerPage = () => {
       />
       <div className="mt-24" />
       <GroupCustomerTable
-        dataSource={dataSources}
+        dataSource={groupCustomerRes?.data?.content ?? []}
         paginations={paginations}
         sortDirection={sort}
         onView={handleView}
