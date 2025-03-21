@@ -20,7 +20,7 @@ const AAutoCompleteCurrency: React.FC<IAutoComplete> = ({
   };
 
   const handleSearch = (value: string) => {
-    if (Number(value) === 0) {
+    if (!(Number(value.replace(/\./g, '')) > 0)) {
       setOptions([]);
       handleSelect('');
       return;
