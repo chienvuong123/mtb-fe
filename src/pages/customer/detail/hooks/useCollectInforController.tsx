@@ -736,9 +736,9 @@ export const useCollectInforController = (opened?: boolean) => {
             type: 'success',
             message: 'Check hạn mức thành công',
           });
-        });
-        queryClient.invalidateQueries({
-          queryKey: [CUSTOMER_KEY, 'draft-loan-limit', customerId],
+          queryClient.invalidateQueries({
+            queryKey: [CUSTOMER_KEY, 'draft-loan-limit', customerId],
+          });
         });
       },
     });

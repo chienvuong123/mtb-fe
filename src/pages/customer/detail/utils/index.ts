@@ -20,7 +20,7 @@ const formatAddressString = (
 };
 
 const formatCurrencyToNumber = (value?: string | number) =>
-  value ? Number(value.toString().replace(/\./g, '')) : 0;
+  value ? Number(value.toString().replace(/\./g, '')) : undefined;
 
 const parseNumberToCurrency = (value?: string | number) =>
   value ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : value;
