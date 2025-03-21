@@ -4,27 +4,6 @@ import type {
   RefetchOptions,
 } from '@tanstack/react-query';
 import { downloadFile } from '@utils/fileHelper';
-import type { TCustomerSearchForm } from './customer.type';
-
-export const parseCustomerObj = ({
-  cusGroup,
-  ...values
-}: Partial<CustomerDTO>) => {
-  return {
-    cusGroup: cusGroup?.split(','),
-    ...values,
-  };
-};
-
-export const stringifyCustomerObj = ({
-  cusGroup,
-  ...values
-}: Partial<TCustomerSearchForm>) => {
-  return {
-    cusGroup: cusGroup?.join(','),
-    ...values,
-  };
-};
 
 export const destructCustomerData = (
   {

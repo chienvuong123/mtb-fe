@@ -13,14 +13,12 @@ import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import { useProfile } from '@stores';
 import { getValueFromEvent, handleResetFields } from '@utils/formHelper';
 import { ROUTES } from '@routers/path';
-import { parseCustomerObj } from '../customerHelper';
-import type { TCustomerSearchForm } from '../customer.type';
 
 const handleGetValueFromEvent = (e: React.ChangeEvent<HTMLInputElement>) =>
   getValueFromEvent(e?.target?.value ?? e, BLOCKING_NUMBER_PARTERN);
 
 const CustomerSearchForm: FC<
-  CBaseSearch<CustomerDTO, TCustomerSearchForm> & {
+  CBaseSearch<CustomerDTO> & {
     onDeleteAll?: () => void;
   }
 > = ({ initialValues, onSearch, onClearAll, onCreate, onDeleteAll }) => {
@@ -186,13 +184,13 @@ const CustomerSearchForm: FC<
 
   useEffect(() => {
     if (initialValues) {
-      form.setFieldsValue(parseCustomerObj(initialValues));
+      form.setFieldsValue(initialValues);
     }
   }, [initialValues, form]);
 
   return (
     <div>
-      <OSearchBaseForm<TCustomerSearchForm>
+      <OSearchBaseForm<CustomerDTO>
         items={items}
         form={form}
         onSearch={onSearch}

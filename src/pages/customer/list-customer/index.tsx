@@ -44,11 +44,9 @@ import {
   CustomerSearchForm,
   CustomerViewForm,
 } from './components';
-import type { TCustomerSearchForm } from './customer.type';
 import {
   destructCustomerData,
   downloadFileByGetMethod,
-  stringifyCustomerObj,
 } from './customerHelper';
 import { GroupCustomerInsertForm } from '../group-customer/components';
 
@@ -155,9 +153,9 @@ const ListCustomerPage: FC = () => {
     setCustomerId(id);
   };
 
-  const handleSearch = (values: Partial<TCustomerSearchForm>) => {
+  const handleSearch = (values: Partial<CustomerDTO>) => {
     setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters(filterObject(stringifyCustomerObj(values)));
+    setFilters(filterObject(values));
   };
   const handlePaginationChange = (data: TPagination) => {
     setPagination({
