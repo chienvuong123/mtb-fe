@@ -277,7 +277,7 @@ const CampaignCreate: React.FC = () => {
       content: (
         <CategoryInsertForm
           key={drawerMode ?? 'view'}
-          mode={drawerMode ? 'view' : 'add'}
+          mode={drawerMode === 'view' ? 'view' : 'add'}
           onClose={handleCloseForm}
           onSubmit={handleSubmitInsertCategory}
           isDisabled={false}

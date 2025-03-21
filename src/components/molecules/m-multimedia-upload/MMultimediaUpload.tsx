@@ -39,7 +39,9 @@ const mediaTypeComponents: Record<EMediaType, FC> = {
   AUDIO: ((props: AudioPlayerProps) => (
     <AAudioPlayer style={{ width: '60%' }} {...props} />
   )) as FC,
-  VIDEO: ((props: VideoPlayerProps) => <AVideoPlayer {...props} />) as FC,
+  VIDEO: ((props: VideoPlayerProps) => (
+    <AVideoPlayer style={{ width: '80%' }} {...props} />
+  )) as FC,
   DOCUMENT: (({ src, name = 'file' }: { name: string; src?: string }) => (
     <Typography.Text
       className="text-main1 ml-8 cursor-pointer"
