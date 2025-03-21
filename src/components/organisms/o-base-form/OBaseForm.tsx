@@ -2,6 +2,7 @@ import {
   type ButtonProps,
   Divider,
   Flex,
+  type FlexProps,
   Form,
   type FormInstance,
   Typography,
@@ -32,6 +33,8 @@ interface IOBaseForm<T> {
   disabledSubmit?: boolean;
   children?: React.ReactNode;
   saveBtnProps?: ButtonProps;
+  cancelBtnProps?: ButtonProps;
+  footerProps?: Omit<FlexProps, 'children'>;
 }
 
 const OBaseForm = <T extends object>({
@@ -45,6 +48,8 @@ const OBaseForm = <T extends object>({
   disabledSubmit,
   children,
   saveBtnProps,
+  cancelBtnProps,
+  footerProps,
 }: IOBaseForm<T>) => {
   const isMutating = useDebounceMutating({ mutationKey: [mutationKey] });
 
@@ -119,24 +124,34 @@ const OBaseForm = <T extends object>({
 
         <div className="w-full btn-group bg-white" hidden={isViewMode}>
           <Divider className="ma-0" />
-          <Flex justify="center" className="py-16 w-full" gap="middle">
-            <AButton
-              onClick={handleClear}
-              variant="filled"
-              color="primary"
-              data-testid="cancel-button"
-            >
-              {BUTTON_TEXT.CANCEL}
-            </AButton>
-            <AButton
-              type="primary"
-              htmlType="submit"
-              data-testid="submit-button"
-              disabled={disabledSubmit ?? isMutating}
-              {...saveBtnProps}
-            >
-              {BUTTON_TEXT.SAVE}
-            </AButton>
+          <Flex
+            justify="center"
+            className="py-16 w-full"
+            gap="middle"
+            {...footerProps}
+          >
+            {!cancelBtnProps?.hidden && (
+              <AButton
+                onClick={handleClear}
+                variant="filled"
+                color="primary"
+                data-testid="cancel-button"
+                {...cancelBtnProps}
+              >
+                {BUTTON_TEXT.CANCEL}
+              </AButton>
+            )}
+            {!saveBtnProps?.hidden && (
+              <AButton
+                type="primary"
+                htmlType="submit"
+                data-testid="submit-button"
+                disabled={disabledSubmit ?? isMutating}
+                {...saveBtnProps}
+              >
+                {BUTTON_TEXT.SAVE}
+              </AButton>
+            )}
           </Flex>
         </div>
       </div>

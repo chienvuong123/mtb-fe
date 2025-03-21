@@ -1,9 +1,11 @@
 .account-page {
-  .account-form {
+  .o-base-form {
     display: flex;
     flex-direction: column;
-  }
-  .divider-bottom {
-    margin: 0 !important;
+    justify-content: space-between;
+    height: 95%;
+    .form-wrapper {
+      min-height: 100%;
+    }
   }
 }
