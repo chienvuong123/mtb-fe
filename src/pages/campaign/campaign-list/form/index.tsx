@@ -331,7 +331,7 @@ const CampaignCreate: React.FC = () => {
       </Title>
       <Flex
         vertical
-        className="no-resize border-2 rounded-8 border-gray-border bg-white px-24"
+        className="no-resize border-2 rounded-8 border-gray-border bg-white"
       >
         <CampaignInsertForm
           initialValues={dataSourcesDetail}
@@ -339,7 +339,9 @@ const CampaignCreate: React.FC = () => {
           form={form}
           onShowForm={handleShowForm}
         />
-        <Divider className="mt-24 mb-0" />
+        <div className="px-24">
+          <Divider className="my-0" />
+        </div>
         <CampaignTargetDetailTable
           dataSource={initTargetValues}
           onEdit={handleTargetEdit}

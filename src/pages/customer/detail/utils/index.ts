@@ -172,6 +172,7 @@ export const mapDraftToFormData = (dto: CustomerCollectInfoDTO) => {
     averageDebitMonth: dto.averageDebitMonth?.toString(),
     loanMoney: parseNumberToCurrency(dto.loanMoney),
     averageMonthlyIncome: parseNumberToCurrency(dto.averageMonthlyIncome),
+    nearestF88BranchAddress: dto.nearestF88BranchAddress,
   };
 };
 

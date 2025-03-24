@@ -75,7 +75,7 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
   });
 
   return (
-    <div className="py-16">
+    <div className="py-16 px-24">
       <Flex justify="between" className=" items-center mb-16" gap="middle">
         <Typography.Text className="fs-14 fw-500">Mục tiêu</Typography.Text>
         {!hideAddButton && (
