@@ -596,6 +596,16 @@ export const useCollectInforController = (opened?: boolean) => {
         },
         rules: [{ required: true }],
       },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Địa chỉ giao dịch F88 gần nhất',
+        name: 'nearestF88BranchAddress',
+        inputProps: {
+          placeholder: 'Nhập...',
+          maxLength: 200,
+        },
+        rules: [{ required: true }],
+      },
     ];
 
     return {

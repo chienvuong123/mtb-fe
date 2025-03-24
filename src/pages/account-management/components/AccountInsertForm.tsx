@@ -1,4 +1,3 @@
-import { ACCOUNT_MANAGEMENT_KEY } from '@apis';
 import { OBaseForm } from '@components/organisms';
 import { ERole, STATUS_OPTIONS_WITHOUT_ALL } from '@constants/masterData';
 import {
@@ -6,7 +5,10 @@ import {
   BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
 } from '@constants/regex';
 import { CategoryType, type UserDTO } from '@dtos';
-import { useCategoryOptionsListQuery } from '@hooks/queries';
+import {
+  ACCOUNT_MANAGEMENT_KEY,
+  useCategoryOptionsListQuery,
+} from '@hooks/queries';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import clsx from 'clsx';
@@ -45,6 +47,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               maxLength: 20,
               placeholder: 'Nhập...',
             },
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -54,6 +57,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               placeholder: 'Nhập...',
             },
             rules: [{ required: true }],
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -65,6 +69,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
             },
             rules: [{ required: true }],
             blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -78,6 +83,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               { required: true },
               { type: 'email', message: 'Email không hợp lệ' },
             ],
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -92,6 +98,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               { min: 10, message: 'Số điện thoại không hợp lệ' },
             ],
             blockingPattern: BLOCKING_NUMBER_PARTERN,
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.SELECT,
@@ -107,6 +114,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               placeholder: 'Chọn...',
             },
             rules: [{ required: true }],
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.SELECT,
@@ -118,6 +126,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               placeholder: 'Chọn...',
             },
             rules: [{ required: true }],
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.SELECT,
@@ -129,6 +138,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               filterOption: true,
               placeholder: 'Chọn...',
             },
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.SELECT,
@@ -140,6 +150,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               filterOption: true,
               placeholder: 'Chọn...',
             },
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.SELECT,
@@ -151,6 +162,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               filterOption: true,
               placeholder: 'Chọn...',
             },
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -161,6 +173,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               name: 'createdBy',
               placeholder: 'Nhập...',
             },
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -171,6 +184,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               name: 'createdDate',
               placeholder: 'Chọn ngày...',
             },
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -181,6 +195,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               name: 'updatedBy',
               placeholder: 'Nhập...',
             },
+            colProps: { span: 12 },
           },
           {
             type: INPUT_TYPE.TEXT,
@@ -191,6 +206,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
               name: 'updatedDate',
               placeholder: 'Chọn ngày...',
             },
+            colProps: { span: 12 },
           },
         ] as TFormItem[]
       ).map((i) => {

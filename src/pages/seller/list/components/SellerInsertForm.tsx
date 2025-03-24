@@ -1,4 +1,3 @@
-import { ACCOUNT_MANAGEMENT_KEY } from '@apis';
 import { OBaseForm } from '@components/organisms';
 import { ERole, STATUS_OPTIONS } from '@constants/masterData';
 import {
@@ -8,7 +7,10 @@ import {
   BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
 } from '@constants/regex';
 import { CategoryType, type UserDTO } from '@dtos';
-import { useCategoryOptionsListQuery } from '@hooks/queries';
+import {
+  ACCOUNT_MANAGEMENT_KEY,
+  useCategoryOptionsListQuery,
+} from '@hooks/queries';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
 import clsx from 'clsx';
