@@ -1,5 +1,5 @@
 import Title from 'antd/lib/typography/Title';
-import { Flex, type NotificationArgsProps } from 'antd';
+import { Divider, Flex, type NotificationArgsProps } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { AButton } from '@components/atoms';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -135,6 +135,7 @@ const CampaignCreate: React.FC = () => {
 
     const data = {
       ...valueSearchForm,
+      name: valueSearchForm?.name?.trim(),
       targets: handleUpdateId(initTargetValues),
       campaignScripts: handleUpdateId(initApproachValues),
     };
@@ -330,7 +331,7 @@ const CampaignCreate: React.FC = () => {
       </Title>
       <Flex
         vertical
-        className="no-resize border-2 rounded-8 border-gray-border bg-white"
+        className="no-resize border-2 rounded-8 border-gray-border bg-white px-24"
       >
         <CampaignInsertForm
           initialValues={dataSourcesDetail}
@@ -338,7 +339,7 @@ const CampaignCreate: React.FC = () => {
           form={form}
           onShowForm={handleShowForm}
         />
-        <hr className="border-t border-[#EAEAEA] mx-40" />
+        <Divider className="mt-24 mb-0" />
         <CampaignTargetDetailTable
           dataSource={initTargetValues}
           onEdit={handleTargetEdit}

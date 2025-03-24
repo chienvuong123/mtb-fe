@@ -1,5 +1,5 @@
 import Title from 'antd/lib/typography/Title';
-import { Flex } from 'antd';
+import { Divider, Flex } from 'antd';
 import { AButton } from '@components/atoms';
 import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -59,16 +59,16 @@ const ManagerCampaignDetail: React.FC = () => {
           isDisabled
           form={form}
         />
-        <hr className="border-t border-[#EAEAEA] mx-40" />
+        <Divider className="border-t mx-40" />
         <CampaignTargetDetailTable
           dataSource={campaignDetailData.targets || []}
-          showAddButton
+          hideAddButton
         />
       </Flex>
       <div className="mb-24" />
       <CampaignApproachDetailTable
         dataSource={campaignDetailData.campaignScript || []}
-        showAddButton
+        hideAddButton
       />
       <div className="fixed bottom-0 left-0 w-full bg-white shadow-md z-10 mt-20 py-10 px-4">
         <Flex justify="between" className="py-4 w-full px-6" gap="middle">

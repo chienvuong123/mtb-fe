@@ -1,8 +1,7 @@
 import { OTable } from '@components/organisms';
 import { AButton } from '@components/atoms';
-import { Flex } from 'antd';
+import { Flex, Typography } from 'antd';
 import type { ColumnType } from 'antd/es/table';
-import Title from 'antd/lib/typography/Title';
 import React, { useState, type Key } from 'react';
 import { CategoryType, type CampaignTargetDTO } from '@dtos';
 import type { CBaseTable } from '@types';
@@ -15,39 +14,40 @@ const BUTTON_TEXT = {
 export interface ICampaignTargetDetailTable
   extends CBaseTable<CampaignTargetDTO> {
   onShowTargetForm?: () => void;
-  showAddButton?: boolean;
+  hideAddButton?: boolean;
 }
+
+const handleSort = (a?: string, b?: string) =>
+  a && b ? a.localeCompare(b) : 0;
 
 const columns: ColumnType<CampaignTargetDTO>[] = [
   {
     title: 'Tên mục tiêu',
     dataIndex: 'name',
     minWidth: 213,
-    sorter: true,
+    sorter: (a, b) => handleSort(a.name, b.name),
     showSorterTooltip: false,
   },
   {
     title: 'Giá trị mục tiêu',
     dataIndex: 'value',
     minWidth: 213,
-    sorter: true,
+    sorter: (a, b) => handleSort(a.value, b.value),
     showSorterTooltip: false,
   },
   {
     title: 'Đơn vị',
-    dataIndex: 'unit',
+    dataIndex: 'unitName',
     minWidth: 213,
-    sorter: true,
+    width: 213,
     showSorterTooltip: false,
-    render: (_, record) => {
-      return record.unitName;
-    },
+    sorter: (a, b) => handleSort(a.unitName, b.unitName),
   },
 ];
 
 const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
   dataSource,
-  showAddButton,
+  hideAddButton,
   onDelete,
   onEdit,
   onShowTargetForm,
@@ -75,12 +75,10 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
   });
 
   return (
-    <div className="px-40 py-28">
-      <Flex justify="between" className=" items-center mb-4" gap="middle">
-        <Title level={4} className="mb-24">
-          Mục tiêu
-        </Title>
-        {!showAddButton && (
+    <div className="py-16">
+      <Flex justify="between" className=" items-center mb-16" gap="middle">
+        <Typography.Text className="fs-14 fw-500">Mục tiêu</Typography.Text>
+        {!hideAddButton && (
           <AButton
             onClick={onShowTargetForm}
             type="primary"
@@ -97,10 +95,12 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
         data={mappedDataSource}
         onEdit={onEdit}
         onDeleteRow={deleteRecord}
-        isCheckboxHidden={showAddButton}
-        hideActions={showAddButton}
+        isCheckboxHidden
+        hideActions={hideAddButton}
         selectedRowKeys={selectedRowKeys}
         setSelectedRowKeys={setSelectedRowKeys}
+        confirmProps={{ title: 'Xoá mục tiêu' }}
+        scroll={{ x: 1400 }}
       />
     </div>
   );

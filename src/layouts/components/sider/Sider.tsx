@@ -71,7 +71,7 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
     setSelectedKey([pathname]);
     setOpenKeys([getFirstPathname(pathname)]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [pathname]);
 
   return (
     <div className="pos-relative">
