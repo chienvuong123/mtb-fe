@@ -1,6 +1,6 @@
 import Title from 'antd/lib/typography/Title';
 import { ROUTES } from '@routers/path';
-import { Flex, type NotificationArgsProps } from 'antd';
+import { Divider, Flex, type NotificationArgsProps } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { AButton } from '@components/atoms';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -135,6 +135,7 @@ const CampaignCopyPage: React.FC = () => {
       ...valueSearchForm,
       code: null,
       id: null,
+      name: valueSearchForm?.name?.trim(),
       targets: handleUpdateId(initTargetValues, true),
       campaignScripts: handleUpdateId(initApproachValues, true),
     };
@@ -303,7 +304,7 @@ const CampaignCopyPage: React.FC = () => {
       </Title>
       <Flex
         vertical
-        className="no-resize border-2 rounded-8 border-gray-border bg-white"
+        className="no-resize border-2 rounded-8 border-gray-border bg-white px-24"
       >
         <CampaignInsertForm
           initialValues={dataSourcesDetail}
@@ -311,7 +312,7 @@ const CampaignCopyPage: React.FC = () => {
           form={form}
           onShowForm={handleShowForm}
         />
-        <hr className="border-t border-[#EAEAEA] mx-40" />
+        <Divider className="mt-24 mb-0" />
         <CampaignTargetDetailTable
           dataSource={initTargetValues}
           onEdit={handleTargetEdit}

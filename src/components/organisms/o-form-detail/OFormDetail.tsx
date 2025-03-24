@@ -70,7 +70,7 @@ const OFormDetail = <T extends object>({
       className={clsx('o-form-detail', className)}
     >
       <div className="o-form-detail pos-relative">
-        <div className="form-wrapper px-40 py-28" data-testid="form-content">
+        <div className="form-wrapper py-28" data-testid="form-content">
           {formContent}
         </div>
 

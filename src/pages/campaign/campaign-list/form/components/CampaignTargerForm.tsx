@@ -28,6 +28,7 @@ const CampaignTargetForm: FC<ICampaignTargetForm> = ({
           label: 'Tên mục tiêu',
           inputProps: {
             placeholder: 'Chọn...',
+            maxLength: 50,
           },
           name: 'name',
           colProps: { span: 12 },

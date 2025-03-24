@@ -6,7 +6,7 @@ import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import type { ColumnType } from 'antd/lib/table';
 import dayjs from 'dayjs';
-import React, { useState, type Key } from 'react';
+import React, { useMemo, useState, type Key } from 'react';
 import type { CampaignDTO } from 'src/dtos/campaign';
 
 const columns: ColumnType<CampaignDTO>[] = [
@@ -99,9 +99,21 @@ const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
     onDelete?.(key as string);
   };
 
+  const blockingEditIds = useMemo(() => {
+    if (dataSource?.length) {
+      const ids: string[] = [];
+      dataSource.forEach((i) => {
+        if (i.status === EStatusCampaign.ENDED) ids.push(i.id);
+      });
+      return ids;
+    }
+    return [];
+  }, [dataSource]);
+
   return (
     <OTable<CampaignDTO>
       rowKey="id"
+      isCheckboxHidden
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
@@ -116,6 +128,7 @@ const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
       scroll={{ x: 1575 }}
       onView={(id) => onView?.(id as string)}
       onSort={onSort}
+      blockingEditIds={blockingEditIds}
     />
   );
 };

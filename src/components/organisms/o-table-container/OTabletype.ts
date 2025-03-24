@@ -67,6 +67,8 @@ export interface ITable<T> extends TableProps<T> {
   sortDirection?: OrderDTO;
   confirmProps?: IModalConfirm;
   isCheckboxHidden?: boolean;
+  blockingEditIds?: string[];
+  blockingDeleteIds?: string[];
   onEdit?: (record: T) => void;
   onDeleteRow?: (key: Key) => void;
   setSelectedRowKeys?: React.Dispatch<React.SetStateAction<string[]>>;

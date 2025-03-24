@@ -4,7 +4,7 @@ import { EStatus, STATUS_OBJECT_STATIC } from '@constants/masterData';
 import type { CategoryDTO } from '@dtos';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
-import { useState, type FC, type Key } from 'react';
+import { useMemo, useState, type FC, type Key } from 'react';
 import type { UserDTO } from 'src/dtos/auth';
 
 const confirmProps: IModalConfirm = {
@@ -104,6 +104,17 @@ const AccountTable: FC<CBaseTable<TAccountManagementRecord>> = ({
 
   const { isAdmin, isCampaignManager } = useProfile();
 
+  const blockingIds = useMemo(() => {
+    if (dataSource?.length) {
+      const ids: string[] = [];
+      dataSource.forEach((i) => {
+        if (i.status === EStatus.INACTIVE && i.id) ids.push(i.id);
+      });
+      return ids;
+    }
+    return [];
+  }, [dataSource]);
+
   return (
     <OTable<TAccountManagementRecord>
       rowKey="id"
@@ -120,6 +131,8 @@ const AccountTable: FC<CBaseTable<TAccountManagementRecord>> = ({
       onSort={onSort}
       scroll={{ x: 1300 }}
       confirmProps={confirmProps}
+      blockingDeleteIds={blockingIds}
+      blockingEditIds={blockingIds}
     />
   );
 };

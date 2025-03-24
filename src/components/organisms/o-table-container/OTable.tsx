@@ -29,6 +29,8 @@ const OTable = <T extends object>({
   isCheckboxHidden,
   rowKey,
   rowSelection,
+  blockingEditIds,
+  blockingDeleteIds,
   tableRowKey,
   onEdit,
   onDeleteRow,
@@ -106,16 +108,22 @@ const OTable = <T extends object>({
                       rowKey={rowKey}
                       record={record}
                       editable={false}
-                      onEdit={onEdit}
+                      onEdit={
+                        blockingEditIds?.includes(record[rowKey] as string)
+                          ? undefined
+                          : onEdit
+                      }
                       onView={onView}
                       onCall={onCall}
                       onList={onList}
                       onDelete={
                         onDeleteRow &&
-                        ((key: Key) => {
-                          setRecordKey(key);
-                          setShowModal(true);
-                        })
+                        !blockingDeleteIds?.includes(record[rowKey] as string)
+                          ? (key: Key) => {
+                              setRecordKey(key);
+                              setShowModal(true);
+                            }
+                          : undefined
                       }
                       editingKey={null}
                     />
@@ -135,6 +143,8 @@ const OTable = <T extends object>({
     paginations,
     hideIndexColumn,
     rowKey,
+    blockingEditIds,
+    blockingDeleteIds,
     onDeleteRow,
     onEdit,
     onView,
