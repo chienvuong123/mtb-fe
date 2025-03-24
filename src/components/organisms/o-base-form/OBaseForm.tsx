@@ -11,7 +11,7 @@ import { trimObjectValues } from '@utils/objectHelper';
 import { AButton } from '@components/atoms';
 import { useFormItems, useDebounceMutating } from '@hooks';
 import type { TFormItem } from '@types';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
 import './styles.scss';
@@ -99,14 +99,15 @@ const OBaseForm = <T extends object>({
     isViewMode,
   });
 
-  const handleClear = () => {
-    onClose?.();
-    form.resetFields();
-  };
-
   const handleSubmit = (values: T) => {
     onSubmit?.(trimObjectValues(values));
   };
+
+  useEffect(() => {
+    return () => {
+      form.resetFields();
+    };
+  }, [form]);
 
   return (
     <Form
@@ -132,7 +133,7 @@ const OBaseForm = <T extends object>({
           >
             {!cancelBtnProps?.hidden && (
               <AButton
-                onClick={handleClear}
+                onClick={onClose}
                 variant="filled"
                 color="primary"
                 data-testid="cancel-button"

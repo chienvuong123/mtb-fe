@@ -21,6 +21,7 @@ import {
   Row,
   theme,
   Typography,
+  Modal,
 } from 'antd';
 import { ArrowDown01RoundIcon, PlusIcon, TrashIcon } from '@assets/icons';
 import AttributeItem from '@components/organisms/o-scenario-script-container/components/AttributeItem';
@@ -297,13 +298,22 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
           ?.label || '',
     });
   };
+  const handleCancel = () => {
+    Modal.confirm({
+      title: 'Xác nhận hủy',
+      content:
+        'Bạn có chắc chắn muốn hủy? Tất cả các thay đổi sẽ không được lưu.',
+      okText: 'Tiếp tục',
+      cancelText: 'Hủy',
+      onOk: onClose,
+    });
+  };
 
   useEffect(() => {
-    if (initialValues) {
-      form.resetFields();
+    if (initialValues && (mode === 'edit' || mode === 'view')) {
       form.setFieldsValue({ ...initialValues });
     }
-  }, [initialValues, form]);
+  }, [initialValues, form, mode]);
 
   useEffect(() => {
     if (
@@ -317,6 +327,7 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
       }
     }
   }, [controlType, form]);
+
   const { token } = theme.useToken();
 
   const attributeItems = [
@@ -358,7 +369,7 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
             items={items as TFormItem[]}
             form={form}
             onSubmit={handleSubmit}
-            onClose={onClose}
+            onClose={handleCancel}
             isViewMode={mode === 'view'}
           />
         </Col>
