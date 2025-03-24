@@ -68,6 +68,7 @@ export interface CustomerCollectInfoDTO {
   branchOfPartner?: string;
   expireDate?: string;
   finalMaxLoan?: string;
+  nearestF88BranchAddress: string;
 }
 
 export interface CustomerCollectFormDTO {
@@ -123,6 +124,7 @@ export interface CustomerCollectFormDTO {
   loanMoney: number;
   paymentMethod: string;
   tenor: string;
+  nearestF88BranchAddress: string;
 }
 
 // export interface CustomerSearchRequest extends BaseSearchParams {

@@ -143,6 +143,7 @@ export const mapFormDataToDTO = (
     appDate: dayjs(formData.appDate).format(DATE_SLASH_FORMAT_DDMMYYYY),
     averageMonthlyIncome: formatCurrencyToNumber(formData.averageMonthlyIncome),
     loanMoney: formatCurrencyToNumber(formData.loanMoney),
+    nearestF88BranchAddress: formData.nearestF88BranchAddress,
   };
 };
 

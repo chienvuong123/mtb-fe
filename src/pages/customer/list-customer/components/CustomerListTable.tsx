@@ -109,6 +109,7 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
         sorter: true,
         showSorterTooltip: false,
         sortFieldName: 'priority',
+        render: (text) => text ?? 'Chưa liên hệ',
       },
     ];
     return columnsTable;

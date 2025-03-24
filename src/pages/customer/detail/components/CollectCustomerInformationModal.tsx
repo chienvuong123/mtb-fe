@@ -3,6 +3,8 @@ import { ACollapseForm } from '@components/atoms/a-collapse-form';
 import { Flex, Form, Modal } from 'antd';
 import { type FC } from 'react';
 import './CollectCustomerInformationModal.scss';
+import { useIsMutating } from '@tanstack/react-query';
+import { CUSTOMER_KEY } from '@hooks/queries';
 import { CollectInfoForm } from './CollectInfoForm';
 import { LimitLoanAmountCard } from './LimitLoanAmountCard';
 import { useCollectInforController } from '../hooks/useCollectInforController';
@@ -34,6 +36,8 @@ const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
     onCancel();
   };
 
+  const mutating = useIsMutating({ mutationKey: [CUSTOMER_KEY] });
+
   return (
     <Modal
       className="collect-customer-information-modal"
@@ -47,10 +51,19 @@ const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
             Đóng
           </AButton>
           <Flex gap={14}>
-            <AButton color="primary" variant="filled" onClick={saveDraft}>
+            <AButton
+              color="primary"
+              variant="filled"
+              onClick={saveDraft}
+              loading={mutating > 0}
+            >
               Lưu nháp
             </AButton>
-            <AButton type="primary" onClick={checkLoanLimit}>
+            <AButton
+              type="primary"
+              onClick={checkLoanLimit}
+              loading={mutating > 0}
+            >
               Check hạn mức
             </AButton>
             <AButton
