@@ -2,6 +2,7 @@ import { OTable, type ITable } from '@components/organisms';
 import type { ApproachScriptAttributeDTO } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import { type FC, type Key } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface IAttributeTable {
   dataSource: ApproachScriptAttributeDTO[];
@@ -31,6 +32,9 @@ const AttributeTable: FC<IAttributeTable> = ({
   onDelete,
   onView,
 }) => {
+  const location = useLocation();
+  const isViewMode = location.pathname.includes('/detail/');
+
   const deleteRecord = (key: Key) => {
     onDelete(key as string);
   };
@@ -40,8 +44,8 @@ const AttributeTable: FC<IAttributeTable> = ({
       rowKey="id"
       columns={columns}
       data={dataSource}
-      onDeleteRow={deleteRecord}
-      onEdit={onEdit}
+      onDeleteRow={isViewMode ? undefined : deleteRecord}
+      onEdit={isViewMode ? undefined : onEdit}
       onView={(id) => onView?.(id as string)}
       isCheckboxHidden
       confirmProps={{

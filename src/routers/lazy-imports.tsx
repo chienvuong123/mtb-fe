@@ -109,6 +109,9 @@ export const ScenarioEditPage = React.lazy(
 export const ScenarioDetailPage = React.lazy(
   () => import('@pages/scenario/detail'),
 );
+export const ScenarioPreviewPage = React.lazy(
+  () => import('@pages/scenario/preview'),
+);
 
 // ====================== SELLER PAGES ======================
 export const SellerListPage = React.lazy(() => import('@pages/seller/list'));
@@ -200,6 +203,7 @@ export const ScenarioPages = {
   ScenarioCreatePage,
   ScenarioEditPage,
   ScenarioDetailPage,
+  ScenarioPreviewPage,
 };
 
 export const SellerPages = {

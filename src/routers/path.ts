@@ -23,6 +23,7 @@ export const PATH_SEGMENT = {
   EDIT: 'edit',
   DELETE: 'delete',
   COPY: 'copy',
+  PREVIEW: 'preview',
   // Seller
   ASSIGNMENT: 'assignment',
   MANAGEMENT: 'management',
