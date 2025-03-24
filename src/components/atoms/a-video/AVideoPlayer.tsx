@@ -4,6 +4,7 @@ import React, { type VideoHTMLAttributes } from 'react';
 export interface VideoPlayerProps
   extends GetProps<VideoHTMLAttributes<HTMLVideoElement>> {
   src: string;
+  name?: string;
 }
 
 const AVideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -12,7 +13,7 @@ const AVideoPlayer: React.FC<VideoPlayerProps> = ({
   ...props
 }) => {
   return (
-    <video controls={controls} {...props}>
+    <video controls={controls} controlsList="nodownload" {...props}>
       <source src={src} />
       <track kind="captions" src="" label="Captions" />
     </video>

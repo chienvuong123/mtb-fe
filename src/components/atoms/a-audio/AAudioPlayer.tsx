@@ -12,7 +12,7 @@ const AAudioPlayer: React.FC<AudioPlayerProps> = ({
   ...props
 }) => {
   return (
-    <audio controls={controls} {...props}>
+    <audio controls={controls} controlsList="nodownload" {...props}>
       <source src={src} />
       <track kind="captions" src="" label="Captions" />
     </audio>

@@ -177,7 +177,7 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
     pagination: {
       current,
       pageSize,
-      total: 1,
+      total: multimediaRes?.data?.total ?? 0,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
@@ -241,6 +241,7 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
       >
         {drawerMode && (
           <GenericMultimediaForm
+            title={title}
             mediaType={mediaType}
             mode={drawerMode}
             onClose={handleCloseForm}
