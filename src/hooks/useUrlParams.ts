@@ -11,6 +11,7 @@ type TInitSort<T> = {
 
 type TInitFilters<T> = {
   initSort?: TInitSort<T>;
+  initFilters?: T;
 };
 
 const useUrlParams = <T>(props?: TInitFilters<T>) => {
@@ -32,7 +33,10 @@ const useUrlParams = <T>(props?: TInitFilters<T>) => {
     field,
     direction,
   });
-  const [filters, setFilters] = useState<T>((initFilters ?? {}) as T);
+  const [filters, setFilters] = useState<T>({
+    ...(props?.initFilters ?? {}),
+    ...(initFilters ?? {}),
+  } as T);
 
   const setFilter = useCallback(
     (key: keyof T, value: T[keyof T]) => {

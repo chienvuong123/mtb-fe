@@ -30,6 +30,9 @@ const ScenarioPage: FC = () => {
         field: 'code',
         direction: 'asc',
       },
+      initFilters: {
+        status: EStatus.ACTIVE,
+      },
     });
 
   const notify = useNotification();
