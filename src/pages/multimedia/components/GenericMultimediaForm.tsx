@@ -3,7 +3,7 @@ import {
   ACCEPTING_FULL_ALPHA_NUMERIC_PATTERN,
   ACCEPTING_NUMBER_SPACE_COMMA_PATTERN,
 } from '@constants/regex';
-import type { EMediaType, MultimediaDTO } from '@dtos';
+import { EMediaType, type MultimediaDTO } from '@dtos';
 import { MULTIMEDIA_CATEGORY_KEY, useQueryCategoryList } from '@hooks/queries';
 import { useIsFetching } from '@tanstack/react-query';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
@@ -15,8 +15,17 @@ const MultimediaInsertForm: FC<
   CBaseForm<MultimediaDTO> & {
     previewSrc?: { url?: string; filename: string };
     mediaType: EMediaType;
+    title?: string;
   }
-> = ({ onClose, onSubmit, initialValues, mode, previewSrc, mediaType }) => {
+> = ({
+  onClose,
+  onSubmit,
+  initialValues,
+  mode,
+  previewSrc,
+  mediaType,
+  title,
+}) => {
   const [form] = useForm<MultimediaDTO>();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { data: categoryList } = useQueryCategoryList(true);
@@ -120,16 +129,21 @@ const MultimediaInsertForm: FC<
       {
         type: INPUT_TYPE.MULTIMEDIA_UPLOAD,
         name: 'file',
+        label: title ? title.charAt(0).toUpperCase() + title.slice(1) : '',
         colProps: { span: 24 },
+        rules: [{ required: true }],
+        colon: false,
         inputProps: {
           loading: isFetching > 0,
           mediaType,
           disabled: mode === 'view',
+          disabledDownload:
+            mode !== 'view' || mediaType === EMediaType.DOCUMENT,
           onChange: handleChange,
         },
       },
     ] as TFormItem[];
-  }, [mode, form, categoryList, mediaType, isFetching]);
+  }, [mode, form, categoryList, mediaType, isFetching, title]);
 
   useEffect(() => {
     if (initialValues) {

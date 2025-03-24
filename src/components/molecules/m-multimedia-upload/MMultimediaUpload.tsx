@@ -4,14 +4,22 @@ import {
   getBase64FromFile,
   type FileType,
 } from '@utils/fileHelper';
-import { Card, Image, Typography, Upload, type FormInstance } from 'antd';
+import {
+  Card,
+  Flex,
+  Image,
+  Typography,
+  Upload,
+  type FormInstance,
+  type NotificationArgsProps,
+} from 'antd';
 import { useWatch } from 'antd/es/form/Form';
 import type { RcFile } from 'antd/es/upload';
 import type { ImageProps, UploadProps } from 'antd/lib';
 import { useEffect, useState, type FC } from 'react';
 import { useNotification } from '@libs/antd';
 import type { AnyObject } from 'antd/es/_util/type';
-import { CloseIcon, UploadCloudIcon } from '@assets/icons';
+import { CloseIcon, Download04Icon, UploadCloudIcon } from '@assets/icons';
 import clsx from 'clsx';
 import { AButton } from '../../atoms/a-button';
 import { AVideoPlayer, type VideoPlayerProps } from '../../atoms/a-video';
@@ -23,6 +31,7 @@ export interface TUploadMultimedia extends UploadProps {
   mediaType: EMediaType;
   loading?: boolean;
   maxSize?: number;
+  disabledDownload?: boolean;
 }
 
 const MEDIA_ACCEPT_TYPE: Record<EMediaType, string> = {
@@ -31,6 +40,24 @@ const MEDIA_ACCEPT_TYPE: Record<EMediaType, string> = {
   AUDIO: '.mp3,.wav,.aac,.flac,.ogg,.wma,.m4a',
   DOCUMENT: '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt',
   IMAGE: '.jpg,.png,.jpeg,.bmp,.webp,.tiff',
+};
+
+const handleDownloadFromSrc = async (
+  notify: (props: NotificationArgsProps) => void,
+  src?: string,
+  name?: string,
+) => {
+  if (src && name) {
+    try {
+      const response = await fetch(src);
+      const blob = await response.blob();
+      downloadFile(blob, name);
+    } catch {
+      notify({ type: 'error', message: 'Lỗi khi tải xuống' });
+    }
+  } else {
+    notify({ type: 'error', message: 'Lỗi khi tải xuống' });
+  }
 };
 
 const mediaTypeComponents: Record<EMediaType, FC> = {
@@ -42,21 +69,18 @@ const mediaTypeComponents: Record<EMediaType, FC> = {
   VIDEO: ((props: VideoPlayerProps) => (
     <AVideoPlayer style={{ width: '80%' }} {...props} />
   )) as FC,
-  DOCUMENT: (({ src, name = 'file' }: { name: string; src?: string }) => (
-    <Typography.Text
-      className="text-main1 ml-8 cursor-pointer"
-      style={{ textDecoration: 'underline' }}
-      onClick={async () => {
-        if (src) {
-          const response = await fetch(src);
-          const blob = await response.blob();
-          downloadFile(blob, name);
-        }
-      }}
-    >
-      Tải xuống để xem
-    </Typography.Text>
-  )) as FC,
+  DOCUMENT: (({ src, name = 'file' }: { name: string; src?: string }) => {
+    const notify = useNotification();
+    return (
+      <Typography.Text
+        className="text-main1 ml-8 cursor-pointer"
+        style={{ textDecoration: 'underline' }}
+        onClick={() => handleDownloadFromSrc(notify, src, name)}
+      >
+        Tải xuống để xem
+      </Typography.Text>
+    );
+  }) as FC,
 };
 
 const MMultimediaUpload: FC<TUploadMultimedia> = ({
@@ -67,17 +91,18 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
   disabled,
   mediaType,
   loading,
+  disabledDownload,
   maxSize = 5,
   ...props
 }) => {
   const file = useWatch(name, form);
-  const [previewImage, setPreviewImage] = useState('');
+  const [url, setUrl] = useState<string>();
 
   const notify = useNotification();
 
   useEffect(() => {
     if (typeof file === 'string') {
-      setPreviewImage(file);
+      setUrl(file);
       return;
     }
 
@@ -87,17 +112,18 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
       if (!newFile.url && !newFile.preview) {
         getBase64FromFile(newFile.originFileObj as FileType).then((res) => {
           newFile.preview = res;
-          setPreviewImage(newFile.url || (newFile.preview as string));
+          setUrl(newFile.url || (newFile.preview as string));
         });
       }
       return;
     }
 
-    setPreviewImage('');
+    setUrl('');
   }, [file]);
 
   const handleRemoveImage = () => {
     form?.setFieldValue(name, undefined);
+    form?.validateFields();
   };
 
   const handleBeforeUpload = (fileUpload: RcFile) => {
@@ -119,20 +145,39 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
       className="w-full h-full jc-center"
       title="Xem trước"
       classNames={{ title: 'fs-16 fw-500' }}
+      rootClassName={clsx({
+        'border-validate': !!form?.getFieldError(name)?.length,
+      })}
+      style={{ minHeight: 217 }}
       loading={loading}
     >
-      {previewImage ? (
+      {url ? (
         <div className="w-full h-full dis-flex jc-center pos-relative">
-          {!disabled && (
-            <AButton
-              type="text"
-              icon={<CloseIcon />}
-              className="pos-absolute top-0 right-0 z-10"
-              onClick={handleRemoveImage}
-            />
-          )}
+          <div className="pos-absolute top-0 right-0 z-10">
+            <Flex vertical gap={8}>
+              {!disabled && (
+                <AButton
+                  type="text"
+                  icon={<CloseIcon />}
+                  onClick={handleRemoveImage}
+                />
+              )}
+              {!disabledDownload && (
+                <AButton
+                  icon={<Download04Icon color="#fff" />}
+                  onClick={() =>
+                    handleDownloadFromSrc(
+                      notify,
+                      url,
+                      form?.getFieldValue('filename'),
+                    )
+                  }
+                />
+              )}
+            </Flex>
+          </div>
           <Component
-            src={previewImage || ''}
+            src={url || ''}
             name={form?.getFieldValue('filename') ?? 'filename'}
           />
         </div>
