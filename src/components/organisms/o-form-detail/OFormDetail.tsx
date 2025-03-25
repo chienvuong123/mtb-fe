@@ -1,7 +1,7 @@
 import { Divider, Flex, Form, type FormInstance, Typography } from 'antd';
 import { AButton } from '@components/atoms';
 import { useFormItems } from '@hooks';
-import type { TFormItem } from '@types';
+import { INPUT_TYPE, type TFormItem } from '@types';
 import { useMemo } from 'react';
 import clsx from 'clsx';
 import './styles.scss';
@@ -35,7 +35,10 @@ const OFormDetail = <T extends object>({
               readOnly: true,
               suffixIcon: null,
               allowClear: false,
-              className: 'cursor-default pointer-events-none',
+              disabled: false,
+              className: clsx('cursor-text', inputProps.className, {
+                'pointer-events-none': others.type === INPUT_TYPE.SELECT,
+              }),
             }
           : inputProps;
         return {
@@ -46,6 +49,7 @@ const OFormDetail = <T extends object>({
           ),
           inputProps: modifiedInputProps,
           ...others,
+          required: false,
         };
       }) as TFormItem[],
     [items, isViewMode],
