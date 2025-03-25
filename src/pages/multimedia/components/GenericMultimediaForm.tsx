@@ -1,7 +1,7 @@
 import { OBaseForm } from '@components/organisms';
 import {
-  ACCEPTING_FULL_ALPHA_NUMERIC_PATTERN,
   ACCEPTING_NUMBER_SPACE_COMMA_PATTERN,
+  BLOCKING_CHARACTERS_PARTERN,
 } from '@constants/regex';
 import { EMediaType, type MultimediaDTO } from '@dtos';
 import { MULTIMEDIA_CATEGORY_KEY, useQueryCategoryList } from '@hooks/queries';
@@ -47,7 +47,7 @@ const MultimediaInsertForm: FC<
         required: true,
         rules: [{ required: true }],
         inputProps: {
-          placeholder: 'Nhập...',
+          placeholder: 'Chọn...',
           options: categoryList,
           showSearch: true,
           filterOption: true,
@@ -58,21 +58,14 @@ const MultimediaInsertForm: FC<
         type: INPUT_TYPE.TEXT,
         label: 'Mã',
         name: 'code',
-        rules: [
-          { required: true },
-          {
-            pattern: ACCEPTING_FULL_ALPHA_NUMERIC_PATTERN,
-            message: 'Định dạng không hợp lệ',
-          },
-        ],
+        rules: [{ required: true }],
         inputProps: {
           disabled: mode !== 'add',
+          placeholder: 'Nhập...',
           maxLength: 20,
-          onChange: (e) => {
-            form.setFieldValue('code', e.target.value.toUpperCase());
-          },
         },
         colProps: { span: 12 },
+        blockingPattern: BLOCKING_CHARACTERS_PARTERN,
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -143,7 +136,7 @@ const MultimediaInsertForm: FC<
         },
       },
     ] as TFormItem[];
-  }, [mode, form, categoryList, mediaType, isFetching, title]);
+  }, [mode, categoryList, mediaType, isFetching, title]);
 
   useEffect(() => {
     if (initialValues) {
