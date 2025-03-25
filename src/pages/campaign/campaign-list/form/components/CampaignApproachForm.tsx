@@ -67,7 +67,7 @@ const CampaignApproachForm: FC<ICampaignTargetForm> = ({
         {
           type: INPUT_TYPE.TEXT,
           label: 'Ghi chú',
-          inputProps: { placeholder: 'Nhập...', maxLength: 100 },
+          inputProps: { placeholder: 'Nhập...', maxLength: 1000 },
           name: 'note',
           colProps: { span: 12 },
         },

@@ -84,8 +84,12 @@ const CampaignCreate: React.FC = () => {
       if (campaignId) {
         form.setFieldsValue({
           ...campaignDetailRes.data,
-          startDate: dayjs(campaignDetailRes.data.startDate),
-          endDate: dayjs(campaignDetailRes.data.endDate),
+          startDate: campaignDetailRes.data.startDate
+            ? dayjs(campaignDetailRes.data.startDate)
+            : undefined,
+          endDate: campaignDetailRes.data.endDate
+            ? dayjs(campaignDetailRes.data.endDate)
+            : undefined,
         });
       }
     }
