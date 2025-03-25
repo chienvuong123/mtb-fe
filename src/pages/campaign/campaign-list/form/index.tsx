@@ -55,12 +55,12 @@ const CampaignCreate: React.FC = () => {
   const notify = useNotification();
 
   const [isViewMode, setIsViewMode] = useState(false);
-  const [isViewModeTarget, setIsViewModeTarget] = useState(false);
+  const [isEditModeTarget, setIsEditModeTarget] = useState(false);
+  const [isEditModeApproach, setIsEditModeApproach] = useState(false);
 
   const [tempTargets, setTempTargets] = useState<CampaignTargetDTO | null>(
     null,
   );
-
   const [tempApproach, setTempApproach] =
     useState<CampaignApproachPlanDTO | null>(null);
 
@@ -78,9 +78,18 @@ const CampaignCreate: React.FC = () => {
   });
 
   useEffect(() => {
-    setInitTargetValues(campaignDetailRes?.data?.targets ?? []);
-    setInitApproachValues(campaignDetailRes?.data?.campaignScript ?? []);
-  }, [campaignDetailRes]);
+    if (campaignDetailRes?.data) {
+      setInitTargetValues(campaignDetailRes.data.targets ?? []);
+      setInitApproachValues(campaignDetailRes.data.campaignScript ?? []);
+      if (campaignId) {
+        form.setFieldsValue({
+          ...campaignDetailRes.data,
+          startDate: dayjs(campaignDetailRes.data.startDate),
+          endDate: dayjs(campaignDetailRes.data.endDate),
+        });
+      }
+    }
+  }, [campaignDetailRes, campaignId, form]);
 
   const handleShowForm = () => {
     setDrawerMode('add');
@@ -93,15 +102,20 @@ const CampaignCreate: React.FC = () => {
 
   const handleShowTargetForm = () => {
     setShowInsertTargetForm('add');
+    setIsEditModeTarget(false);
+    formTarget.resetFields();
   };
 
   const handleShowApproachForm = () => {
     setShowInsertApproachForm('add');
+    setIsEditModeApproach(false);
+    formApproach.resetFields();
   };
 
   const handleCloseForm = () => {
     setIsViewMode(false);
-    setIsViewModeTarget(false);
+    setIsEditModeTarget(false);
+    setIsEditModeApproach(false);
     setDrawerMode(undefined);
     setShowInsertTargetForm(undefined);
     setShowInsertApproachForm(undefined);
@@ -117,12 +131,10 @@ const CampaignCreate: React.FC = () => {
     setTempApproach(null);
     notify({ message, type });
   };
-
   const { mutate: mutationCreateCampaign } = useCampaignAddMutation();
   const { mutate: mutationUpdateCampaign } = useCampaignEditMutation();
   const { mutate: mutationCreateCategory } = useManageCategoryAddMutation();
   const { refetch: refetchCategory } = useQueryCategoryList(true);
-
   const dataSourcesDetail: Partial<TCampaignDetailDTO> = useMemo(
     () => ({
       ...campaignDetailRes?.data,
@@ -225,51 +237,44 @@ const CampaignCreate: React.FC = () => {
     const newUrl = createNavigatePath(ROUTES.CAMPAIGN.COPY, {
       id: campaignId || '',
     });
-
     // Mở tab mới
     window.open(newUrl, '_blank');
   };
-
   const handleSaveTarget = (value: CampaignTargetDTO) => {
     handleSaveItem(value, setInitTargetValues, tempTargets, handleCloseForm);
   };
-
   const handleSaveApproach = (value: CampaignApproachPlanDTO) => {
     handleSaveItem(value, setInitApproachValues, tempApproach, handleCloseForm);
   };
-
   const handleTargetEdit = (data: CampaignTargetDTO) => {
-    setTempTargets({
-      ...data,
-    });
+    setTempTargets({ ...data });
     setShowInsertTargetForm('edit');
+    setIsEditModeTarget(true);
+    formTarget.setFieldsValue(data);
   };
-
   const handleApproachEdit = (data: CampaignApproachPlanDTO) => {
     setTempApproach({
       ...data,
     });
     setShowInsertApproachForm('edit');
+    setIsEditModeApproach(true);
+    formApproach.setFieldsValue(data);
   };
-
   const handleDeleteTarget = (id: string) => {
     setInitTargetValues((prevTargets) => {
       const newTargets = prevTargets.filter((target) => target.id !== id);
       return newTargets;
     });
   };
-
   const handleDeleteApproach = (id: string) => {
     setInitApproachValues((prevApproach) => {
       const newApproach = prevApproach.filter((approach) => approach.id !== id);
       return newApproach;
     });
   };
-
   const handleBack = () => {
     navigate(ROUTES.CAMPAIGN.LIST);
   };
-
   const getDrawerProps = () => {
     let config = {
       title: 'category',
@@ -286,15 +291,14 @@ const CampaignCreate: React.FC = () => {
         />
       ),
     };
-
     if (showInsertTargetForm) {
       config = {
         title: 'mục tiêu',
-        mode: isViewMode ? 'view' : 'add',
+        mode: isEditModeTarget ? 'edit' : 'add',
         width: 1080,
         content: (
           <CampaignTargetForm
-            mode={isViewMode ? 'view' : 'add'}
+            mode={isEditModeTarget ? 'edit' : 'add'}
             onClose={handleCloseForm}
             initialValues={tempTargets}
             onSubmit={handleSaveTarget}
@@ -305,11 +309,11 @@ const CampaignCreate: React.FC = () => {
     } else if (showInsertApproachForm) {
       config = {
         title: 'kế hoạch tiếp cận',
-        mode: isViewModeTarget ? 'view' : 'add',
+        mode: isEditModeApproach ? 'edit' : 'add',
         width: 1080,
         content: (
           <CampaignApproachForm
-            mode={isViewModeTarget ? 'view' : 'add'}
+            mode={isEditModeApproach ? 'edit' : 'add'}
             onClose={handleCloseForm}
             initialValues={tempApproach}
             onSubmit={handleSaveApproach}
@@ -319,7 +323,6 @@ const CampaignCreate: React.FC = () => {
         ),
       };
     }
-
     return config;
   };
 
