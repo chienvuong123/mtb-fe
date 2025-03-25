@@ -43,9 +43,5 @@ export const useMultimediaResourceQuery = (src: string) => {
     queryKey: [MULTIMEDIA_CATEGORY_KEY, 'resource', src],
     queryFn: () => multimediaApi.getResource(src),
     enabled: !!src,
-    select: ({ data, filename }) => ({
-      url: data ? URL.createObjectURL(data as unknown as Blob) : undefined,
-      filename,
-    }),
   });
 };
