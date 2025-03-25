@@ -97,7 +97,7 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
     return (
       imageOptionsData?.data.content.map((item) => ({
         label: item.name,
-        value: item.url,
+        value: item.id,
       })) ?? []
     );
   }, [imageOptionsData]);
