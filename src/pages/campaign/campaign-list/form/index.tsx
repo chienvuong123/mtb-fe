@@ -357,10 +357,10 @@ const CampaignCreate: React.FC = () => {
         onDelete={handleDeleteApproach}
       />
       <div
-        className="fixed bottom-0 left-0 w-full bg-white shadow-md z-10 mt-20 py-10 px-4"
+        className="fixed bottom-0 left-0 w-full bg-white shadow-md z-10 mt-20 py-10 pr-24"
         hidden={isViewMode}
       >
-        <Flex justify="between" className="py-4 w-full px-6" gap="middle">
+        <Flex justify="between" className="py-4 w-full" gap="middle">
           <Flex className="ml-auto" gap="middle">
             {campaignId && (
               <AButton
