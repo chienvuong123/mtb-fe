@@ -247,7 +247,7 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
             onClose={handleCloseForm}
             initialValues={initValuesInsertForm}
             onSubmit={handleSubmitInsert}
-            previewSrc={src}
+            previewSrc={multimediaViewRes?.errorCode === '0' ? src : undefined}
           />
         )}
       </ODrawer>
