@@ -53,9 +53,9 @@ class MultimediaApi extends BaseApi<MultimediaDTO, MultimediaSearchRequest> {
     });
   }
 
-  async getResource(src: string) {
+  async getResource(id: string) {
     const response = await apiRequestAll<BaseResponse<string>>({
-      url: `${this.endpoint}/resource/${src}`,
+      url: `${this.endpoint}/resource/${id}`,
       responseType: 'blob',
       timeout: Infinity,
     });
