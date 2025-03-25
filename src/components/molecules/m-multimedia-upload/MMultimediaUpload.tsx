@@ -42,6 +42,9 @@ const MEDIA_ACCEPT_TYPE: Record<EMediaType, string> = {
   IMAGE: '.jpg,.png,.jpeg,.bmp,.webp,.tiff',
 };
 
+const getFileExtension = (filename: string) =>
+  filename.split('.').pop()?.toLowerCase();
+
 const handleDownloadFromSrc = async (
   notify: (props: NotificationArgsProps) => void,
   src?: string,
@@ -100,6 +103,8 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
 
   const notify = useNotification();
 
+  const allowedFiles = MEDIA_ACCEPT_TYPE[mediaType].split(',').join(', ');
+
   useEffect(() => {
     if (typeof file === 'string') {
       setUrl(file);
@@ -127,6 +132,19 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
   };
 
   const handleBeforeUpload = (fileUpload: RcFile) => {
+    const allowedExtensions = MEDIA_ACCEPT_TYPE[mediaType]
+      .split(',')
+      .map((ext) => ext.replace('.', '').toLowerCase());
+    const fileExt = getFileExtension(fileUpload.name);
+
+    if (!fileExt || !allowedExtensions.includes(fileExt)) {
+      notify({
+        type: 'error',
+        message: `File không đúng định dạng: ${allowedFiles}`,
+      });
+      return Upload.LIST_IGNORE;
+    }
+
     const max = maxSize * 1024 * 1024;
     if (fileUpload.size > max) {
       notify({
@@ -135,6 +153,7 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
       });
       return Upload.LIST_IGNORE;
     }
+
     return true;
   };
 
@@ -206,8 +225,7 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
             className="fs-16 fw-400 mt-20"
             style={{ color: '#9D9D9D' }}
           >
-            Hỗ trợ định dạng{' '}
-            {MEDIA_ACCEPT_TYPE[mediaType].split(',').join(', ')} files
+            Hỗ trợ định dạng {allowedFiles} files
           </Typography>
         </>
       )}

@@ -57,6 +57,7 @@ class MultimediaApi extends BaseApi<MultimediaDTO, MultimediaSearchRequest> {
     const response = await apiRequestAll<BaseResponse<string>>({
       url: `${this.endpoint}/resource/${src}`,
       responseType: 'blob',
+      timeout: Infinity,
     });
     const contentDisposition = response.headers['content-disposition'];
     let filename = 'downloaded-file';

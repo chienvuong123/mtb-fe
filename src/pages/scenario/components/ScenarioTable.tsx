@@ -109,6 +109,7 @@ const ScenarioTable: FC<CBaseTable<ApproachScriptDTO>> = ({
       paginations={paginations}
       onView={(id) => onView?.(id as string)}
       onSort={onSort}
+      confirmProps={{ title: 'Xoá kịch bản' }}
     />
   );
 };
