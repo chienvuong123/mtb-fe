@@ -69,9 +69,17 @@ class MultimediaApi extends BaseApi<MultimediaDTO, MultimediaSearchRequest> {
         filename = match[1];
       }
     }
+
+    // Use RegExp to get the file extension
+    const extensionMatch = filename.match(/\.([a-zA-Z0-9]+)$/);
+    const extension = extensionMatch ? extensionMatch[0] : '';
+
     return {
-      data: response.data,
+      url: response.data
+        ? URL.createObjectURL(response.data as unknown as Blob)
+        : undefined,
       filename,
+      extension,
     };
   }
 }

@@ -13,7 +13,7 @@ import { useEffect, useMemo, useState, type FC } from 'react';
 
 const MultimediaInsertForm: FC<
   CBaseForm<MultimediaDTO> & {
-    previewSrc?: { url?: string; filename: string };
+    previewSrc?: { url?: string; extension: string };
     mediaType: EMediaType;
     title?: string;
   }
@@ -148,10 +148,12 @@ const MultimediaInsertForm: FC<
   useEffect(() => {
     if (initialValues) {
       form.resetFields(); // clear cache
+      const { name, ...others } = initialValues;
       form.setFieldsValue({
-        ...initialValues,
+        ...others,
+        name,
         file: previewSrc?.url,
-        filename: previewSrc?.filename,
+        filename: `${name || ''}${previewSrc?.extension || ''}`,
       });
     }
   }, [initialValues, form, previewSrc]);
