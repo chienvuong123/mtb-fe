@@ -20,6 +20,7 @@ export interface MultimediaDTO extends Omit<BaseEntity, 'status'> {
 
   fileUpload?: UploadFile;
   filename?: string;
+  fileSize?: number;
 }
 
 export interface MultimediaSearchRequest extends BaseSearchParams {

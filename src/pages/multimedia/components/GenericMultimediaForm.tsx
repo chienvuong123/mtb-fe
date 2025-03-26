@@ -13,7 +13,7 @@ import { useEffect, useMemo, useState, type FC } from 'react';
 
 const MultimediaInsertForm: FC<
   CBaseForm<MultimediaDTO> & {
-    previewSrc?: { url?: string; extension: string };
+    previewSrc?: { url?: string; extension: string; size?: number };
     mediaType: EMediaType;
     title?: string;
   }
@@ -147,6 +147,7 @@ const MultimediaInsertForm: FC<
         name,
         file: previewSrc?.url,
         filename: `${name || ''}${previewSrc?.extension || ''}`,
+        fileSize: previewSrc?.size,
       });
     }
   }, [initialValues, form, previewSrc]);
@@ -157,8 +158,11 @@ const MultimediaInsertForm: FC<
         mutationKey={MULTIMEDIA_CATEGORY_KEY}
         items={items}
         form={form}
-        onSubmit={(values) =>
-          onSubmit({ ...values, fileUpload: fileList?.[0] }, form)
+        onSubmit={({ code, ...values }) =>
+          onSubmit(
+            { ...values, code: code?.toUpperCase(), fileUpload: fileList?.[0] },
+            form,
+          )
         }
         onClose={() => {
           onClose?.();

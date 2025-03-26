@@ -110,6 +110,21 @@ const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
     return [];
   }, [dataSource]);
 
+  const blockingDeleteIds = useMemo(() => {
+    if (dataSource?.length) {
+      const ids: string[] = [];
+      dataSource.forEach((i) => {
+        if (
+          i.status === EStatusCampaign.ENDED ||
+          i.status === EStatusCampaign.INPROGRESS
+        )
+          ids.push(i.id);
+      });
+      return ids;
+    }
+    return [];
+  }, [dataSource]);
+
   return (
     <OTable<CampaignDTO>
       rowKey="id"
@@ -129,6 +144,7 @@ const CampaignTable: React.FC<CBaseTable<CampaignDTO>> = ({
       onView={(id) => onView?.(id as string)}
       onSort={onSort}
       blockingEditIds={blockingEditIds}
+      blockingDeleteIds={blockingDeleteIds}
     />
   );
 };

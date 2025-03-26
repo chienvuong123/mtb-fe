@@ -1,10 +1,12 @@
 import type { EMediaType } from '@dtos';
 import {
   downloadFile,
+  formatFileSize,
   getBase64FromFile,
   type FileType,
 } from '@utils/fileHelper';
 import {
+  Button,
   Card,
   Flex,
   Image,
@@ -19,7 +21,12 @@ import type { ImageProps, UploadProps } from 'antd/lib';
 import { useEffect, useState, type FC } from 'react';
 import { useNotification } from '@libs/antd';
 import type { AnyObject } from 'antd/es/_util/type';
-import { CloseIcon, Download04Icon, UploadCloudIcon } from '@assets/icons';
+import {
+  CloseIcon,
+  Download04Icon,
+  FileAttachmentIcon,
+  UploadCloudIcon,
+} from '@assets/icons';
 import clsx from 'clsx';
 import { AButton } from '../../atoms/a-button';
 import { AVideoPlayer, type VideoPlayerProps } from '../../atoms/a-video';
@@ -36,7 +43,7 @@ export interface TUploadMultimedia extends UploadProps {
 
 const MEDIA_ACCEPT_TYPE: Record<EMediaType, string> = {
   VIDEO: '.mp4,.avi,.mov,.mkv,.flv,.wmv,.webm',
-  ANIMATED: '.gif,.webp,.apng,.mng',
+  ANIMATED: '.gif,.webp,.apng',
   AUDIO: '.mp3,.wav,.aac,.flac,.ogg,.wma,.m4a',
   DOCUMENT: '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt',
   IMAGE: '.jpg,.png,.jpeg,.bmp,.webp,.tiff',
@@ -72,19 +79,44 @@ const mediaTypeComponents: Record<EMediaType, FC> = {
   VIDEO: ((props: VideoPlayerProps) => (
     <AVideoPlayer style={{ width: '80%' }} {...props} />
   )) as FC,
-  DOCUMENT: (({ src, name = 'file' }: { name: string; src?: string }) => {
+  DOCUMENT: (({
+    src,
+    name = 'file',
+    size,
+  }: {
+    name: string;
+    src?: string;
+    size?: number;
+  }) => {
     const notify = useNotification();
     return (
-      <Typography.Text
-        className="text-main1 ml-8 cursor-pointer"
-        style={{ textDecoration: 'underline' }}
-        onClick={() => handleDownloadFromSrc(notify, src, name)}
+      <Flex
+        justify="space-between"
+        className="border-gray-border border-1 rounded-8 pa-8"
+        style={{ width: '80%' }}
       >
-        Tải xuống để xem
-      </Typography.Text>
+        <Flex gap={6} align="center">
+          <FileAttachmentIcon color="#5c59e8" />
+          <div>
+            <Typography.Text className="fw-600 dis-block lh-px-18">
+              {name}
+            </Typography.Text>
+            <Typography.Text className="file-name-color fs-12">
+              {size ? formatFileSize(size) : null}
+            </Typography.Text>
+          </div>
+        </Flex>
+        <Button
+          type="text"
+          icon={<Download04Icon />}
+          onClick={() => handleDownloadFromSrc(notify, src, name)}
+        />
+      </Flex>
     );
   }) as FC,
 };
+
+const initFile = { name: '', size: 0, src: '' };
 
 const MMultimediaUpload: FC<TUploadMultimedia> = ({
   className,
@@ -99,7 +131,7 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
   ...props
 }) => {
   const file = useWatch(name, form);
-  const [url, setUrl] = useState<string>();
+  const [fileInfo, setFileInfo] = useState(initFile);
 
   const notify = useNotification();
 
@@ -107,7 +139,12 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
 
   useEffect(() => {
     if (typeof file === 'string') {
-      setUrl(file);
+      setFileInfo({
+        name: form?.getFieldValue('filename') ?? 'filename',
+        src: file,
+        size: form?.getFieldValue('fileSize') ?? 0,
+      });
+
       return;
     }
 
@@ -117,14 +154,18 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
       if (!newFile.url && !newFile.preview) {
         getBase64FromFile(newFile.originFileObj as FileType).then((res) => {
           newFile.preview = res;
-          setUrl(newFile.url || (newFile.preview as string));
+          setFileInfo({
+            name: newFile?.name ?? 'filename',
+            src: newFile.url || (newFile.preview as string),
+            size: newFile?.size ?? 0,
+          });
         });
       }
       return;
     }
 
-    setUrl('');
-  }, [file]);
+    setFileInfo(initFile);
+  }, [file, form]);
 
   const handleRemoveImage = () => {
     form?.setFieldValue(name, undefined);
@@ -170,7 +211,7 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
       style={{ minHeight: 217 }}
       loading={loading}
     >
-      {url ? (
+      {fileInfo.src ? (
         <div className="w-full h-full dis-flex jc-center pos-relative">
           <div className="pos-absolute top-0 right-0 z-10">
             <Flex vertical gap={8}>
@@ -187,7 +228,7 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
                   onClick={() =>
                     handleDownloadFromSrc(
                       notify,
-                      url,
+                      fileInfo.src,
                       form?.getFieldValue('filename'),
                     )
                   }
@@ -195,10 +236,7 @@ const MMultimediaUpload: FC<TUploadMultimedia> = ({
               )}
             </Flex>
           </div>
-          <Component
-            src={url || ''}
-            name={form?.getFieldValue('filename') ?? 'filename'}
-          />
+          <Component {...fileInfo} />
         </div>
       ) : (
         <>

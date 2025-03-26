@@ -1,5 +1,6 @@
 import { CancelCircle, FileAttachmentIcon } from '@assets/icons';
 import { AButton } from '@components/atoms';
+import { formatFileSize } from '@utils/fileHelper';
 import {
   Flex,
   Progress,
@@ -15,16 +16,6 @@ interface TSingleFileProgress extends ProgressProps {
   error?: boolean | string;
   onRemove?: (name?: string) => void;
 }
-
-const formatFileSize = (size: number): string => {
-  if (size < 1024 * 1024) {
-    return `${(size / 1024).toFixed(2)} KB`; // < 1MB → KB
-  }
-  if (size > 1024 * 1024 * 1000) {
-    return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`; // > 1000MB → GB
-  }
-  return `${(size / (1024 * 1024)).toFixed(2)} MB`; // Default → MB
-};
 
 const MSingleFileProgress: FC<TSingleFileProgress> = ({
   file,

@@ -46,3 +46,13 @@ export const getBase64FromFile = (file: FileType): Promise<string> =>
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
   });
+
+export const formatFileSize = (size: number): string => {
+  if (size < 1024 * 1024) {
+    return `${(size / 1024).toFixed(2)} KB`; // < 1MB → KB
+  }
+  if (size > 1024 * 1024 * 1000) {
+    return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`; // > 1000MB → GB
+  }
+  return `${(size / (1024 * 1024)).toFixed(2)} MB`; // Default → MB
+};
