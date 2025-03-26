@@ -4,6 +4,7 @@ import {
   EStatusCampaign,
 } from '@constants/masterData';
 import {
+  useAccountManagementSearchQuery,
   useCategoryOptionsListQuery,
   useQueryCategoryList,
 } from '@hooks/queries';
@@ -58,9 +59,16 @@ const useCampaignFormItems = ({
   const { data: branchesOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.BRANCHES,
   });
-  const { data: deploymentOptions } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.DEPLOYMENT_METHOD,
+  const { data: accountManagementList } = useAccountManagementSearchQuery({
+    page: { pageNum: 1, pageSize: 1000 }, // TODO: remove this
   });
+
+  const personalInChargeOptions = useMemo(() => {
+    return accountManagementList?.data?.content?.map((item) => ({
+      label: `${item.username} - ${item.fullName}`,
+      value: item.id,
+    }));
+  }, [accountManagementList]);
 
   const isCreateMode = useMemo(() => {
     return !initialValues || Object.keys(initialValues).length === 0;
@@ -129,7 +137,7 @@ const useCampaignFormItems = ({
             showSearch: true,
             filterOption: true,
             className: clsx({ 'pointer-events-none': isDisabled }),
-            options: deploymentOptions,
+            options: personalInChargeOptions,
           },
           required: true,
           rules: [{ required: true }],
@@ -238,7 +246,7 @@ const useCampaignFormItems = ({
       onShowForm,
       categoryList,
       branchesOptions,
-      deploymentOptions,
+      personalInChargeOptions,
       startDate,
       endDate,
       isNoEdit,
