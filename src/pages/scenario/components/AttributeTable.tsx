@@ -49,7 +49,7 @@ const AttributeTable: FC<IAttributeTable> = ({
       onView={(id) => onView?.(id as string)}
       isCheckboxHidden
       confirmProps={{
-        title: 'Xóa attribute\\kịch bản',
+        title: 'Xóa attribute',
       }}
     />
   );
