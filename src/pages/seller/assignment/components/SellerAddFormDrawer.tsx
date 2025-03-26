@@ -57,6 +57,12 @@ const SellerAddFormDrawer: FC<ISellerAddFormDrawer> = ({
     setKeyword(insertKeyword);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      form.submit();
+    }
+  };
+
   return (
     <ODrawer
       title="Thêm Seller"
@@ -74,7 +80,7 @@ const SellerAddFormDrawer: FC<ISellerAddFormDrawer> = ({
             type: INPUT_TYPE.TEXT,
             label: 'Thêm Seller',
             name: 'keyword',
-            inputProps: { placeholder: 'Nhập...' },
+            inputProps: { placeholder: 'Nhập...', onKeyDown: handleKeyDown },
             colProps: { span: 24 },
           },
         ]}
