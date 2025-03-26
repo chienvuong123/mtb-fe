@@ -68,6 +68,8 @@ const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
           placeholder: 'Chọn...',
           options: STATUS_CAMPAIGN_OPTIONS,
           allowClear: true,
+          defaultValue: isSeller ? STATUS_CAMPAIGN_OPTIONS[0].value : undefined,
+          disabled: isSeller,
         },
       },
       {
