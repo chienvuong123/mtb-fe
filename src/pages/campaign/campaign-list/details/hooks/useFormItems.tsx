@@ -1,5 +1,8 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
-import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
+import {
+  STATUS_CAMPAIGN_OPTIONS,
+  EStatusCampaign,
+} from '@constants/masterData';
 import {
   useCategoryOptionsListQuery,
   useQueryCategoryList,
@@ -8,14 +11,16 @@ import clsx from 'clsx';
 import { CategoryType } from '@dtos';
 import { useWatch } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import type { FormInstance } from 'antd/lib';
+import type { TCampaignDetailDTO } from '@dtos';
 
 interface ICampaignFormItemsProps {
   isDisabled: boolean;
   onShowForm?: () => void;
   form?: FormInstance;
   isNoEdit?: boolean;
+  initialValues?: Partial<TCampaignDetailDTO>;
 }
 
 const useCampaignFormItems = ({
@@ -23,9 +28,31 @@ const useCampaignFormItems = ({
   onShowForm,
   form,
   isNoEdit,
+  initialValues,
 }: ICampaignFormItemsProps): TFormItem[] => {
   const startDate = useWatch('startDate', form);
   const endDate = useWatch('endDate', form);
+
+  useEffect(() => {
+    if (!form) return;
+
+    const today = dayjs().startOf('day');
+    const start = startDate ? dayjs(startDate).startOf('day') : null;
+    const end = endDate ? dayjs(endDate).startOf('day') : null;
+
+    let status: EStatusCampaign | undefined;
+
+    if (!start || !end) {
+      status = undefined;
+    } else if (today.isBefore(start)) {
+      status = EStatusCampaign.PENDING;
+    } else if (today.isAfter(end)) {
+      status = EStatusCampaign.ENDED;
+    } else {
+      status = EStatusCampaign.INPROGRESS;
+    }
+    form.setFieldValue('status', status);
+  }, [startDate, endDate, form]);
 
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: branchesOptions } = useCategoryOptionsListQuery({
@@ -34,6 +61,10 @@ const useCampaignFormItems = ({
   const { data: deploymentOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.DEPLOYMENT_METHOD,
   });
+
+  const isCreateMode = useMemo(() => {
+    return !initialValues || Object.keys(initialValues).length === 0;
+  }, [initialValues]);
 
   return useMemo(
     () =>
@@ -112,8 +143,8 @@ const useCampaignFormItems = ({
             className: clsx('date-picker-campaign', {
               'pointer-events-none': isDisabled,
             }),
+            minDate: isCreateMode ? dayjs().startOf('day') : undefined,
             maxDate: endDate ? dayjs(endDate) : undefined,
-            minDate: dayjs().add(1, 'day'),
           },
           required: true,
           rules: [{ required: true }],
@@ -127,7 +158,7 @@ const useCampaignFormItems = ({
             className: clsx('date-picker-campaign', {
               'pointer-events-none': isDisabled,
             }),
-            minDate: startDate || dayjs().add(1, 'day'),
+            minDate: startDate ? dayjs(startDate) : undefined,
           },
           required: true,
           rules: [{ required: true }],
@@ -141,6 +172,7 @@ const useCampaignFormItems = ({
             options: STATUS_CAMPAIGN_OPTIONS,
             allowClear: false,
             className: clsx({ 'pointer-events-none': isDisabled || isNoEdit }),
+            disabled: true,
           },
           required: true,
           rules: [{ required: true }],
@@ -210,6 +242,7 @@ const useCampaignFormItems = ({
       startDate,
       endDate,
       isNoEdit,
+      isCreateMode,
     ],
   );
 };

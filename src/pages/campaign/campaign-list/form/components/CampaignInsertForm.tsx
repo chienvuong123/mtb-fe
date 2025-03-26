@@ -25,6 +25,7 @@ const CampaignInsertForm: React.FC<ICampaignInsertForm> = ({
     onShowForm: onShowForm || (() => {}),
     form,
     isNoEdit,
+    initialValues,
   });
 
   useEffect(() => {
