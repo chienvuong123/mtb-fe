@@ -13,7 +13,6 @@ import {
 } from '@hooks/queries';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
-import clsx from 'clsx';
 import { useEffect, useMemo, type FC } from 'react';
 
 const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
@@ -40,208 +39,218 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
     categoryTypeCode: CategoryType.EXPERTISE,
   });
 
-  const items = useMemo(
-    () =>
-      (
-        [
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Mã nhân viên',
-            name: 'employeeCode',
-            inputProps: {
-              maxLength: 20,
-              placeholder: 'Nhập...',
+  const items = useMemo(() => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const usernameValue = e.target.value.replace(/@.*|[^a-zA-Z0-9]/g, '');
+      form.setFieldValue('username', usernameValue);
+    };
+
+    return [
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Mã nhân viên',
+        name: 'employeeCode',
+        inputProps: {
+          maxLength: 20,
+          placeholder: 'Nhập...',
+        },
+        colProps: { span: 12 },
+        rules: [{ required: true }],
+        blockingPattern: BLOCKING_CHARACTERS_PARTERN,
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Tên đăng nhập',
+        name: 'username',
+        inputProps: {
+          placeholder: 'Nhập...',
+          maxLength: 50,
+          readOnly: true,
+        },
+        colProps: { span: 12 },
+        rules: [{ required: true }],
+        blockingPattern: BLOCKING_ALPHA_NUMERIC_COMMA_PATTERN,
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Họ và tên',
+        name: 'fullName',
+        inputProps: {
+          maxLength: 100,
+          placeholder: 'Nhập...',
+        },
+        colProps: { span: 12 },
+        rules: [{ required: true }],
+        blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Email',
+        name: 'email',
+        inputProps: {
+          maxLength: 50,
+          placeholder: 'Nhập...',
+          onChange: handleEmailChange,
+        },
+        colProps: { span: 12 },
+        rules: [
+          { required: true },
+          { type: 'email', message: 'Email không hợp lệ' },
+        ],
+        normalize: (value: string) => value.trim(),
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Số điện thoại',
+        name: 'phoneNum',
+        inputProps: {
+          placeholder: 'Nhập...',
+          maxLength: 10,
+        },
+        colProps: { span: 12 },
+        rules: [
+          { required: true },
+          { min: 10, message: 'Số điện thoại không hợp lệ' },
+        ],
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Quyền hệ thống',
+        name: 'role',
+        inputProps: {
+          options: [
+            {
+              label: ERole.SELLER,
+              value: ERole.SELLER,
             },
-            rules: [{ required: true }],
-            blockingPattern: BLOCKING_CHARACTERS_PARTERN,
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Tên đăng nhập',
-            name: 'username',
-            inputProps: {
-              placeholder: 'Nhập...',
-              maxLength: 50,
-            },
-            rules: [{ required: true }],
-            blockingPattern: BLOCKING_ALPHA_NUMERIC_COMMA_PATTERN,
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Họ và tên',
-            name: 'fullName',
-            inputProps: {
-              maxLength: 100,
-              placeholder: 'Nhập...',
-            },
-            rules: [{ required: true }],
-            blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Email',
-            name: 'email',
-            inputProps: {
-              maxLength: 50,
-              placeholder: 'Nhập...',
-            },
-            rules: [
-              { required: true },
-              { type: 'email', message: 'Email không hợp lệ' },
-            ],
-            normalize: (value: string) => value.trim(),
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Số điện thoại',
-            name: 'phoneNum',
-            inputProps: {
-              placeholder: 'Nhập...',
-              maxLength: 10,
-            },
-            rules: [
-              { required: true },
-              { min: 10, message: 'Số điện thoại không hợp lệ' },
-            ],
-            blockingPattern: BLOCKING_NUMBER_PARTERN,
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Quyền hệ thống',
-            name: 'role',
-            inputProps: {
-              options: [
-                {
-                  label: ERole.SELLER,
-                  value: ERole.SELLER,
-                },
-              ],
-              showSearch: true,
-              filterOption: true,
-              placeholder: 'Chọn...',
-              defaultValue: 'SELLER',
-              disabled: true,
-            },
-            rules: [{ required: true }],
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Trạng thái',
-            name: 'status',
-            inputProps: {
-              options: STATUS_OPTIONS,
-              allowClear: false,
-              placeholder: 'Chọn...',
-              initialValue: STATUS_OPTIONS[0].value,
-              disabled: true,
-            },
-            rules: [{ required: true }],
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Chuyên môn',
-            name: 'expertise',
-            inputProps: {
-              options: expertiseList,
-              showSearch: true,
-              filterOption: true,
-              placeholder: 'Chọn...',
-            },
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Chức vụ',
-            name: 'position',
-            inputProps: {
-              options: positionList,
-              showSearch: true,
-              filterOption: true,
-              placeholder: 'Chọn...',
-            },
-            rules: [{ required: true }],
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Chi nhánh',
-            name: 'branch',
-            inputProps: {
-              options: branchList,
-              showSearch: true,
-              filterOption: true,
-              placeholder: 'Chọn...',
-            },
-            rules: [{ required: true }],
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Phòng',
-            name: 'department',
-            inputProps: {
-              options: departmentList,
-              showSearch: true,
-              filterOption: true,
-              placeholder: 'Chọn...',
-            },
-            rules: [{ required: true }],
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Người tạo',
-            name: 'createdBy',
-            inputProps: {
-              disabled: true,
-              name: 'createdBy',
-              placeholder: 'Nhập...',
-            },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Ngày tạo',
-            name: 'createdDate',
-            inputProps: {
-              disabled: true,
-              name: 'createdDate',
-              placeholder: 'Chọn ngày...',
-            },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Người cập nhật',
-            name: 'updatedBy',
-            inputProps: {
-              disabled: true,
-              name: 'updatedBy',
-              placeholder: 'Nhập...',
-            },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Ngày cập nhật',
-            name: 'updatedDate',
-            inputProps: {
-              disabled: true,
-              name: 'updatedDate',
-              placeholder: 'Chọn ngày...',
-            },
-          },
-        ] as TFormItem[]
-      ).map((i) => {
-        const item: TFormItem = { ...i };
-        if (mode === 'view') {
-          return {
-            ...item,
-            colProps: { span: 12 },
-            inputProps: {
-              ...item.inputProps,
-              className: clsx('pointer-events-none', item.className),
-              readOnly: true,
-            },
-          };
-        }
-        return item;
-      }),
-    [mode, departmentList, positionList, branchList, expertiseList],
-  ) as TFormItem[];
+          ],
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+          defaultValue: 'SELLER',
+          disabled: true,
+        },
+        colProps: { span: 12 },
+        rules: [{ required: true }],
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Trạng thái',
+        name: 'status',
+        inputProps: {
+          options: STATUS_OPTIONS,
+          allowClear: false,
+          placeholder: 'Chọn...',
+          initialValue: STATUS_OPTIONS[0].value,
+          disabled: true,
+        },
+        colProps: { span: 12 },
+        rules: [{ required: true }],
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Chuyên môn',
+        name: 'expertise',
+        inputProps: {
+          options: expertiseList,
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Chức vụ',
+        name: 'position',
+        inputProps: {
+          options: positionList,
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+        },
+        colProps: { span: 12 },
+        rules: [{ required: true }],
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Chi nhánh',
+        name: 'branch',
+        inputProps: {
+          options: branchList,
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+        },
+        colProps: { span: 12 },
+        rules: [{ required: true }],
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Phòng',
+        name: 'department',
+        inputProps: {
+          options: departmentList,
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+        },
+        colProps: { span: 12 },
+        rules: [{ required: true }],
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Người tạo',
+        name: 'createdBy',
+        inputProps: {
+          disabled: true,
+          name: 'createdBy',
+          placeholder: 'Nhập...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Ngày tạo',
+        name: 'createdDate',
+        inputProps: {
+          disabled: true,
+          name: 'createdDate',
+          placeholder: 'Chọn ngày...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Người cập nhật',
+        name: 'updatedBy',
+        inputProps: {
+          disabled: true,
+          name: 'updatedBy',
+          placeholder: 'Nhập...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Ngày cập nhật',
+        name: 'updatedDate',
+        inputProps: {
+          disabled: true,
+          name: 'updatedDate',
+          placeholder: 'Chọn ngày...',
+        },
+        colProps: { span: 12 },
+      },
+    ] as TFormItem[];
+  }, [
+    form,
+    expertiseList,
+    positionList,
+    branchList,
+    departmentList,
+  ]) as TFormItem[];
 
   useEffect(() => {
     if (initialValues) {
