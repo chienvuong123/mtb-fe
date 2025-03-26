@@ -116,6 +116,9 @@ const CategoryTable: React.FC<CBaseTable<TCategoryTableRecord>> = ({
       scroll={{ x: 1575 }}
       onView={(id) => onView?.(id as string)}
       onSort={onSort}
+      confirmProps={{
+        title: 'Xóa Category',
+      }}
     />
   );
 };
