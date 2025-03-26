@@ -55,7 +55,10 @@ const Campaign: React.FC = () => {
   const { data: campaignRes } = useCampaignSearchQuery(searchParams);
 
   const { mutate: mutationDeleteProducts } = useCampaignRemoveMutation();
-  const { refetch: campaignExport } = useCampaignExport(searchParams);
+  const { refetch: campaignExport } = useCampaignExport({
+    ...searchParams,
+    page: undefined,
+  });
 
   const handleCreate = () => {
     navigate(ROUTES.CAMPAIGN.CREATE);
