@@ -2,6 +2,8 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import {
   STATUS_CAMPAIGN_OPTIONS,
   EStatusCampaign,
+  EStatus,
+  ERole,
 } from '@constants/masterData';
 import {
   useAccountManagementSearchQuery,
@@ -64,10 +66,17 @@ const useCampaignFormItems = ({
   });
 
   const personalInChargeOptions = useMemo(() => {
-    return accountManagementList?.data?.content?.map((item) => ({
-      label: `${item.username} - ${item.fullName}`,
-      value: item.id,
-    }));
+    return (
+      accountManagementList?.data?.content
+        ?.filter(
+          (item) =>
+            item.status === EStatus.ACTIVE && item.role !== ERole.SELLER,
+        )
+        ?.map((item) => ({
+          label: `${item.username} - ${item.fullName}`,
+          value: item.id,
+        })) || []
+    );
   }, [accountManagementList]);
 
   const isCreateMode = useMemo(() => {
@@ -215,28 +224,6 @@ const useCampaignFormItems = ({
             className: clsx({
               'pointer-events-none w-full no-resize': isDisabled,
             }),
-          },
-        },
-        {
-          type: INPUT_TYPE.TEXT_AREA,
-          label: 'Phạm vi triển khai',
-          name: 'scopeImplementation',
-          colProps: {
-            span: 12,
-          },
-          inputProps: {
-            placeholder: 'Nhập...',
-            maxLength: 1000,
-            className: clsx({
-              'pointer-events-none w-full no-resize': isDisabled,
-            }),
-            showCount: {
-              formatter: ({ count, maxLength }) => (
-                <span className="pos-absolute right-8 bottom-22 text-gray fs-12">
-                  ({count}/{maxLength})
-                </span>
-              ),
-            },
           },
         },
       ] as TFormItem[],
