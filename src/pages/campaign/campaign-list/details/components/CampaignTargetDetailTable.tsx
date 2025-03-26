@@ -48,9 +48,11 @@ const columns: ColumnType<CampaignTargetDTO>[] = [
 const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
   dataSource,
   hideAddButton,
+  sortDirection,
   onDelete,
   onEdit,
   onShowTargetForm,
+  onSort,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const deleteRecord = (key: Key) => {
@@ -101,6 +103,8 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
         setSelectedRowKeys={setSelectedRowKeys}
         confirmProps={{ title: 'Xoá mục tiêu' }}
         scroll={{ x: 1400 }}
+        onSort={onSort}
+        sortDirection={sortDirection}
       />
     </div>
   );

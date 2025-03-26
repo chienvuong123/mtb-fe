@@ -314,6 +314,7 @@ const CampaignCreate: React.FC = () => {
             initialValues={tempApproach}
             onSubmit={handleSaveApproach}
             form={formApproach}
+            formInsert={form}
           />
         ),
       };
@@ -336,6 +337,7 @@ const CampaignCreate: React.FC = () => {
         <CampaignInsertForm
           initialValues={dataSourcesDetail}
           isDisabled={false}
+          isNoEdit={!!campaignId}
           form={form}
           onShowForm={handleShowForm}
         />

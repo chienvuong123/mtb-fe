@@ -146,7 +146,9 @@ const Campaign: React.FC = () => {
             variant="filled"
             color="primary"
             icon={<ExportIcon />}
-            onClick={() => downloadFileByGetMethod(campaignExport, 'DSKH.xlsx')}
+            onClick={() =>
+              downloadFileByGetMethod(campaignExport, 'DS_Campaign.xlsx')
+            }
           >
             Export
           </AButton>

@@ -51,9 +51,11 @@ const columns: ColumnType<CampaignApproachPlanDTO>[] = [
 const CampaignApproachDetailTable: React.FC<ICampaignApproachDetailTable> = ({
   dataSource,
   hideAddButton,
+  sortDirection,
   onEdit,
   onShowApproachForm,
   onDelete,
+  onSort,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const deleteRecord = (key: Key) => {
@@ -117,6 +119,8 @@ const CampaignApproachDetailTable: React.FC<ICampaignApproachDetailTable> = ({
         onEdit={onEdit}
         confirmProps={{ title: 'Xóa kịch bản tiếp cận' }}
         scroll={{ x: 1500 }}
+        onSort={onSort}
+        sortDirection={sortDirection}
       />
     </div>
   );

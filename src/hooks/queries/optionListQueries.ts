@@ -148,10 +148,13 @@ export const useQueryCategoryList = (combine?: boolean) => {
   });
 };
 
-export const useQueryApproachScriprtList = (combine?: boolean) => {
+export const useQueryApproachScriprtList = (
+  categoryId?: string,
+  combine?: boolean,
+) => {
   return useQuery({
-    queryKey: ['approachScript', 'list'],
-    queryFn: () => approachScriptApi.approachScriptOptions(),
+    queryKey: ['approachScript', 'list', categoryId],
+    queryFn: () => approachScriptApi.approachScriptOptions(categoryId || ''),
     select: ({ data }) => transformToOptions(data.content, combine),
   });
 };
