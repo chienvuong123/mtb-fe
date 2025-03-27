@@ -104,6 +104,10 @@ const SellerPage: FC = () => {
       branch: record.branch?.id,
       department: record.department?.id,
       expertise: record.user?.expertise,
+      createdBy: record.user?.createdBy,
+      createdDate: formatDate(record.user?.createdDate),
+      updatedBy: record.user?.updatedBy,
+      updatedDate: formatDate(record.user?.updatedDate),
       id: record.id,
     };
     setInitialValuesForm(userDTO);

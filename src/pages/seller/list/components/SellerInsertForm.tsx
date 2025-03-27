@@ -41,8 +41,10 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
 
   const items = useMemo(() => {
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const usernameValue = e.target.value.replace(/@.*|[^a-zA-Z0-9]/g, '');
-      form.setFieldValue('username', usernameValue);
+      if (mode !== 'edit') {
+        const usernameValue = e.target.value.replace(/@.*|[^a-zA-Z0-9]/g, '');
+        form.setFieldValue('username', usernameValue);
+      }
     };
 
     return [
@@ -250,6 +252,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
     positionList,
     branchList,
     departmentList,
+    mode,
   ]) as TFormItem[];
 
   useEffect(() => {

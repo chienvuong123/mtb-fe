@@ -11,7 +11,6 @@ import {
 } from '@hooks/queries';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/es/form/Form';
-import clsx from 'clsx';
 import { useEffect, useMemo, type FC } from 'react';
 
 const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
@@ -34,198 +33,189 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
     categoryTypeCode: CategoryType.BRANCHES,
   });
 
-  const items = useMemo(
-    () =>
-      (
-        [
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Mã nhân viên',
-            name: 'employeeCode',
-            rules: [{ required: true }],
-            inputProps: {
-              maxLength: 20,
-              placeholder: 'Nhập...',
-            },
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Tên đăng nhập',
-            name: 'username',
-            inputProps: {
-              placeholder: 'Nhập...',
-            },
-            rules: [{ required: true }],
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Họ và tên',
-            name: 'fullName',
-            inputProps: {
-              maxLength: 100,
-              placeholder: 'Nhập...',
-            },
-            rules: [{ required: true }],
-            blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Email',
-            name: 'email',
-            inputProps: {
-              maxLength: 50,
-              placeholder: 'Nhập...',
-            },
-            rules: [
-              { required: true },
-              { type: 'email', message: 'Email không hợp lệ' },
-            ],
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Số điện thoại',
-            name: 'phoneNum',
-            inputProps: {
-              placeholder: 'Nhập...',
-              maxLength: 10,
-            },
-            rules: [
-              { required: true },
-              { min: 10, message: 'Số điện thoại không hợp lệ' },
-            ],
-            blockingPattern: BLOCKING_NUMBER_PARTERN,
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Quyền hệ thống',
-            name: 'role',
-            inputProps: {
-              options: Object.values(ERole).map((role) => ({
-                label: role,
-                value: role,
-              })),
-              showSearch: true,
-              filterOption: true,
-              placeholder: 'Chọn...',
-            },
-            rules: [{ required: true }],
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Trạng thái',
-            name: 'status',
-            inputProps: {
-              options: STATUS_OPTIONS_WITHOUT_ALL,
-              allowClear: false,
-              placeholder: 'Chọn...',
-            },
-            rules: [{ required: true }],
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Chức vụ',
-            name: 'position',
-            inputProps: {
-              options: positionList,
-              showSearch: true,
-              filterOption: true,
-              placeholder: 'Chọn...',
-            },
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Chi nhánh',
-            name: 'branch',
-            inputProps: {
-              options: branchList,
-              showSearch: true,
-              filterOption: true,
-              placeholder: 'Chọn...',
-            },
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.SELECT,
-            label: 'Phòng',
-            name: 'department',
-            inputProps: {
-              options: departmentList,
-              showSearch: true,
-              filterOption: true,
-              placeholder: 'Chọn...',
-            },
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Người tạo',
-            name: 'createdBy',
-            inputProps: {
-              disabled: true,
-              name: 'createdBy',
-              placeholder: 'Nhập...',
-            },
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Ngày tạo',
-            name: 'createdDate',
-            inputProps: {
-              disabled: true,
-              name: 'createdDate',
-              placeholder: 'Chọn ngày...',
-            },
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Người cập nhật',
-            name: 'updatedBy',
-            inputProps: {
-              disabled: true,
-              name: 'updatedBy',
-              placeholder: 'Nhập...',
-            },
-            colProps: { span: 12 },
-          },
-          {
-            type: INPUT_TYPE.TEXT,
-            label: 'Ngày cập nhật',
-            name: 'updatedDate',
-            inputProps: {
-              disabled: true,
-              name: 'updatedDate',
-              placeholder: 'Chọn ngày...',
-            },
-            colProps: { span: 12 },
-          },
-        ] as TFormItem[]
-      ).map((i) => {
-        const item: TFormItem = { ...i };
-        if (mode === 'view') {
-          return {
-            ...item,
-            colProps: { span: 12 },
-            inputProps: {
-              ...item.inputProps,
-              className: clsx('pointer-events-none', item.className),
-              readOnly: true,
-            },
-          };
-        }
-        return item;
-      }),
-    [mode, departmentList, positionList, branchList],
-  ) as TFormItem[];
+  const items = useMemo(() => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (mode !== 'edit') {
+        const usernameValue = e.target.value.replace(/@.*|[^a-zA-Z0-9]/g, '');
+        form.setFieldValue('username', usernameValue);
+      }
+    };
+
+    return [
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Mã nhân viên',
+        name: 'employeeCode',
+        rules: [{ required: true }],
+        inputProps: {
+          maxLength: 20,
+          placeholder: 'Nhập...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Tên đăng nhập',
+        name: 'username',
+        inputProps: {
+          placeholder: 'Nhập...',
+          readOnly: true,
+        },
+        rules: [{ required: true }],
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Họ và tên',
+        name: 'fullName',
+        inputProps: {
+          maxLength: 100,
+          placeholder: 'Nhập...',
+        },
+        rules: [{ required: true }],
+        blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Email',
+        name: 'email',
+        inputProps: {
+          maxLength: 50,
+          placeholder: 'Nhập...',
+          onChange: handleEmailChange,
+        },
+        rules: [
+          { required: true },
+          { type: 'email', message: 'Email không hợp lệ' },
+        ],
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Số điện thoại',
+        name: 'phoneNum',
+        inputProps: {
+          placeholder: 'Nhập...',
+          maxLength: 10,
+        },
+        rules: [
+          { required: true },
+          { min: 10, message: 'Số điện thoại không hợp lệ' },
+        ],
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Quyền hệ thống',
+        name: 'role',
+        inputProps: {
+          options: Object.values(ERole).map((role) => ({
+            label: role,
+            value: role,
+          })),
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+        },
+        rules: [{ required: true }],
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Trạng thái',
+        name: 'status',
+        inputProps: {
+          options: STATUS_OPTIONS_WITHOUT_ALL,
+          allowClear: false,
+          placeholder: 'Chọn...',
+        },
+        rules: [{ required: true }],
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Chức vụ',
+        name: 'position',
+        inputProps: {
+          options: positionList,
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Chi nhánh',
+        name: 'branch',
+        inputProps: {
+          options: branchList,
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Phòng',
+        name: 'department',
+        inputProps: {
+          options: departmentList,
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Người tạo',
+        name: 'createdBy',
+        inputProps: {
+          disabled: true,
+          name: 'createdBy',
+          placeholder: 'Nhập...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Ngày tạo',
+        name: 'createdDate',
+        inputProps: {
+          disabled: true,
+          name: 'createdDate',
+          placeholder: 'Chọn ngày...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Người cập nhật',
+        name: 'updatedBy',
+        inputProps: {
+          disabled: true,
+          name: 'updatedBy',
+          placeholder: 'Nhập...',
+        },
+        colProps: { span: 12 },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Ngày cập nhật',
+        name: 'updatedDate',
+        inputProps: {
+          disabled: true,
+          name: 'updatedDate',
+          placeholder: 'Chọn ngày...',
+        },
+        colProps: { span: 12 },
+      },
+    ] as TFormItem[];
+  }, [positionList, branchList, departmentList, mode, form]) as TFormItem[];
 
   useEffect(() => {
     if (initialValues) {
