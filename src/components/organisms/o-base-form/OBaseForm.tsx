@@ -9,13 +9,14 @@ import {
 } from 'antd';
 import { trimObjectValues } from '@utils/objectHelper';
 import { AButton } from '@components/atoms';
-import { useFormItems, useDebounceMutating } from '@hooks';
+import { useFormItems } from '@hooks';
 import type { TFormItem } from '@types';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
 import './styles.scss';
 import { getValueFromEvent } from '@utils/formHelper';
+import { useIsMutating } from '@tanstack/react-query';
 
 const BUTTON_TEXT = {
   CANCEL: 'Hủy',
@@ -51,7 +52,19 @@ const OBaseForm = <T extends object>({
   cancelBtnProps,
   footerProps,
 }: IOBaseForm<T>) => {
-  const isMutating = useDebounceMutating({ mutationKey: [mutationKey] });
+  const mutatingCount = useIsMutating({ mutationKey: [mutationKey] });
+
+  const [submitLoading, setSubmitLoading] = useState(false);
+
+  useEffect(() => {
+    if (mutatingCount > 0) {
+      setSubmitLoading(true);
+    } else {
+      setTimeout(() => {
+        setSubmitLoading(false);
+      }, 500);
+    }
+  }, [mutatingCount]);
 
   const transformItems = useMemo(
     () =>
@@ -147,7 +160,11 @@ const OBaseForm = <T extends object>({
                 type="primary"
                 htmlType="submit"
                 data-testid="submit-button"
-                disabled={disabledSubmit ?? isMutating}
+                disabled={disabledSubmit || submitLoading}
+                onClick={() => {
+                  setSubmitLoading(true);
+                  form.submit();
+                }}
                 {...saveBtnProps}
               >
                 {BUTTON_TEXT.SAVE}

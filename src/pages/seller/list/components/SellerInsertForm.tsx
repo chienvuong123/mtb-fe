@@ -53,6 +53,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
         inputProps: {
           maxLength: 20,
           placeholder: 'Nhập...',
+          disabled: mode !== 'add',
         },
         colProps: { span: 12 },
         rules: [{ required: true }],
@@ -250,6 +251,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
     positionList,
     branchList,
     departmentList,
+    mode,
   ]) as TFormItem[];
 
   useEffect(() => {
