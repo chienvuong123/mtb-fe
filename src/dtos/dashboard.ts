@@ -1,4 +1,4 @@
-import type { BaseEntity, BaseResponse } from './common';
+import type { BaseEntity, BaseResponse, BaseSearchResponse } from './common';
 
 export interface TStatisticsCampaignDTO extends BaseEntity {
   nameCampaign: string;
@@ -42,7 +42,9 @@ export interface DashboardSearchRequest {
   endDate: string;
 }
 
-export type StatisticsCampaiResponse = BaseResponse<TStatisticsCampaignDTO[]>;
+export type StatisticsCampaiResponse = BaseResponse<
+  BaseSearchResponse<TStatisticsCampaignDTO>
+>;
 
 export type StatisticsCustomerOfDayResponse =
   BaseResponse<IStatisticsCustomerOfDay>;

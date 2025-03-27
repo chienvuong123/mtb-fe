@@ -3,17 +3,12 @@ import { OTable } from '@components/organisms';
 import type { CBaseTable } from '@types';
 import { Flex, Space, Typography } from 'antd';
 import type { ColumnType } from 'antd/es/table';
-import React from 'react';
+import React, { useState } from 'react';
 import type { TStatisticsCampaignDTO } from 'src/dtos/dashboard';
 
 interface IDashboardTable extends CBaseTable<TStatisticsCampaignDTO> {
   onDateChange: (startDate: string, endDate: string) => void;
 }
-
-const handleSort = (a?: string, b?: string) =>
-  a && b ? a.localeCompare(b) : 0;
-
-const handleSortNumber = (a?: number, b?: number) => (a && b ? a - b : 0);
 
 const columns: ColumnType<TStatisticsCampaignDTO>[] = [
   {
@@ -21,21 +16,20 @@ const columns: ColumnType<TStatisticsCampaignDTO>[] = [
     dataIndex: 'campaignName',
     minWidth: 76,
     showSorterTooltip: false,
-    sorter: (a, b) => handleSort(a.campaignName, b.campaignName),
+    sorter: true,
   },
   {
     title: 'Tổng số khách hàng',
     dataIndex: 'totalCustomer',
     minWidth: 76,
-    sorter: (a, b) => handleSortNumber(a.totalCustomer, b.totalCustomer),
+    sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Chưa liên hệ',
     dataIndex: 'customersNotContacted',
     minWidth: 185,
-    sorter: (a, b) =>
-      handleSortNumber(a.customersNotContacted, b.customersNotContacted),
+    sorter: true,
     showSorterTooltip: false,
     ellipsis: true,
   },
@@ -43,38 +37,28 @@ const columns: ColumnType<TStatisticsCampaignDTO>[] = [
     title: 'Đang liên hệ',
     dataIndex: 'customersInProgress',
     minWidth: 107,
-    sorter: (a, b) =>
-      handleSortNumber(a.customersInProgress, b.customersInProgress),
+    sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Thành công',
     dataIndex: 'customersContactedSuccessfully',
     minWidth: 107,
-    sorter: (a, b) =>
-      handleSortNumber(
-        a.customersContactedSuccessfully,
-        b.customersContactedSuccessfully,
-      ),
+    sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Chưa thành công',
     dataIndex: 'customersContactedUnsuccessfully',
     minWidth: 107,
-    sorter: (a, b) =>
-      handleSortNumber(
-        a.customersContactedUnsuccessfully,
-        b.customersContactedUnsuccessfully,
-      ),
+    sorter: true,
     showSorterTooltip: false,
   },
   {
     title: 'Không thành công',
     dataIndex: 'customersFailedToContact',
     minWidth: 107,
-    sorter: (a, b) =>
-      handleSortNumber(a.customersFailedToContact, b.customersFailedToContact),
+    sorter: true,
     showSorterTooltip: false,
   },
 ];
@@ -83,8 +67,11 @@ const DashboardTable: React.FC<IDashboardTable> = ({
   onSort,
   onDateChange,
   dataSource,
+  paginations,
+  sortDirection,
 }) => {
   const { Title } = Typography;
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   const customHeader = (
     <Flex justify="space-between" align="center">
@@ -104,10 +91,13 @@ const DashboardTable: React.FC<IDashboardTable> = ({
         columns={columns}
         data={dataSource}
         onSort={onSort}
+        paginations={paginations}
+        selectedRowKeys={selectedRowKeys}
+        setSelectedRowKeys={setSelectedRowKeys}
+        sortDirection={sortDirection}
         isCheckboxHidden
         hideActions
         hideIndexColumn
-        scroll={{ y: 550 }}
       />
     </div>
   );
