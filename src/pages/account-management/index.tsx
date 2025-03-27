@@ -20,6 +20,7 @@ import type { AccountRequest, UserDTO } from 'src/dtos/auth';
 import { filterObject } from '@utils/objectHelper';
 import { useNotification } from '@libs/antd';
 import { useProfile } from '@stores';
+import { formatDate } from '@utils/dateHelper';
 import {
   AccountInsertForm,
   AccountSearchForm,
@@ -30,6 +31,7 @@ import {
 const AccountManagementPage = () => {
   const [drawerMode, setDrawerMode] = useState<TFormType>();
   const notify = useNotification();
+  const { user } = useProfile();
 
   const [initialValuesForm, setInitialValuesForm] =
     useState<Partial<TAccountManagementRecord> | null>(null);
@@ -79,6 +81,10 @@ const AccountManagementPage = () => {
   const handleCreate = () => {
     setInitialValuesForm({
       status: EStatus.ACTIVE,
+      createdBy: user?.username,
+      updatedBy: user?.username,
+      createdDate: formatDate(),
+      updatedDate: formatDate(),
     });
     setDrawerMode('add');
   };
@@ -95,7 +101,14 @@ const AccountManagementPage = () => {
 
   const handleEdit = (record: TAccountManagementRecord) => {
     setDrawerMode('edit');
-    setInitialValuesForm(record);
+    const userDTO: Partial<UserDTO> = {
+      ...record,
+      createdBy: record.createdBy,
+      createdDate: formatDate(record.createdDate),
+      updatedBy: record.updatedBy,
+      updatedDate: formatDate(record.updatedDate),
+    };
+    setInitialValuesForm(userDTO);
   };
 
   const handleClearAll = () => {
