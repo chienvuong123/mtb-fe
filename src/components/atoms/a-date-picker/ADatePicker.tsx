@@ -75,6 +75,7 @@ const ADatePicker: React.FC<ADatePickerProps> = ({
         disabledDate={disabledDate}
         defaultValue={defaultRange}
         style={{ width: '250px' }}
+        format={{ format: DATE_SLASH_FORMAT_DDMMYYYY }}
         size="large"
         {...props}
       />

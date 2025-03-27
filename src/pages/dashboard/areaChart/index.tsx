@@ -124,7 +124,7 @@ const DashboardAreaChart: React.FC = () => {
       <Flex justify="space-between" align="center" className="px-20">
         <Space direction="vertical" className="mb-24">
           <Title level={4} style={{ margin: 0 }}>
-            Khách hàng mới
+            Khách hàng tiếp cận
           </Title>
           <ADatePicker onDateChange={onDateChange} />
         </Space>
