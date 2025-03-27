@@ -68,9 +68,9 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
   };
 
   useEffect(() => {
-    setSelectedKey([pathname]);
-    setOpenKeys([getFirstPathname(pathname)]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const rootPath = getFirstPathname(pathname);
+    setSelectedKey([pathname, rootPath]);
+    setOpenKeys([rootPath]);
   }, [pathname]);
 
   return (
