@@ -73,7 +73,7 @@ const useCampaignFormItems = ({
             item.status === EStatus.ACTIVE && item.role !== ERole.SELLER,
         )
         ?.map((item) => ({
-          label: `${item.username} - ${item.fullName}`,
+          label: `${item.employeeCode} - ${item.fullName}`,
           value: item.id,
         })) || []
     );
