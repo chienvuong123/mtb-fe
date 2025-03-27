@@ -2,7 +2,7 @@ import { OBaseForm } from '@components/organisms';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useEffect, useMemo, type FC } from 'react';
 import { CategoryType, type CampaignTargetDTO } from '@dtos';
-import { useCategoryOptionsListQuery } from '@hooks/queries';
+import { CAMPAIGN_KEY, useCategoryOptionsListQuery } from '@hooks/queries';
 import type { FormInstance } from 'antd';
 
 interface ICampaignTargetForm extends CBaseForm<CampaignTargetDTO> {
@@ -71,7 +71,7 @@ const CampaignTargetForm: FC<ICampaignTargetForm> = ({
   return (
     <div>
       <OBaseForm<CampaignTargetDTO>
-        mutationKey=""
+        mutationKey={CAMPAIGN_KEY}
         items={items}
         form={form}
         onSubmit={onSubmit}

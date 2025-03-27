@@ -10,6 +10,8 @@ import {
   useCategoryOptionsListQuery,
   useQueryApproachScriprtList,
 } from '@hooks/queries';
+import type { FormInstance } from 'antd/lib';
+import { useWatch } from 'antd/es/form/Form';
 
 const BUTTON_TEXT = {
   ADD: 'Thêm mới',
@@ -19,6 +21,7 @@ export interface ICampaignApproachDetailTable
   extends CBaseTable<CampaignApproachPlanDTO> {
   onShowApproachForm?: () => void;
   hideAddButton?: boolean;
+  form?: FormInstance;
 }
 
 const handleSort = (a?: string, b?: string) =>
@@ -52,6 +55,7 @@ const CampaignApproachDetailTable: React.FC<ICampaignApproachDetailTable> = ({
   dataSource,
   hideAddButton,
   sortDirection,
+  form,
   onEdit,
   onShowApproachForm,
   onDelete,
@@ -63,6 +67,7 @@ const CampaignApproachDetailTable: React.FC<ICampaignApproachDetailTable> = ({
       onDelete(key as string);
     }
   };
+  const categoryId = useWatch('categoryId', form);
 
   const { data: approachOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.APPROACH,
@@ -96,7 +101,7 @@ const CampaignApproachDetailTable: React.FC<ICampaignApproachDetailTable> = ({
         <Title level={3} className="mb-16">
           Kế hoạch tiếp cận
         </Title>
-        {!hideAddButton && (
+        {!hideAddButton && categoryId && (
           <AButton
             onClick={onShowApproachForm}
             type="primary"

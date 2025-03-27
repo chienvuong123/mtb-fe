@@ -1,5 +1,5 @@
 import Title from 'antd/lib/typography/Title';
-import { Divider, Flex } from 'antd';
+import { Flex } from 'antd';
 import { AButton } from '@components/atoms';
 import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -70,7 +70,6 @@ const ManagerCampaignDetail: React.FC = () => {
           isDisabled
           form={form}
         />
-        <Divider className="border-t mx-40" />
         <CampaignTargetDetailTable
           dataSource={campaignDetailData.targets || []}
           hideAddButton

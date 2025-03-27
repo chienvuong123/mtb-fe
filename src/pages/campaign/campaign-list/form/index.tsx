@@ -1,5 +1,5 @@
 import Title from 'antd/lib/typography/Title';
-import { Divider, Flex, type NotificationArgsProps } from 'antd';
+import { Flex, type NotificationArgsProps } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { AButton } from '@components/atoms';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -135,8 +135,10 @@ const CampaignCreate: React.FC = () => {
     setTempApproach(null);
     notify({ message, type });
   };
-  const { mutate: mutationCreateCampaign } = useCampaignAddMutation();
-  const { mutate: mutationUpdateCampaign } = useCampaignEditMutation();
+  const { mutate: mutationCreateCampaign, isPending: isCreateLoading } =
+    useCampaignAddMutation();
+  const { mutate: mutationUpdateCampaign, isPending: isUpdateLoading } =
+    useCampaignEditMutation();
   const { mutate: mutationCreateCategory } = useManageCategoryAddMutation();
   const { refetch: refetchCategory } = useQueryCategoryList(true);
   const dataSourcesDetail: Partial<TCampaignDetailDTO> = useMemo(
@@ -348,9 +350,7 @@ const CampaignCreate: React.FC = () => {
           form={form}
           onShowForm={handleShowForm}
         />
-        <div className="px-24">
-          <Divider className="my-0" />
-        </div>
+        <div className="px-24" />
         <CampaignTargetDetailTable
           dataSource={initTargetValues}
           onEdit={handleTargetEdit}
@@ -364,6 +364,7 @@ const CampaignCreate: React.FC = () => {
         dataSource={initApproachValues}
         onShowApproachForm={handleShowApproachForm}
         onDelete={handleDeleteApproach}
+        form={form}
       />
       <div
         className="fixed bottom-0 left-0 w-full bg-white shadow-md z-10 mt-20 py-10 pr-24"
@@ -387,6 +388,7 @@ const CampaignCreate: React.FC = () => {
               onClick={handleSubmitInsert}
               type="primary"
               variant="filled"
+              disabled={isCreateLoading || isUpdateLoading}
             >
               {BUTTON_TEXT.SAVE}
             </AButton>

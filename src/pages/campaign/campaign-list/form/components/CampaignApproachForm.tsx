@@ -3,6 +3,7 @@ import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useEffect, useMemo, type FC } from 'react';
 import { CategoryType, type CampaignApproachPlanDTO } from '@dtos';
 import {
+  CAMPAIGN_KEY,
   useCategoryOptionsListQuery,
   useQueryApproachScriprtList,
 } from '@hooks/queries';
@@ -84,7 +85,7 @@ const CampaignApproachForm: FC<ICampaignTargetForm> = ({
   return (
     <div>
       <OBaseForm<CampaignApproachPlanDTO>
-        mutationKey=""
+        mutationKey={CAMPAIGN_KEY}
         items={items}
         form={form}
         onSubmit={onSubmit}
