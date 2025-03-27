@@ -10,12 +10,13 @@ import {
 } from '@hooks/queries';
 import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import useUrlParams from '@hooks/useUrlParams';
-import { ROUTES, createNavigatePath } from '@routers/path';
+import { PATH_SEGMENT, ROUTES, createNavigatePath } from '@routers/path';
 import { useNavigate } from 'react-router-dom';
 import { filterObject } from '@utils/objectHelper';
 import { useNotification } from '@libs/antd';
 import { validationHelper } from '@utils/validationHelper';
 import type { TBaseTableSort } from '@types';
+import { useProfile } from '@stores';
 import ScenarioSearchForm from './components/ScenarioSearchForm';
 import ScenarioTable, {
   type TScenarioRecord,
@@ -36,6 +37,7 @@ const ScenarioPage: FC = () => {
     });
 
   const notify = useNotification();
+  const { hasPermission } = useProfile();
 
   const { data: scenarioList } = useApproachScriptSearchQuery({
     page: {
@@ -87,7 +89,11 @@ const ScenarioPage: FC = () => {
   };
 
   const handleView = (id: string) => {
-    navigate(createNavigatePath(ROUTES.SCENARIO.DETAIL, { id }));
+    if (hasPermission(ROUTES.SCENARIO.DETAIL)) {
+      navigate(createNavigatePath(ROUTES.SCENARIO.DETAIL, { id }));
+    } else {
+      navigate(`${ROUTES.SCENARIO.ROOT}/${PATH_SEGMENT.PREVIEW}/${id}`);
+    }
   };
 
   const handleSort = ({ field, direction }: TBaseTableSort) => {

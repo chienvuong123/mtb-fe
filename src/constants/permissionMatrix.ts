@@ -235,8 +235,6 @@ const permissionMatrix2: PermissionMatrix = {
   [ROUTES.SCENARIO.DETAIL]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
-    [ERole.SELLER_MANAGER]: true,
-    [ERole.SELLER]: true,
   },
 
   // Seller
