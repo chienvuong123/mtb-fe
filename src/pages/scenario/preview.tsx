@@ -5,6 +5,7 @@ import { useApproachScriptViewQuery } from '@hooks/queries';
 import { OActionFooter, ScenarioScriptContainer } from '@components/organisms';
 import { Form } from 'antd';
 import { PATH_SEGMENT, ROUTES } from '@routers/path';
+import { useProfile } from '@stores';
 
 const ScenarioPreviewPage: FC = () => {
   const navigate = useNavigate();
@@ -12,11 +13,16 @@ const ScenarioPreviewPage: FC = () => {
   const { data: scenario } = useApproachScriptViewQuery({
     id: id as string,
   });
+  const { hasPermission } = useProfile();
 
   const [form] = Form.useForm();
 
   const handleBack = () => {
-    navigate(`${ROUTES.SCENARIO.ROOT}/${PATH_SEGMENT.DETAIL}/${id}`);
+    if (hasPermission(ROUTES.SCENARIO.DETAIL)) {
+      navigate(`${ROUTES.SCENARIO.ROOT}/${PATH_SEGMENT.DETAIL}/${id}`);
+    } else {
+      navigate(ROUTES.SCENARIO.LIST);
+    }
   };
 
   if (!scenario) return null;
