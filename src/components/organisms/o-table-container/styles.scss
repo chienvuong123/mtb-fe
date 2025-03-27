@@ -9,4 +9,13 @@
     font-size: 18px;
     font-weight: 500;
   }
+  .mbb-table-content {
+    max-height: 500px;
+    overflow: auto !important;
+    .mbb-table-thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+  }
 }
