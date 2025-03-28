@@ -81,6 +81,12 @@ const useCampaignFormItems = ({
     return !initialValues || Object.keys(initialValues).length === 0;
   }, [initialValues]);
 
+  const isStartDate = useMemo(() => {
+    if (isCreateMode) return true;
+
+    return initialValues?.status !== EStatusCampaign.INPROGRESS;
+  }, [isCreateMode, initialValues]);
+
   return useMemo(
     () =>
       [
@@ -151,8 +157,11 @@ const useCampaignFormItems = ({
           inputProps: {
             placeholder: 'Chọn ngày...',
             className: 'date-picker-campaign',
-            minDate: isCreateMode ? dayjs().startOf('day') : undefined,
+            minDate: isCreateMode
+              ? dayjs().add(1, 'day').startOf('day')
+              : undefined,
             maxDate: endDate ? dayjs(endDate) : undefined,
+            disabled: !isStartDate,
           },
           required: true,
           rules: [{ required: true }],
@@ -218,6 +227,7 @@ const useCampaignFormItems = ({
       startDate,
       endDate,
       isCreateMode,
+      isStartDate,
     ],
   );
 };
