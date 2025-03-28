@@ -1,10 +1,10 @@
-import ADatePicker from '@components/atoms/a-date-picker/ADatePicker';
 import { OTable } from '@components/organisms';
 import type { CBaseTable } from '@types';
 import { Flex, Space, Typography } from 'antd';
 import type { ColumnType } from 'antd/es/table';
 import React, { useState } from 'react';
 import type { TStatisticsCampaignDTO } from 'src/dtos/dashboard';
+import { DDatePicker } from './date-picker';
 
 interface IDashboardTable extends CBaseTable<TStatisticsCampaignDTO> {
   onDateChange: (startDate: string, endDate: string) => void;
@@ -79,7 +79,7 @@ const DashboardTable: React.FC<IDashboardTable> = ({
         <Title level={4} style={{ margin: 0 }}>
           Bảng thống kê
         </Title>
-        <ADatePicker onDateChange={onDateChange} />
+        <DDatePicker onDateChange={onDateChange} />
       </Space>
     </Flex>
   );

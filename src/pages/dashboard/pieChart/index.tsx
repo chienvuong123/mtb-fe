@@ -1,12 +1,12 @@
 import { Flex, Space, Typography } from 'antd';
 import React, { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import ADatePicker from '@components/atoms/a-date-picker/ADatePicker';
 import { useStatisticsCustomerApproach } from '@hooks/queries/dashboardQueries';
 import type { DashboardSearchRequest } from 'src/dtos/dashboard';
 import CustomLegendPieChart from './components/CustomeLegendPieChart';
 import CustomeTooltipPieChart from './components/CustomeTooltipPieChart';
 import './pieChart.scss';
+import { DDatePicker } from '../components/date-picker';
 
 const DashboardPieChart: React.FC = () => {
   const [dateRange, setDateRange] = useState<DashboardSearchRequest>({
@@ -64,7 +64,7 @@ const DashboardPieChart: React.FC = () => {
           <Title level={4} style={{ margin: 0 }}>
             Tỷ lệ tiếp cận khách hàng
           </Title>
-          <ADatePicker onDateChange={onDateChange} />
+          <DDatePicker onDateChange={onDateChange} />
         </Space>
       </Flex>
       <div className="flex-clo ">

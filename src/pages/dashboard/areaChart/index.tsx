@@ -8,7 +8,6 @@ import {
   AreaChart,
   ResponsiveContainer,
 } from 'recharts';
-import ADatePicker from '@components/atoms/a-date-picker/ADatePicker';
 import { useStatisticsCustomerCallStats } from '@hooks/queries/dashboardQueries';
 import type {
   DashboardSearchRequest,
@@ -17,6 +16,7 @@ import type {
 import CustomLegend from './components/CustomerLegend';
 import CustomTooltip from './components/CustomeTooltip';
 import './areaChart.scss';
+import { DDatePicker } from '../components/date-picker';
 
 interface LegendEntry {
   color: string;
@@ -126,7 +126,7 @@ const DashboardAreaChart: React.FC = () => {
           <Title level={4} style={{ margin: 0 }}>
             Khách hàng tiếp cận
           </Title>
-          <ADatePicker onDateChange={onDateChange} />
+          <DDatePicker onDateChange={onDateChange} />
         </Space>
         <Flex>
           <CustomLegend legendData={legendData} />
