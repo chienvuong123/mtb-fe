@@ -122,7 +122,7 @@ const CampaignApproachDetailTable: React.FC<ICampaignApproachDetailTable> = ({
         isCheckboxHidden
         hideActions={hideAddButton}
         onEdit={onEdit}
-        confirmProps={{ title: 'Xóa kịch bản tiếp cận' }}
+        confirmProps={{ title: 'Xóa kế hoạch tiếp cận' }}
         scroll={{ x: 1500 }}
         onSort={onSort}
         sortDirection={sortDirection}
