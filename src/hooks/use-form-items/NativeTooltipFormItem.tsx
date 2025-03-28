@@ -1,6 +1,7 @@
-import type { INPUT_TYPE } from '@types';
+import { INPUT_TYPE } from '@types';
 import { Form, type FormInstance } from 'antd';
-import { useRef, useEffect, type FocusEvent } from 'react';
+import { useRef, useEffect, type FocusEvent, useMemo } from 'react';
+import clsx from 'clsx';
 import { formItemComponents, updateTooltipContent } from './util';
 
 const NativeTooltipFormItem = ({
@@ -46,7 +47,7 @@ const NativeTooltipFormItem = ({
     document.body.appendChild(tooltipElement);
 
     const showTooltip = () => {
-      const content = updateTooltipContent(fieldName, form, inputProps);
+      const content = updateTooltipContent(type, fieldName, form, inputProps);
       if (!content) return null;
 
       tooltipElement.textContent = String(content);
@@ -84,18 +85,31 @@ const NativeTooltipFormItem = ({
       window.removeEventListener('resize', updateTooltipPosition);
       document.body.removeChild(tooltipElement);
     };
-  }, [fieldName, form, isViewMode, inputProps]);
+  }, [type, fieldName, form, isViewMode, inputProps]);
+
+  const props = useMemo(
+    () => ({
+      className: clsx(className, 'cursor-default'),
+      onBlur: handleBlur,
+      form,
+      name: fieldName,
+      open: false,
+      allowClear: false,
+      ...([INPUT_TYPE.TEXT, INPUT_TYPE.TEXT_AREA].includes(type)
+        ? {}
+        : { suffixIcon: null }),
+      ...(type === INPUT_TYPE.DATE_PICKER
+        ? { inputReadOnly: true }
+        : { readOnly: true }),
+      ...inputProps,
+    }),
+    [className, fieldName, form, handleBlur, inputProps, type],
+  );
 
   return (
     <div ref={containerRef} style={{ width: '100%' }}>
       <Form.Item name={fieldName} noStyle>
-        <Component
-          className={className}
-          onBlur={handleBlur}
-          form={form}
-          name={fieldName}
-          {...inputProps}
-        />
+        <Component {...props} />
       </Form.Item>
     </div>
   );
