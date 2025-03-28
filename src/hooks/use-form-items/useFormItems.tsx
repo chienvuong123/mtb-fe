@@ -83,14 +83,18 @@ const useFormItems = ({
     return (
       <Row {...rowProps}>
         {formItems.map(
-          ({
-            type,
-            inputProps,
-            colProps,
-            className,
-            surfixButton,
-            ...formItemProps
-          }) => {
+          (
+            {
+              type,
+              inputProps,
+              colProps,
+              className,
+              surfixButton,
+              required,
+              ...formItemProps
+            },
+            idx,
+          ) => {
             const {
               span,
               flex,
@@ -107,7 +111,7 @@ const useFormItems = ({
                 flex={flex ?? (span ? undefined : '20%')}
                 style={{ maxWidth: span ? undefined : maxWidth, ...style }}
                 className={clsx({ 'pos-relative': showAddBtn }, colClassName)}
-                key={formItemProps.name}
+                key={formItemProps.name || idx}
                 hidden={formItemProps?.hidden}
                 {...otherColProps}
               >
@@ -125,6 +129,7 @@ const useFormItems = ({
                   >
                     <Form.Item
                       className={clsx('mb-0 w-full', className)}
+                      required={isViewMode ? false : required}
                       {...formItemProps}
                     >
                       {formItemProps?.children ||
@@ -150,7 +155,7 @@ const useFormItems = ({
         )}
       </Row>
     );
-  }, [formItems, rowProps, renderFormItem]);
+  }, [formItems, rowProps, isViewMode, renderFormItem]);
 
   return { formContent, getFormItem: renderFormItem };
 };
