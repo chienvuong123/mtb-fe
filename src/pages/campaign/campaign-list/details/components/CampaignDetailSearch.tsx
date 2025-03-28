@@ -44,6 +44,7 @@ const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
           form={form}
           cancelBtnProps={{ hidden: true }}
           saveBtnProps={{ hidden: true }}
+          isViewMode={isDisabled}
         />
       )}
     </div>

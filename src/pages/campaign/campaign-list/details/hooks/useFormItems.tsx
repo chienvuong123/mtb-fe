@@ -10,7 +10,6 @@ import {
   useCategoryOptionsListQuery,
   useQueryCategoryList,
 } from '@hooks/queries';
-import clsx from 'clsx';
 import { CategoryType } from '@dtos';
 import { useWatch } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
@@ -30,7 +29,6 @@ const useCampaignFormItems = ({
   isDisabled,
   onShowForm,
   form,
-  isNoEdit,
   initialValues,
 }: ICampaignFormItemsProps): TFormItem[] => {
   const startDate = useWatch('startDate', form);
@@ -94,7 +92,6 @@ const useCampaignFormItems = ({
           inputProps: {
             placeholder: 'Chọn...',
             showSearch: true,
-            className: clsx({ 'pointer-events-none': isDisabled }),
             filterOption: true,
             options: categoryList,
           },
@@ -107,7 +104,6 @@ const useCampaignFormItems = ({
           name: 'code',
           inputProps: {
             placeholder: 'Nhập...',
-            className: clsx({ 'pointer-events-none': isDisabled }),
             disabled: true,
           },
         },
@@ -117,7 +113,6 @@ const useCampaignFormItems = ({
           name: 'name',
           inputProps: {
             placeholder: 'Nhập...',
-            className: clsx({ 'pointer-events-none': isDisabled }),
             maxLength: 100,
           },
           required: true,
@@ -131,7 +126,6 @@ const useCampaignFormItems = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            className: clsx({ 'pointer-events-none': isDisabled }),
             options: branchesOptions,
           },
           required: true,
@@ -145,7 +139,6 @@ const useCampaignFormItems = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            className: clsx({ 'pointer-events-none': isDisabled }),
             options: personalInChargeOptions,
           },
           required: true,
@@ -157,9 +150,7 @@ const useCampaignFormItems = ({
           name: 'startDate',
           inputProps: {
             placeholder: 'Chọn ngày...',
-            className: clsx('date-picker-campaign', {
-              'pointer-events-none': isDisabled,
-            }),
+            className: 'date-picker-campaign',
             minDate: isCreateMode ? dayjs().startOf('day') : undefined,
             maxDate: endDate ? dayjs(endDate) : undefined,
           },
@@ -172,9 +163,6 @@ const useCampaignFormItems = ({
           name: 'endDate',
           inputProps: {
             placeholder: 'Chọn ngày...',
-            className: clsx('date-picker-campaign', {
-              'pointer-events-none': isDisabled,
-            }),
             minDate: startDate ? dayjs(startDate) : undefined,
           },
           required: true,
@@ -188,7 +176,6 @@ const useCampaignFormItems = ({
             placeholder: 'Chọn...',
             options: STATUS_CAMPAIGN_OPTIONS,
             allowClear: false,
-            className: clsx({ 'pointer-events-none': isDisabled || isNoEdit }),
             disabled: true,
           },
           required: true,
@@ -206,9 +193,6 @@ const useCampaignFormItems = ({
           inputProps: {
             placeholder: 'Nhập...',
             maxLength: 1000,
-            className: clsx({
-              'pointer-events-none w-full no-resize': isDisabled,
-            }),
           },
         },
         {
@@ -221,9 +205,6 @@ const useCampaignFormItems = ({
           inputProps: {
             placeholder: 'Nhập...',
             maxLength: 1000,
-            className: clsx({
-              'pointer-events-none w-full no-resize': isDisabled,
-            }),
           },
         },
       ] as TFormItem[],
@@ -236,7 +217,6 @@ const useCampaignFormItems = ({
       personalInChargeOptions,
       startDate,
       endDate,
-      isNoEdit,
       isCreateMode,
     ],
   );

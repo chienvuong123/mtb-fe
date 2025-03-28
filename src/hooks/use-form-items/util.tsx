@@ -37,25 +37,48 @@ import {
   MMultimediaUpload,
   type TUploadMultimedia,
 } from '@components/molecules';
+import dayjs from 'dayjs';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FormItemComponent<P = any> = (props: P) => React.ReactElement;
 
 export const updateTooltipContent = (
+  type: INPUT_TYPE,
   fieldName: string,
   form: FormInstance,
   inputProps: Record<string, unknown>,
 ) => {
   const fieldValue = form.getFieldValue(fieldName);
-  if (!fieldValue || typeof fieldValue !== 'string') return '';
 
-  const displayValue =
-    'options' in inputProps && Array.isArray(inputProps.options)
-      ? ((inputProps.options as DefaultOptionType[]).find(
+  let displayValue;
+  switch (type) {
+    case INPUT_TYPE.DATE_PICKER: {
+      displayValue = fieldValue
+        ? dayjs(fieldValue).format(DATE_SLASH_FORMAT_DDMMYYYY)
+        : '';
+      break;
+    }
+    case INPUT_TYPE.SELECT: {
+      if ('options' in inputProps && Array.isArray(inputProps.options)) {
+        displayValue = (inputProps.options as DefaultOptionType[]).find(
           (option) => option.value === fieldValue,
-        )?.label ?? fieldValue)
-      : fieldValue;
+        )?.label;
 
+        if (typeof displayValue === 'string') {
+          break;
+        }
+        if (typeof displayValue === 'object') {
+          displayValue = (displayValue as JSX.Element)?.props?.children ?? '';
+          break;
+        }
+      }
+      break;
+    }
+    default: {
+      displayValue = fieldValue;
+      break;
+    }
+  }
   return typeof displayValue === 'string' ? displayValue : '';
 };
 
