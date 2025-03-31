@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const useProfile = () => {
   const navigate = useNavigate();
 
-  const { data: userInfo, isPending } = useUserInfoQuery();
+  const { data: userInfo, isPending, refetch } = useUserInfoQuery();
   const token = localStorage.getItem('token') ?? '';
   const refreshToken = localStorage.getItem('refresh_token') ?? '';
   const userData = userInfo?.data;
@@ -36,6 +36,7 @@ const useProfile = () => {
     isSellerManager: userData?.role === ERole.SELLER_MANAGER,
     isSeller: userData?.role === ERole.SELLER,
     hasPermission,
+    refetch,
   };
 };
 

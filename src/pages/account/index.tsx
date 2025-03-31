@@ -18,7 +18,7 @@ const AccountPage = () => {
   const { items } = useFieldRender();
 
   const notify = useNotification();
-  const { user } = useProfile();
+  const { user, refetch } = useProfile();
 
   const { mutate: userEditMutate } = useUserEditMutation();
 
@@ -33,6 +33,7 @@ const AccountPage = () => {
         onSuccess: (d) =>
           validationHelper(d, notify, () => {
             notify({ message: 'Chỉnh sửa thành công', type: 'success' });
+            refetch();
           }),
       },
     );
