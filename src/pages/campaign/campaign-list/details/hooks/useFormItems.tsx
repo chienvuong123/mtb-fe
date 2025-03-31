@@ -159,7 +159,9 @@ const useCampaignFormItems = ({
           name: 'endDate',
           inputProps: {
             placeholder: 'Chọn ngày...',
-            minDate: startDate ? dayjs(startDate) : undefined,
+            minDate: startDate
+              ? dayjs(startDate).add(1, 'day')
+              : dayjs().add(1, 'day'),
           },
           required: true,
           rules: [{ required: true }],
