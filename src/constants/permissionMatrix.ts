@@ -146,6 +146,10 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
+  [ROUTES.CATEGORY.CUSTOMERS]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
 
   // Customer
   [ROUTES.CUSTOMER.ROOT]: {

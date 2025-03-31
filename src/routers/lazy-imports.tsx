@@ -66,6 +66,9 @@ export const ApproachCategoryPage = React.lazy(
 export const GenderCategoryPage = React.lazy(
   () => import('@pages/category/gender'),
 );
+export const CustomerCategoryPage = React.lazy(
+  () => import('@pages/category/customer-category'),
+);
 
 // ====================== CAMPAIGN PAGES ======================
 export const CampaignListPage = React.lazy(
@@ -184,6 +187,7 @@ export const CategoryPages = {
   IdentificationTypeCategoryPage,
   ApproachCategoryPage,
   GenderCategoryPage,
+  CustomerCategoryPage,
 };
 
 export const CampaignPages = {

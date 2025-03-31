@@ -203,6 +203,10 @@ const useMenuList = () => {
             key: ROUTES.CATEGORY.GENDER,
             label: 'Giới tính',
           },
+          {
+            key: ROUTES.CATEGORY.CUSTOMERS,
+            label: 'Khách hàng',
+          },
         ],
       },
       {
