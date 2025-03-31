@@ -72,6 +72,15 @@ class CampaignApi extends BaseApi<CampaignDTO, CampaignSearchRequest> {
       ...config,
     });
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  async campaignManagerList(params: CampaignSearchRequest) {
+    return apiRequest<BaseSearchResponse<BaseOptionListDTO>>({
+      url: '/campaign-manager/v1.0/list',
+      method: 'GET',
+      params,
+    });
+  }
 }
 
 export const campaignApi = new CampaignApi();

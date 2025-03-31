@@ -23,6 +23,7 @@ import { useProfile } from '@stores';
 import { useNotification } from '@libs/antd';
 import { dayjsToString } from '@utils/dateHelper';
 import type { TBaseTableSort } from '@types';
+import { validationHelper } from '@utils/validationHelper';
 import { CampaignSearch, CampaignTable } from './components';
 import './index.scss';
 
@@ -131,12 +132,13 @@ const Campaign: React.FC = () => {
     mutationDeleteProducts(
       { id },
       {
-        onSuccess: () => {
-          notify({
-            message: 'Xoá thành công',
-            type: 'success',
-          });
-        },
+        onSuccess: (d) =>
+          validationHelper(d, notify, () => {
+            notify({
+              message: 'Xoá thành công',
+              type: 'success',
+            });
+          }),
       },
     );
   };

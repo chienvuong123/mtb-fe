@@ -160,12 +160,13 @@ const ManageCategoryPage: React.FC = () => {
     mutationDeleteCategory(
       { id },
       {
-        onSuccess: () => {
-          notify({
-            message: 'Xoá thành công',
-            type: 'success',
-          });
-        },
+        onSuccess: (d) =>
+          validationHelper(d, notify, () => {
+            notify({
+              message: 'Xoá thành công',
+              type: 'success',
+            });
+          }),
       },
     );
   };
