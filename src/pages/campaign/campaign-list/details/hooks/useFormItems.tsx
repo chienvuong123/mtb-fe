@@ -2,11 +2,9 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import {
   STATUS_CAMPAIGN_OPTIONS,
   EStatusCampaign,
-  EStatus,
-  ERole,
 } from '@constants/masterData';
 import {
-  useAccountManagementSearchQuery,
+  useCampaignManagerListQuery,
   useCategoryOptionsListQuery,
   useQueryCategoryList,
 } from '@hooks/queries';
@@ -59,23 +57,12 @@ const useCampaignFormItems = ({
   const { data: branchesOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.BRANCHES,
   });
-  const { data: accountManagementList } = useAccountManagementSearchQuery({
-    page: { pageNum: 1, pageSize: 1000 }, // TODO: remove this
-  });
-
-  const personalInChargeOptions = useMemo(() => {
-    return (
-      accountManagementList?.data?.content
-        ?.filter(
-          (item) =>
-            item.status === EStatus.ACTIVE && item.role !== ERole.SELLER,
-        )
-        ?.map((item) => ({
-          label: `${item.employeeCode} - ${item.fullName}`,
-          value: item.id,
-        })) || []
-    );
-  }, [accountManagementList]);
+  const { data: campaignManagementList } = useCampaignManagerListQuery(
+    {
+      page: { pageNum: 1, pageSize: 1000 }, // TODO: remove this
+    },
+    true,
+  );
 
   const isCreateMode = useMemo(() => {
     return !initialValues || Object.keys(initialValues).length === 0;
@@ -140,12 +127,12 @@ const useCampaignFormItems = ({
         {
           type: INPUT_TYPE.SELECT,
           label: 'Phụ trách triển khai',
-          name: 'supervisor',
+          name: 'campaignManagerId',
           inputProps: {
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: personalInChargeOptions,
+            options: campaignManagementList,
           },
           required: true,
           rules: [{ required: true }],
@@ -223,7 +210,7 @@ const useCampaignFormItems = ({
       onShowForm,
       categoryList,
       branchesOptions,
-      personalInChargeOptions,
+      campaignManagementList,
       startDate,
       endDate,
       isCreateMode,

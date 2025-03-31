@@ -7,7 +7,11 @@ import {
   locationApi,
   sellerApi,
 } from '@apis';
-import { CategoryType, type CampaignListRequest } from '@dtos';
+import {
+  CategoryType,
+  type CampaignListRequest,
+  type CampaignSearchRequest,
+} from '@dtos';
 import { useQuery } from '@tanstack/react-query';
 import { transformToF88Options, transformToOptions } from '@utils/objectHelper';
 
@@ -197,5 +201,16 @@ export const useGroupCustomerOptionsListQuery = (
     queryFn: () => groupCustomerApi.list(campaignId),
     select: ({ data }) => transformToOptions(data, combine),
     enabled,
+  });
+};
+
+export const useCampaignManagerListQuery = (
+  params: CampaignSearchRequest,
+  combine?: boolean,
+) => {
+  return useQuery({
+    queryKey: ['campaign-manager', 'list', params],
+    queryFn: () => campaignApi.campaignManagerList(params),
+    select: ({ content }) => transformToOptions(content, combine),
   });
 };
