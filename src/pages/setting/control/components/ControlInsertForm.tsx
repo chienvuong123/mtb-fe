@@ -38,12 +38,11 @@ const ControlInsertForm: FC<CBaseForm<ControlDTO>> = ({
   const [form] = useForm();
 
   useEffect(() => {
-    if (initialValues) {
+    form.resetFields();
+    if (initialValues && mode !== 'add') {
       form.setFieldsValue({ ...initialValues });
-    } else {
-      form.resetFields();
     }
-  }, [initialValues, form]);
+  }, [initialValues, form, mode]);
 
   return (
     <div>
