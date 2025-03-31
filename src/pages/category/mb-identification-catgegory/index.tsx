@@ -1,14 +1,14 @@
 import { CategoryType } from '@dtos';
 import { GenericCategoryPage } from '../components';
 
-const TypeOfIdentificationCategoryPage = () => {
+const MbIdentificationCategoryPage = () => {
   return (
     <GenericCategoryPage
-      categoryKey="type-of-identification"
-      categoryType={CategoryType.TYPE_OF_IDENTIFICATION}
+      categoryKey="mb-identification"
+      categoryType={CategoryType.MB_IDENTIFICATION}
       categoryTitle="Loại giấy tờ định danh"
     />
   );
 };
 
-export default TypeOfIdentificationCategoryPage;
+export default MbIdentificationCategoryPage;

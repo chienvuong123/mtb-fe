@@ -192,7 +192,7 @@ const useMenuList = () => {
             label: 'Chuyên môn',
           },
           {
-            key: ROUTES.CATEGORY.IDENTIFICATION_TYPE,
+            key: ROUTES.CATEGORY.MB_IDENTIFICATION,
             label: 'Loại giấy tờ định danh',
           },
           {

@@ -134,7 +134,7 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
-  [ROUTES.CATEGORY.IDENTIFICATION_TYPE]: {
+  [ROUTES.CATEGORY.MB_IDENTIFICATION]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
