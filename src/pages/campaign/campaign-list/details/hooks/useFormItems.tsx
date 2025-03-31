@@ -127,7 +127,7 @@ const useCampaignFormItems = ({
         {
           type: INPUT_TYPE.SELECT,
           label: 'Phụ trách triển khai',
-          name: 'supervisor',
+          name: 'campaignManagerId',
           inputProps: {
             placeholder: 'Chọn...',
             showSearch: true,

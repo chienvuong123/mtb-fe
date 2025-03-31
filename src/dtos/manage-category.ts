@@ -31,9 +31,7 @@ export interface ManagerCategoryDTO extends BaseEntity {
   department: string;
   departmentCode: string;
   departmentName: string;
-  supervisor: string;
-  supervisorCode: string;
-  supervisorName: string;
+  campaignManagerId: string;
   mainProductCode: string;
   mainProductName: string;
   subProductCode: string;
