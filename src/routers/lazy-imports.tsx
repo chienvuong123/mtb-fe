@@ -57,8 +57,8 @@ export const UnitCalculationCategoryPage = React.lazy(
 export const CustomerTypeCategoryPage = React.lazy(
   () => import('@pages/category/customer-type-category'),
 );
-export const IdentificationTypeCategoryPage = React.lazy(
-  () => import('@pages/category/type-of-identification-catgegory'),
+export const MbIdentificationCategoryPage = React.lazy(
+  () => import('@pages/category/mb-identification-catgegory'),
 );
 export const ApproachCategoryPage = React.lazy(
   () => import('@pages/category/approach'),
@@ -181,7 +181,7 @@ export const CategoryPages = {
   ExpertiseCategoryPage,
   UnitCalculationCategoryPage,
   CustomerTypeCategoryPage,
-  IdentificationTypeCategoryPage,
+  MbIdentificationCategoryPage,
   ApproachCategoryPage,
   GenderCategoryPage,
 };

@@ -131,8 +131,8 @@ const routes = createBrowserRouter(
               element: <CategoryPages.CustomerTypeCategoryPage />,
             },
             {
-              path: ROUTES.CATEGORY.IDENTIFICATION_TYPE,
-              element: <CategoryPages.IdentificationTypeCategoryPage />,
+              path: ROUTES.CATEGORY.MB_IDENTIFICATION,
+              element: <CategoryPages.MbIdentificationCategoryPage />,
             },
             {
               path: ROUTES.CATEGORY.APPROACH,
