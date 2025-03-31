@@ -103,6 +103,12 @@ const NativeTooltipFormItem = ({
         : { readOnly: true }),
       ...inputProps,
       placeholder: '',
+      ...(type === INPUT_TYPE.SELECT
+        ? {
+            showSearch: false,
+            filterOption: false,
+          }
+        : {}),
     }),
     [className, fieldName, form, handleBlur, inputProps, type],
   );

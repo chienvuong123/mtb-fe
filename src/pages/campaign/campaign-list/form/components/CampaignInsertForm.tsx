@@ -5,7 +5,7 @@ import type { FormInstance } from 'antd/lib';
 import type { TCampaignDetailDTO, TCampaignDetailSearchForm } from '@dtos';
 import { CAMPAIGN_KEY } from '@hooks/queries';
 import { useCampaignFormItems } from '../../details/hooks';
-import '../../index.scss';
+import '../../style.scss';
 
 interface ICampaignInsertForm {
   initialValues?: Partial<TCampaignDetailDTO>;
@@ -45,7 +45,7 @@ const CampaignInsertForm: React.FC<ICampaignInsertForm> = ({
   }, [initialValues, form]);
 
   return (
-    <div className="campaign form-wrapper">
+    <div className="campaign">
       {form && (
         <OBaseForm<TCampaignDetailSearchForm>
           mutationKey={CAMPAIGN_KEY}

@@ -6,6 +6,8 @@ import type { TCampaignDetailDTO, TCampaignDetailSearchForm } from '@dtos';
 import { CAMPAIGN_KEY } from '@hooks/queries';
 import { useCampaignFormItems } from '../hooks';
 
+import '../../style.scss';
+
 interface ICampaignDetailSearch {
   initialValues?: Partial<TCampaignDetailDTO>;
   isDisabled: boolean;
@@ -36,7 +38,7 @@ const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
   }, [initialValues, form]);
 
   return (
-    <div className="campaign form-wrapper">
+    <div className="campaign">
       {form && (
         <OBaseForm<TCampaignDetailSearchForm>
           mutationKey={CAMPAIGN_KEY}
