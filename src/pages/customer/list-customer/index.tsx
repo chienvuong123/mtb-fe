@@ -211,12 +211,13 @@ const ListCustomerPage: FC = () => {
     mutationDeleteCustomer(
       { id },
       {
-        onSuccess: () => {
-          notify({
-            message: 'Xoá khách hàng thành công',
-            type: 'success',
-          });
-        },
+        onSuccess: (d) =>
+          validationHelper(d, notify, () => {
+            notify({
+              message: 'Xoá khách hàng thành công',
+              type: 'success',
+            });
+          }),
       },
     );
   };
