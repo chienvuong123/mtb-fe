@@ -29,7 +29,7 @@ const useCategoryFormItems = ({
     categoryTypeCode: CategoryType.PRODUCT,
   });
   const { data: customerOptions } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.CUSTOMER,
+    categoryTypeCode: CategoryType.CUSTOMERS,
   });
   const { data: deploymentOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.DEPLOYMENT_METHOD,
