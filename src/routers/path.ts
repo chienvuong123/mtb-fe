@@ -46,6 +46,7 @@ export const PATH_SEGMENT = {
   IDENTIFICATION_TYPE: 'identification-type',
   APPROACH: 'approach',
   GENDER: 'gender',
+  CUSTOMERS: 'customer',
 
   // Multimedia
   IMAGE: 'image',
@@ -161,6 +162,7 @@ export const ROUTES = {
     ]),
     APPROACH: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.APPROACH]),
     GENDER: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.GENDER]),
+    CUSTOMERS: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.CUSTOMERS]),
   },
 
   SALES: {

@@ -142,6 +142,10 @@ const routes = createBrowserRouter(
               path: ROUTES.CATEGORY.GENDER,
               element: <CategoryPages.GenderCategoryPage />,
             },
+            {
+              path: ROUTES.CATEGORY.CUSTOMERS,
+              element: <CategoryPages.CustomerCategoryPage />,
+            },
           ],
         },
 
