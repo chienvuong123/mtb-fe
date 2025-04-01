@@ -83,10 +83,11 @@ const DashboardTable: React.FC<IDashboardTable> = ({
       </Space>
     </Flex>
   );
+
   return (
     <div>
       <OTable<TStatisticsCampaignDTO>
-        rowKey="id"
+        rowKey="campaignId"
         header={customHeader}
         columns={columns}
         data={dataSource}

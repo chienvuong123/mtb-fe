@@ -81,7 +81,7 @@ const DashboardPieChart: React.FC = () => {
               dataKey="value"
             >
               {chartData.map((entry) => (
-                <Cell fill={entry.color} />
+                <Cell key={entry.name} fill={entry.color} />
               ))}
             </Pie>
             <Tooltip content={<CustomeTooltipPieChart total={total} />} />

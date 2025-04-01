@@ -136,7 +136,7 @@ export const SalesOpportunitiesPage = React.lazy(
 );
 
 // ====================== ACCOUNT PAGES ======================
-export const AccountProfilePage = React.lazy(() => import('../pages/account'));
+export const AccountProfilePage = React.lazy(() => import('../pages/profile'));
 export const AccountManagementPage = React.lazy(
   () => import('@pages/account-management'),
 );

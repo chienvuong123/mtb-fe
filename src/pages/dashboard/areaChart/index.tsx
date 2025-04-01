@@ -9,14 +9,14 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { useStatisticsCustomerCallStats } from '@hooks/queries/dashboardQueries';
+import './areaChart.scss';
 import type {
   DashboardSearchRequest,
   IStatisticsCustomerCallStats,
-} from 'src/dtos/dashboard';
-import CustomLegend from './components/CustomerLegend';
-import CustomTooltip from './components/CustomeTooltip';
-import './areaChart.scss';
+} from '@dtos';
 import { DDatePicker } from '../components/date-picker';
+import CustomLegend from './components/CustomLegend';
+import CustomTooltip from './components/CustomTooltip';
 
 interface LegendEntry {
   color: string;

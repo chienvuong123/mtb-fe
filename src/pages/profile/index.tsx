@@ -8,17 +8,21 @@ import accountHeader from '@assets/images/account_header.png';
 import { OBaseForm } from '@components/organisms';
 import { validationHelper } from '@utils/validationHelper';
 import { useNotification } from '@libs/antd';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@routers/path';
 import { useProfile } from '../../stores';
 import useFieldRender from './hooks/useFieldRender';
 
 import './index.scss';
 
-const AccountPage = () => {
+const ProfilePage = () => {
   const [form] = useForm();
   const { items } = useFieldRender();
 
   const notify = useNotification();
   const { user, refetch } = useProfile();
+
+  const navigate = useNavigate();
 
   const { mutate: userEditMutate } = useUserEditMutation();
 
@@ -66,8 +70,8 @@ const AccountPage = () => {
             className="account-form"
             form={form}
             onSubmit={handleUpdateProfile}
+            onClose={() => navigate(ROUTES.HOME)}
             items={items}
-            cancelBtnProps={{ hidden: true }}
             footerProps={{
               justify: 'flex-end',
               className: 'py-12 pr-40',
@@ -79,4 +83,4 @@ const AccountPage = () => {
   );
 };
 
-export default AccountPage;
+export default ProfilePage;
