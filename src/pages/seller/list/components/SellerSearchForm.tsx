@@ -11,6 +11,7 @@ import {
 } from '@hooks/queries';
 import { handleResetFields } from '@utils/formHelper';
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
+import { ROUTES } from '@routers/path';
 
 const SellerSearchForm: FC<CBaseSearch<SellerSearchRequest>> = ({
   initialValues,
@@ -19,7 +20,7 @@ const SellerSearchForm: FC<CBaseSearch<SellerSearchRequest>> = ({
   onCreate,
 }) => {
   const [form] = useForm();
-  const { isAdmin } = useProfile();
+  const { hasPermission } = useProfile();
 
   const categoryId = useWatch(['category'], form);
 
@@ -144,7 +145,7 @@ const SellerSearchForm: FC<CBaseSearch<SellerSearchRequest>> = ({
         form={form}
         onSearch={onSearch}
         onClearAll={onClearAll}
-        onCreate={isAdmin ? onCreate : undefined}
+        onCreate={hasPermission(ROUTES.SELLER.CREATE) ? onCreate : undefined}
       />
     </div>
   );

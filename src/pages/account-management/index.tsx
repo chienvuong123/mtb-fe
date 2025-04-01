@@ -21,6 +21,7 @@ import { filterObject } from '@utils/objectHelper';
 import { useNotification } from '@libs/antd';
 import { useProfile } from '@stores';
 import { formatDate } from '@utils/dateHelper';
+import { ROUTES } from '@routers/path';
 import {
   AccountInsertForm,
   AccountSearchForm,
@@ -228,7 +229,7 @@ const AccountManagementPage = () => {
     }
   }, [accountManagementRes, setPagination, pagination, isLoading]);
 
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   return (
     <div className="pt-32 ">
@@ -239,7 +240,11 @@ const AccountManagementPage = () => {
       <AccountSearchForm
         onSearch={handleSearch}
         onClearAll={handleClearAll}
-        onCreate={isAdmin || isCampaignManager ? handleCreate : undefined}
+        onCreate={
+          hasPermission(ROUTES.ACCOUNT.MANAGEMENT.CREATE)
+            ? handleCreate
+            : undefined
+        }
         initialValues={filters as UserDTO}
       />
       <div className="mt-24" />

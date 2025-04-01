@@ -89,7 +89,7 @@ export const ROUTES = {
 
   ACCOUNT: {
     ROOT: buildPath(PATH_SEGMENT.ACCOUNT),
-    MANAGEMENT: buildPath(PATH_SEGMENT.ACCOUNT, [PATH_SEGMENT.MANAGEMENT]),
+    MANAGEMENT: { ...createCommonRoutes(PATH_SEGMENT.ACCOUNT) },
   },
 
   // Module routes with children
@@ -138,7 +138,7 @@ export const ROUTES = {
   },
 
   CATEGORY: {
-    ROOT: buildPath(PATH_SEGMENT.CATEGORY),
+    ...createCommonRoutes(PATH_SEGMENT.CATEGORY),
     PRODUCT: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.PRODUCT]),
     MEDIA: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.MEDIA]),
     POSITION: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.POSITION]),
@@ -171,12 +171,12 @@ export const ROUTES = {
   },
 
   SETTING: {
-    ROOT: buildPath(PATH_SEGMENT.SETTING),
+    ...createCommonRoutes(PATH_SEGMENT.SETTING),
     CONTROL: buildPath(PATH_SEGMENT.SETTING, [PATH_SEGMENT.CONTROL]),
   },
 
   MULTIMEDIA: {
-    ROOT: buildPath(PATH_SEGMENT.MULTIMEDIA),
+    ...createCommonRoutes(PATH_SEGMENT.MULTIMEDIA),
     IMAGE: buildPath(PATH_SEGMENT.MULTIMEDIA, [PATH_SEGMENT.IMAGE]),
   },
 };

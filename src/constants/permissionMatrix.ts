@@ -94,6 +94,18 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
+  [ROUTES.CATEGORY.CREATE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.CATEGORY.EDIT]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.CATEGORY.DELETE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
   [ROUTES.CATEGORY.PRODUCT]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
@@ -167,8 +179,14 @@ const permissionMatrix2: PermissionMatrix = {
   [ROUTES.CUSTOMER.CREATE]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
-    [ERole.SELLER_MANAGER]: true,
-    [ERole.SELLER]: true,
+  },
+  [ROUTES.CUSTOMER.EDIT]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.CUSTOMER.DELETE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
   },
   [ROUTES.CUSTOMER.DETAIL]: {
     [ERole.ADMIN]: true,
@@ -262,15 +280,42 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
   },
+  [ROUTES.SELLER.EDIT]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.SELLER.DELETE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.SELLER.CREATE]: {
+    [ERole.ADMIN]: true,
+  },
 
   // Multimedia warehouse
   [ROUTES.MULTIMEDIA.ROOT]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
+  [ROUTES.MULTIMEDIA.CREATE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.MULTIMEDIA.EDIT]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.MULTIMEDIA.DELETE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
 
   // Setting
   [ROUTES.SETTING.ROOT]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.SETTING.CREATE]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
@@ -286,7 +331,20 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
   },
-  [ROUTES.ACCOUNT.MANAGEMENT]: {
+
+  [ROUTES.ACCOUNT.MANAGEMENT.ROOT]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.ACCOUNT.MANAGEMENT.CREATE]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.ACCOUNT.MANAGEMENT.EDIT]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.ACCOUNT.MANAGEMENT.DELETE]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
@@ -404,7 +462,7 @@ const permissionMatrix1: PermissionMatrix = {
     [ERole.ADMIN]: true,
     [ERole.SELLER]: true,
   },
-  [ROUTES.ACCOUNT.MANAGEMENT]: {
+  [ROUTES.ACCOUNT.MANAGEMENT.ROOT]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
