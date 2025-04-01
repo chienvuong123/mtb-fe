@@ -31,7 +31,6 @@ export interface ApproachScriptAttributeDTO {
   approachResultStep?: ApproachResultStepDTO;
   controlCode?: string;
   controlId?: string;
-  parentId?: string;
 }
 
 export interface ApproachStepFormValue {
