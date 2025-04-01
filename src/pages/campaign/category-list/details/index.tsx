@@ -9,8 +9,10 @@ import type { TCategoryDetailDTO } from 'src/dtos/manage-category-detail';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@routers/path';
 import { type TId } from '@dtos';
-import { useCategoryDetailViewQuery } from '@hooks/queries/manageCategoryQueries';
-import { useCampaignSearchQuery } from '@hooks/queries';
+import {
+  useCategoryDetailViewQuery,
+  useCampaignSearchQuery,
+} from '@hooks/queries';
 import { type TBaseTableSort } from '@types';
 import CategoryDetailSearch from './components/CategoryDetailSearch';
 import CategoryDetailTable, {

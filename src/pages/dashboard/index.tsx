@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Flex } from 'antd';
-import { useStatisticsCampaign } from '@hooks/queries/dashboardQueries';
+import { useStatisticsCampaign } from '@hooks/queries';
 import type { IMPagination, TPagination } from '@components/molecules';
 import type { TBaseTableSort } from '@types';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';

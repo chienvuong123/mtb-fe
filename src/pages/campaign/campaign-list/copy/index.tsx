@@ -13,10 +13,10 @@ import {
   useCampaignAddMutation,
   useCampaignDetailViewQuery,
   useQueryCategoryList,
+  useManageCategoryAddMutation,
 } from '@hooks/queries';
 import dayjs from 'dayjs';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
-import { useManageCategoryAddMutation } from '@hooks/queries/manageCategoryQueries';
 import type {
   CampaignApproachPlanDTO,
   CampaignTargetDTO,

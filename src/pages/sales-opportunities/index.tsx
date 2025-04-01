@@ -7,7 +7,7 @@ import type {
 } from 'src/dtos/sales-opportunities';
 import type { IMPagination, TPagination } from '@components/molecules';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import { useSalesOpportunitiesSearchQuery } from '@hooks/queries/salesOpportunitiesQueries';
+import { useSalesOpportunitiesSearchQuery } from '@hooks/queries';
 import { ODrawer } from '@components/organisms';
 import type { TBaseTableSort, TFormType } from '@types';
 import { filterObject } from '@utils/objectHelper';

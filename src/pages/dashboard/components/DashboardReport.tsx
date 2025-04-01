@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Statistic, Row, Col, Flex } from 'antd';
 import { CircleIcon, MarketingI02con, UserGroupIcon02 } from '@assets/icons';
-import { useStatisticsCustomerOfDay } from '@hooks/queries/dashboardQueries';
+import { useStatisticsCustomerOfDay } from '@hooks/queries';
 
 const DashboardReport: React.FC = () => {
   const { data: statisticsCustomerOfDayData } = useStatisticsCustomerOfDay();

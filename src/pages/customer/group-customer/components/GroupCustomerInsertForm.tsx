@@ -1,7 +1,10 @@
 import { OBaseForm } from '@components/organisms';
 import { ACCEPTING_FULL_ALPHA_NUMERIC_SPACE_PATTERN } from '@constants/regex';
-import { useQueryCampaignList, useQueryCategoryList } from '@hooks/queries';
-import { GROUP_CUSTOMER_KEY } from '@hooks/queries/groupCustomerQueries';
+import {
+  useQueryCampaignList,
+  useQueryCategoryList,
+  GROUP_CUSTOMER_KEY,
+} from '@hooks/queries';
 import { INPUT_TYPE, type TFormItem, type CBaseForm } from '@types';
 import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';

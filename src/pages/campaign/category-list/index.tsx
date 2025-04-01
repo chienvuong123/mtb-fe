@@ -11,7 +11,7 @@ import {
   useManageCategoryEditMutation,
   useManageCategorySearchQuery,
   useManagerCategoryRemoveMutation,
-} from '@hooks/queries/manageCategoryQueries';
+} from '@hooks/queries';
 import type { TCampaignSearchForm } from 'src/dtos/campaign';
 import { useNavigate } from 'react-router-dom';
 import { createNavigatePath, ROUTES } from '@routers/path';
