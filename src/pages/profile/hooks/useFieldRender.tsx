@@ -28,16 +28,19 @@ const useFieldRender = () => {
       type: INPUT_TYPE.TEXT,
       label: 'Họ và tên',
       name: 'fullName',
-      inputProps: { placeholder: 'Nhập...' },
+      inputProps: { placeholder: 'Nhập...', maxLength: 100 },
       colProps: { span: 8, className: 'fw-500' },
-      rules: [{ required: true }],
+      rules: [
+        { required: true },
+        { whitespace: true, message: 'Trường này là bắt buộc' },
+      ],
       blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
     },
     {
       type: INPUT_TYPE.TEXT,
       label: 'Email',
       name: 'email',
-      inputProps: { placeholder: 'Nhập...' },
+      inputProps: { placeholder: 'Nhập...', maxLength: 50 },
       colProps: { span: 8, className: 'fw-500' },
       rules: [
         { required: true },

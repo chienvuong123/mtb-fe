@@ -36,7 +36,10 @@ const ProfilePage = () => {
       {
         onSuccess: (d) =>
           validationHelper(d, notify, () => {
-            notify({ message: 'Chỉnh sửa thành công', type: 'success' });
+            notify({
+              message: 'Cập nhật thông tin thành công',
+              type: 'success',
+            });
             refetch();
           }),
       },
