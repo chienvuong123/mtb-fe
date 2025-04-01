@@ -67,7 +67,7 @@ const CustomerSearchForm: FC<
             options: categoryList,
             onChange: () => handleResetFields(['campaignId', 'cusGroup'], form),
           },
-          hidden: isSeller,
+          hidden: isSeller || isSellerManager,
         },
         {
           type: INPUT_TYPE.SELECT,
@@ -99,7 +99,7 @@ const CustomerSearchForm: FC<
           label: 'Email',
           name: 'email',
           inputProps: { placeholder: 'Nhập...' },
-          hidden: isSeller,
+          hidden: isSeller || isSellerManager,
         },
         {
           type: INPUT_TYPE.SELECT,
@@ -111,7 +111,7 @@ const CustomerSearchForm: FC<
             filterOption: true,
             options: customerSegmentList,
           },
-          hidden: isSeller,
+          hidden: isSeller || isSellerManager,
         },
         {
           type: INPUT_TYPE.TEXT,
@@ -166,7 +166,7 @@ const CustomerSearchForm: FC<
             options: groupCustomerList,
             disabled: !campaignId || !categoryId,
           },
-          hidden: isSeller,
+          hidden: isSeller || isSellerManager,
         },
       ] as TFormItem[],
     [
@@ -179,6 +179,7 @@ const CustomerSearchForm: FC<
       groupCustomerList,
       form,
       isSeller,
+      isSellerManager,
     ],
   );
 
