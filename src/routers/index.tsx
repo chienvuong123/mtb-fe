@@ -317,7 +317,7 @@ const routes = createBrowserRouter(
           element: <AccountProfilePage />,
         },
         {
-          path: ROUTES.ACCOUNT.MANAGEMENT,
+          path: ROUTES.ACCOUNT.MANAGEMENT.ROOT,
           element: <AccountManagementPage />,
         },
       ],

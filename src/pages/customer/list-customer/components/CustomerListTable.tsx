@@ -4,6 +4,7 @@ import { useMemo, useState, type FC, type Key } from 'react';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import type { CustomerDTO } from '@dtos';
+import { ROUTES } from '@routers/path';
 
 const confirmProps: IModalConfirm = {
   title: 'Xoá khách hàng',
@@ -19,7 +20,7 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
   onCall,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const { isAdmin, isCampaignManager, isSeller } = useProfile();
+  const { hasPermission, isSeller } = useProfile();
 
   const columns: TColumnType<CustomerDTO>[] = useMemo(() => {
     const columnsTable: TColumnType<CustomerDTO>[] = [
@@ -126,8 +127,10 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
-      onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
+      onDeleteRow={
+        hasPermission(ROUTES.CUSTOMER.DELETE) ? deleteRecord : undefined
+      }
+      onEdit={hasPermission(ROUTES.CUSTOMER.EDIT) ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       onView={(id) => onView?.(id as string)}

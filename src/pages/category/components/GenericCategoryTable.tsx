@@ -7,6 +7,7 @@ import type { ColumnType } from 'antd/es/table';
 import { useMemo, useState, type FC, type Key } from 'react';
 import { useProfile } from '@stores';
 import type { TBaseTableSort } from '@types';
+import { ROUTES } from '@routers/path';
 
 export interface GenericCategoryTableProps {
   dataSource: CategoryDTO[];
@@ -32,7 +33,7 @@ export const GenericCategoryTable: FC<GenericCategoryTableProps> = ({
   formatDate: formatDateFn = formatDate,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   const columns: ColumnType<CategoryDTO>[] = useMemo(
     () => [
@@ -102,8 +103,10 @@ export const GenericCategoryTable: FC<GenericCategoryTableProps> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
-      onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
+      onDeleteRow={
+        hasPermission(ROUTES.CATEGORY.DELETE) ? deleteRecord : undefined
+      }
+      onEdit={hasPermission(ROUTES.CATEGORY.EDIT) ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={pagination}
       loading={loading}

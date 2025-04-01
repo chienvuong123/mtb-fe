@@ -5,6 +5,7 @@ import { useEffect, type FC } from 'react';
 import { STATUS_OPTIONS } from '@constants/masterData';
 import type { CategoryDTO } from '@dtos';
 import { useProfile } from '@stores';
+import { ROUTES } from '@routers/path';
 
 export interface GenericCategorySearchFormProps {
   initialValues?: Partial<CategoryDTO>;
@@ -48,7 +49,7 @@ export const GenericCategorySearchForm: FC<GenericCategorySearchFormProps> = ({
   onCreate,
 }) => {
   const [form] = useForm();
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   useEffect(() => {
     if (initialValues) {
@@ -67,7 +68,7 @@ export const GenericCategorySearchForm: FC<GenericCategorySearchFormProps> = ({
         form={form}
         onSearch={handleSearch}
         onClearAll={onClearAll}
-        onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
+        onCreate={hasPermission(ROUTES.CATEGORY.CREATE) ? onCreate : undefined}
       />
     </div>
   );

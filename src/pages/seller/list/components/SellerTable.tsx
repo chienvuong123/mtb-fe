@@ -1,6 +1,7 @@
 import { OTable, type TColumnType } from '@components/organisms';
 import type { IModalConfirm } from '@components/organisms/o-modal';
 import type { SellerDTO } from '@dtos';
+import { ROUTES } from '@routers/path';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import { useState, type FC, type Key } from 'react';
@@ -90,9 +91,7 @@ const SellerTable: FC<CBaseTable<SellerDTO>> = ({
   const deleteRecord = (key: Key) => {
     onDelete?.(key as string);
   };
-  const { isAdmin, isCampaignManager, isSellerManager } = useProfile();
-
-  const activeAction = isAdmin || isCampaignManager || isSellerManager;
+  const { hasPermission } = useProfile();
 
   return (
     <OTable<SellerDTO>
@@ -101,8 +100,10 @@ const SellerTable: FC<CBaseTable<SellerDTO>> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onEdit={activeAction ? onEdit : undefined}
-      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
+      onEdit={hasPermission(ROUTES.SELLER.EDIT) ? onEdit : undefined}
+      onDeleteRow={
+        hasPermission(ROUTES.SELLER.DELETE) ? deleteRecord : undefined
+      }
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}

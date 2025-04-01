@@ -5,6 +5,7 @@ import { useEffect, useMemo, type FC } from 'react';
 import { useProfile } from '@stores';
 import type { MultimediaDTO } from '@dtos';
 import { useQueryCategoryList } from '@hooks/queries';
+import { ROUTES } from '@routers/path';
 
 const MultimediaSearchForm: FC<CBaseSearch<MultimediaDTO>> = ({
   initialValues,
@@ -13,7 +14,7 @@ const MultimediaSearchForm: FC<CBaseSearch<MultimediaDTO>> = ({
   onCreate,
 }) => {
   const [form] = useForm();
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   const { data: categoryList } = useQueryCategoryList();
 
@@ -60,7 +61,9 @@ const MultimediaSearchForm: FC<CBaseSearch<MultimediaDTO>> = ({
         form={form}
         onSearch={onSearch}
         onClearAll={onClearAll}
-        onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
+        onCreate={
+          hasPermission(ROUTES.MULTIMEDIA.CREATE) ? onCreate : undefined
+        }
       />
     </div>
   );

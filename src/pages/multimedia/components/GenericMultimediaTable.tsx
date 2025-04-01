@@ -5,6 +5,7 @@ import type { ColumnType } from 'antd/es/table';
 import { useMemo, useState, type FC, type Key } from 'react';
 import type { MultimediaDTO } from '@dtos';
 import { formatDate } from '@utils/dateHelper';
+import { ROUTES } from '@routers/path';
 
 const MultimediaTable: FC<CBaseTable<MultimediaDTO> & { title: string }> = ({
   dataSource,
@@ -17,7 +18,7 @@ const MultimediaTable: FC<CBaseTable<MultimediaDTO> & { title: string }> = ({
   onSort,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   const columns: ColumnType<MultimediaDTO>[] = useMemo(
     () => [
@@ -87,8 +88,10 @@ const MultimediaTable: FC<CBaseTable<MultimediaDTO> & { title: string }> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
-      onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
+      onDeleteRow={
+        hasPermission(ROUTES.MULTIMEDIA.DELETE) ? deleteRecord : undefined
+      }
+      onEdit={hasPermission(ROUTES.MULTIMEDIA.EDIT) ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={paginations}
       sortDirection={sortDirection}

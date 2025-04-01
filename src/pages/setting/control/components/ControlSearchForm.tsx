@@ -4,6 +4,7 @@ import { useForm } from 'antd/es/form/Form';
 import { type FC } from 'react';
 import type { ControlSearchRequest } from '@dtos';
 import { useProfile } from '@stores';
+import { ROUTES } from '@routers/path';
 
 const items: TFormItem[] = [
   {
@@ -25,7 +26,7 @@ const ControlSearchForm: FC<CBaseSearch<ControlSearchRequest>> = ({
   onCreate,
 }) => {
   const [form] = useForm();
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   return (
     <div>
@@ -33,7 +34,7 @@ const ControlSearchForm: FC<CBaseSearch<ControlSearchRequest>> = ({
         items={items}
         form={form}
         onSearch={onSearch}
-        onCreate={isAdmin || isCampaignManager ? onCreate : undefined}
+        onCreate={hasPermission(ROUTES.SETTING.CREATE) ? onCreate : undefined}
       />
     </div>
   );

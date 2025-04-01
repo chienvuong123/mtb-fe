@@ -142,7 +142,7 @@ const useMenuList = () => {
         icon: <FloppyDiskIcon />,
       },
       {
-        key: ROUTES.ACCOUNT.MANAGEMENT,
+        key: ROUTES.ACCOUNT.MANAGEMENT.ROOT,
         label: 'Quản lý tài khoản',
         icon: <UserSettingsIcon />,
       },

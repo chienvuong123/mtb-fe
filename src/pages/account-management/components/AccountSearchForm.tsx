@@ -117,7 +117,7 @@ const AccountSearchForm: FC<CBaseSearch<UserDTO>> = ({
         form={form}
         onSearch={onSearch}
         onClearAll={onClearAll}
-        onCreate={() => onCreate?.(form.getFieldsValue())}
+        onCreate={onCreate}
       />
     </div>
   );

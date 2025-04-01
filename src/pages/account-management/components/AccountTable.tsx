@@ -6,6 +6,7 @@ import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import { useMemo, useState, type FC, type Key } from 'react';
 import type { UserDTO } from 'src/dtos/auth';
+import { ROUTES } from '@routers/path';
 
 const confirmProps: IModalConfirm = {
   title: 'Xoá tài khoản',
@@ -102,7 +103,7 @@ const AccountTable: FC<CBaseTable<TAccountManagementRecord>> = ({
     onDelete?.(key as string);
   };
 
-  const { isAdmin, isCampaignManager } = useProfile();
+  const { hasPermission } = useProfile();
 
   const blockingIds = useMemo(() => {
     if (dataSource?.length) {
@@ -122,8 +123,14 @@ const AccountTable: FC<CBaseTable<TAccountManagementRecord>> = ({
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
       setSelectedRowKeys={setSelectedRowKeys}
-      onDeleteRow={isAdmin || isCampaignManager ? deleteRecord : undefined}
-      onEdit={isAdmin || isCampaignManager ? onEdit : undefined}
+      onDeleteRow={
+        hasPermission(ROUTES.ACCOUNT.MANAGEMENT.DELETE)
+          ? deleteRecord
+          : undefined
+      }
+      onEdit={
+        hasPermission(ROUTES.ACCOUNT.MANAGEMENT.EDIT) ? onEdit : undefined
+      }
       paginations={paginations}
       sortDirection={sortDirection}
       isCheckboxHidden
