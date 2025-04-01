@@ -45,6 +45,7 @@ interface IAttributeInsertForm {
   onClose: () => void;
   onSubmit: (values: ApproachScriptAttributeDTO) => void;
   categoryCampaignId?: string;
+  parentId?: string;
 }
 
 const AttributeInsertForm: FC<IAttributeInsertForm> = ({
@@ -53,6 +54,7 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
   initialValues,
   mode,
   categoryCampaignId,
+  parentId,
 }) => {
   const [form] = useForm();
   const controlCode = useWatch('controlCode', form);
@@ -123,6 +125,8 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
     content,
     initialValues?.id,
   ]);
+
+  console.log(previewData);
 
   const renderDynamicOptions = useCallback(
     (name: string | number | (string | number)[]) => (
@@ -291,13 +295,17 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
     form.validateFields();
     const values = form.getFieldsValue(true);
 
+    console.log('Values trước khi submit:', values);
+
     onSubmit({
       ...values,
+      parentId: parentId || values.parentId,
       controlName:
         controlTypeOptions.find((item) => item.value === values.controlCode)
           ?.label || '',
     });
   };
+
   const handleCancel = () => {
     Modal.confirm({
       title: 'Xác nhận hủy',
@@ -313,7 +321,12 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
     if (initialValues && (mode === 'edit' || mode === 'view')) {
       form.setFieldsValue({ ...initialValues });
     }
-  }, [initialValues, form, mode]);
+
+    if (mode === 'add' && parentId) {
+      form.resetFields();
+      form.setFieldValue('parentId', parentId);
+    }
+  }, [initialValues, form, mode, parentId]);
 
   useEffect(() => {
     if (
@@ -346,6 +359,11 @@ const AttributeInsertForm: FC<IAttributeInsertForm> = ({
 
   return (
     <div id="attribute-insert-form">
+      {parentId && (
+        <Typography.Text type="secondary" className="mb-16 block">
+          Đang tạo lựa chọn cho attribute có ID: {parentId}
+        </Typography.Text>
+      )}
       <Row>
         <Col span={14}>
           <Card
