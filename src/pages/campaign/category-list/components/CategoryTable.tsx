@@ -6,7 +6,7 @@ import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import type { ColumnType } from 'antd/lib/table';
 import dayjs from 'dayjs';
-import React, { useState, type Key } from 'react';
+import React, { useEffect, useState, type Key } from 'react';
 import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
 
 export type TCategoryTableRecord = Partial<ManagerCategoryDTO>;
@@ -92,10 +92,34 @@ const CategoryTable: React.FC<CBaseTable<TCategoryTableRecord>> = ({
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const { hasPermission } = useProfile();
+  const [blockingEditIds, setBlockingEditIds] = useState<string[]>([]);
+  const [blockingDeleteIds, setBlockingDeleteIds] = useState<string[]>([]);
 
   const deleteRecord = (key: Key) => {
     onDelete?.(key as string);
   };
+
+  useEffect(() => {
+    if (dataSource?.length) {
+      const blockEditIds: string[] = [];
+      const blockDeleteIds: string[] = [];
+      dataSource.every((i) => {
+        if (!i.id) return false;
+
+        if (i.status === EStatusCampaign.ENDED) {
+          blockEditIds.push(i.id);
+          blockDeleteIds.push(i.id);
+        }
+
+        if (i.status === EStatusCampaign.INPROGRESS) {
+          blockDeleteIds.push(i.id);
+        }
+        return true;
+      });
+      setBlockingEditIds(blockEditIds);
+      setBlockingDeleteIds(blockDeleteIds);
+    }
+  }, [dataSource]);
 
   return (
     <OTable<TCategoryTableRecord>
@@ -119,6 +143,8 @@ const CategoryTable: React.FC<CBaseTable<TCategoryTableRecord>> = ({
       confirmProps={{
         title: 'Xóa Category',
       }}
+      blockingEditIds={blockingEditIds}
+      blockingDeleteIds={blockingDeleteIds}
     />
   );
 };

@@ -1,16 +1,12 @@
 import { OBaseForm } from '@components/organisms';
 import { GROUP_CUSTOMER_KEY } from '@hooks/queries/groupCustomerQueries';
 import type { FormInstance } from 'antd';
-import dayjs from 'dayjs';
-import { useEffect, type FC } from 'react';
+import { type FC } from 'react';
 import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import type { CBaseForm } from '@types';
 import { useCategoryFormItems } from '../hooks';
 
-interface ICategoryInsertForm {
-  onClose: () => void;
-  onSubmit: (values: Partial<ManagerCategoryDTO>) => void;
-  mode: 'add' | 'view';
-  initialValues?: Partial<ManagerCategoryDTO> | null;
+export interface ICategoryInsertForm extends CBaseForm<ManagerCategoryDTO> {
   isDisabled: boolean;
   form: FormInstance;
 }
@@ -23,21 +19,8 @@ const CategoryInsertForm: FC<ICategoryInsertForm> = ({
   isDisabled,
   form,
 }) => {
-  const items = useCategoryFormItems({ isDisabled, form });
+  const items = useCategoryFormItems({ isDisabled, form, mode, initialValues });
 
-  useEffect(() => {
-    if (initialValues) {
-      form.setFieldsValue({
-        ...initialValues,
-        startDate: initialValues?.startDate
-          ? dayjs(initialValues.startDate)
-          : undefined,
-        endDate: initialValues?.endDate
-          ? dayjs(initialValues.endDate)
-          : undefined,
-      });
-    }
-  }, [initialValues, form]);
   return (
     <div>
       <OBaseForm<ManagerCategoryDTO>
@@ -47,7 +30,7 @@ const CategoryInsertForm: FC<ICategoryInsertForm> = ({
         form={form}
         onSubmit={onSubmit}
         onClose={() => {
-          onClose();
+          onClose?.();
           form.resetFields();
         }}
       />

@@ -1,26 +1,23 @@
-import { INPUT_TYPE, type TFormItem } from '@types';
-import {
-  STATUS_CAMPAIGN_OPTIONS,
-  EStatusCampaign,
-} from '@constants/masterData';
+import { INPUT_TYPE, type TFormItem, type TFormType } from '@types';
+import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import {
   useCampaignManagerListQuery,
   useCategoryOptionsListQuery,
   useQueryCategoryList,
 } from '@hooks/queries';
 import { CategoryType } from '@dtos';
-import { useWatch } from 'antd/es/form/Form';
-import dayjs from 'dayjs';
-import { useMemo, useEffect } from 'react';
+import { Dayjs } from 'dayjs';
+import { useMemo } from 'react';
 import type { FormInstance } from 'antd/lib';
 import type { TCampaignDetailDTO } from '@dtos';
+import { useCampaignFormHelper } from '@pages/campaign/hook';
 
 interface ICampaignFormItemsProps {
   isDisabled: boolean;
   onShowForm?: () => void;
   form?: FormInstance;
-  isNoEdit?: boolean;
   initialValues?: Partial<TCampaignDetailDTO>;
+  mode: TFormType;
 }
 
 const useCampaignFormItems = ({
@@ -28,30 +25,14 @@ const useCampaignFormItems = ({
   onShowForm,
   form,
   initialValues,
+  mode,
 }: ICampaignFormItemsProps): TFormItem[] => {
-  const startDate = useWatch('startDate', form);
-  const endDate = useWatch('endDate', form);
-
-  useEffect(() => {
-    if (!form) return;
-
-    const today = dayjs().startOf('day');
-    const start = startDate ? dayjs(startDate).startOf('day') : null;
-    const end = endDate ? dayjs(endDate).startOf('day') : null;
-
-    let status: EStatusCampaign | undefined;
-
-    if (!start || !end) {
-      status = undefined;
-    } else if (today.isBefore(start)) {
-      status = EStatusCampaign.PENDING;
-    } else if (today.isAfter(end)) {
-      status = EStatusCampaign.ENDED;
-    } else {
-      status = EStatusCampaign.INPROGRESS;
-    }
-    form.setFieldValue('status', status);
-  }, [startDate, endDate, form]);
+  const { handleGenerateStatus, maxStartDate, minEndDate, minStartDate } =
+    useCampaignFormHelper<Partial<TCampaignDetailDTO>>({
+      form,
+      initialValues,
+      mode,
+    });
 
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: branchesOptions } = useCategoryOptionsListQuery({
@@ -63,16 +44,6 @@ const useCampaignFormItems = ({
     },
     true,
   );
-
-  const isCreateMode = useMemo(() => {
-    return !initialValues || Object.keys(initialValues).length === 0;
-  }, [initialValues]);
-
-  const isStartDate = useMemo(() => {
-    if (isCreateMode) return true;
-
-    return initialValues?.status !== EStatusCampaign.INPROGRESS;
-  }, [isCreateMode, initialValues]);
 
   return useMemo(
     () =>
@@ -144,11 +115,13 @@ const useCampaignFormItems = ({
           inputProps: {
             placeholder: 'Chọn ngày...',
             className: 'date-picker-campaign',
-            minDate: isCreateMode
-              ? dayjs().add(1, 'day').startOf('day')
-              : undefined,
-            maxDate: endDate ? dayjs(endDate) : undefined,
-            disabled: !isStartDate,
+            minDate: minStartDate,
+            maxDate: maxStartDate,
+            onCalendarChange: (date) =>
+              handleGenerateStatus({
+                startDate: date as Dayjs,
+                endDate: form?.getFieldValue('endDate'),
+              }),
           },
           required: true,
           rules: [{ required: true }],
@@ -159,9 +132,12 @@ const useCampaignFormItems = ({
           name: 'endDate',
           inputProps: {
             placeholder: 'Chọn ngày...',
-            minDate: startDate
-              ? dayjs(startDate).add(1, 'day')
-              : dayjs().add(1, 'day'),
+            minDate: minEndDate,
+            onCalendarChange: (date) =>
+              handleGenerateStatus({
+                startDate: form?.getFieldValue('startDate'),
+                endDate: date as Dayjs,
+              }),
           },
           required: true,
           rules: [{ required: true }],
@@ -213,10 +189,11 @@ const useCampaignFormItems = ({
       categoryList,
       branchesOptions,
       campaignManagementList,
-      startDate,
-      endDate,
-      isCreateMode,
-      isStartDate,
+      handleGenerateStatus,
+      form,
+      minStartDate,
+      minEndDate,
+      maxStartDate,
     ],
   );
 };

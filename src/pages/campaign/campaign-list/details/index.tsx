@@ -10,8 +10,7 @@ import type { CampaignDTO, TCampaignDetailDTO, TId } from '@dtos';
 import useUrlParams from '@hooks/useUrlParams';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { TBaseTableSort } from '@types';
-import CampaignDetailSearch from './components/CampaignDetailSearch';
-import { CampaignTargetDetailTable } from './components';
+import { CampaignDetailForm, CampaignTargetDetailTable } from './components';
 import CampaignApproachDetailTable from './components/CampaignApproachDetailTable';
 
 const BUTTON_TEXT = {
@@ -65,10 +64,11 @@ const ManagerCampaignDetail: React.FC = () => {
         vertical
         className="no-resize border-2 rounded-8 border-gray-border bg-white"
       >
-        <CampaignDetailSearch
+        <CampaignDetailForm
           initialValues={dataSourcesDetail}
           isDisabled
           form={form}
+          mode="view"
         />
         <CampaignTargetDetailTable
           dataSource={campaignDetailData.targets || []}

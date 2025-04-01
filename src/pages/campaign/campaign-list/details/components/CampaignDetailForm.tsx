@@ -1,41 +1,32 @@
 import { OBaseForm } from '@components/organisms';
-import React, { useEffect } from 'react';
-import dayjs from 'dayjs';
+import React from 'react';
 import type { FormInstance } from 'antd/lib';
 import type { TCampaignDetailDTO, TCampaignDetailSearchForm } from '@dtos';
 import { CAMPAIGN_KEY } from '@hooks/queries';
+import type { TFormType } from '@types';
 import { useCampaignFormItems } from '../hooks';
 
 import '../../style.scss';
 
-interface ICampaignDetailSearch {
+interface ICampaignDetailForm {
   initialValues?: Partial<TCampaignDetailDTO>;
   isDisabled: boolean;
   form?: FormInstance;
+  mode: TFormType;
 }
 
-const CampaignDetailSearch: React.FC<ICampaignDetailSearch> = ({
+const CampaignDetailSearch: React.FC<ICampaignDetailForm> = ({
   initialValues,
   isDisabled,
   form,
+  mode,
 }) => {
   const items = useCampaignFormItems({
+    mode,
     isDisabled,
+    initialValues,
+    form,
   });
-
-  useEffect(() => {
-    if (initialValues && form) {
-      form.setFieldsValue({
-        ...initialValues,
-        startDate: initialValues?.startDate
-          ? dayjs(initialValues.startDate)
-          : undefined,
-        endDate: initialValues?.endDate
-          ? dayjs(initialValues.endDate)
-          : undefined,
-      });
-    }
-  }, [initialValues, form]);
 
   return (
     <div className="campaign">
