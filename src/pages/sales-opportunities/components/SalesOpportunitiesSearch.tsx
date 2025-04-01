@@ -18,7 +18,7 @@ const SalesOpportunitiesSearch: React.FC<
   const [form] = useForm();
   const categoryId = useWatch('categoryId', form);
 
-  const { isSeller } = useProfile();
+  const { isSeller, isSellerManager } = useProfile();
 
   const unselectedCategory = !categoryId && !isSeller;
 
@@ -37,7 +37,7 @@ const SalesOpportunitiesSearch: React.FC<
         name: 'orderId',
         inputProps: { title: 'Mã', placeholder: 'Nhập...', maxLength: 20 },
       },
-      ...(isSeller
+      ...(isSeller || isSellerManager
         ? []
         : [
             {
@@ -111,6 +111,7 @@ const SalesOpportunitiesSearch: React.FC<
     unselectedCategory,
     customerApproachStatus,
     isSeller,
+    isSellerManager,
   ]);
 
   useEffect(() => {
