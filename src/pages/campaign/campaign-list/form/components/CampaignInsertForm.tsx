@@ -1,9 +1,9 @@
 import { OBaseForm } from '@components/organisms';
-import React, { useEffect } from 'react';
-import dayjs from 'dayjs';
+import React from 'react';
 import type { FormInstance } from 'antd/lib';
 import type { TCampaignDetailDTO, TCampaignDetailSearchForm } from '@dtos';
 import { CAMPAIGN_KEY } from '@hooks/queries';
+import type { TFormType } from '@types';
 import { useCampaignFormItems } from '../../details/hooks';
 import '../../style.scss';
 
@@ -12,7 +12,7 @@ interface ICampaignInsertForm {
   isDisabled: boolean;
   onShowForm?: () => void;
   form?: FormInstance;
-  isNoEdit?: boolean;
+  mode: TFormType;
 }
 
 const CampaignInsertForm: React.FC<ICampaignInsertForm> = ({
@@ -20,29 +20,15 @@ const CampaignInsertForm: React.FC<ICampaignInsertForm> = ({
   isDisabled,
   onShowForm,
   form,
-  isNoEdit,
+  mode,
 }) => {
   const items = useCampaignFormItems({
     isDisabled,
-    onShowForm: onShowForm || (() => {}),
+    onShowForm,
     form,
-    isNoEdit,
     initialValues,
+    mode,
   });
-
-  useEffect(() => {
-    if (initialValues && form) {
-      form.setFieldsValue({
-        ...initialValues,
-        startDate: initialValues?.startDate
-          ? dayjs(initialValues.startDate)
-          : undefined,
-        endDate: initialValues?.endDate
-          ? dayjs(initialValues.endDate)
-          : undefined,
-      });
-    }
-  }, [initialValues, form]);
 
   return (
     <div className="campaign">

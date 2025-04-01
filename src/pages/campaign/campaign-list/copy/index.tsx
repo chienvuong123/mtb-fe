@@ -331,9 +331,9 @@ const CampaignCopyPage: React.FC = () => {
         <CampaignInsertForm
           initialValues={dataSourcesDetail}
           isDisabled={false}
-          isNoEdit={!!campaignId}
           form={form}
           onShowForm={handleShowForm}
+          mode="add"
         />
         <div className="px-24" />
         <CampaignTargetDetailTable

@@ -344,9 +344,9 @@ const CampaignCreate: React.FC = () => {
         className="no-resize border-2 rounded-8 border-gray-border bg-white"
       >
         <CampaignInsertForm
+          mode={campaignId ? 'edit' : 'add'}
           initialValues={dataSourcesDetail}
           isDisabled={false}
-          isNoEdit={!!campaignId}
           form={form}
           onShowForm={handleShowForm}
         />

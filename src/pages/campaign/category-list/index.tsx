@@ -244,15 +244,17 @@ const ManageCategoryPage: React.FC = () => {
         open={!!drawerMode}
         width={1280}
       >
-        <CategoryInsert
-          key={drawerMode ?? 'view'}
-          mode={drawerMode === 'view' ? 'view' : 'add'}
-          initialValues={initialValuesForm}
-          onClose={handleCloseForm}
-          onSubmit={handleSubmitInsert}
-          isDisabled={false}
-          form={form}
-        />
+        {drawerMode && (
+          <CategoryInsert
+            key={drawerMode ?? 'view'}
+            mode={drawerMode}
+            initialValues={initialValuesForm}
+            onClose={handleCloseForm}
+            onSubmit={handleSubmitInsert}
+            isDisabled={false}
+            form={form}
+          />
+        )}
       </ODrawer>
     </div>
   );

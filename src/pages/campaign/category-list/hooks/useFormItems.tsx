@@ -1,13 +1,15 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
-import dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
 import { CategoryType } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
-import { useEffect } from 'react';
-import { Form } from 'antd';
 import type { FormInstance } from 'antd';
+import { useCampaignFormHelper } from '@pages/campaign/hook';
+import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import type { ICategoryInsertForm } from '../components/CategoryInsert';
 
-interface ICategoryFormItemsProps {
+interface ICategoryFormItemsProps
+  extends Pick<ICategoryInsertForm, 'mode' | 'initialValues'> {
   isDisabled: boolean;
   form: FormInstance;
 }
@@ -15,15 +17,15 @@ interface ICategoryFormItemsProps {
 const useCategoryFormItems = ({
   isDisabled,
   form,
+  mode,
+  initialValues,
 }: ICategoryFormItemsProps): TFormItem[] => {
-  const startDate = Form.useWatch('startDate', form);
-  const endDate = Form.useWatch('endDate', form);
-
-  useEffect(() => {
-    if (!startDate && form.getFieldValue('endDate')) {
-      form.setFieldValue('endDate', null);
-    }
-  }, [startDate, form]);
+  const { handleGenerateStatus, maxStartDate, minEndDate, minStartDate } =
+    useCampaignFormHelper<Partial<ManagerCategoryDTO>>({
+      form,
+      initialValues,
+      mode,
+    });
 
   const { data: mainProductOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.PRODUCT,
@@ -67,7 +69,13 @@ const useCategoryFormItems = ({
         placeholder: 'Chọn ngày...',
         className: 'date-picker-campaign',
         disabled: isDisabled,
-        maxDate: endDate ? dayjs(endDate) : undefined,
+        minDate: minStartDate,
+        maxDate: maxStartDate,
+        onCalendarChange: (date) =>
+          handleGenerateStatus({
+            startDate: date as Dayjs,
+            endDate: form.getFieldValue('endDate'),
+          }),
       },
     },
     {
@@ -80,7 +88,12 @@ const useCategoryFormItems = ({
         placeholder: 'Chọn ngày...',
         className: 'date-picker-campaign',
         disabled: isDisabled,
-        minDate: startDate ? dayjs(startDate) : dayjs(),
+        minDate: minEndDate,
+        onCalendarChange: (date) =>
+          handleGenerateStatus({
+            startDate: form.getFieldValue('startDate'),
+            endDate: date as Dayjs,
+          }),
       },
     },
     {
@@ -90,10 +103,8 @@ const useCategoryFormItems = ({
       required: true,
       rules: [{ required: true }],
       inputProps: {
-        placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        disabled: isDisabled,
+        suffixIcon: null,
+        disabled: true,
         options: STATUS_CAMPAIGN_OPTIONS,
       },
     },
