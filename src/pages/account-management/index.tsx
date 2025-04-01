@@ -9,7 +9,7 @@ import {
   useAccountManagementSearchQuery,
   useAccountManagementAddMutation,
   useAccountManagementRemoveMutation,
-} from '@hooks/queries/accountManagementQueries';
+} from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
 import type { TBaseTableSort, TFormType } from '@types';
 

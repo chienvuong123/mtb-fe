@@ -13,7 +13,7 @@ import {
   useMultimediaResourceQuery,
   useMultimediaSearchQuery,
   useMultimediaViewQuery,
-} from '@hooks/queries/multimediaQueries';
+} from '@hooks/queries';
 import { useProfile } from '@stores';
 import dayjs from 'dayjs';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';

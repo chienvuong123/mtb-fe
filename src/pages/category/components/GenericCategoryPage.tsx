@@ -13,7 +13,7 @@ import { useNotification } from '@libs/antd';
 import type { TBaseTableSort, TFormType } from '@types';
 import { formatDate } from '@utils/dateHelper';
 import { filterObject } from '@utils/objectHelper';
-import { createCategoryQueryHooks } from '@hooks/queries/categoryQueries';
+import { createCategoryQueryHooks } from '@hooks/queries';
 import {
   GenericCategorySearchForm,
   GenericCategoryTable,

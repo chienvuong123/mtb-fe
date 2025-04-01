@@ -3,9 +3,11 @@ import { ASegmented } from '@components/atoms/a-segmented';
 import { CategoryType, type ApproachScriptDTO } from '@dtos';
 import { Flex, Form, Input, Rate, Typography } from 'antd';
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { useApproachScriptViewByCustomerQuery } from '@hooks/queries/approachScriptQueries';
+import {
+  useApproachScriptViewByCustomerQuery,
+  useCategoryOptionsListQuery,
+} from '@hooks/queries';
 import { useParams } from 'react-router-dom';
-import { useCategoryOptionsListQuery } from '@hooks/queries';
 import { ScenarioScriptContainer } from '@components/organisms';
 import CollectCustomerInformationModal from './CollectCustomerInformationModal';
 import { getInitialValues } from '../utils';

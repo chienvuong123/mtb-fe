@@ -5,12 +5,10 @@ import {
   useCategoryOptionsListQuery,
   useCustomerGetDraftLoanLimit,
   useForwardBookingInforMutation,
-} from '@hooks/queries';
-import {
   APPROACH_SCRIPT_KEY,
   useApproachScriptResultMutation,
   useApproachScriptViewByCustomerQuery,
-} from '@hooks/queries/approachScriptQueries';
+} from '@hooks/queries';
 import { useNotification } from '@libs/antd';
 import { useQueryClient } from '@tanstack/react-query';
 import { validationHelper } from '@utils/validationHelper';

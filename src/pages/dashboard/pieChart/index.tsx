@@ -1,7 +1,7 @@
 import { Flex, Space, Typography } from 'antd';
 import React, { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { useStatisticsCustomerApproach } from '@hooks/queries/dashboardQueries';
+import { useStatisticsCustomerApproach } from '@hooks/queries';
 import type { DashboardSearchRequest } from 'src/dtos/dashboard';
 import CustomLegendPieChart from './components/CustomeLegendPieChart';
 import CustomeTooltipPieChart from './components/CustomeTooltipPieChart';

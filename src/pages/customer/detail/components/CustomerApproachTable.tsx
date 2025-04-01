@@ -1,8 +1,10 @@
 import { OTable } from '@components/organisms';
 import { DATE_SLASH_FORMAT_DDMMYYYY_HHMMSS } from '@constants/dateFormat';
 import { CategoryType, type ApproachScriptDTO } from '@dtos';
-import { useCategoryOptionsListQuery } from '@hooks/queries';
-import { useApproachScriptViewByCustomerQuery } from '@hooks/queries/approachScriptQueries';
+import {
+  useCategoryOptionsListQuery,
+  useApproachScriptViewByCustomerQuery,
+} from '@hooks/queries';
 import { getOptionLabel } from '@utils/objectHelper';
 import type { ColumnType } from 'antd/es/table';
 import dayjs from 'dayjs';

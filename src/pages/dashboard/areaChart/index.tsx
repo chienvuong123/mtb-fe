@@ -8,12 +8,12 @@ import {
   AreaChart,
   ResponsiveContainer,
 } from 'recharts';
-import { useStatisticsCustomerCallStats } from '@hooks/queries/dashboardQueries';
 import './areaChart.scss';
 import type {
   DashboardSearchRequest,
   IStatisticsCustomerCallStats,
 } from '@dtos';
+import { useStatisticsCustomerCallStats } from '@hooks/queries';
 import { DDatePicker } from '../components/date-picker';
 import CustomLegend from './components/CustomLegend';
 import CustomTooltip from './components/CustomTooltip';

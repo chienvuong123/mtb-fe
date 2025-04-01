@@ -5,7 +5,7 @@ import type { BaseResponse } from '@dtos';
 import {
   useGroupCustomerAddMutation,
   useGroupCustomerSearchQuery,
-} from '@hooks/queries/groupCustomerQueries';
+} from '@hooks/queries';
 import useUrlParams from '@hooks/useUrlParams';
 import type { TBaseTableSort, TFormType } from '@types';
 

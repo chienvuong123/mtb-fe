@@ -6,6 +6,7 @@ export * from './categoryQueries';
 export * from './controlQueries';
 export * from './customerQueries';
 export * from './customerSegmentQueries';
+export * from './dashboardQueries';
 export * from './groupCustomerQueries';
 export * from './manageCategoryQueries';
 export * from './multimediaQueries';
