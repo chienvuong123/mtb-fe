@@ -9,8 +9,8 @@ import { useNotification } from '@libs/antd';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { PATH_SEGMENT, ROUTES } from '@routers/path';
 import AttributeInsertForm from './AttributeInsertForm';
+import AttributeTable from './AttributeTable';
 import ScenarioInsertForm from './ScenarioInsertForm';
-import ScenarioTree from './ScenarioTree';
 import '../index.scss';
 
 interface ScenarioFormProps {
@@ -42,94 +42,45 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
   const [selectedAttribute, setSelectedAttribute] =
     useState<Partial<ApproachScriptAttributeDTO>>();
   const [drawerMode, setDrawerMode] = useState<TFormType>();
-  const [selectedParentId, setSelectedParentId] = useState<string>();
 
   const handleOpenAttributeForm = async () => {
     try {
       await scenarioForm.validateFields();
       setDrawerMode('add');
-      setSelectedParentId(undefined);
-      setSelectedAttribute(undefined);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Validation failed:', error);
     }
   };
 
-  const handleOpenChildAttributeForm = async (parentId: string) => {
-    try {
-      await scenarioForm.validateFields();
-      setDrawerMode('add');
-      setSelectedParentId(parentId);
-      setSelectedAttribute(undefined);
-      console.log(
-        'Đang mở form thêm node con với parentId:',
-        parentId,
-        selectedAttribute,
-      );
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Validation failed:', error);
-    }
-  };
-
-  const handleCloseAttributeForm = () => {
-    setDrawerMode(undefined);
-    setSelectedAttribute(undefined);
-    setSelectedParentId(undefined);
-  };
+  const handleCloseAttributeForm = () => setDrawerMode(undefined);
 
   const handleSaveAttribute = (attributeData: ApproachScriptAttributeDTO) => {
-    console.log('Dữ liệu trước khi lưu:', { attributeData, selectedParentId });
-
     setAttributeList((prevData) => {
       const currentAttributes = prevData || [];
+      const updatedAttributes = attributeData.id
+        ? currentAttributes.map((attr) =>
+            attr.id === attributeData.id ? attributeData : attr,
+          )
+        : [
+            ...currentAttributes,
+            {
+              ...attributeData,
+              id: attributeData.id || `attr_${Date.now()}`,
+              attributeName: attributeData.attributeName || '',
+              controlType: attributeData.controlType || '',
+              haveNote: attributeData.haveNote || false,
+              controlCode: attributeData.controlCode || '',
+            },
+          ];
 
-      // Nếu đang thêm node con
-      if (selectedParentId && !attributeData.id) {
-        // Tạo ID mới cho node con
-        const newAttribute: ApproachScriptAttributeDTO = {
-          ...attributeData,
-          id: `attr_${Date.now()}`,
-          attributeName: attributeData.attributeName || '',
-          controlType: attributeData.controlType || '',
-          haveNote: attributeData.haveNote || false,
-          controlCode: attributeData.controlCode || '',
-          parentId: selectedParentId,
-        };
-
-        console.log('Đang thêm node con:', newAttribute);
-
-        // Thêm node con vào cây
-        return currentAttributes.concat(newAttribute);
-      }
-
-      // Nếu đang sửa
-      if (attributeData.id) {
-        return currentAttributes.map((attr) =>
-          attr.id === attributeData.id ? attributeData : attr,
-        );
-      }
-
-      // Thêm attribute mới (node gốc)
-      return [
-        ...currentAttributes,
-        {
-          ...attributeData,
-          id: attributeData.id || `attr_${Date.now()}`,
-          attributeName: attributeData.attributeName || '',
-          controlType: attributeData.controlType || '',
-          haveNote: attributeData.haveNote || false,
-          controlCode: attributeData.controlCode || '',
-        },
-      ];
+      return updatedAttributes;
     });
     handleCloseAttributeForm();
   };
 
   const handleEditAttribute = (data: ApproachScriptAttributeDTO) => {
     setSelectedAttribute(data);
-    setSelectedParentId(undefined);
     setDrawerMode('edit');
   };
 
@@ -142,33 +93,8 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
   };
 
   const handleDeleteAttribute = (id: string) => {
-    const deleteIds = [id];
-    const findChildIds = (parentId: string) => {
-      attributeList.forEach((attr) => {
-        if (attr.parentId === parentId) {
-          deleteIds.push(attr.id);
-          findChildIds(attr.id);
-        }
-      });
-    };
-
-    findChildIds(id);
-
     setAttributeList(
-      (prevData) =>
-        prevData?.filter((attr) => !deleteIds.includes(attr.id)) || [],
-    );
-  };
-
-  const handleUpdateAttribute = (
-    id: string,
-    data: Partial<ApproachScriptAttributeDTO>,
-  ) => {
-    setAttributeList(
-      (prevData) =>
-        prevData?.map((attr) =>
-          attr.id === id ? { ...attr, ...data } : attr,
-        ) || [],
+      (prevData) => prevData?.filter((attr) => attr.id !== id) || [],
     );
   };
 
@@ -185,9 +111,6 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
         });
         return;
       }
-
-      // Log ra để kiểm tra dữ liệu trước khi gửi đi
-      console.log('Dữ liệu trước khi lưu kịch bản:', attributeList);
 
       const scenarioData = {
         approachScript: {
@@ -206,7 +129,6 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
           },
           name: attr.attributeName,
           ordered: idx + 1,
-          parentId: attr.parentId, // Thêm thông tin parentId
         })),
       };
 
@@ -241,8 +163,6 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
     }
   }, [initialData, scenarioForm]);
 
-  console.log('attributeList', attributeList);
-
   return (
     <div className="pt-32">
       <Flex justify="space-between" align="center" className="mb-16">
@@ -276,13 +196,11 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
         )}
       </Flex>
       <div className="mt-24" />
-      <ScenarioTree
+      <AttributeTable
         dataSource={attributeList || []}
         onEdit={handleEditAttribute}
         onDelete={handleDeleteAttribute}
         onView={handleViewAttribute}
-        onAddChild={handleOpenChildAttributeForm}
-        onUpdate={handleUpdateAttribute}
       />
       <div className="mt-96" />
       <OActionFooter
@@ -296,7 +214,7 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
         open={!!drawerMode}
         width={1643}
         usePrefixTitle
-        title={selectedParentId ? 'Tạo lựa chọn' : 'Attribute'}
+        title="Attribute"
         mode={drawerMode}
       >
         <AttributeInsertForm
@@ -305,7 +223,6 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
           onSubmit={handleSaveAttribute}
           mode={drawerMode}
           categoryCampaignId={categoryCampaignId}
-          parentId={selectedParentId}
         />
       </ODrawer>
     </div>
