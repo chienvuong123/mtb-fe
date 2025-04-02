@@ -1,6 +1,6 @@
 import type { UserDTO, UserRequest, UserViewResponse } from '@dtos';
 import { userApi } from '@apis';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const USER_KEY = 'user';
@@ -16,5 +16,19 @@ export const useUserInfoQuery = () => {
     queryKey: ['user', 'info'],
     queryFn: () => userApi.getUserInfo(),
     enabled: !!localStorage.getItem('token'),
+  });
+};
+
+export const useUserSendOtpUpdateEmailMutation = () => {
+  return useMutation({
+    mutationKey: [USER_KEY, 'send-otp-update-email'],
+    mutationFn: () => userApi.sendOtpUpdateEmail(),
+  });
+};
+
+export const useUserVerifyOtpUpdateEmailMutation = () => {
+  return useMutation({
+    mutationKey: [USER_KEY, 'verify-otp-update-email'],
+    mutationFn: (otp: string) => userApi.verifyOtpUpdateEmail(otp),
   });
 };

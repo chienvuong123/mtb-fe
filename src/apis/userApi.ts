@@ -13,6 +13,21 @@ class UserApi extends BaseApi<UserDTO, UserRequest> {
       method: 'GET',
     });
   }
+
+  async sendOtpUpdateEmail() {
+    return apiRequest<BaseResponse<boolean>>({
+      url: `${this.endpoint}/send-otp-update-email`,
+      method: 'POST',
+    });
+  }
+
+  async verifyOtpUpdateEmail(otp: string) {
+    return apiRequest<BaseResponse<boolean>>({
+      url: `${this.endpoint}/verify-otp-update-email`,
+      method: 'POST',
+      data: { otp },
+    });
+  }
 }
 
 export const userApi = new UserApi();
