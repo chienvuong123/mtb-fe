@@ -14,10 +14,11 @@ class UserApi extends BaseApi<UserDTO, UserRequest> {
     });
   }
 
-  async sendOtpUpdateEmail() {
+  async sendOtpUpdateEmail(data: UserDTO) {
     return apiRequest<BaseResponse<boolean>>({
       url: `${this.endpoint}/send-otp-update-email`,
       method: 'POST',
+      data,
     });
   }
 

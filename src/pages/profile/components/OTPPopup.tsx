@@ -1,27 +1,25 @@
 import { AButton, AInputOtp, AModal } from '@components/atoms';
-import {
-  useUserEditMutation,
-  useUserSendOtpUpdateEmailMutation,
-} from '@hooks/queries';
 import { Button, Flex, Typography, type ModalProps } from 'antd';
 import { useEffect, useState, type FC } from 'react';
 
 const OTPPopup: FC<
-  ModalProps & { email: string; onSubmit: (otp: string) => void }
+  ModalProps & {
+    email: string;
+    onSubmit: (otp: string) => void;
+    onResendOtp: () => void;
+  }
 > = ({
   onCancel,
   okText = 'Tiếp tục',
   cancelText = 'Hủy',
   classNames,
   email,
+  loading,
   onSubmit,
+  onResendOtp,
   ...props
 }) => {
   const [otpValue, setOtpValue] = useState('');
-
-  const { mutate: userSendOtpMutate, isPending: sendOtpLoading } =
-    useUserSendOtpUpdateEmailMutation();
-  const { isPending: editLoading } = useUserEditMutation();
 
   useEffect(() => {
     if (!props.open) {
@@ -48,7 +46,7 @@ const OTPPopup: FC<
               color="purple"
               variant="solid"
               onClick={() => onSubmit(otpValue)}
-              disabled={otpValue.length < 6}
+              disabled={otpValue.length < 6 || loading}
             >
               {okText}
             </AButton>
@@ -58,8 +56,8 @@ const OTPPopup: FC<
             <Button
               type="link"
               className="red pa-0 w-fit h-fit dis-inline min-w-0"
-              onClick={() => userSendOtpMutate()}
-              disabled={editLoading || sendOtpLoading}
+              onClick={onResendOtp}
+              disabled={loading}
             >
               Bấm vào đây!
             </Button>
