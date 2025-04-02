@@ -44,6 +44,7 @@ export interface UserDTO extends BaseEntity {
   positionDtl: CategoryDTO;
   departmentDtl: CategoryDTO;
   branchDtl: CategoryDTO;
+  otp?: string;
 }
 
 export interface UserRequest extends BaseSearchParams {

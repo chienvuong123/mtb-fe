@@ -1,9 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Avatar, Flex } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { EStatus } from '@constants/masterData';
-import { USER_KEY, useUserEditMutation } from '@hooks/queries';
-import type { UserDTO } from '@dtos';
+import {
+  USER_KEY,
+  useUserEditMutation,
+  useUserSendOtpUpdateEmailMutation,
+  useUserVerifyOtpUpdateEmailMutation,
+} from '@hooks/queries';
+import type { BaseResponse, UserDTO } from '@dtos';
 import accountHeader from '@assets/images/account_header.png';
 import { OBaseForm } from '@components/organisms';
 import { validationHelper } from '@utils/validationHelper';
@@ -14,6 +19,7 @@ import { useProfile } from '../../stores';
 import useFieldRender from './hooks/useFieldRender';
 
 import './index.scss';
+import { OTPPopup } from './components';
 
 const ProfilePage = () => {
   const [form] = useForm();
@@ -25,25 +31,51 @@ const ProfilePage = () => {
   const navigate = useNavigate();
 
   const { mutate: userEditMutate } = useUserEditMutation();
+  const { mutate: userSendOtpMutate } = useUserSendOtpUpdateEmailMutation();
+  const { mutate: userVerifyOtpMutate } = useUserVerifyOtpUpdateEmailMutation();
 
-  const handleUpdateProfile = (values: UserDTO) => {
+  const [openPopup, setOpenPopup] = useState(false);
+
+  const handleUpdateProfile = (values: UserDTO, ignoreCheckEmail?: boolean) => {
+    if (values.email !== user?.email && !ignoreCheckEmail) {
+      userSendOtpMutate(undefined, {
+        onSuccess: (d) =>
+          validationHelper(d, notify, () => {
+            setOpenPopup(true);
+          }),
+      });
+      return;
+    }
+
     userEditMutate(
       {
         fullName: values.fullName,
         email: values.email,
         phoneNum: values.phoneNum,
+        otp: values.otp,
       },
       {
-        onSuccess: (d) =>
+        onSuccess: (d: BaseResponse<boolean>) => {
           validationHelper(d, notify, () => {
             notify({
               message: 'Cập nhật thông tin thành công',
               type: 'success',
             });
             refetch();
-          }),
+            setOpenPopup(false);
+          });
+        },
       },
     );
+  };
+
+  const handleSubmitOtp = (otp: string) => {
+    userVerifyOtpMutate(otp, {
+      onSuccess: (d) =>
+        validationHelper(d, notify, () => {
+          handleUpdateProfile({ ...form.getFieldsValue(), otp }, true);
+        }),
+    });
   };
 
   useEffect(() => {
@@ -58,6 +90,13 @@ const ProfilePage = () => {
 
   return (
     <Flex className="account-page bg-white h-full rounded-8" vertical>
+      <OTPPopup
+        open={openPopup}
+        email={user?.email ?? ''}
+        onCancel={() => setOpenPopup(false)}
+        onSubmit={handleSubmitOtp}
+      />
+
       <img src={accountHeader} className="h-75 w-full" alt="" />
 
       <Flex align="center" className="h-full" vertical>
@@ -72,7 +111,7 @@ const ProfilePage = () => {
             mutationKey={USER_KEY}
             className="account-form"
             form={form}
-            onSubmit={handleUpdateProfile}
+            onSubmit={(values) => handleUpdateProfile(values)}
             onClose={() => navigate(ROUTES.HOME)}
             items={items}
             footerProps={{
