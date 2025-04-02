@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@routers/path';
 import { useLoginMutation } from '@hooks/queries';
 import { useState } from 'react';
+import type { AxiosError } from 'axios';
+import type { BaseResponse } from '@dtos';
 import { FooterAuth } from '../components/footer';
 import { FormContentAuth } from '../components/form-content';
 import { LayoutWrapper } from '../components';
@@ -54,8 +56,13 @@ const LoginPage = () => {
           localStorage.setItem('refresh_token', value.data.refreshToken);
           navigate(ROUTES.HOME);
         },
-        onError() {
-          setAlert('Thông tin đăng nhập không đúng');
+        onError(error) {
+          const errResponse = (error as AxiosError<BaseResponse<boolean>>)
+            ?.response;
+          if (errResponse?.data?.errorCode === '0') return;
+          setAlert(
+            errResponse?.data?.errorDesc ?? 'Thông tin đăng nhập không đúng',
+          );
         },
       },
     );
