@@ -22,7 +22,7 @@ export const useUserInfoQuery = () => {
 export const useUserSendOtpUpdateEmailMutation = () => {
   return useMutation({
     mutationKey: [USER_KEY, 'send-otp-update-email'],
-    mutationFn: () => userApi.sendOtpUpdateEmail(),
+    mutationFn: (data: UserDTO) => userApi.sendOtpUpdateEmail(data),
   });
 };
 

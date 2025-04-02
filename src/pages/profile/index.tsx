@@ -30,18 +30,25 @@ const ProfilePage = () => {
 
   const navigate = useNavigate();
 
-  const { mutate: userEditMutate } = useUserEditMutation();
-  const { mutate: userSendOtpMutate } = useUserSendOtpUpdateEmailMutation();
-  const { mutate: userVerifyOtpMutate } = useUserVerifyOtpUpdateEmailMutation();
+  const { mutate: userEditMutate, isPending: editLoading } =
+    useUserEditMutation();
+  const { mutate: userSendOtpMutate, isPending: sendOtpLoading } =
+    useUserSendOtpUpdateEmailMutation();
+  const { mutate: userVerifyOtpMutate, isPending: verifyOtpLoading } =
+    useUserVerifyOtpUpdateEmailMutation();
 
   const [openPopup, setOpenPopup] = useState(false);
 
   const handleUpdateProfile = (values: UserDTO, ignoreCheckEmail?: boolean) => {
     if (values.email !== user?.email && !ignoreCheckEmail) {
-      userSendOtpMutate(undefined, {
+      userSendOtpMutate(values, {
         onSuccess: (d) =>
           validationHelper(d, notify, () => {
-            setOpenPopup(true);
+            if (openPopup) {
+              notify({ message: 'Gửi lại mã thành công', type: 'success' });
+            } else {
+              setOpenPopup(true);
+            }
           }),
       });
       return;
@@ -95,6 +102,8 @@ const ProfilePage = () => {
         email={user?.email ?? ''}
         onCancel={() => setOpenPopup(false)}
         onSubmit={handleSubmitOtp}
+        loading={editLoading || sendOtpLoading || verifyOtpLoading}
+        onResendOtp={() => handleUpdateProfile(form.getFieldsValue())}
       />
 
       <img src={accountHeader} className="h-75 w-full" alt="" />
