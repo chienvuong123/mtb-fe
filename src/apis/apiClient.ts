@@ -93,7 +93,7 @@ apiClient.interceptors.response.use(
 
       if (!refreshToken) {
         redirectToLogin();
-        throw new Error('Token are undefined');
+        throw error;
       }
 
       try {
