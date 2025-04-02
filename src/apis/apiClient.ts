@@ -5,6 +5,7 @@ import qs from 'qs';
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { BASE_URL } from '@constants/env';
 import { ROUTES } from '@routers/path';
+import type { BaseResponse } from '@dtos';
 
 const { LOGIN } = ROUTES;
 
@@ -24,6 +25,14 @@ const paramsSerializer = (params: Record<string, unknown>) => {
     encode: false, // Do not encode parameters (keep dots as they are)
     allowDots: true, // Allow dot notation for nested objects
   });
+};
+
+const redirectToLogin = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('refresh_token');
+  if (window.location.pathname !== LOGIN) {
+    window.location.href = LOGIN;
+  }
 };
 
 export const apiClient = axios.create({
@@ -71,16 +80,19 @@ apiClient.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    if (
+      error.response?.status === 401 &&
+      (error.response.data as BaseResponse<boolean>)?.errorCode === '0006'
+    ) {
+      redirectToLogin();
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem('refresh_token');
 
       if (!refreshToken) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('refresh_token');
-        if (window.location.pathname !== LOGIN) {
-          window.location.href = LOGIN;
-        }
+        redirectToLogin();
         throw new Error('Token are undefined');
       }
 
@@ -101,20 +113,14 @@ apiClient.interceptors.response.use(
             );
             originalRequest.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
           } else {
-            localStorage.removeItem('token');
-            localStorage.removeItem('refresh_token');
-            if (window.location.pathname !== LOGIN) {
-              window.location.href = LOGIN;
-            }
+            redirectToLogin();
           }
 
           return apiClient(originalRequest);
         }
         throw new Error('Headers are undefined');
       } catch (refreshError) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('refresh_token');
-        window.location.href = LOGIN;
+        redirectToLogin();
         return Promise.reject(refreshError);
       }
     }
