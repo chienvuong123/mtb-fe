@@ -29,6 +29,7 @@ export const destructCustomerData = (
     startNumberOfCalls,
     endNumberOfCalls,
     approachResultStatus,
+    levelKyc,
   }: Partial<CustomerDTO>,
   isSearch?: boolean,
 ) => {
@@ -70,6 +71,7 @@ export const destructCustomerData = (
         categoryName,
         campaignName,
         identnDocType,
+        levelKyc,
       };
 };
 

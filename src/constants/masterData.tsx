@@ -290,3 +290,8 @@ export const STATUS_OPTIONS_STATIC = [
     label: <Typography.Text>Tất cả</Typography.Text>,
   },
 ];
+
+export const EKYC_OPTIONS = [1, 2, 3].map((i) => ({
+  label: `Cấp độ ${i}`,
+  value: i,
+}));

@@ -19,6 +19,7 @@ import {
 } from '@hooks/queries';
 import { handleResetFields } from '@utils/formHelper';
 import type { FormInstance } from 'antd/lib';
+import { EKYC_OPTIONS } from '@constants/masterData';
 import type { TCustomerForm } from '../customer.type';
 
 const useCustomerForm = ({
@@ -206,6 +207,15 @@ const useCustomerForm = ({
             rules: [{ required: true }],
             inputProps: {
               options: sellerList,
+              placeholder: 'Chọn...',
+            },
+          },
+          {
+            type: INPUT_TYPE.SELECT,
+            label: 'Cấp độ eKYC',
+            name: 'levelKyc',
+            inputProps: {
+              options: EKYC_OPTIONS,
               placeholder: 'Chọn...',
             },
           },

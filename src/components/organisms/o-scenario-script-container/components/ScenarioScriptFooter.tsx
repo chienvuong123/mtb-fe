@@ -189,6 +189,8 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
               <ASelect
                 options={approachResultId ? approachDetailOptions : []}
                 placeholder="Chọn"
+                allowClear
+                disabled={!approachResultId}
               />
             </Form.Item>
           </Col>
