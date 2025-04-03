@@ -5,6 +5,7 @@ import { type FC } from 'react';
 import './CollectCustomerInformationModal.scss';
 import { useIsMutating } from '@tanstack/react-query';
 import { CUSTOMER_KEY } from '@hooks/queries';
+import { useProfile } from '@stores';
 import { CollectInfoForm } from './CollectInfoForm';
 import { LimitLoanAmountCard } from './LimitLoanAmountCard';
 import { useCollectInforController } from '../hooks/useCollectInforController';
@@ -31,6 +32,8 @@ const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
     forwardBookingInfor,
   } = useCollectInforController(open);
 
+  const { isReporter } = useProfile();
+
   const handleCancel = () => {
     form.resetFields();
     onCancel();
@@ -50,30 +53,32 @@ const CollectCustomerInformationModal: FC<ICollectCustomerInformationForm> = ({
           <AButton color="primary" variant="filled" onClick={handleCancel}>
             Đóng
           </AButton>
-          <Flex gap={14}>
-            <AButton
-              color="primary"
-              variant="filled"
-              onClick={saveDraft}
-              loading={mutating > 0}
-            >
-              Lưu nháp
-            </AButton>
-            <AButton
-              type="primary"
-              onClick={checkLoanLimit}
-              loading={mutating > 0}
-            >
-              Check hạn mức
-            </AButton>
-            <AButton
-              type="primary"
-              onClick={forwardBookingInfor}
-              disabled={Boolean(!loanLimit)}
-            >
-              Chuyển thông tin booking
-            </AButton>
-          </Flex>
+          {!isReporter && (
+            <Flex gap={14}>
+              <AButton
+                color="primary"
+                variant="filled"
+                onClick={saveDraft}
+                loading={mutating > 0}
+              >
+                Lưu nháp
+              </AButton>
+              <AButton
+                type="primary"
+                onClick={checkLoanLimit}
+                loading={mutating > 0}
+              >
+                Check hạn mức
+              </AButton>
+              <AButton
+                type="primary"
+                onClick={forwardBookingInfor}
+                disabled={Boolean(!loanLimit)}
+              >
+                Chuyển thông tin booking
+              </AButton>
+            </Flex>
+          )}
         </Flex>,
       ]}
     >

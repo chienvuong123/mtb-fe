@@ -7,7 +7,7 @@ import type { ColumnType } from 'antd/es/table';
 import { useMemo, useState, type FC, type Key } from 'react';
 import { useProfile } from '@stores';
 import type { TBaseTableSort } from '@types';
-import { ROUTES } from '@routers/path';
+import { useLocation } from 'react-router-dom';
 
 export interface GenericCategoryTableProps {
   dataSource: CategoryDTO[];
@@ -34,6 +34,9 @@ export const GenericCategoryTable: FC<GenericCategoryTableProps> = ({
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const { hasPermission } = useProfile();
+
+  const { pathname } = useLocation();
+  const permission = hasPermission(pathname);
 
   const columns: ColumnType<CategoryDTO>[] = useMemo(
     () => [
@@ -103,10 +106,8 @@ export const GenericCategoryTable: FC<GenericCategoryTableProps> = ({
       columns={columns}
       data={dataSource}
       selectedRowKeys={selectedRowKeys}
-      onDeleteRow={
-        hasPermission(ROUTES.CATEGORY.DELETE) ? deleteRecord : undefined
-      }
-      onEdit={hasPermission(ROUTES.CATEGORY.EDIT) ? onEdit : undefined}
+      onDeleteRow={permission ? deleteRecord : undefined}
+      onEdit={permission ? onEdit : undefined}
       setSelectedRowKeys={setSelectedRowKeys}
       paginations={pagination}
       loading={loading}

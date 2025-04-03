@@ -127,6 +127,7 @@ export type AssignmentSellerItemDTO = {
   assignNumber: number;
   isLock: boolean;
   email: string;
+  username: string;
 };
 
 export type AssignmentSellerResponseDTO = Omit<

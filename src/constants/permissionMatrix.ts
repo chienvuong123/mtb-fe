@@ -8,6 +8,7 @@ export type PermissionMatrix = {
     [ERole.CAMPAIGN_MANAGER]?: boolean;
     [ERole.SELLER_MANAGER]?: boolean;
     [ERole.SELLER]?: boolean;
+    [ERole.REPORTER]?: boolean;
   };
 };
 
@@ -15,6 +16,7 @@ const permissionMatrix2: PermissionMatrix = {
   // Home
   [ROUTES.HOME]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -22,6 +24,7 @@ const permissionMatrix2: PermissionMatrix = {
   // Dashboard
   [ROUTES.DASHBOARD]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -29,6 +32,7 @@ const permissionMatrix2: PermissionMatrix = {
 
   [ROUTES.PROFILE]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -37,12 +41,14 @@ const permissionMatrix2: PermissionMatrix = {
   // Campaign
   [ROUTES.CAMPAIGN.ROOT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
   },
   [ROUTES.CAMPAIGN.LIST]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -61,6 +67,7 @@ const permissionMatrix2: PermissionMatrix = {
   },
   [ROUTES.CAMPAIGN.DETAIL]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -69,11 +76,13 @@ const permissionMatrix2: PermissionMatrix = {
   // Category campaign
   [ROUTES.CAMPAIGN.CATEGORY.LIST]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
   },
   [ROUTES.CAMPAIGN.CATEGORY.DETAIL]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
   },
@@ -90,88 +99,85 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.CAMPAIGN_MANAGER]: true,
   },
 
+  // Categories
   [ROUTES.CATEGORY.ROOT]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
-  },
-  [ROUTES.CATEGORY.CREATE]: {
-    [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
-  },
-  [ROUTES.CATEGORY.EDIT]: {
-    [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
-  },
-  [ROUTES.CATEGORY.DELETE]: {
-    [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
   [ROUTES.CATEGORY.PRODUCT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
   [ROUTES.CATEGORY.MEDIA]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.POSITION]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.BRANCH]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.DEPLOYMENT_METHOD]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.CUSTOMER_SEGMENT]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.UNIT_CALCULATION]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.CUSTOMER_TYPE]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.DEPARTMENT]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.EXPERTISE]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.MB_IDENTIFICATION]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.APPROACH]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.GENDER]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
   },
   [ROUTES.CATEGORY.CUSTOMERS]: {
     [ERole.ADMIN]: true,
-    [ERole.CAMPAIGN_MANAGER]: true,
+    [ERole.REPORTER]: true,
+  },
+  [ROUTES.CATEGORY.TARGET]: {
+    [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
   },
 
   // Customer
   [ROUTES.CUSTOMER.ROOT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
   },
   [ROUTES.CUSTOMER.LIST]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -190,6 +196,7 @@ const permissionMatrix2: PermissionMatrix = {
   },
   [ROUTES.CUSTOMER.DETAIL]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -200,10 +207,12 @@ const permissionMatrix2: PermissionMatrix = {
   },
   [ROUTES.CUSTOMER.EXPORT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
   [ROUTES.CUSTOMER.GROUP]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -218,12 +227,14 @@ const permissionMatrix2: PermissionMatrix = {
   // Sales
   [ROUTES.SALES.ROOT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
   },
   [ROUTES.SALES.OPPORTUNITIES]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -232,12 +243,14 @@ const permissionMatrix2: PermissionMatrix = {
   // Scenario
   [ROUTES.SCENARIO.ROOT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
   },
   [ROUTES.SCENARIO.LIST]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -256,22 +269,26 @@ const permissionMatrix2: PermissionMatrix = {
   },
   [ROUTES.SCENARIO.DETAIL]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
 
   // Seller
   [ROUTES.SELLER.ROOT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
   },
   [ROUTES.SELLER.LIST]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
   },
   [ROUTES.SELLER.DETAIL]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
   },
@@ -295,6 +312,7 @@ const permissionMatrix2: PermissionMatrix = {
   // Multimedia warehouse
   [ROUTES.MULTIMEDIA.ROOT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
   [ROUTES.MULTIMEDIA.CREATE]: {
@@ -313,6 +331,7 @@ const permissionMatrix2: PermissionMatrix = {
   // Setting
   [ROUTES.SETTING.ROOT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
   [ROUTES.SETTING.CREATE]: {
@@ -321,12 +340,14 @@ const permissionMatrix2: PermissionMatrix = {
   },
   [ROUTES.SETTING.CONTROL]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
 
   // System account management
   [ROUTES.ACCOUNT.ROOT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
     [ERole.SELLER_MANAGER]: true,
     [ERole.SELLER]: true,
@@ -334,6 +355,7 @@ const permissionMatrix2: PermissionMatrix = {
 
   [ROUTES.ACCOUNT.MANAGEMENT.ROOT]: {
     [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
   [ROUTES.ACCOUNT.MANAGEMENT.CREATE]: {

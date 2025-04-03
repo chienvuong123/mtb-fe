@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 
 import './styles.scss';
 import { getValueFromEvent } from '@utils/formHelper';
+import { useProfile } from '@stores';
 
 interface ISearchBaseForm<T> {
   items: TFormItem[];
@@ -36,6 +37,8 @@ const OSearchBaseForm = <T extends object>({
   onDeleteAll,
   onCreate,
 }: ISearchBaseForm<T>) => {
+  const { isReporter } = useProfile();
+
   const transformItems = useMemo(
     () =>
       items.map(({ label, blockingPattern, ...others }) => ({
@@ -103,7 +106,7 @@ const OSearchBaseForm = <T extends object>({
           >
             {searchText}
           </AButton>
-          {Boolean(onCreate) && (
+          {Boolean(onCreate) && !isReporter && (
             <AButton
               type="primary"
               className="w-115"

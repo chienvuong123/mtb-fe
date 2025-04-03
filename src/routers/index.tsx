@@ -126,18 +126,18 @@ const routes = createBrowserRouter(
               path: ROUTES.CATEGORY.UNIT_CALCULATION,
               element: <CategoryPages.UnitCalculationCategoryPage />,
             },
-            {
-              path: ROUTES.CATEGORY.CUSTOMER_TYPE,
-              element: <CategoryPages.CustomerTypeCategoryPage />,
-            },
+            // {
+            //   path: ROUTES.CATEGORY.CUSTOMER_TYPE,
+            //   element: <CategoryPages.CustomerTypeCategoryPage />,
+            // },
             {
               path: ROUTES.CATEGORY.MB_IDENTIFICATION,
               element: <CategoryPages.MbIdentificationCategoryPage />,
             },
-            {
-              path: ROUTES.CATEGORY.APPROACH,
-              element: <CategoryPages.ApproachCategoryPage />,
-            },
+            // {
+            //   path: ROUTES.CATEGORY.APPROACH,
+            //   element: <CategoryPages.ApproachCategoryPage />,
+            // },
             {
               path: ROUTES.CATEGORY.GENDER,
               element: <CategoryPages.GenderCategoryPage />,
@@ -145,6 +145,10 @@ const routes = createBrowserRouter(
             {
               path: ROUTES.CATEGORY.CUSTOMERS,
               element: <CategoryPages.CustomerCategoryPage />,
+            },
+            {
+              path: ROUTES.CATEGORY.TARGET,
+              element: <CategoryPages.TargetCategoryPage />,
             },
           ],
         },

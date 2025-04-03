@@ -90,7 +90,8 @@ const SellerTable: FC<ISellerTable> = ({
         dataIndex: 'sellerId',
         width: 535,
         minWidth: 535,
-        render: (value, record) => `${value} - ${record.sellerName}`,
+        render: (_, record) =>
+          [record.username, record.sellerName].filter(Boolean).join(' - '),
       },
       {
         title: 'Số lượng',
@@ -178,6 +179,7 @@ const SellerTable: FC<ISellerTable> = ({
         isTop: idx === 0,
         assignNumber: c?.assignNumber ?? 0,
         isLock: c?.isLock ?? false,
+        username: c?.username,
       });
       return a;
     }, {} as AnyObject);

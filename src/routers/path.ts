@@ -47,6 +47,7 @@ export const PATH_SEGMENT = {
   APPROACH: 'approach',
   GENDER: 'gender',
   CUSTOMERS: 'customer',
+  TARGET: 'target',
 
   // Multimedia
   IMAGE: 'image',
@@ -163,6 +164,7 @@ export const ROUTES = {
     APPROACH: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.APPROACH]),
     GENDER: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.GENDER]),
     CUSTOMERS: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.CUSTOMERS]),
+    TARGET: buildPath(PATH_SEGMENT.CATEGORY, [PATH_SEGMENT.TARGET]),
   },
 
   SALES: {

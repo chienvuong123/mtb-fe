@@ -23,6 +23,7 @@ export enum CategoryType {
   APPROACH = 'APPROACH', // "Danh mục phương thức tiếp cận"
   UNIT_OF_CALCULATION = 'UNIT_OF_CALCULATION', // "Danh mục đơn vị tính"
   TYPE_OF_IDENTIFICATION = 'TYPE_OF_IDENTIFICATION ', // "Danh mục loại giấy tờ định danh"
+  TARGET = 'TARGET', // "Danh mục Mục tiêu"
 
   F88_IDENTIFICATION = 'F88_IDENTIFICATION', // "Danh mục giấy tờ định Danh F88"
   F88_JOB = 'F88_JOB', // "Danh mục nghề nghiệp F88"

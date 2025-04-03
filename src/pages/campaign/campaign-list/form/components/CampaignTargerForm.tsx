@@ -19,16 +19,19 @@ const CampaignTargetForm: FC<ICampaignTargetForm> = ({
   const { data: unitCalculationOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.UNIT_OF_CALCULATION,
   });
+  const { data: targetOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.TARGET,
+  });
 
   const items: TFormItem[] = useMemo(
     () =>
       [
         {
-          type: INPUT_TYPE.TEXT,
-          label: 'Tên mục tiêu',
+          type: INPUT_TYPE.SELECT,
+          label: 'Mục tiêu',
           inputProps: {
             placeholder: 'Chọn...',
-            maxLength: 50,
+            options: targetOptions,
           },
           name: 'name',
           colProps: { span: 12 },
@@ -59,7 +62,7 @@ const CampaignTargetForm: FC<ICampaignTargetForm> = ({
           rules: [{ required: true }],
         },
       ] as TFormItem[],
-    [unitCalculationOptions],
+    [unitCalculationOptions, targetOptions],
   );
 
   useEffect(() => {

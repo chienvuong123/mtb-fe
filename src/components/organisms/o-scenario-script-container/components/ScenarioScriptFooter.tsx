@@ -18,6 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@routers/path';
 import { handleResetFields } from '@utils/formHelper';
 import { useWatch } from 'antd/es/form/Form';
+import { useProfile } from '@stores';
 import { transformDataToSubmit } from '../utils';
 
 interface IScenarioScriptFooterProps {
@@ -37,6 +38,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
   calledIds,
   activeId,
 }) => {
+  const { isReporter } = useProfile();
   const { id: customerId } = useParams();
   const { data: statusOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.CUSTOMER_APPROACH_STATUS,
@@ -139,8 +141,8 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
       <Form
         form={form}
         layout="vertical"
-        className="dis-block h-full"
-        disabled={activeId !== approachId}
+        className="h-160"
+        disabled={activeId !== approachId || isReporter}
       >
         <Row gutter={[24, 24]} justify="space-between">
           <Col span={8}>
@@ -198,8 +200,8 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
         </Row>
       </Form>
 
-      {!isPreview && (
-        <Flex justify="space-between" style={{ marginTop: 100 }}>
+      {!isPreview && !isReporter && (
+        <Flex justify="space-between" className="mt-22">
           <AButton
             type="primary"
             onClick={forwardBookingInfor}

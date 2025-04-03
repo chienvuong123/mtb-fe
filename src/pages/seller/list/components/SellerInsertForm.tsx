@@ -1,5 +1,5 @@
 import { OBaseForm } from '@components/organisms';
-import { ERole, STATUS_OPTIONS } from '@constants/masterData';
+import { ERole, ROLE_OPTIONS, STATUS_OPTIONS } from '@constants/masterData';
 import {
   BLOCKING_ALPHA_NUMERIC_COMMA_PATTERN,
   BLOCKING_CHARACTERS_PARTERN,
@@ -122,16 +122,9 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
         label: 'Quyền hệ thống',
         name: 'role',
         inputProps: {
-          options: [
-            {
-              label: ERole.SELLER,
-              value: ERole.SELLER,
-            },
-          ],
-          showSearch: true,
-          filterOption: true,
+          options: ROLE_OPTIONS,
           placeholder: 'Chọn...',
-          defaultValue: 'SELLER',
+          defaultValue: ERole.SELLER,
           disabled: true,
         },
         colProps: { span: 12 },
@@ -258,7 +251,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
 
   useEffect(() => {
     if (initialValues) {
-      form.setFieldsValue({ ...initialValues });
+      form.setFieldsValue({ ...initialValues, role: ERole.SELLER });
       return;
     }
     form.resetFields();

@@ -8,7 +8,7 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import { Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import type { TManageCategorySearchForm } from 'src/dtos/manage-category';
 
 interface IManageCategorySearch {
@@ -27,12 +27,6 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
   const endDate = Form.useWatch('endDate', form);
 
   const { hasPermission } = useProfile();
-
-  useEffect(() => {
-    if (!startDate && form.getFieldValue('endDate')) {
-      form.setFieldValue('endDate', null);
-    }
-  }, [startDate, form]);
 
   const { data: mainProductOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.PRODUCT,
