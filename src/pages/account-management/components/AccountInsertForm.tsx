@@ -1,6 +1,10 @@
 import { OBaseForm } from '@components/organisms';
-import { ERole, STATUS_OPTIONS_WITHOUT_ALL } from '@constants/masterData';
 import {
+  ROLE_OPTIONS,
+  STATUS_OPTIONS_WITHOUT_ALL,
+} from '@constants/masterData';
+import {
+  BLOCKING_CHARACTERS_PARTERN,
   BLOCKING_NUMBER_PARTERN,
   BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
 } from '@constants/regex';
@@ -52,6 +56,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           placeholder: 'Nhập...',
         },
         colProps: { span: 12 },
+        blockingPattern: BLOCKING_CHARACTERS_PARTERN,
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -110,10 +115,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
         label: 'Quyền hệ thống',
         name: 'role',
         inputProps: {
-          options: Object.values(ERole).map((role) => ({
-            label: role,
-            value: role,
-          })),
+          options: ROLE_OPTIONS,
           showSearch: true,
           filterOption: true,
           placeholder: 'Chọn...',
