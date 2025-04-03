@@ -58,8 +58,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
         label: 'Tên đăng nhập',
         name: 'username',
         inputProps: {
-          placeholder: 'Nhập...',
-          readOnly: true,
+          disabled: true,
         },
         rules: [{ required: true }],
         colProps: { span: 12 },
