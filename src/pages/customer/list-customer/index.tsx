@@ -144,7 +144,7 @@ const ListCustomerPage: FC = () => {
 
   const handleCreate = () => {
     setInitValues({
-      ...destructCustomerData({}),
+      ...destructCustomerData({ levelKyc: 2 }),
     } as CustomerDTO);
     handleOpenDrawer();
   };
