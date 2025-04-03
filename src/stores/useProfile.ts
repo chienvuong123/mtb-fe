@@ -35,6 +35,7 @@ const useProfile = () => {
     isCampaignManager: userData?.role === ERole.CAMPAIGN_MANAGER,
     isSellerManager: userData?.role === ERole.SELLER_MANAGER,
     isSeller: userData?.role === ERole.SELLER,
+    isReporter: userData?.role === ERole.REPORTER,
     hasPermission,
     refetch,
   };

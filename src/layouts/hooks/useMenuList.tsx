@@ -179,10 +179,10 @@ const useMenuList = () => {
             key: ROUTES.CATEGORY.UNIT_CALCULATION,
             label: 'Đơn vị tính',
           },
-          {
-            key: ROUTES.CATEGORY.CUSTOMER_TYPE,
-            label: 'Loại khách hàng',
-          },
+          // {
+          //   key: ROUTES.CATEGORY.CUSTOMER_TYPE,
+          //   label: 'Loại khách hàng',
+          // },
           {
             key: ROUTES.CATEGORY.DEPARTMENT,
             label: 'Phòng ban',
@@ -195,10 +195,10 @@ const useMenuList = () => {
             key: ROUTES.CATEGORY.MB_IDENTIFICATION,
             label: 'Loại giấy tờ định danh',
           },
-          {
-            key: ROUTES.CATEGORY.APPROACH,
-            label: 'Phương thức tiếp cận',
-          },
+          // {
+          //   key: ROUTES.CATEGORY.APPROACH,
+          //   label: 'Phương thức tiếp cận',
+          // },
           {
             key: ROUTES.CATEGORY.GENDER,
             label: 'Giới tính',
@@ -206,6 +206,10 @@ const useMenuList = () => {
           {
             key: ROUTES.CATEGORY.CUSTOMERS,
             label: 'Khách hàng',
+          },
+          {
+            key: ROUTES.CATEGORY.TARGET,
+            label: 'Mục tiêu',
           },
         ],
       },

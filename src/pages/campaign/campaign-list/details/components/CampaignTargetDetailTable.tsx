@@ -23,7 +23,7 @@ const handleSort = (a?: string, b?: string) =>
 const columns: ColumnType<CampaignTargetDTO>[] = [
   {
     title: 'Tên mục tiêu',
-    dataIndex: 'name',
+    dataIndex: 'targetName',
     minWidth: 213,
     sorter: (a, b) => handleSort(a.name, b.name),
     showSorterTooltip: false,
@@ -64,15 +64,22 @@ const CampaignTargetDetailTable: React.FC<ICampaignTargetDetailTable> = ({
   const { data: unitCalculationOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.UNIT_OF_CALCULATION,
   });
+  const { data: targetOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.TARGET,
+  });
 
   const mappedDataSource = dataSource.map((item) => {
     const matchedApproachOption = unitCalculationOptions?.find(
       (option) => option.value === item.unit,
     );
+    const matchedTarget = targetOptions?.find(
+      (option) => option.value === item.name,
+    );
 
     return {
       ...item,
       unitName: matchedApproachOption?.label,
+      targetName: matchedTarget?.label,
     };
   });
 

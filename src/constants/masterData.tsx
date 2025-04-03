@@ -45,6 +45,7 @@ export enum ERole {
   SELLER = 'SELLER',
   CAMPAIGN_MANAGER = 'CAMPAIGN_MANAGER',
   SELLER_MANAGER = 'SELLER_MANAGER',
+  REPORTER = 'REPORTER',
 }
 
 export enum EControlType {

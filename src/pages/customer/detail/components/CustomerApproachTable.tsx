@@ -5,6 +5,7 @@ import {
   useCategoryOptionsListQuery,
   useApproachScriptViewByCustomerQuery,
 } from '@hooks/queries';
+import { useProfile } from '@stores';
 import { getOptionLabel } from '@utils/objectHelper';
 import type { ColumnType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -20,6 +21,7 @@ const CustomerApproachTable: FC<{
   setActiveId?: React.Dispatch<React.SetStateAction<string | undefined>>;
 }> = ({ calledIds, activeId, setActiveId, setCalledIds }) => {
   const { id: customerId } = useParams();
+  const { isReporter } = useProfile();
 
   const { data: approachScriptData } =
     useApproachScriptViewByCustomerQuery(customerId);
@@ -101,6 +103,7 @@ const CustomerApproachTable: FC<{
 
   return (
     <OTable<TApproachScriptRecord>
+      isCheckboxHidden={isReporter}
       columns={columns}
       data={approachScriptData || []}
       selectedRowKeys={calledIds}

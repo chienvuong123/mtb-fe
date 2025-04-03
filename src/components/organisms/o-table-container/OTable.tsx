@@ -12,6 +12,7 @@ import type { ColumnType } from 'antd/es/table';
 import clsx from 'clsx';
 import { getTableIndex } from '@pages/category/utils';
 import { useIsFetching } from '@tanstack/react-query';
+import { useProfile } from '@stores';
 import { OModalConfirm } from '../o-modal';
 import type { FixedType, ITable, TColumnType } from './OTabletype';
 import './styles.scss';
@@ -46,6 +47,7 @@ const OTable = <T extends object>({
   const [recordKey, setRecordKey] = useState<Key | null>(null);
 
   const isLoading = useIsFetching();
+  const { isReporter } = useProfile();
 
   const transformColumns: ColumnType<T>[] = useMemo(() => {
     const columnsWithSort: ColumnType<T>[] = sortDirection
@@ -110,7 +112,8 @@ const OTable = <T extends object>({
                       record={record}
                       editable={false}
                       onEdit={
-                        blockingEditIds?.includes(record[rowKey] as string)
+                        blockingEditIds?.includes(record[rowKey] as string) ||
+                        isReporter
                           ? undefined
                           : onEdit
                       }
@@ -119,7 +122,10 @@ const OTable = <T extends object>({
                       onList={onList}
                       onDelete={
                         onDeleteRow &&
-                        !blockingDeleteIds?.includes(record[rowKey] as string)
+                        !blockingDeleteIds?.includes(
+                          record[rowKey] as string,
+                        ) &&
+                        !isReporter
                           ? (key: Key) => {
                               setRecordKey(key);
                               setShowModal(true);
@@ -146,6 +152,7 @@ const OTable = <T extends object>({
     rowKey,
     blockingEditIds,
     blockingDeleteIds,
+    isReporter,
     onDeleteRow,
     onEdit,
     onView,

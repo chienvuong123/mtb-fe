@@ -25,6 +25,7 @@ import { validationHelper } from '@utils/validationHelper';
 import { useNotification } from '@libs/antd';
 import { useQueryClient } from '@tanstack/react-query';
 import { CloseIcon, PlusIcon } from '@assets/icons';
+import { useProfile } from '@stores';
 import { mapDraftToFormData, mapFormDataToDTO } from '../utils';
 
 interface FieldChangeInfo {
@@ -55,6 +56,8 @@ const FIELD_DEPENDENCIES = {
 
 export const useCollectInforController = (opened?: boolean) => {
   const [form] = Form.useForm<CustomerCollectFormDTO>();
+
+  const { isReporter } = useProfile();
 
   // watch
   const assetCategoryCode = Form.useWatch(['assetCategoryCode'], form);
@@ -186,12 +189,14 @@ export const useCollectInforController = (opened?: boolean) => {
         ],
         colProps: { span: 12 },
         blockingPattern: BLOCKING_NUMBER_PARTERN,
-        surfixButton: {
-          icon: <PlusIcon color="#5E6371" />,
-          type: 'text',
-          disabled: showPhone.mobileNumber1 && showPhone.mobileNumber2,
-          onClick: handleAddPhone,
-        },
+        surfixButton: isReporter
+          ? undefined
+          : {
+              icon: <PlusIcon color="#5E6371" />,
+              type: 'text',
+              disabled: showPhone.mobileNumber1 && showPhone.mobileNumber2,
+              onClick: handleAddPhone,
+            },
       },
       ...(showPhone.mobileNumber1
         ? [
@@ -202,15 +207,17 @@ export const useCollectInforController = (opened?: boolean) => {
               inputProps: { placeholder: 'Nhập...', maxLength: 10 },
               colProps: { span: 12 },
               blockingPattern: BLOCKING_NUMBER_PARTERN,
-              surfixButton: {
-                icon: <CloseIcon />,
-                type: 'text',
-                disabled: showPhone.mobileNumber2,
-                onClick: () => {
-                  setShowPhone((pre) => ({ ...pre, mobileNumber1: false }));
-                  form.setFieldValue('mobileNumber2', undefined);
-                },
-              },
+              surfixButton: isReporter
+                ? undefined
+                : {
+                    icon: <CloseIcon />,
+                    type: 'text',
+                    disabled: showPhone.mobileNumber2,
+                    onClick: () => {
+                      setShowPhone((pre) => ({ ...pre, mobileNumber1: false }));
+                      form.setFieldValue('mobileNumber2', undefined);
+                    },
+                  },
             },
           ]
         : []),
@@ -223,14 +230,16 @@ export const useCollectInforController = (opened?: boolean) => {
               inputProps: { placeholder: 'Nhập...', maxLength: 10 },
               colProps: { span: 12 },
               blockingPattern: BLOCKING_NUMBER_PARTERN,
-              surfixButton: {
-                icon: <CloseIcon />,
-                type: 'text',
-                onClick: () => {
-                  setShowPhone((pre) => ({ ...pre, mobileNumber2: false }));
-                  form.setFieldValue('mobileNumber2', undefined);
-                },
-              },
+              surfixButton: isReporter
+                ? undefined
+                : {
+                    icon: <CloseIcon />,
+                    type: 'text',
+                    onClick: () => {
+                      setShowPhone((pre) => ({ ...pre, mobileNumber2: false }));
+                      form.setFieldValue('mobileNumber2', undefined);
+                    },
+                  },
             },
           ]
         : // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -303,13 +312,15 @@ export const useCollectInforController = (opened?: boolean) => {
           label: (
             <>
               Địa chỉ nơi ở hiện tại
-              <Typography.Text
-                className="text-main1 ml-8 cursor-pointer"
-                style={{ textDecoration: 'underline' }}
-                onClick={fillByResidence}
-              >
-                Lấy thông tin địa chỉ thường trú
-              </Typography.Text>
+              {!isReporter && (
+                <Typography.Text
+                  className="text-main1 ml-8 cursor-pointer"
+                  style={{ textDecoration: 'underline' }}
+                  onClick={fillByResidence}
+                >
+                  Lấy thông tin địa chỉ thường trú
+                </Typography.Text>
+              )}
             </>
           ),
         },
@@ -641,6 +652,7 @@ export const useCollectInforController = (opened?: boolean) => {
     assetInfoCode,
     showPhone,
     form,
+    isReporter,
     fillByResidence,
   ]);
 

@@ -9,6 +9,7 @@ import {
 } from '@hooks/queries';
 import { useParams } from 'react-router-dom';
 import { ScenarioScriptContainer } from '@components/organisms';
+import { useProfile } from '@stores';
 import CollectCustomerInformationModal from './CollectCustomerInformationModal';
 import { getInitialValues } from '../utils';
 
@@ -25,6 +26,8 @@ const CustomerApproachPreview = ({
   const [approach, setApproach] = useState<ApproachScriptDTO | null>();
   const [form] = Form.useForm();
   const [initialValues, setInitialValues] = useState({});
+
+  const { isReporter } = useProfile();
 
   const { data: approachScriptData } =
     useApproachScriptViewByCustomerQuery(customerId);
@@ -76,7 +79,7 @@ const CustomerApproachPreview = ({
               );
             }}
           />
-          <Form form={form} disabled={activeId !== approach?.id}>
+          <Form form={form} disabled={activeId !== approach?.id || isReporter}>
             <Flex gap={24}>
               <Flex vertical gap={8}>
                 <Typography.Text>Đánh giá chiến dịch</Typography.Text>

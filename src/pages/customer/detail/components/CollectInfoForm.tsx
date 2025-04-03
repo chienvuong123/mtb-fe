@@ -1,5 +1,6 @@
 import type { CustomerCollectFormDTO } from '@dtos';
 import { useFormItems } from '@hooks';
+import { useProfile } from '@stores';
 import type { TFormItem } from '@types';
 import { getValueFromEvent } from '@utils/formHelper';
 import { Form, Typography, type FormInstance } from 'antd';
@@ -32,8 +33,10 @@ export const CollectInfoForm = ({ form, items }: ICollectInfoForm) => {
     form,
   });
 
+  const { isReporter } = useProfile();
+
   return (
-    <Form form={form} layout="vertical">
+    <Form form={form} layout="vertical" disabled={isReporter}>
       <div>{formContent}</div>
     </Form>
   );
