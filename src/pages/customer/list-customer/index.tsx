@@ -37,12 +37,11 @@ import { useNotification } from '@libs/antd';
 import { ROUTES, createNavigatePath } from '@routers/path';
 import { useNavigate } from 'react-router-dom';
 import { validationHelper } from '@utils/validationHelper';
-import type { TBaseTableSort } from '@types';
+import type { TBaseTableSort, TFormType } from '@types';
 import {
   CustomerForm,
   CustomerListTable,
   CustomerSearchForm,
-  CustomerViewForm,
 } from './components';
 import {
   destructCustomerData,
@@ -324,13 +323,17 @@ const ListCustomerPage: FC = () => {
           onClose={handleCloseForm}
         />
       );
-    if (isViewMode) return <CustomerViewForm {...props} />;
+
+    let mode: TFormType;
+    if (isViewMode) {
+      mode = 'view';
+    } else if (initValues?.id) {
+      mode = 'edit';
+    } else {
+      mode = 'add';
+    }
     return (
-      <CustomerForm
-        {...props}
-        mode={initValues?.id ? 'edit' : 'add'}
-        onSubmit={handleSubmitInsert}
-      />
+      <CustomerForm {...props} mode={mode} onSubmit={handleSubmitInsert} />
     );
   };
 

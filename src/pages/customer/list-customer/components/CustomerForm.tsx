@@ -22,6 +22,7 @@ const CustomerAddForm: FC<CBaseForm<CustomerDTO, TCustomerForm>> = ({
   return (
     <OBaseForm<TCustomerForm>
       mutationKey={CUSTOMER_KEY}
+      isViewMode={mode === 'view'}
       items={formItems}
       form={form}
       onSubmit={handleSubmit}
