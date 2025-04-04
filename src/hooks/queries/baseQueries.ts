@@ -57,6 +57,8 @@ export const createBaseQueryHooks = <
       queryKey: queryKeys.detail(params.id),
       queryFn: () => api.view(params.id),
       enabled: !!params.id,
+      staleTime: 0,
+      gcTime: 0,
       ...options,
     });
   };
