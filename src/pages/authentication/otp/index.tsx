@@ -10,19 +10,17 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import { getOTPCheck, saveOTPCheck } from '@utils/otpHelper';
 import { useCallback, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'antd/es/form/Form';
+import { useForm, useWatch } from 'antd/es/form/Form';
 import { LayoutWrapper } from '../components';
 import { FooterAuth } from '../components/footer';
 import { FormContentAuth } from '../components/form-content';
 
 import './index.scss';
 
-const ERROR_ALLOW = 5;
-
 const OTP = () => {
-  const [errorAllowed, setErrorAllowed] = useState(ERROR_ALLOW);
   const [alert, setAlert] = useState('');
   const [form] = useForm();
+  const otpValue = useWatch('otp', form);
 
   const navigate = useNavigate();
   const valueValidOtp = getOTPCheck();
@@ -63,7 +61,6 @@ const OTP = () => {
     mutateVerifyInfoUser(valueValidOtp, {
       onSuccess: (res) => {
         if (res.data) {
-          setErrorAllowed(ERROR_ALLOW);
           saveOTPCheck(valueValidOtp);
           setAlert(`Đã gửi lại OTP vào email đăng ký`);
         }
@@ -73,43 +70,34 @@ const OTP = () => {
   }, [mutateVerifyInfoUser, valueValidOtp]);
 
   const handleVerifyOtp = (values: UserInfoOtpRequest) => {
-    const data = {
-      username: valueValidOtp.username,
-      otp: values.otp,
-    };
-
-    mutateVerifyOtp(data, {
-      onSuccess: (res) => {
-        if (res.data) {
-          saveOTPCheck({
-            ...valueValidOtp,
-            otp: values.otp,
-          });
-          navigate(ROUTES.CONFIRM_PASSWORD);
-          return;
-        }
-        if (res.errorCode === 'AUTH0009') {
-          setAlert('');
-          handleResendOtp();
-          return;
-        }
-
-        setErrorAllowed((prev) => {
-          if (prev) return prev - 1;
-
-          return 0;
-        });
-        throw Error('');
+    mutateVerifyOtp(
+      {
+        username: valueValidOtp.username,
+        otp: values.otp,
       },
-      onError: () => {
-        if (errorAllowed - 1) {
-          setAlert(`Sai mã OTP, bạn còn ${errorAllowed - 1} lần`);
-        } else {
-          setAlert('');
-          handleResendOtp();
-        }
+      {
+        onSuccess: ({ data, errorCode, errorDesc }) => {
+          if (data) {
+            saveOTPCheck({
+              ...valueValidOtp,
+              otp: values.otp,
+            });
+            navigate(ROUTES.CONFIRM_PASSWORD);
+            return;
+          }
+          if (errorCode === 'AUTH0009') {
+            setAlert('');
+            handleResendOtp();
+            return;
+          }
+
+          if (errorCode === 'AUTH00015' || errorCode === 'AUTH00014') {
+            setAlert(errorDesc);
+          }
+          throw Error('');
+        },
       },
-    });
+    );
   };
 
   return (
@@ -148,10 +136,11 @@ const OTP = () => {
             </>
           }
           alertText={alert}
-          typeAlert={errorAllowed === ERROR_ALLOW ? 'success' : 'error'}
+          typeAlert="error"
           formContent={formContent}
           isLoading={isPending || isPendingResendOtp}
           onFinish={handleVerifyOtp}
+          disabledSubmit={!otpValue || otpValue?.length < 6}
         />
       </LayoutWrapper>
 

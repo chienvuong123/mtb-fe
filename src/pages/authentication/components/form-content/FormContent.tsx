@@ -17,6 +17,7 @@ interface IFormContent extends FormProps {
   typeAlert?: 'success' | 'error' | 'warning';
   subLink?: string | React.ReactNode;
   formContent: JSX.Element | null;
+  disabledSubmit?: boolean;
 }
 
 const FormContent: React.FC<IFormContent> = ({
@@ -29,6 +30,7 @@ const FormContent: React.FC<IFormContent> = ({
   subLink,
   typeAlert = 'error',
   formContent,
+  disabledSubmit,
   ...props
 }) => {
   return (
@@ -59,6 +61,7 @@ const FormContent: React.FC<IFormContent> = ({
             size="large"
             htmlType="submit"
             loading={isLoading}
+            disabled={disabledSubmit}
           >
             {textButton}
           </AButton>
