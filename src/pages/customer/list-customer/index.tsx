@@ -38,6 +38,7 @@ import { ROUTES, createNavigatePath } from '@routers/path';
 import { useNavigate } from 'react-router-dom';
 import { validationHelper } from '@utils/validationHelper';
 import type { TBaseTableSort, TFormType } from '@types';
+import { EResponseCode } from '@constants/responseCode';
 import {
   CustomerForm,
   CustomerListTable,
@@ -256,7 +257,7 @@ const ListCustomerPage: FC = () => {
                 refetchCustomer();
               }
             });
-            if (d?.errorCode === 'CUS0009') {
+            if (d?.errorCode === EResponseCode.CUSTOMER_EXPORT_FAIL) {
               downloadBase64File(d.data as string, 'DSKH_error.xlsx');
             }
           },

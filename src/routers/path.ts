@@ -131,7 +131,10 @@ export const ROUTES = {
     EXPORT: buildPath(PATH_SEGMENT.CUSTOMER, [PATH_SEGMENT.EXPORT]),
   },
 
-  SCENARIO: createCommonRoutes(PATH_SEGMENT.SCENARIO),
+  SCENARIO: {
+    ...createCommonRoutes(PATH_SEGMENT.SCENARIO),
+    COPY: buildPath(PATH_SEGMENT.SCENARIO, [PATH_SEGMENT.COPY, ':id']),
+  },
 
   SELLER: {
     ...createCommonRoutes(PATH_SEGMENT.SELLER),

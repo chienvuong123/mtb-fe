@@ -20,6 +20,7 @@ import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { useNotification } from '@libs/antd';
 import { validationHelper } from '@utils/validationHelper';
 import type { FormInstance } from 'antd';
+import { EResponseCode } from '@constants/responseCode';
 import {
   GenericMultimediaForm,
   GenericMultimediaSearchForm,
@@ -247,7 +248,11 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
             onClose={handleCloseForm}
             initialValues={initValuesInsertForm}
             onSubmit={handleSubmitInsert}
-            previewSrc={multimediaViewRes?.errorCode === '0' ? src : undefined}
+            previewSrc={
+              multimediaViewRes?.errorCode === EResponseCode.SUCCESS
+                ? src
+                : undefined
+            }
           />
         )}
       </ODrawer>

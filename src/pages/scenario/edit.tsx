@@ -8,7 +8,7 @@ import {
 import { validationHelper } from '@utils/validationHelper';
 import { useNotification } from '@libs/antd';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ROUTES } from '@routers/path';
+import { createNavigatePath, ROUTES } from '@routers/path';
 import ScenarioForm from './components/ScenarioForm';
 
 const ScenarioEditPage: FC = () => {
@@ -68,6 +68,15 @@ const ScenarioEditPage: FC = () => {
       title="Chỉnh sửa kịch bản"
       initialData={initialData}
       onSubmit={handleSubmit}
+      onMakeACopy={() => {
+        if (initialData.scenarioData?.id)
+          window.open(
+            createNavigatePath(ROUTES.SCENARIO.COPY, {
+              id: initialData.scenarioData.id,
+            }),
+            '_blank',
+          );
+      }}
     />
   );
 };

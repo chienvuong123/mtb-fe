@@ -229,6 +229,10 @@ const routes = createBrowserRouter(
               element: <ScenarioPages.ScenarioEditPage />,
             },
             {
+              path: `${PATH_SEGMENT.COPY}/:id`,
+              element: <ScenarioPages.ScenarioCreatePage />,
+            },
+            {
               path: `${PATH_SEGMENT.DETAIL}/:id`,
               element: <ScenarioPages.ScenarioDetailPage />,
             },

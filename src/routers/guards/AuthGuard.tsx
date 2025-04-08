@@ -9,6 +9,7 @@ import { ROUTES } from '@routers/path';
 interface AuthGuardProps {
   children?: React.ReactNode;
 }
+const specialRouteRegex = /(\/detail\/|\/preview\/)/;
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const { user, isAuthenticated, isPending } = useProfile();
@@ -37,11 +38,14 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       }
     }
 
-    // Check permission on root routes
+    // Check permission on root and special routes
     return Object.keys(permissionMatrix).some((route) => {
-      if (route === '/') return false;
+      const isNotRootAndSpecial =
+        route !== '/' && specialRouteRegex.test(currentPath);
       return (
-        currentPath.startsWith(route) && permissionMatrix[route]?.[userRole]
+        isNotRootAndSpecial &&
+        currentPath.startsWith(route) &&
+        permissionMatrix[route]?.[userRole]
       );
     });
   }, [currentPath, user?.role]);

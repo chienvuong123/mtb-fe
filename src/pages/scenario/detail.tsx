@@ -10,6 +10,7 @@ import { useNotification } from '@libs/antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@routers/path';
 import ScenarioForm from './components/ScenarioForm';
+import { EResponseCode } from '@constants/responseCode';
 
 const ScenarioDetailPage: FC = () => {
   const [initialData, setInitialData] = useState<{
@@ -57,6 +58,10 @@ const ScenarioDetailPage: FC = () => {
         })),
       });
     }
+    if (scenario && scenario.errorCode === EResponseCode.APPROACH_NOT_FOUND) {
+      validationHelper(scenario, notify, () => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scenario]);
 
   if (isLoading) {

@@ -20,12 +20,14 @@ interface ScenarioFormProps {
     attributeList?: ApproachScriptAttributeDTO[];
   };
   onSubmit: (data: Partial<ApproachScriptDTO>) => void;
+  onMakeACopy?: () => void;
 }
 
 const ScenarioForm: FC<ScenarioFormProps> = ({
   title,
   initialData,
   onSubmit,
+  onMakeACopy,
 }) => {
   const notify = useNotification();
   const navigate = useNavigate();
@@ -289,6 +291,7 @@ const ScenarioForm: FC<ScenarioFormProps> = ({
         onBack={isViewMode ? handleBack : undefined}
         onCancel={isViewMode ? undefined : handleCancel}
         onSave={isViewMode ? undefined : handleSaveScenario}
+        onMakeACopy={onMakeACopy}
       />
       <ODrawer
         destroyOnClose

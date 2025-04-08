@@ -7,6 +7,7 @@ import { useLoginMutation } from '@hooks/queries';
 import { useState } from 'react';
 import type { AxiosError } from 'axios';
 import type { BaseResponse } from '@dtos';
+import { EResponseCode } from '@constants/responseCode';
 import { FooterAuth } from '../components/footer';
 import { FormContentAuth } from '../components/form-content';
 import { LayoutWrapper } from '../components';
@@ -59,7 +60,7 @@ const LoginPage = () => {
         onError(error) {
           const errResponse = (error as AxiosError<BaseResponse<boolean>>)
             ?.response;
-          if (errResponse?.data?.errorCode === '0') return;
+          if (errResponse?.data?.errorCode === EResponseCode.SUCCESS) return;
           setAlert(
             errResponse?.data?.errorDesc ?? 'Thông tin đăng nhập không đúng',
           );
