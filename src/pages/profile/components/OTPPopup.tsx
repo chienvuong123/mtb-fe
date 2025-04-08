@@ -81,6 +81,7 @@ const OTPPopup: FC<
             onInput={(e) => {
               setOtpValue(e.join(''));
             }}
+            type="number"
           />
         </Flex>
       </div>
