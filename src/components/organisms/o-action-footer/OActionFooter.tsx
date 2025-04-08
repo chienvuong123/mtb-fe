@@ -6,12 +6,14 @@ interface OActionFooterProps {
   onBack?: () => void;
   onCancel?: () => void;
   onSave?: () => void;
+  onMakeACopy?: () => void;
 }
 
 const OActionFooter: FC<OActionFooterProps> = ({
   onBack,
   onCancel,
   onSave,
+  onMakeACopy,
 }) => {
   return (
     <div
@@ -35,6 +37,11 @@ const OActionFooter: FC<OActionFooterProps> = ({
           <div />
         )}
         <Flex gap={16} justify="space-between">
+          {onMakeACopy && (
+            <AButton color="green" variant="filled" onClick={onMakeACopy}>
+              Tạo bản sao
+            </AButton>
+          )}
           {onCancel && (
             <AButton color="primary" variant="filled" onClick={onCancel}>
               Hủy

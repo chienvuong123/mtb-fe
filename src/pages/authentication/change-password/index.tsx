@@ -10,6 +10,7 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import { Flex, Form, Spin, Typography } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { EResponseCode } from '@constants/responseCode';
 import { FooterAuth } from '../components/footer';
 
 import './index.scss';
@@ -142,7 +143,7 @@ const ChangePassword = () => {
           });
           return;
         }
-        if (response.errorCode === 'AUTH0006') {
+        if (response.errorCode === EResponseCode.PASSWORD_RECENTLY_USED) {
           handleInValidate({
             typeAlertValue: 'error',
             alertTextValue: response.errorDesc,

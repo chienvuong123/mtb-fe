@@ -17,6 +17,7 @@ import {
 } from '@hooks/queries';
 import { useNotification } from '@libs/antd';
 import { OModalConfirm } from '@components/organisms/o-modal';
+import { EResponseCode } from '@constants/responseCode';
 import { SellerAddFormDrawer, SellerAssignmentActions } from '.';
 import {
   distributeCustomers,
@@ -235,7 +236,7 @@ const SellerTable: FC<ISellerTable> = ({
 
     assignCustomerMutate(data, {
       onSuccess: ({ errorCode, errorDesc }) => {
-        if (errorCode !== '0') {
+        if (errorCode !== EResponseCode.SUCCESS) {
           // if error
           notify({ message: errorDesc, type: 'error' });
           return;
@@ -263,7 +264,7 @@ const SellerTable: FC<ISellerTable> = ({
         { campaignId, data: sellerIds },
         {
           onSuccess: (data) => {
-            if (data.errorCode !== '0') {
+            if (data.errorCode !== EResponseCode.SUCCESS) {
               // if error
               notify({ message: data.errorDesc, type: 'error' });
               return;

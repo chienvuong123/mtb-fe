@@ -1,4 +1,5 @@
 import type { BaseApi } from '@apis';
+import { EResponseCode } from '@constants/responseCode';
 import type { BaseResponse, BaseSearchParams, BaseSearchResponse } from '@dtos';
 import {
   useMutation,
@@ -75,7 +76,7 @@ export const createBaseQueryHooks = <
       mutationKey: [baseKey],
       mutationFn: (data: Partial<T>) => api.add(data),
       onSuccess: (dataSuccess: BaseResponse<boolean>) => {
-        if (dataSuccess.errorCode !== '0') return;
+        if (dataSuccess.errorCode !== EResponseCode.SUCCESS) return;
         onInvalidate?.(dataSuccess);
         queryClient.invalidateQueries({
           queryKey: queryKeys.list,
@@ -97,7 +98,7 @@ export const createBaseQueryHooks = <
       mutationKey: [baseKey],
       mutationFn: (data: Partial<T>) => api.edit(data),
       onSuccess: (dataSuccess: BaseResponse<boolean>) => {
-        if (dataSuccess.errorCode !== '0') return;
+        if (dataSuccess.errorCode !== EResponseCode.SUCCESS) return;
         onInvalidate?.(dataSuccess);
         queryClient.invalidateQueries({
           queryKey: queryKeys.list,
@@ -119,7 +120,7 @@ export const createBaseQueryHooks = <
       mutationKey: [baseKey],
       mutationFn: (data: { id: string }) => api.remove(data.id),
       onSuccess: (dataSuccess: BaseResponse<boolean>) => {
-        if (dataSuccess.errorCode !== '0') return;
+        if (dataSuccess.errorCode !== EResponseCode.SUCCESS) return;
         onInvalidate?.();
         queryClient.invalidateQueries({
           queryKey: queryKeys.list,

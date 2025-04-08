@@ -259,6 +259,10 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
+  [ROUTES.SCENARIO.COPY]: {
+    [ERole.ADMIN]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
   [ROUTES.SCENARIO.EDIT]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
