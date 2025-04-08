@@ -4,6 +4,7 @@ import type {
   QueryObserverResult,
   RefetchOptions,
 } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import { downloadFile } from './fileHelper';
 
 /**
@@ -20,7 +21,12 @@ function trimObjectValues<T>(obj: T): T {
     // If it's an object, recursively trim each value
     const result: Record<string, unknown> = {};
     Object.keys(obj).forEach((key) => {
-      result[key] = trimObjectValues((obj as Record<string, unknown>)[key]);
+      const object = obj as Record<string, unknown>;
+      if (dayjs.isDayjs(object[key])) {
+        result[key] = object[key];
+      } else {
+        result[key] = trimObjectValues(object[key]);
+      }
     });
     return result as T;
   }

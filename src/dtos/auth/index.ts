@@ -45,6 +45,11 @@ export interface UserDTO extends BaseEntity {
   departmentDtl: CategoryDTO;
   branchDtl: CategoryDTO;
   otp?: string;
+
+  startDate?: string;
+  endDate?: string;
+  saleManager?: string;
+  memberMb?: boolean;
 }
 
 export interface UserRequest extends BaseSearchParams {

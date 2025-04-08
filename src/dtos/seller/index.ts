@@ -37,6 +37,11 @@ interface SellerUserDTO extends Partial<BaseEntity> {
   positionDtl: SellerDetailDTO;
   departmentDtl: SellerDetailDTO;
   expertiseDtl: SellerDetailDTO;
+
+  startDate?: string;
+  endDate?: string;
+  saleManager?: string;
+  memberMb?: boolean;
 }
 
 export type SellerDTO = {
@@ -66,6 +71,11 @@ export type CreateSellerDTO = Omit<
   role: string;
   phoneNum: string;
   expertise: string;
+
+  startDate?: string;
+  endDate?: string;
+  saleManager?: string;
+  memberMb?: boolean;
 };
 
 // seller details

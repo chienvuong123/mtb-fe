@@ -86,6 +86,7 @@ const AccountManagementPage = () => {
       updatedBy: user?.username,
       createdDate: formatDate(),
       updatedDate: formatDate(),
+      memberMb: false,
     });
     setDrawerMode('add');
   };
@@ -176,6 +177,10 @@ const AccountManagementPage = () => {
     phoneNum,
     expertise,
     id,
+    startDate,
+    endDate,
+    saleManager,
+    memberMb,
   }: Partial<UserDTO>) => {
     const data: Partial<UserDTO> = {
       employeeCode,
@@ -189,7 +194,10 @@ const AccountManagementPage = () => {
       department,
       phoneNum,
       expertise,
-      id,
+      startDate,
+      endDate,
+      saleManager,
+      memberMb,
     };
 
     // create new user
@@ -198,10 +206,13 @@ const AccountManagementPage = () => {
         onSuccess: (resData) => handleInvalidate(resData, 'Tạo mới thành công'),
       });
     } else {
-      mutationCreateAccountManagement(data, {
-        onSuccess: (resData) =>
-          handleInvalidate(resData, 'Cập nhật thành công'),
-      });
+      mutationCreateAccountManagement(
+        { ...data, id },
+        {
+          onSuccess: (resData) =>
+            handleInvalidate(resData, 'Cập nhật thành công'),
+        },
+      );
     }
   };
 
@@ -264,7 +275,7 @@ const AccountManagementPage = () => {
         mode={drawerMode}
         onClose={handleCloseForm}
         open={!!drawerMode}
-        width={1025}
+        width={1261}
       >
         <AccountInsertForm
           key={drawerMode ?? 'view'}

@@ -1,7 +1,6 @@
 import { ERole, EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import {
   type BaseResponse,
-  type CreateSellerDTO,
   type SellerDTO,
   type SellerSearchRequest,
   type UserDTO,
@@ -18,6 +17,7 @@ import {
   useSellerEditMutation,
   useSellerRemoveMutation,
   useSellerSearchQuery,
+  useSellerViewQuery,
 } from '@hooks/queries';
 import type { TBaseTableSort, TFormType } from '@types';
 import { validateInsertCategory } from '@pages/category/utils';
@@ -42,6 +42,8 @@ const SellerPage: FC = () => {
   const [initialValuesForm, setInitialValuesForm] =
     useState<Partial<UserDTO> | null>(null);
 
+  const [sellerId, setSellerId] = useState<string>('');
+
   const navigate = useNavigate();
   const notify = useNotification();
   const { user } = useProfile();
@@ -55,9 +57,15 @@ const SellerPage: FC = () => {
     ...filterObject(filters),
   });
 
+  const { data: sellerViewRes } = useSellerViewQuery(
+    { id: sellerId },
+    { enabled: !!sellerId },
+  );
+
   const handleCloseForm = () => {
     setDrawerMode(undefined);
     setInitialValuesForm(null);
+    setSellerId('');
   };
 
   const handleInvalidate = (data?: BaseResponse<boolean>, message?: string) => {
@@ -87,30 +95,15 @@ const SellerPage: FC = () => {
       updatedBy: user?.username,
       createdDate: formatDate(),
       updatedDate: formatDate(),
+      memberMb: false,
     }));
   };
 
   const handleEdit = (record: Partial<SellerDTO>) => {
-    setDrawerMode('edit');
-    const userDTO: Partial<UserDTO> = {
-      employeeCode: record.user?.employeeCode,
-      username: record.user?.username,
-      fullName: record.name,
-      email: record.user?.email,
-      phoneNum: record.user?.phoneNum,
-      status: record.user?.status,
-      role: record.user?.role,
-      position: record.position?.id,
-      branch: record.branch?.id,
-      department: record.department?.id,
-      expertise: record.user?.expertise,
-      createdBy: record.user?.createdBy,
-      createdDate: formatDate(record.user?.createdDate),
-      updatedBy: record.user?.updatedBy,
-      updatedDate: formatDate(record.user?.updatedDate),
-      id: record.id,
-    };
-    setInitialValuesForm(userDTO);
+    if (record.id) {
+      setSellerId(record.id);
+      setDrawerMode('edit');
+    }
   };
 
   const handleSearch = (data: SellerSearchRequest) => {
@@ -157,8 +150,12 @@ const SellerPage: FC = () => {
     phoneNum,
     expertise,
     id,
+    startDate,
+    endDate,
+    saleManager,
+    memberMb,
   }: Partial<UserDTO>) => {
-    const data: Partial<CreateSellerDTO> = {
+    const data = {
       employeeCode,
       username,
       fullName,
@@ -170,20 +167,26 @@ const SellerPage: FC = () => {
       department,
       phoneNum,
       expertise,
-      id,
-    };
+      startDate,
+      endDate,
+      saleManager,
+      memberMb,
+    } as Partial<SellerDTO>;
 
     // create new seller
     if (drawerMode === 'add') {
-      mutationCreateSeller(data as Partial<SellerDTO>, {
+      mutationCreateSeller(data, {
         onSuccess: (resData) => handleInvalidate(resData, 'Tạo mới thành công'),
       });
     } else {
       // update seller
-      mutationEditSeller(data as Partial<SellerDTO>, {
-        onSuccess: (resData) =>
-          handleInvalidate(resData, 'Cập nhật thành công'),
-      });
+      mutationEditSeller(
+        { ...data, id },
+        {
+          onSuccess: (resData) =>
+            handleInvalidate(resData, 'Cập nhật thành công'),
+        },
+      );
     }
   };
 
@@ -201,6 +204,16 @@ const SellerPage: FC = () => {
     });
   };
 
+  const handleDelete = (id: string) => {
+    mutationRemoveSeller(
+      { id },
+      {
+        onSuccess: (resData) =>
+          handleInvalidate(resData, 'Xóa Seller thành công'),
+      },
+    );
+  };
+
   useEffect(() => {
     if (!isLoading && !sellerRes?.data?.content?.length && current > 1) {
       setPagination((prev) => ({
@@ -211,15 +224,34 @@ const SellerPage: FC = () => {
     }
   }, [sellerRes, setPagination, current, isLoading]);
 
-  const handleDelete = (id: string) => {
-    mutationRemoveSeller(
-      { id },
-      {
-        onSuccess: (resData) =>
-          handleInvalidate(resData, 'Xóa Seller thành công'),
-      },
-    );
-  };
+  useEffect(() => {
+    if (sellerViewRes) {
+      const { user: seller, id } = sellerViewRes.data ?? {};
+      const sellerDTO: Partial<UserDTO> = {
+        employeeCode: seller?.employeeCode,
+        username: seller?.username,
+        fullName: seller.fullName,
+        email: seller?.email,
+        phoneNum: seller?.phoneNum,
+        status: seller?.status,
+        role: seller?.role,
+        position: seller?.position,
+        branch: seller?.branch,
+        department: seller?.department,
+        expertise: seller?.expertise,
+        createdBy: seller?.createdBy,
+        createdDate: formatDate(seller?.createdDate),
+        updatedBy: seller?.updatedBy,
+        updatedDate: formatDate(seller?.updatedDate),
+        id,
+        startDate: seller?.startDate,
+        endDate: seller?.endDate,
+        memberMb: seller?.memberMb,
+        saleManager: seller?.saleManager,
+      };
+      setInitialValuesForm(sellerDTO);
+    }
+  }, [sellerViewRes]);
 
   return (
     <div className="pt-32 category-product">
@@ -256,7 +288,7 @@ const SellerPage: FC = () => {
         mode={drawerMode}
         onClose={handleCloseForm}
         open={!!drawerMode}
-        width={1025}
+        width={1261}
       >
         <SellerInsertForm
           key={drawerMode ?? 'view'}
