@@ -105,14 +105,13 @@ const useFormItems = ({
             } = colProps ?? {};
             const showAddBtn = Boolean(surfixButton);
 
-            return (
+            return formItemProps?.hidden ? null : (
               <Col
                 span={span}
                 flex={flex ?? (span ? undefined : '20%')}
                 style={{ maxWidth: span ? undefined : maxWidth, ...style }}
                 className={clsx({ 'pos-relative': showAddBtn }, colClassName)}
                 key={formItemProps.name || idx}
-                hidden={formItemProps?.hidden}
                 {...otherColProps}
               >
                 {type === INPUT_TYPE.LABEL ? (
@@ -141,7 +140,7 @@ const useFormItems = ({
                     </Form.Item>
                   </div>
                 )}
-                {showAddBtn && !formItemProps?.hidden && (
+                {showAddBtn && (
                   <AButton
                     type="primary"
                     icon={<PlusIcon />}

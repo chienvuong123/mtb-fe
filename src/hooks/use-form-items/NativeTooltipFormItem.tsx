@@ -95,7 +95,9 @@ const NativeTooltipFormItem = ({
       name: fieldName,
       open: false,
       allowClear: false,
-      ...([INPUT_TYPE.TEXT, INPUT_TYPE.TEXT_AREA].includes(type)
+      ...([INPUT_TYPE.TEXT, INPUT_TYPE.TEXT_AREA, INPUT_TYPE.CHECKBOX].includes(
+        type,
+      )
         ? {}
         : { suffixIcon: null }),
       ...(type === INPUT_TYPE.DATE_PICKER
@@ -109,10 +111,12 @@ const NativeTooltipFormItem = ({
             filterOption: false,
           }
         : {}),
+      ...(type === INPUT_TYPE.CHECKBOX
+        ? { className: clsx('pointer-events-none', className) }
+        : {}),
     }),
     [className, fieldName, form, handleBlur, inputProps, type],
   );
-
   return (
     <div ref={containerRef} style={{ width: '100%' }}>
       <Form.Item name={fieldName} noStyle>

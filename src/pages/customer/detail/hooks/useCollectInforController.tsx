@@ -198,52 +198,45 @@ export const useCollectInforController = (opened?: boolean) => {
               onClick: handleAddPhone,
             },
       },
-      ...(showPhone.mobileNumber1
-        ? [
-            {
-              type: INPUT_TYPE.TEXT,
-              label: 'Số điện thoại 2',
-              name: 'mobileNumber1',
-              inputProps: { placeholder: 'Nhập...', maxLength: 10 },
-              colProps: { span: 12 },
-              blockingPattern: BLOCKING_NUMBER_PARTERN,
-              surfixButton: isReporter
-                ? undefined
-                : {
-                    icon: <CloseIcon />,
-                    type: 'text',
-                    disabled: showPhone.mobileNumber2,
-                    onClick: () => {
-                      setShowPhone((pre) => ({ ...pre, mobileNumber1: false }));
-                      form.setFieldValue('mobileNumber2', undefined);
-                    },
-                  },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Số điện thoại 2',
+        name: 'mobileNumber1',
+        inputProps: { placeholder: 'Nhập...', maxLength: 10 },
+        colProps: { span: 12 },
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
+        hidden: !showPhone.mobileNumber1,
+        surfixButton: isReporter
+          ? undefined
+          : {
+              icon: <CloseIcon />,
+              type: 'text',
+              disabled: showPhone.mobileNumber2,
+              onClick: () => {
+                setShowPhone((pre) => ({ ...pre, mobileNumber1: false }));
+                form.setFieldValue('mobileNumber2', undefined);
+              },
             },
-          ]
-        : []),
-      ...(showPhone.mobileNumber2
-        ? [
-            {
-              type: INPUT_TYPE.TEXT,
-              label: 'Số điện thoại 3',
-              name: 'mobileNumber2',
-              inputProps: { placeholder: 'Nhập...', maxLength: 10 },
-              colProps: { span: 12 },
-              blockingPattern: BLOCKING_NUMBER_PARTERN,
-              surfixButton: isReporter
-                ? undefined
-                : {
-                    icon: <CloseIcon />,
-                    type: 'text',
-                    onClick: () => {
-                      setShowPhone((pre) => ({ ...pre, mobileNumber2: false }));
-                      form.setFieldValue('mobileNumber2', undefined);
-                    },
-                  },
+      },
+      {
+        type: INPUT_TYPE.TEXT,
+        label: 'Số điện thoại 3',
+        name: 'mobileNumber2',
+        inputProps: { placeholder: 'Nhập...', maxLength: 10 },
+        colProps: { span: 12 },
+        blockingPattern: BLOCKING_NUMBER_PARTERN,
+        hidden: !showPhone.mobileNumber2,
+        surfixButton: isReporter
+          ? undefined
+          : {
+              icon: <CloseIcon />,
+              type: 'text',
+              onClick: () => {
+                setShowPhone((pre) => ({ ...pre, mobileNumber2: false }));
+                form.setFieldValue('mobileNumber2', undefined);
+              },
             },
-          ]
-        : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ([] as any)),
+      },
       {
         type: INPUT_TYPE.TEXT,
         label: 'Địa chỉ từ MB',

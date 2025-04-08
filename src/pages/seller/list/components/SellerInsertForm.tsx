@@ -1,4 +1,5 @@
 import { OBaseForm } from '@components/organisms';
+import { DATE_HYPHEN_FORMAT_YYYYMMDD } from '@constants/dateFormat';
 import { ERole, ROLE_OPTIONS, STATUS_OPTIONS } from '@constants/masterData';
 import {
   BLOCKING_ALPHA_NUMERIC_COMMA_PATTERN,
@@ -12,7 +13,8 @@ import {
   useCategoryOptionsListQuery,
 } from '@hooks/queries';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
-import { useForm } from 'antd/es/form/Form';
+import { useForm, useWatch } from 'antd/es/form/Form';
+import dayjs from 'dayjs';
 import { useEffect, useMemo, type FC } from 'react';
 
 const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
@@ -22,6 +24,8 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
   mode,
 }) => {
   const [form] = useForm();
+  const startDate = useWatch('startDate', form);
+  const endDate = useWatch('endDate', form);
 
   const { data: departmentList } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.DEPARTMENT,
@@ -57,7 +61,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           placeholder: 'Nhập...',
           disabled: mode !== 'add',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         rules: [{ required: true }],
         blockingPattern: BLOCKING_CHARACTERS_PARTERN,
       },
@@ -66,11 +70,11 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
         label: 'Tên đăng nhập',
         name: 'username',
         inputProps: {
-          placeholder: 'Nhập...',
+          placeholder: 'Tự sinh theo email',
           maxLength: 50,
           readOnly: true,
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         rules: [{ required: true }],
         blockingPattern: BLOCKING_ALPHA_NUMERIC_COMMA_PATTERN,
       },
@@ -82,7 +86,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           maxLength: 100,
           placeholder: 'Nhập...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         rules: [{ required: true }],
         blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
       },
@@ -95,7 +99,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           placeholder: 'Nhập...',
           onChange: handleEmailChange,
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         rules: [
           { required: true },
           { type: 'email', message: 'Email không hợp lệ' },
@@ -110,7 +114,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           placeholder: 'Nhập...',
           maxLength: 10,
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         rules: [
           { required: true },
           { min: 10, message: 'Số điện thoại không hợp lệ' },
@@ -127,7 +131,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           defaultValue: ERole.SELLER,
           disabled: true,
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         rules: [{ required: true }],
       },
       {
@@ -141,7 +145,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           initialValue: STATUS_OPTIONS[0].value,
           disabled: true,
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         rules: [{ required: true }],
       },
       {
@@ -154,7 +158,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           filterOption: true,
           placeholder: 'Chọn...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -166,7 +170,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           filterOption: true,
           placeholder: 'Chọn...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         rules: [{ required: true }],
       },
       {
@@ -179,7 +183,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           filterOption: true,
           placeholder: 'Chọn...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         rules: [{ required: true }],
       },
       {
@@ -192,8 +196,52 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           filterOption: true,
           placeholder: 'Chọn...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         rules: [{ required: true }],
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Quản lý',
+        name: 'saleManager',
+        inputProps: {
+          options: [], // TODO: will be fixed
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+        },
+        colProps: { span: 6 },
+      },
+      {
+        type: INPUT_TYPE.CHECKBOX,
+        label: 'Nhân sự MB',
+        name: 'memberMb',
+        colProps: { span: 6 },
+        inputProps: {
+          checked: mode === 'view' && initialValues?.memberMb,
+        },
+        valuePropName: 'checked',
+      },
+      {
+        type: INPUT_TYPE.DATE_PICKER,
+        label: 'Ngày bắt đầu',
+        name: 'startDate',
+        inputProps: {
+          placeholder: 'Chọn ngày...',
+          className: 'date-picker-campaign',
+          maxDate: endDate ? dayjs(endDate) : undefined,
+        },
+        colProps: { span: 6 },
+      },
+      {
+        type: INPUT_TYPE.DATE_PICKER,
+        label: 'Ngày kết thúc',
+        name: 'endDate',
+        inputProps: {
+          placeholder: 'Chọn ngày...',
+          className: 'date-picker-campaign',
+          minDate: startDate,
+        },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -204,7 +252,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           name: 'createdBy',
           placeholder: 'Nhập...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -215,7 +263,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           name: 'createdDate',
           placeholder: 'Chọn ngày...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -226,7 +274,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           name: 'updatedBy',
           placeholder: 'Nhập...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -237,7 +285,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           name: 'updatedDate',
           placeholder: 'Chọn ngày...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
     ] as TFormItem[];
   }, [
@@ -247,11 +295,23 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
     branchList,
     departmentList,
     mode,
+    startDate,
+    endDate,
+    initialValues?.memberMb,
   ]) as TFormItem[];
 
   useEffect(() => {
     if (initialValues) {
-      form.setFieldsValue({ ...initialValues, role: ERole.SELLER });
+      form.setFieldsValue({
+        ...initialValues,
+        startDate: initialValues?.startDate
+          ? dayjs(initialValues.startDate)
+          : undefined,
+        endDate: initialValues?.endDate
+          ? dayjs(initialValues.endDate)
+          : undefined,
+        role: ERole.SELLER,
+      });
       return;
     }
     form.resetFields();
@@ -264,16 +324,18 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
         items={items}
         isViewMode={mode === 'view'}
         form={form}
-        onSubmit={
-          mode === 'add'
-            ? onSubmit
-            : (values) => {
-                onSubmit({
-                  ...values,
-                  id: initialValues?.id || '',
-                });
-              }
-        }
+        onSubmit={({ startDate: start, endDate: end, ...values }) => {
+          onSubmit({
+            ...values,
+            id: initialValues?.id || '',
+            startDate: start
+              ? dayjs(start).format(DATE_HYPHEN_FORMAT_YYYYMMDD)
+              : undefined,
+            endDate: end
+              ? dayjs(end).format(DATE_HYPHEN_FORMAT_YYYYMMDD)
+              : undefined,
+          });
+        }}
         onClose={() => {
           onClose?.();
           form.resetFields();

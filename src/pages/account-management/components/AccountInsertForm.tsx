@@ -1,5 +1,7 @@
 import { OBaseForm } from '@components/organisms';
+import { DATE_HYPHEN_FORMAT_YYYYMMDD } from '@constants/dateFormat';
 import {
+  ERole,
   ROLE_OPTIONS,
   STATUS_OPTIONS_WITHOUT_ALL,
 } from '@constants/masterData';
@@ -14,7 +16,8 @@ import {
   useCategoryOptionsListQuery,
 } from '@hooks/queries';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
-import { useForm } from 'antd/es/form/Form';
+import { useForm, useWatch } from 'antd/es/form/Form';
+import dayjs from 'dayjs';
 import { useEffect, useMemo, type FC } from 'react';
 
 const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
@@ -24,6 +27,9 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
   mode,
 }) => {
   const [form] = useForm();
+  const startDate = useWatch('startDate', form);
+  const endDate = useWatch('endDate', form);
+  const role = useWatch('role', form);
 
   const { data: departmentList } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.DEPARTMENT,
@@ -55,7 +61,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           maxLength: 20,
           placeholder: 'Nhập...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
         blockingPattern: BLOCKING_CHARACTERS_PARTERN,
       },
       {
@@ -63,10 +69,11 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
         label: 'Tên đăng nhập',
         name: 'username',
         inputProps: {
-          disabled: true,
+          placeholder: 'Tự sinh theo email',
+          readOnly: true,
         },
         rules: [{ required: true }],
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -78,7 +85,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
         },
         rules: [{ required: true }],
         blockingPattern: BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -93,7 +100,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           { required: true },
           { type: 'email', message: 'Email không hợp lệ' },
         ],
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -108,7 +115,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           { min: 10, message: 'Số điện thoại không hợp lệ' },
         ],
         blockingPattern: BLOCKING_NUMBER_PARTERN,
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -119,9 +126,12 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           showSearch: true,
           filterOption: true,
           placeholder: 'Chọn...',
+          onChange: () => {
+            form.setFieldValue('saleManager', undefined);
+          },
         },
         rules: [{ required: true }],
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -133,7 +143,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           placeholder: 'Chọn...',
         },
         rules: [{ required: true }],
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -145,7 +155,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           filterOption: true,
           placeholder: 'Chọn...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -157,7 +167,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           filterOption: true,
           placeholder: 'Chọn...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -169,7 +179,52 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           filterOption: true,
           placeholder: 'Chọn...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
+      },
+      {
+        type: INPUT_TYPE.SELECT,
+        label: 'Quản lý',
+        name: 'saleManager',
+        inputProps: {
+          options: [], // TODO: will be fixed
+          showSearch: true,
+          filterOption: true,
+          placeholder: 'Chọn...',
+        },
+        colProps: { span: 6 },
+        hidden: role !== ERole.SELLER,
+      },
+      {
+        type: INPUT_TYPE.CHECKBOX,
+        label: 'Nhân sự MB',
+        name: 'memberMb',
+        colProps: { span: 6 },
+        inputProps: {
+          checked: mode === 'view' && initialValues?.memberMb,
+        },
+        valuePropName: 'checked',
+      },
+      {
+        type: INPUT_TYPE.DATE_PICKER,
+        label: 'Ngày bắt đầu',
+        name: 'startDate',
+        inputProps: {
+          placeholder: 'Chọn ngày...',
+          className: 'date-picker-campaign',
+          maxDate: endDate ? dayjs(endDate) : undefined,
+        },
+        colProps: { span: 6 },
+      },
+      {
+        type: INPUT_TYPE.DATE_PICKER,
+        label: 'Ngày kết thúc',
+        name: 'endDate',
+        inputProps: {
+          placeholder: 'Chọn ngày...',
+          className: 'date-picker-campaign',
+          minDate: startDate,
+        },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -180,7 +235,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           name: 'createdBy',
           placeholder: 'Nhập...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -191,7 +246,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           name: 'createdDate',
           placeholder: 'Chọn ngày...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -202,7 +257,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           name: 'updatedBy',
           placeholder: 'Nhập...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
       {
         type: INPUT_TYPE.TEXT,
@@ -213,14 +268,32 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
           name: 'updatedDate',
           placeholder: 'Chọn ngày...',
         },
-        colProps: { span: 12 },
+        colProps: { span: 6 },
       },
     ] as TFormItem[];
-  }, [positionList, branchList, departmentList, mode, form]) as TFormItem[];
+  }, [
+    positionList,
+    branchList,
+    departmentList,
+    mode,
+    form,
+    startDate,
+    endDate,
+    role,
+    initialValues?.memberMb,
+  ]) as TFormItem[];
 
   useEffect(() => {
     if (initialValues) {
-      form.setFieldsValue({ ...initialValues });
+      form.setFieldsValue({
+        ...initialValues,
+        startDate: initialValues?.startDate
+          ? dayjs(initialValues.startDate)
+          : undefined,
+        endDate: initialValues?.endDate
+          ? dayjs(initialValues.endDate)
+          : undefined,
+      });
       return;
     }
     form.resetFields();
@@ -233,16 +306,18 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
         items={items}
         isViewMode={mode === 'view'}
         form={form}
-        onSubmit={
-          mode === 'add'
-            ? onSubmit
-            : (values) => {
-                onSubmit({
-                  ...values,
-                  id: initialValues?.id || '',
-                });
-              }
-        }
+        onSubmit={({ startDate: start, endDate: end, ...values }) => {
+          onSubmit({
+            ...values,
+            id: initialValues?.id || '',
+            startDate: start
+              ? dayjs(start).format(DATE_HYPHEN_FORMAT_YYYYMMDD)
+              : undefined,
+            endDate: end
+              ? dayjs(end).format(DATE_HYPHEN_FORMAT_YYYYMMDD)
+              : undefined,
+          });
+        }}
         onClose={() => {
           onClose?.();
           form.resetFields();
