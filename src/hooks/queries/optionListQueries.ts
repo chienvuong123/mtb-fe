@@ -166,11 +166,13 @@ export const useQueryApproachScriprtList = (
 export const useQueryCampaignList = (
   params?: CampaignListRequest,
   combine?: boolean,
+  enabled?: boolean,
 ) => {
   return useQuery({
     queryKey: ['campaign', 'list', params],
     queryFn: () => campaignApi.campaignListOptions(params),
     select: ({ data }) => transformToOptions(data.content, combine),
+    enabled,
   });
 };
 
