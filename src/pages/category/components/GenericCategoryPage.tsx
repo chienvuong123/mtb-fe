@@ -38,9 +38,7 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
 
   const {
     pagination: { current, pageSize },
-    setPagination,
     sort,
-    setSort,
     filters,
     setFilters,
     handleResetFilters,
@@ -115,12 +113,11 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
   };
 
   const handleSearch = (values: Partial<CategoryDTO>) => {
-    setPagination({ current: 1 });
-    setFilters(values);
+    setFilters({ ...values, current: 1 });
   };
 
   const handlePaginationChange = (paginationData: TPagination) => {
-    setPagination({
+    setFilters({
       ...paginationData,
       current:
         paginationData.pageSize !== pageSize ? 1 : paginationData.current,
@@ -169,10 +166,10 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
   };
 
   const handleSort = ({ field, direction }: TBaseTableSort) => {
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      current: 1,
     });
   };
 
@@ -199,9 +196,9 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
 
   useEffect(() => {
     if (!isLoading && !categoryRes?.data?.content?.length && current > 1) {
-      setPagination({ current: current - 1 });
+      setFilters({ current: current - 1 });
     }
-  }, [categoryRes, setPagination, current, isLoading]);
+  }, [categoryRes, setFilters, current, isLoading]);
 
   return (
     <div className="pt-32">

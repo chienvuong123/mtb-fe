@@ -41,9 +41,7 @@ const ManageCategoryPage: React.FC = () => {
     useState<Partial<TCategoryDetaillRecord> | null>(null);
   const {
     pagination: { current, pageSize },
-    setPagination,
     sort,
-    setSort,
     filters,
     setFilters,
     handleResetFilters,
@@ -142,16 +140,16 @@ const ManageCategoryPage: React.FC = () => {
   };
 
   const handleSearch = (searchObject: TCampaignSearchForm) => {
-    setPagination({ current: 1 });
     setFilters({
       ...searchObject,
       startDate: dayjsToString(searchObject?.startDate),
       endDate: dayjsToString(searchObject?.endDate),
+      current: 1,
     });
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination({
+    setFilters({
       ...data,
       current: data.pageSize !== pageSize ? 1 : data.current,
     });
@@ -191,10 +189,10 @@ const ManageCategoryPage: React.FC = () => {
   };
 
   const handleSort = ({ direction, field }: TBaseTableSort) => {
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      current: 1,
     });
   };
 

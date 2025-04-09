@@ -22,9 +22,8 @@ const DashboardPage: React.FC = () => {
 
   const {
     pagination: { current, pageSize },
-    setPagination,
     sort,
-    setSort,
+    setFilters,
   } = useUrlParams<Partial<TStatisticsCampaignDTO>>();
 
   const searchParams: DashboardSearchRequest = useMemo(
@@ -47,15 +46,15 @@ const DashboardPage: React.FC = () => {
   const { data: statisticsData } = useStatisticsCampaign(searchParams);
 
   const handleSort = ({ direction, field }: TBaseTableSort) => {
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      current: 1,
     });
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination({
+    setFilters({
       ...data,
       current: data.pageSize !== pageSize ? 1 : data.current,
     });

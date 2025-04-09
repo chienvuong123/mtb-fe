@@ -27,15 +27,8 @@ const GroupCustomerPage = () => {
   const [initialValuesForm, setInitialValuesForm] =
     useState<GroupCustomerDTO | null>(null);
 
-  const {
-    pagination,
-    setPagination,
-    sort,
-    setSort,
-    filters,
-    setFilters,
-    handleResetFilters,
-  } = useUrlParams<Partial<GroupCustomerDTO>>();
+  const { pagination, sort, filters, setFilters, handleResetFilters } =
+    useUrlParams<Partial<GroupCustomerDTO>>();
 
   // search list group customer
   const { data: groupCustomerRes, isLoading } = useGroupCustomerSearchQuery({
@@ -84,10 +77,10 @@ const GroupCustomerPage = () => {
   };
 
   const handleSort = ({ field, direction }: TBaseTableSort) => {
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      current: 1,
     });
   };
 
@@ -99,7 +92,6 @@ const GroupCustomerPage = () => {
     code,
     name,
   }: GroupCustomerDTO) => {
-    setPagination({ current: 1 });
     setFilters({
       campaignId,
       nameCampaign,
@@ -107,11 +99,12 @@ const GroupCustomerPage = () => {
       nameCategory,
       code,
       name,
+      current: 1,
     });
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination({
+    setFilters({
       ...data,
       current: data.pageSize !== pagination.pageSize ? 1 : data.current,
     });
@@ -152,9 +145,9 @@ const GroupCustomerPage = () => {
       !groupCustomerRes?.data?.content?.length &&
       pagination.current > 1
     ) {
-      setPagination({ current: pagination.current - 1 });
+      setFilters({ current: pagination.current - 1 });
     }
-  }, [groupCustomerRes, setPagination, pagination, isLoading]);
+  }, [groupCustomerRes, setFilters, pagination, isLoading]);
 
   return (
     <div className="pt-32 ">

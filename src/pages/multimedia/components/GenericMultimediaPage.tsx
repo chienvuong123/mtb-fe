@@ -43,11 +43,10 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
 
   const {
     pagination: { current, pageSize },
-    setPagination,
     sort,
-    setSort,
     filters,
     setFilters,
+    handleResetFilters,
   } = useUrlParams<Partial<MultimediaDTO>>();
 
   const {
@@ -81,7 +80,7 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
   );
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination({
+    setFilters({
       ...data,
       current: data.pageSize !== pageSize ? 1 : data.current,
     });
@@ -108,7 +107,7 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
     if (current === 1) {
       refetchMultimedia();
     } else {
-      setPagination({ current: 1 });
+      setFilters({ current: 1 });
     }
     notify({
       type: 'success',
@@ -168,10 +167,10 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
   };
 
   const handleSort = ({ field, direction }: TBaseTableSort) => {
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      current: 1,
     });
   };
   const paginations: IMPagination = {
@@ -201,9 +200,9 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
 
   useEffect(() => {
     if (!isLoading && !multimediaRes?.data?.content?.length && current > 1) {
-      setPagination({ current: current - 1 });
+      setFilters({ current: current - 1 });
     }
-  }, [multimediaRes, setPagination, current, isLoading]);
+  }, [multimediaRes, setFilters, current, isLoading]);
 
   return (
     <div className="pt-32">
@@ -212,9 +211,9 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
       </Title>
       <GenericMultimediaSearchForm
         onSearch={(values) => {
-          setFilters(values);
+          setFilters({ ...values, current: 1 });
         }}
-        onClearAll={() => setFilters({})}
+        onClearAll={handleResetFilters}
         onCreate={handleCreate}
         initialValues={filters}
       />

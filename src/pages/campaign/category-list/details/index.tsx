@@ -33,8 +33,7 @@ const ManagerCategoryDetail: React.FC = () => {
 
   const {
     pagination: { current, pageSize },
-    setPagination,
-    setSort,
+    setFilters,
     sort,
   } = useUrlParams<Partial<TCategoryDetailDTO>>();
 
@@ -52,7 +51,7 @@ const ManagerCategoryDetail: React.FC = () => {
   });
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination({
+    setFilters({
       ...data,
       current: data.pageSize !== pageSize ? 1 : data.current,
     });
@@ -85,10 +84,10 @@ const ManagerCategoryDetail: React.FC = () => {
   };
 
   const handleSort = ({ direction, field }: TBaseTableSort) => {
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      current: 1,
     });
   };
 
