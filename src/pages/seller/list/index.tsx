@@ -32,9 +32,7 @@ import { SellerSearchForm, SellerTable } from './components';
 const SellerPage: FC = () => {
   const {
     pagination: { current, pageSize },
-    setPagination,
     sort,
-    setSort,
     filters,
     setFilters,
     handleResetFilters,
@@ -108,15 +106,15 @@ const SellerPage: FC = () => {
   };
 
   const handleSearch = (data: SellerSearchRequest) => {
-    setPagination({ current: 1 });
     setFilters({
       ...data,
       totalCampaign: data?.totalCampaign?.toString(),
+      current: 1,
     });
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination({
+    setFilters({
       ...data,
       current: data.pageSize !== pageSize ? 1 : data.current,
     });
@@ -192,11 +190,11 @@ const SellerPage: FC = () => {
 
   const handleSort = ({ direction, field, unicodeSort }: TBaseTableSort) => {
     const orderField = Array.isArray(field) ? field.join('.') : field;
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field: orderField,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
       unicode: unicodeSort,
+      current: 1,
     });
   };
 
@@ -212,9 +210,9 @@ const SellerPage: FC = () => {
 
   useEffect(() => {
     if (!isLoading && !sellerRes?.data?.content?.length && current > 1) {
-      setPagination({ current: current - 1 });
+      setFilters({ current: current - 1 });
     }
-  }, [sellerRes, setPagination, current, isLoading]);
+  }, [sellerRes, setFilters, current, isLoading]);
 
   useEffect(() => {
     if (sellerViewRes) {

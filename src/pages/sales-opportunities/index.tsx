@@ -23,15 +23,8 @@ const ManageSalesOpportunities: React.FC = () => {
   const [initValues, setInitValues] =
     useState<Partial<SalesOpportunitiesDTO> | null>(null);
 
-  const {
-    setPagination,
-    setFilters,
-    setSort,
-    pagination,
-    sort,
-    filters,
-    handleResetFilters,
-  } = useUrlParams<TSalesOpportunitiesSearchForm>();
+  const { setFilters, pagination, sort, filters, handleResetFilters } =
+    useUrlParams<TSalesOpportunitiesSearchForm>();
 
   const { data: opportunitySellRes } = useSalesOpportunitiesSearchQuery({
     page: {
@@ -43,7 +36,7 @@ const ManageSalesOpportunities: React.FC = () => {
   });
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination({
+    setFilters({
       ...data,
       current: data.pageSize !== pagination.pageSize ? 1 : data.current,
     });
@@ -71,16 +64,15 @@ const ManageSalesOpportunities: React.FC = () => {
   };
 
   const handleSearch = (searchObject: TSalesOpportunitiesSearchForm) => {
-    setPagination({ current: 1 });
-    setFilters(searchObject);
+    setFilters({ ...searchObject, current: 1 });
   };
 
   const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
       unicode: unicodeSort,
+      current: 1,
     });
   };
 

@@ -24,7 +24,7 @@ const ManagerCampaignDetail: React.FC = () => {
 
   const navigate = useNavigate();
   const [form] = useForm();
-  const { sort, setSort } = useUrlParams<Partial<CampaignDTO>>();
+  const { sort, setFilters } = useUrlParams<Partial<CampaignDTO>>();
 
   const { data: campaignDetailRes } = useCampaignDetailViewQuery({
     id: campaignId ?? '',
@@ -45,7 +45,7 @@ const ManagerCampaignDetail: React.FC = () => {
   );
 
   const handleSort = ({ direction, field }: TBaseTableSort) => {
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
     });

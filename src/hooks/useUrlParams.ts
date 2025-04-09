@@ -46,16 +46,17 @@ const useUrlParams = <T>(props?: TInitFilters<T>) => {
     });
   };
 
-  const setPagination = ({ current: c, pageSize: p }: Partial<PageParams>) =>
-    handleChangeParams({ current: c, pageSize: p });
-
-  const setSort = (sort: Partial<SortParams>) => {
-    setInitValues((pre) => ({ ...pre, initSort: undefined }));
-    handleChangeParams(sort);
-  };
-
-  const setFilters = (data: Partial<T>) => {
-    setInitValues((pre) => ({ ...pre, initFilters: undefined }));
+  const setFilters = (data: Partial<T & PageParams & SortParams>) => {
+    setInitValues((pre) => {
+      const newData = { ...pre, initFilters: undefined };
+      if (
+        data?.field !== pre?.initSort?.field ||
+        data?.direction !== pre?.initSort?.direction
+      ) {
+        newData.initSort = undefined;
+      }
+      return newData;
+    });
     handleChangeParams(data);
   };
 
@@ -64,9 +65,7 @@ const useUrlParams = <T>(props?: TInitFilters<T>) => {
 
   return {
     pagination: { current: current ?? 1, pageSize: pageSize ?? 0 },
-    setPagination,
     sort: { field, direction },
-    setSort,
     filters: { ...initFilters },
     setFilters,
     handleResetFilters,

@@ -30,9 +30,7 @@ const SettingControlPage: FC = () => {
 
   const {
     pagination: { current, pageSize },
-    setPagination,
     sort,
-    setSort,
     filters,
     setFilters,
   } = useUrlParams<ControlSearchRequest>();
@@ -98,17 +96,17 @@ const SettingControlPage: FC = () => {
   };
 
   const handlePaginationChange = (paginationData: TPagination) => {
-    setPagination({
+    setFilters({
       ...paginationData,
       current:
         paginationData.pageSize !== pageSize ? 1 : paginationData.current,
     });
   };
   const handleSort = ({ direction, field }: TBaseTableSort) => {
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      current: 1,
     });
   };
 
@@ -152,9 +150,9 @@ const SettingControlPage: FC = () => {
 
   useEffect(() => {
     if (!isLoading && !controlList?.data?.content?.length && current > 1) {
-      setPagination({ current: current - 1 });
+      setFilters({ current: current - 1 });
     }
-  }, [controlList, setPagination, current, isLoading]);
+  }, [controlList, setFilters, current, isLoading]);
 
   return (
     <div className="pt-32">

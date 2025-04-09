@@ -37,15 +37,8 @@ const AccountManagementPage = () => {
   const [initialValuesForm, setInitialValuesForm] =
     useState<Partial<TAccountManagementRecord> | null>(null);
 
-  const {
-    pagination,
-    setPagination,
-    sort,
-    setSort,
-    filters,
-    setFilters,
-    handleResetFilters,
-  } = useUrlParams<Partial<UserDTO>>();
+  const { pagination, sort, filters, setFilters, handleResetFilters } =
+    useUrlParams<Partial<UserDTO>>();
 
   const searchParams: AccountRequest = useMemo(
     () => ({
@@ -134,11 +127,11 @@ const AccountManagementPage = () => {
   };
 
   const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
       unicode: unicodeSort,
+      current: 1,
     });
   };
 
@@ -153,7 +146,6 @@ const AccountManagementPage = () => {
     branch,
     department,
   }: UserDTO) => {
-    setPagination({ current: 1 });
     setFilters({
       employeeCode,
       username,
@@ -164,11 +156,12 @@ const AccountManagementPage = () => {
       position,
       branch,
       department,
+      current: 1,
     });
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination(data);
+    setFilters(data);
   };
 
   const handleSubmitInsert = ({
@@ -239,11 +232,11 @@ const AccountManagementPage = () => {
       !accountManagementRes?.data?.content?.length &&
       pagination.current > 1
     ) {
-      setPagination({
+      setFilters({
         current: pagination.current - 1,
       });
     }
-  }, [accountManagementRes, setPagination, pagination, isLoading]);
+  }, [accountManagementRes, setFilters, pagination, isLoading]);
 
   const { hasPermission } = useProfile();
 

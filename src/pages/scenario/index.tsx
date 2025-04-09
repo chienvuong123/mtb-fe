@@ -25,23 +25,16 @@ import './index.scss';
 
 const ScenarioPage: FC = () => {
   const navigate = useNavigate();
-  const {
-    filters,
-    setFilters,
-    pagination,
-    setPagination,
-    sort,
-    setSort,
-    handleResetFilters,
-  } = useUrlParams<ScenarioSearchRequest>({
-    initSort: {
-      field: 'code',
-      direction: 'asc',
-    },
-    initFilters: {
-      status: EStatus.ACTIVE,
-    },
-  });
+  const { filters, setFilters, pagination, sort, handleResetFilters } =
+    useUrlParams<ScenarioSearchRequest>({
+      initSort: {
+        field: 'code',
+        direction: 'asc',
+      },
+      initFilters: {
+        status: EStatus.ACTIVE,
+      },
+    });
 
   const notify = useNotification();
   const { hasPermission } = useProfile();
@@ -73,7 +66,7 @@ const ScenarioPage: FC = () => {
   };
 
   const handlePaginationChange = (data: TPagination) => {
-    setPagination({
+    setFilters({
       ...data,
       current: data.pageSize !== pagination.pageSize ? 1 : data.current,
     });
@@ -100,10 +93,10 @@ const ScenarioPage: FC = () => {
   };
 
   const handleSort = ({ field, direction }: TBaseTableSort) => {
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
+      current: 1,
     });
   };
 

@@ -71,9 +71,7 @@ const ListCustomerPage: FC = () => {
 
   const {
     pagination: { current, pageSize },
-    setPagination,
     sort,
-    setSort,
     filters,
     setFilters,
     handleResetFilters,
@@ -155,11 +153,10 @@ const ListCustomerPage: FC = () => {
   };
 
   const handleSearch = (values: Partial<CustomerDTO>) => {
-    setPagination({ current: 1 });
-    setFilters(values);
+    setFilters({ ...values, current: 1 });
   };
   const handlePaginationChange = (data: TPagination) => {
-    setPagination({
+    setFilters({
       ...data,
       current: data.pageSize !== pageSize ? 1 : data.current,
     });
@@ -253,7 +250,7 @@ const ListCustomerPage: FC = () => {
               });
               resetPopup?.();
               if (current !== 1) {
-                setPagination({ current: 1 });
+                setFilters({ current: 1 });
               } else {
                 refetchCustomer();
               }
@@ -293,11 +290,11 @@ const ListCustomerPage: FC = () => {
 
   const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {
     const orderField = Array.isArray(field) ? field.join('.') : field;
-    setPagination({ current: 1 });
-    setSort({
+    setFilters({
       field: orderField,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
       unicode: unicodeSort,
+      current: 1,
     });
   };
 
