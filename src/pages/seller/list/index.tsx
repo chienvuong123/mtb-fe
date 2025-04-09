@@ -96,7 +96,7 @@ const SellerPage: FC = () => {
       updatedBy: user?.username,
       createdDate: formatDate(),
       updatedDate: formatDate(),
-      memberMb: false,
+      memberMb: true,
     }));
   };
 

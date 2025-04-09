@@ -171,7 +171,6 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           placeholder: 'Chọn...',
         },
         colProps: { span: 6 },
-        rules: [{ required: true }],
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -184,7 +183,6 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           placeholder: 'Chọn...',
         },
         colProps: { span: 6 },
-        rules: [{ required: true }],
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -197,7 +195,6 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
           placeholder: 'Chọn...',
         },
         colProps: { span: 6 },
-        rules: [{ required: true }],
       },
       {
         type: INPUT_TYPE.SELECT,
@@ -302,11 +299,18 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
 
   useEffect(() => {
     if (initialValues) {
+      let sDate;
+      if (initialValues?.startDate) {
+        sDate = dayjs(initialValues.startDate);
+      } else if (mode === 'add') {
+        sDate = dayjs();
+      } else {
+        sDate = undefined;
+      }
+
       form.setFieldsValue({
         ...initialValues,
-        startDate: initialValues?.startDate
-          ? dayjs(initialValues.startDate)
-          : undefined,
+        startDate: sDate,
         endDate: initialValues?.endDate
           ? dayjs(initialValues.endDate)
           : undefined,

@@ -133,6 +133,7 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
         categoryTypeCode: categoryType,
         name: values.name,
         status: values.status,
+        mbCode: values.mbCode,
       },
       { onSuccess: (resData) => handleInvalidate(resData) },
     );
@@ -146,6 +147,7 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
         code: values.code,
         name: values.name,
         status: values.status,
+        mbCode: values.mbCode,
       },
       {
         onSuccess: (resData) => handleInvalidate(resData, 'edit'),

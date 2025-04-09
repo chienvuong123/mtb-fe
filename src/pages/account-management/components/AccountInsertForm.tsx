@@ -31,17 +31,26 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
   const endDate = useWatch('endDate', form);
   const role = useWatch('role', form);
 
-  const { data: departmentList } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.DEPARTMENT,
-  });
+  const { data: departmentList } = useCategoryOptionsListQuery(
+    {
+      categoryTypeCode: CategoryType.DEPARTMENT,
+    },
+    mode !== 'view',
+  );
 
-  const { data: positionList } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.POSITION,
-  });
+  const { data: positionList } = useCategoryOptionsListQuery(
+    {
+      categoryTypeCode: CategoryType.POSITION,
+    },
+    mode !== 'view',
+  );
 
-  const { data: branchList } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.BRANCHES,
-  });
+  const { data: branchList } = useCategoryOptionsListQuery(
+    {
+      categoryTypeCode: CategoryType.BRANCHES,
+    },
+    mode !== 'view',
+  );
 
   const items = useMemo(() => {
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
