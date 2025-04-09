@@ -85,7 +85,7 @@ const ManagerCategoryDetail: React.FC = () => {
   };
 
   const handleSort = ({ direction, field }: TBaseTableSort) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',

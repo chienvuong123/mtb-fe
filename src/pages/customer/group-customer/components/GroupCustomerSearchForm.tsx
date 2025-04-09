@@ -72,6 +72,7 @@ const GroupCustomerSearchForm: FC<CBaseSearch<GroupCustomerDTO>> = ({
 
   useEffect(() => {
     if (initialValues) {
+      form.resetFields();
       form.setFieldsValue({ ...initialValues });
     }
   }, [initialValues, form]);

@@ -27,8 +27,15 @@ const GroupCustomerPage = () => {
   const [initialValuesForm, setInitialValuesForm] =
     useState<GroupCustomerDTO | null>(null);
 
-  const { pagination, setPagination, sort, setSort, filters, setFilters } =
-    useUrlParams<Partial<GroupCustomerDTO>>();
+  const {
+    pagination,
+    setPagination,
+    sort,
+    setSort,
+    filters,
+    setFilters,
+    handleResetFilters,
+  } = useUrlParams<Partial<GroupCustomerDTO>>();
 
   // search list group customer
   const { data: groupCustomerRes, isLoading } = useGroupCustomerSearchQuery({
@@ -65,11 +72,6 @@ const GroupCustomerPage = () => {
     setDrawerMode('add');
   };
 
-  const handleClearAll = () => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({});
-  };
-
   const handleView = (id: string) => {
     const item = groupCustomerRes?.data.content.find((i) => i.id === id);
     if (item) {
@@ -82,7 +84,7 @@ const GroupCustomerPage = () => {
   };
 
   const handleSort = ({ field, direction }: TBaseTableSort) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
@@ -97,7 +99,7 @@ const GroupCustomerPage = () => {
     code,
     name,
   }: GroupCustomerDTO) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setFilters({
       campaignId,
       nameCampaign,
@@ -150,11 +152,7 @@ const GroupCustomerPage = () => {
       !groupCustomerRes?.data?.content?.length &&
       pagination.current > 1
     ) {
-      setPagination((prev) => ({
-        ...prev,
-        current: prev.current - 1,
-        total: groupCustomerRes?.data?.total ?? 1,
-      }));
+      setPagination({ current: pagination.current - 1 });
     }
   }, [groupCustomerRes, setPagination, pagination, isLoading]);
 
@@ -166,7 +164,7 @@ const GroupCustomerPage = () => {
 
       <GroupCustomerSearchForm
         onSearch={handleSearch}
-        onClearAll={handleClearAll}
+        onClearAll={handleResetFilters}
         onCreate={handleCreate}
         initialValues={filters as GroupCustomerDTO}
       />

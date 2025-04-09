@@ -4,23 +4,18 @@ import { CategoryType } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
 import { ROUTES } from '@routers/path';
 import { useProfile } from '@stores';
-import { INPUT_TYPE, type TFormItem } from '@types';
+import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import type { TManageCategorySearchForm } from 'src/dtos/manage-category';
 
-interface IManageCategorySearch {
-  onSearch: (values: TManageCategorySearchForm) => void;
-  onClearAll: () => void;
-  onCreate?: () => void;
-}
-
-const CategorySearch: React.FC<IManageCategorySearch> = ({
+const CategorySearch: React.FC<CBaseSearch<TManageCategorySearchForm>> = ({
   onSearch,
   onClearAll,
   onCreate,
+  initialValues,
 }) => {
   const [form] = useForm();
   const startDate = Form.useWatch('startDate', form);
@@ -107,6 +102,13 @@ const CategorySearch: React.FC<IManageCategorySearch> = ({
     ];
     return formItems;
   }, [startDate, mainProductOptions, endDate]);
+
+  useEffect(() => {
+    if (initialValues) {
+      form.resetFields();
+      form.setFieldsValue(initialValues);
+    }
+  }, [initialValues, form]);
 
   return (
     <OSearchBaseForm<TManageCategorySearchForm>

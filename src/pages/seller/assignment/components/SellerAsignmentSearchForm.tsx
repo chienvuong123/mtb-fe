@@ -32,6 +32,7 @@ const SellerAsignmentSearchForm: FC<ISellerAssignmentForm> = ({
 
   useEffect(() => {
     if (initialValues) {
+      form.resetFields();
       form.setFieldsValue({ ...initialValues });
     }
   }, [initialValues, form]);

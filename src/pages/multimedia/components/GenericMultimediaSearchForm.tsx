@@ -50,6 +50,7 @@ const MultimediaSearchForm: FC<CBaseSearch<MultimediaDTO>> = ({
 
   useEffect(() => {
     if (initialValues) {
+      form.resetFields();
       form.setFieldsValue({ ...initialValues });
     }
   }, [initialValues, form]);

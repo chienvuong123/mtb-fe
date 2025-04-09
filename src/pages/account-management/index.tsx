@@ -37,8 +37,15 @@ const AccountManagementPage = () => {
   const [initialValuesForm, setInitialValuesForm] =
     useState<Partial<TAccountManagementRecord> | null>(null);
 
-  const { pagination, setPagination, sort, setSort, filters, setFilters } =
-    useUrlParams<Partial<UserDTO>>();
+  const {
+    pagination,
+    setPagination,
+    sort,
+    setSort,
+    filters,
+    setFilters,
+    handleResetFilters,
+  } = useUrlParams<Partial<UserDTO>>();
 
   const searchParams: AccountRequest = useMemo(
     () => ({
@@ -113,11 +120,6 @@ const AccountManagementPage = () => {
     setInitialValuesForm(userDTO);
   };
 
-  const handleClearAll = () => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({});
-  };
-
   const handleView = (id: string) => {
     const item = accountManagementRes?.data.content.find((i) => i.id === id);
     if (item) {
@@ -127,7 +129,7 @@ const AccountManagementPage = () => {
   };
 
   const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
@@ -146,7 +148,7 @@ const AccountManagementPage = () => {
     branch,
     department,
   }: UserDTO) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setFilters({
       employeeCode,
       username,
@@ -232,11 +234,9 @@ const AccountManagementPage = () => {
       !accountManagementRes?.data?.content?.length &&
       pagination.current > 1
     ) {
-      setPagination((prev) => ({
-        ...prev,
-        current: prev.current - 1,
-        total: accountManagementRes?.data?.total ?? 0,
-      }));
+      setPagination({
+        current: pagination.current - 1,
+      });
     }
   }, [accountManagementRes, setPagination, pagination, isLoading]);
 
@@ -250,7 +250,7 @@ const AccountManagementPage = () => {
 
       <AccountSearchForm
         onSearch={handleSearch}
-        onClearAll={handleClearAll}
+        onClearAll={handleResetFilters}
         onCreate={
           hasPermission(ROUTES.ACCOUNT.MANAGEMENT.CREATE)
             ? handleCreate

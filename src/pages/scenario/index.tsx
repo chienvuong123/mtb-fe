@@ -25,16 +25,23 @@ import './index.scss';
 
 const ScenarioPage: FC = () => {
   const navigate = useNavigate();
-  const { filters, setFilters, pagination, setPagination, sort, setSort } =
-    useUrlParams<ScenarioSearchRequest>({
-      initSort: {
-        field: 'code',
-        direction: 'asc',
-      },
-      initFilters: {
-        status: EStatus.ACTIVE,
-      },
-    });
+  const {
+    filters,
+    setFilters,
+    pagination,
+    setPagination,
+    sort,
+    setSort,
+    handleResetFilters,
+  } = useUrlParams<ScenarioSearchRequest>({
+    initSort: {
+      field: 'code',
+      direction: 'asc',
+    },
+    initFilters: {
+      status: EStatus.ACTIVE,
+    },
+  });
 
   const notify = useNotification();
   const { hasPermission } = useProfile();
@@ -84,10 +91,6 @@ const ScenarioPage: FC = () => {
     );
   };
 
-  const handleClearAll = () => {
-    setFilters({});
-  };
-
   const handleView = (id: string) => {
     if (hasPermission(ROUTES.SCENARIO.DETAIL)) {
       navigate(createNavigatePath(ROUTES.SCENARIO.DETAIL, { id }));
@@ -97,7 +100,7 @@ const ScenarioPage: FC = () => {
   };
 
   const handleSort = ({ field, direction }: TBaseTableSort) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
@@ -122,7 +125,7 @@ const ScenarioPage: FC = () => {
       <ScenarioSearchForm
         onCreate={handleCreate}
         onSearch={handleSearch}
-        onClearAll={handleClearAll}
+        onClearAll={handleResetFilters}
       />
       <div className="mt-24" />
       <ScenarioTable

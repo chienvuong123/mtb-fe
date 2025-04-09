@@ -46,6 +46,7 @@ const ManageCategoryPage: React.FC = () => {
     setSort,
     filters,
     setFilters,
+    handleResetFilters,
   } = useUrlParams<Partial<ManagerCategoryDTO>>();
 
   const navigate = useNavigate();
@@ -141,7 +142,7 @@ const ManageCategoryPage: React.FC = () => {
   };
 
   const handleSearch = (searchObject: TCampaignSearchForm) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setFilters({
       ...searchObject,
       startDate: dayjsToString(searchObject?.startDate),
@@ -182,11 +183,6 @@ const ManageCategoryPage: React.FC = () => {
     className: 'flex-end',
   };
 
-  const handleClearAll = () => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({ code: undefined, name: undefined });
-  };
-
   const handleView = (id: string) => {
     const item = manageCategoryRes?.data.content.find((i) => i.id === id);
     if (item) {
@@ -195,7 +191,7 @@ const ManageCategoryPage: React.FC = () => {
   };
 
   const handleSort = ({ direction, field }: TBaseTableSort) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
@@ -223,8 +219,9 @@ const ManageCategoryPage: React.FC = () => {
       </Flex>
       <CategorySearch
         onSearch={handleSearch}
-        onClearAll={handleClearAll}
+        onClearAll={handleResetFilters}
         onCreate={handleCreate}
+        initialValues={filters}
       />
       <div className="mb-24" />
       <CategoryTable

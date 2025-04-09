@@ -18,6 +18,7 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
   onView,
   onSort,
   onCall,
+  sortDirection,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const { hasPermission, isSeller } = useProfile();
@@ -138,6 +139,7 @@ const CustomerListTable: FC<CBaseTable<CustomerDTO>> = ({
       scroll={{ x: 1574 }}
       onSort={onSort}
       confirmProps={confirmProps}
+      sortDirection={sortDirection}
     />
   );
 };

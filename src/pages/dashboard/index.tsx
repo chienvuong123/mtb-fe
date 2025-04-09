@@ -47,7 +47,7 @@ const DashboardPage: React.FC = () => {
   const { data: statisticsData } = useStatisticsCampaign(searchParams);
 
   const handleSort = ({ direction, field }: TBaseTableSort) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',

@@ -99,6 +99,7 @@ const DashboardTable: React.FC<IDashboardTable> = ({
         isCheckboxHidden
         hideActions
         hideIndexColumn
+        scroll={{ x: 1575 }}
       />
     </div>
   );

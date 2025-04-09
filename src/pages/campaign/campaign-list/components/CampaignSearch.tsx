@@ -98,6 +98,7 @@ const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
 
   useEffect(() => {
     if (initialValues) {
+      form.resetFields();
       form.setFieldsValue({
         ...initialValues,
         startDate: initialValues.startDate

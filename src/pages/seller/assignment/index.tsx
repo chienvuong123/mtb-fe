@@ -7,7 +7,8 @@ import { useNotification } from '@libs/antd';
 import { SellerAsignmentTable, SellerAsignmentSearchForm } from './components';
 
 const SellerAssignment: FC = () => {
-  const { filters, setFilters } = useUrlParams<AssignmentSellerSearchForm>();
+  const { filters, setFilters, handleResetFilters } =
+    useUrlParams<AssignmentSellerSearchForm>();
   const notify = useNotification();
 
   const { data: sellerRes, refetch } = useSellerBeforeAssignQuery(
@@ -25,10 +26,6 @@ const SellerAssignment: FC = () => {
     }, 0);
   };
 
-  const handleClearAll = () => {
-    setFilters({});
-  };
-
   return (
     <div className="pt-32">
       <Title level={3} className="mb-24">
@@ -37,7 +34,7 @@ const SellerAssignment: FC = () => {
       <SellerAsignmentSearchForm
         initialValues={filters}
         onSearch={handleSearch}
-        onClearAll={handleClearAll}
+        onClearAll={handleResetFilters}
       />
 
       <SellerAsignmentTable

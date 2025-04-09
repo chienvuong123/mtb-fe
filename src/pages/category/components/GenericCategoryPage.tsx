@@ -43,6 +43,7 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
     setSort,
     filters,
     setFilters,
+    handleResetFilters,
   } = useUrlParams<Partial<CategoryDTO>>({
     initSort: {
       field: 'createdDate',
@@ -114,8 +115,8 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
   };
 
   const handleSearch = (values: Partial<CategoryDTO>) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters(filterObject(values));
+    setPagination({ current: 1 });
+    setFilters(values);
   };
 
   const handlePaginationChange = (paginationData: TPagination) => {
@@ -162,12 +163,11 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
   };
 
   const handleClearAll = () => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({ code: undefined, name: undefined, status: EStatus.ACTIVE });
+    handleResetFilters({ status: EStatus.ACTIVE });
   };
 
   const handleSort = ({ field, direction }: TBaseTableSort) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
@@ -197,11 +197,7 @@ export const GenericCategoryPage: FC<CategoryPageProps> = ({
 
   useEffect(() => {
     if (!isLoading && !categoryRes?.data?.content?.length && current > 1) {
-      setPagination((prev) => ({
-        ...prev,
-        current: prev.current - 1,
-        total: categoryRes?.data?.total ?? 1,
-      }));
+      setPagination({ current: current - 1 });
     }
   }, [categoryRes, setPagination, current, isLoading]);
 
