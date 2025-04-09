@@ -93,7 +93,7 @@ const AccountManagementPage = () => {
       updatedBy: user?.username,
       createdDate: formatDate(),
       updatedDate: formatDate(),
-      memberMb: false,
+      memberMb: true,
     });
     setDrawerMode('add');
   };
