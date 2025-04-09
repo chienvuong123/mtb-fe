@@ -31,7 +31,7 @@ const ManageSalesOpportunities: React.FC = () => {
     sort,
     filters,
     handleResetFilters,
-  } = useUrlParams<Partial<SalesOpportunitiesDTO>>();
+  } = useUrlParams<TSalesOpportunitiesSearchForm>();
 
   const { data: opportunitySellRes } = useSalesOpportunitiesSearchQuery({
     page: {
@@ -96,6 +96,7 @@ const ManageSalesOpportunities: React.FC = () => {
       <SalesOpportunitiesSearch
         onSearch={handleSearch}
         onClearAll={handleResetFilters}
+        initialValues={filters}
       />
       <div className="mt-24" />
       <SalesOpportunitiesTable
