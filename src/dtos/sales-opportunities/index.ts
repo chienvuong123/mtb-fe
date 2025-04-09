@@ -67,6 +67,8 @@ export type TSalesOpportunitiesSearchForm = {
   cusPhone?: string;
   cusJob?: string;
   status?: string;
+
+  mbOpportunitySttList?: string;
 };
 
 export type SalesOpportunitiesSearchResponse = BaseResponse<

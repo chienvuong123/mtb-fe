@@ -1,4 +1,5 @@
 import { OSearchBaseForm } from '@components/organisms';
+import { STATUS_SALES_OPPORTUNITIES_OPTIONS } from '@constants/masterData';
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';
 import { CategoryType } from '@dtos';
 import {
@@ -71,7 +72,7 @@ const SalesOpportunitiesSearch: React.FC<
         inputProps: {
           title: 'Trạng thái',
           placeholder: 'Chọn...',
-          mode: 'multiple',
+          options: STATUS_SALES_OPPORTUNITIES_OPTIONS,
         },
       },
       {

@@ -1,6 +1,7 @@
 import type { PageParams, SortParams } from '@dtos';
 import { filterObject } from '@utils/objectHelper';
 import qs from 'qs';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 type TInitSort<T> = {
@@ -15,6 +16,9 @@ type TInitFilters<T> = {
 };
 
 const useUrlParams = <T>(props?: TInitFilters<T>) => {
+  const [initValues, setInitValues] = useState<TInitFilters<T> | undefined>(
+    props,
+  );
   const navigate = useNavigate();
   const { search } = useLocation();
   const paramsObjects = qs.parse(search.replace('?', '')) as T &
@@ -23,8 +27,8 @@ const useUrlParams = <T>(props?: TInitFilters<T>) => {
   const {
     current = 1,
     pageSize = 10,
-    field = props?.initSort?.field as string,
-    direction = props?.initSort?.direction as string,
+    field = initValues?.initSort?.field as string,
+    direction = initValues?.initSort?.direction as string,
     ...initFilters
   } = paramsObjects;
 
@@ -45,9 +49,15 @@ const useUrlParams = <T>(props?: TInitFilters<T>) => {
   const setPagination = ({ current: c, pageSize: p }: Partial<PageParams>) =>
     handleChangeParams({ current: c, pageSize: p });
 
-  const setSort = (sort: Partial<SortParams>) => handleChangeParams(sort);
+  const setSort = (sort: Partial<SortParams>) => {
+    setInitValues((pre) => ({ ...pre, initSort: undefined }));
+    handleChangeParams(sort);
+  };
 
-  const setFilters = (data: Partial<T>) => handleChangeParams(data);
+  const setFilters = (data: Partial<T>) => {
+    setInitValues((pre) => ({ ...pre, initFilters: undefined }));
+    handleChangeParams(data);
+  };
 
   const handleResetFilters = (data?: Partial<T | PageParams | SortParams>) =>
     handleChangeParams({ direction, field, current, pageSize, ...data }, true);
