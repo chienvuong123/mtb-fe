@@ -22,7 +22,7 @@ interface ISellerAddFormDrawer {
 const columns: ColumnType<AssignmentSellerItemDTO>[] = [
   {
     title: 'Tài khoản seller',
-    dataIndex: 'email',
+    dataIndex: 'username',
     width: 283,
   },
   {

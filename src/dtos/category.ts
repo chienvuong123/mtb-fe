@@ -43,6 +43,7 @@ export interface CategoryDTO extends BaseEntity {
   code: string;
   name: string;
   categoryTypeCode: CategoryType;
+  mbCode?: string;
 }
 
 export interface CategorySearchRequest extends BaseSearchParams {

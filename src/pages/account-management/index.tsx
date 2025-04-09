@@ -124,7 +124,12 @@ const AccountManagementPage = () => {
     const item = accountManagementRes?.data.content.find((i) => i.id === id);
     if (item) {
       setDrawerMode('view');
-      setInitialValuesForm({ ...item });
+      setInitialValuesForm({
+        ...item,
+        position: item.positionDtl.name,
+        department: item.departmentDtl.name,
+        branch: item.branchDtl.name,
+      });
     }
   };
 

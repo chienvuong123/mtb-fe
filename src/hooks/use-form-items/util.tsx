@@ -71,6 +71,8 @@ export const updateTooltipContent = (
           displayValue = (displayValue as JSX.Element)?.props?.children ?? '';
           break;
         }
+
+        displayValue = fieldValue;
       }
       break;
     }

@@ -8,6 +8,7 @@ import { formatDate } from '@utils/dateHelper';
 import { useProfile } from '@stores';
 import {
   ACCEPTING_NUMBER_SPACE_COMMA_PATTERN,
+  BLOCKING_ALPHA_NUMERIC_DOT_PATTERN,
   BLOCKING_NUMBER_SPACE_COMMA_PATTERN,
 } from '@constants/regex';
 
@@ -40,6 +41,14 @@ const items: TFormItem[] = [
     ],
     colProps: { span: 12 },
     blockingPattern: BLOCKING_NUMBER_SPACE_COMMA_PATTERN,
+  },
+  {
+    type: INPUT_TYPE.TEXT,
+    label: 'Mã tích hợp từ MB',
+    name: 'mbCode',
+    inputProps: { placeholder: 'Nhập...', maxLength: 50 },
+    colProps: { span: 12 },
+    blockingPattern: BLOCKING_ALPHA_NUMERIC_DOT_PATTERN,
   },
   {
     type: INPUT_TYPE.SELECT,
