@@ -106,6 +106,7 @@ const AccountSearchForm: FC<CBaseSearch<UserDTO>> = ({
 
   useEffect(() => {
     if (initialValues) {
+      form.resetFields();
       form.setFieldsValue({ ...initialValues });
     }
   }, [initialValues, form]);

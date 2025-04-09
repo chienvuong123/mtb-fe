@@ -55,6 +55,7 @@ export const GenericCategorySearchForm: FC<GenericCategorySearchFormProps> = ({
 
   useEffect(() => {
     if (initialValues) {
+      form.resetFields();
       form.setFieldsValue({ ...initialValues });
     }
   }, [initialValues, form]);

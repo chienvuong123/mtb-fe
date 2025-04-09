@@ -185,6 +185,7 @@ const CustomerSearchForm: FC<
 
   useEffect(() => {
     if (initialValues) {
+      form.resetFields();
       form.setFieldsValue(initialValues);
     }
   }, [initialValues, form]);

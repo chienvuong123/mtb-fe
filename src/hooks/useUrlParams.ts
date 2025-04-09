@@ -1,6 +1,6 @@
 import type { PageParams, SortParams } from '@dtos';
+import { filterObject } from '@utils/objectHelper';
 import qs from 'qs';
-import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 type TInitSort<T> = {
@@ -17,56 +17,49 @@ type TInitFilters<T> = {
 const useUrlParams = <T>(props?: TInitFilters<T>) => {
   const navigate = useNavigate();
   const { search } = useLocation();
+  const paramsObjects = qs.parse(search.replace('?', '')) as T &
+    PageParams &
+    SortParams;
   const {
     current = 1,
     pageSize = 10,
     field = props?.initSort?.field as string,
     direction = props?.initSort?.direction as string,
     ...initFilters
-  } = qs.parse(search.replace('?', '')) as T & PageParams & SortParams;
+  } = paramsObjects;
 
-  const [pagination, setPagination] = useState<PageParams>({
-    current,
-    pageSize,
-  });
-  const [sort, setSort] = useState<SortParams>({
-    field,
-    direction,
-  });
-  const [filters, setFilters] = useState<T>({
-    ...(props?.initFilters ?? {}),
-    ...(initFilters ?? {}),
-  } as T);
+  const handleChangeParams = (
+    data: Partial<T | PageParams | SortParams>,
+    reset?: boolean,
+  ) => {
+    navigate({
+      search: qs.stringify(
+        filterObject({
+          ...(reset ? { current: 1 } : paramsObjects),
+          ...data,
+        }),
+      ),
+    });
+  };
 
-  const setFilter = useCallback(
-    (key: keyof T, value: T[keyof T]) => {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        [key]: value,
-      }));
-    },
-    [setFilters],
-  );
+  const setPagination = ({ current: c, pageSize: p }: Partial<PageParams>) =>
+    handleChangeParams({ current: c, pageSize: p });
 
-  useEffect(() => {
-    // TODO: Fix this
-    // navigate({
-    //   search: qs.stringify({
-    //     ...filters,
-    //     ...pagination,
-    //     ...sort,
-    //   }),
-    // });
-  }, [filters, navigate, pagination, sort]);
+  const setSort = (sort: Partial<SortParams>) => handleChangeParams(sort);
+
+  const setFilters = (data: Partial<T>) => handleChangeParams(data);
+
+  const handleResetFilters = (data?: Partial<T | PageParams | SortParams>) =>
+    handleChangeParams({ direction, field, current, pageSize, ...data }, true);
 
   return {
-    pagination,
+    pagination: { current: current ?? 1, pageSize: pageSize ?? 0 },
     setPagination,
-    sort,
+    sort: { field, direction },
     setSort,
-    filters,
-    setFilter,
+    filters: { ...initFilters },
     setFilters,
+    handleResetFilters,
   };
 };
 

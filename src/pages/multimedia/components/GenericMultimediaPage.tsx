@@ -108,7 +108,7 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
     if (current === 1) {
       refetchMultimedia();
     } else {
-      setPagination((pre) => ({ ...pre, current: 1 }));
+      setPagination({ current: 1 });
     }
     notify({
       type: 'success',
@@ -168,7 +168,7 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
   };
 
   const handleSort = ({ field, direction }: TBaseTableSort) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
@@ -201,11 +201,7 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
 
   useEffect(() => {
     if (!isLoading && !multimediaRes?.data?.content?.length && current > 1) {
-      setPagination((prev) => ({
-        ...prev,
-        current: prev.current - 1,
-        total: multimediaRes?.data?.total ?? 1,
-      }));
+      setPagination({ current: current - 1 });
     }
   }, [multimediaRes, setPagination, current, isLoading]);
 
@@ -220,6 +216,7 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
         }}
         onClearAll={() => setFilters({})}
         onCreate={handleCreate}
+        initialValues={filters}
       />
       <div className="mt-24" />
       <GenericMultimediaTable

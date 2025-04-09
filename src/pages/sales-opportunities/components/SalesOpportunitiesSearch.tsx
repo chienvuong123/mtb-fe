@@ -116,6 +116,7 @@ const SalesOpportunitiesSearch: React.FC<
 
   useEffect(() => {
     if (initialValues) {
+      form.resetFields();
       form.setFieldsValue({ ...initialValues });
     }
   }, [initialValues, form]);

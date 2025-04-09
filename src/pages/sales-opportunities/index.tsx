@@ -23,8 +23,15 @@ const ManageSalesOpportunities: React.FC = () => {
   const [initValues, setInitValues] =
     useState<Partial<SalesOpportunitiesDTO> | null>(null);
 
-  const { setPagination, setFilters, setSort, pagination, sort, filters } =
-    useUrlParams<Partial<SalesOpportunitiesDTO>>();
+  const {
+    setPagination,
+    setFilters,
+    setSort,
+    pagination,
+    sort,
+    filters,
+    handleResetFilters,
+  } = useUrlParams<Partial<SalesOpportunitiesDTO>>();
 
   const { data: opportunitySellRes } = useSalesOpportunitiesSearchQuery({
     page: {
@@ -64,17 +71,12 @@ const ManageSalesOpportunities: React.FC = () => {
   };
 
   const handleSearch = (searchObject: TSalesOpportunitiesSearchForm) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setFilters(searchObject);
   };
 
-  const handleClearAll = () => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({});
-  };
-
   const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
@@ -93,7 +95,7 @@ const ManageSalesOpportunities: React.FC = () => {
       </Title>
       <SalesOpportunitiesSearch
         onSearch={handleSearch}
-        onClearAll={handleClearAll}
+        onClearAll={handleResetFilters}
       />
       <div className="mt-24" />
       <SalesOpportunitiesTable

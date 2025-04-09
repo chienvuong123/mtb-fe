@@ -37,6 +37,7 @@ const SellerPage: FC = () => {
     setSort,
     filters,
     setFilters,
+    handleResetFilters,
   } = useUrlParams<Partial<SellerSearchRequest>>();
   const [drawerMode, setDrawerMode] = useState<TFormType>();
   const [initialValuesForm, setInitialValuesForm] =
@@ -107,7 +108,7 @@ const SellerPage: FC = () => {
   };
 
   const handleSearch = (data: SellerSearchRequest) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setFilters({
       ...data,
       totalCampaign: data?.totalCampaign?.toString(),
@@ -130,11 +131,6 @@ const SellerPage: FC = () => {
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
     className: 'flex-end',
-  };
-
-  const handleClearAll = () => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({});
   };
 
   const handleSubmitInsert = ({
@@ -196,7 +192,7 @@ const SellerPage: FC = () => {
 
   const handleSort = ({ direction, field, unicodeSort }: TBaseTableSort) => {
     const orderField = Array.isArray(field) ? field.join('.') : field;
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field: orderField,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
@@ -216,11 +212,7 @@ const SellerPage: FC = () => {
 
   useEffect(() => {
     if (!isLoading && !sellerRes?.data?.content?.length && current > 1) {
-      setPagination((prev) => ({
-        ...prev,
-        current: prev.current - 1,
-        total: sellerRes?.data?.total ?? 1,
-      }));
+      setPagination({ current: current - 1 });
     }
   }, [sellerRes, setPagination, current, isLoading]);
 
@@ -268,7 +260,7 @@ const SellerPage: FC = () => {
 
       <SellerSearchForm
         onSearch={handleSearch}
-        onClearAll={handleClearAll}
+        onClearAll={handleResetFilters}
         initialValues={filterObject(filters)}
         onCreate={handleCreate}
       />

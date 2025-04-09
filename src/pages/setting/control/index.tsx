@@ -105,7 +105,7 @@ const SettingControlPage: FC = () => {
     });
   };
   const handleSort = ({ direction, field }: TBaseTableSort) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
@@ -152,11 +152,7 @@ const SettingControlPage: FC = () => {
 
   useEffect(() => {
     if (!isLoading && !controlList?.data?.content?.length && current > 1) {
-      setPagination((prev) => ({
-        ...prev,
-        current: prev.current - 1,
-        total: controlList?.data?.total ?? 1,
-      }));
+      setPagination({ current: current - 1 });
     }
   }, [controlList, setPagination, current, isLoading]);
 

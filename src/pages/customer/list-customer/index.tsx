@@ -76,6 +76,7 @@ const ListCustomerPage: FC = () => {
     setSort,
     filters,
     setFilters,
+    handleResetFilters,
   } = useUrlParams<Partial<CustomerDTO>>();
 
   const [isViewMode, setIsViewMode] = useState(false);
@@ -154,8 +155,8 @@ const ListCustomerPage: FC = () => {
   };
 
   const handleSearch = (values: Partial<CustomerDTO>) => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters(filterObject(values));
+    setPagination({ current: 1 });
+    setFilters(values);
   };
   const handlePaginationChange = (data: TPagination) => {
     setPagination({
@@ -252,7 +253,7 @@ const ListCustomerPage: FC = () => {
               });
               resetPopup?.();
               if (current !== 1) {
-                setPagination((pre) => ({ ...pre, current: 1 }));
+                setPagination({ current: 1 });
               } else {
                 refetchCustomer();
               }
@@ -281,11 +282,6 @@ const ListCustomerPage: FC = () => {
     className: 'flex-end',
   };
 
-  const handleClearAll = () => {
-    setPagination((pre) => ({ ...pre, current: 1 }));
-    setFilters({});
-  };
-
   const handleView = async (id: string) => {
     setCustomerId(id);
     setIsViewMode(true);
@@ -297,8 +293,7 @@ const ListCustomerPage: FC = () => {
 
   const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {
     const orderField = Array.isArray(field) ? field.join('.') : field;
-
-    setPagination((pre) => ({ ...pre, current: 1 }));
+    setPagination({ current: 1 });
     setSort({
       field: orderField,
       direction: direction ? SORT_ORDER_FOR_SERVER[direction] : '',
@@ -386,7 +381,7 @@ const ListCustomerPage: FC = () => {
 
       <CustomerSearchForm
         onSearch={handleSearch}
-        onClearAll={handleClearAll}
+        onClearAll={handleResetFilters}
         initialValues={filters as CustomerDTO}
         onCreate={handleCreate}
         // onDeleteAll={() => { TODO: will be implemented in milestone 2
@@ -402,6 +397,7 @@ const ListCustomerPage: FC = () => {
         onView={handleView}
         onCall={handleCall}
         onSort={handleSort}
+        sortDirection={sort}
       />
 
       <ODrawer

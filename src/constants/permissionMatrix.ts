@@ -319,6 +319,31 @@ const permissionMatrix2: PermissionMatrix = {
     [ERole.REPORTER]: true,
     [ERole.CAMPAIGN_MANAGER]: true,
   },
+  [ROUTES.MULTIMEDIA.IMAGE]: {
+    [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.MULTIMEDIA.AUDIO]: {
+    [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.MULTIMEDIA.VIDEO]: {
+    [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.MULTIMEDIA.ANIMATED]: {
+    [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
+  [ROUTES.MULTIMEDIA.DOCUMENT]: {
+    [ERole.ADMIN]: true,
+    [ERole.REPORTER]: true,
+    [ERole.CAMPAIGN_MANAGER]: true,
+  },
   [ROUTES.MULTIMEDIA.CREATE]: {
     [ERole.ADMIN]: true,
     [ERole.CAMPAIGN_MANAGER]: true,

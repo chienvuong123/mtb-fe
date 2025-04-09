@@ -134,6 +134,7 @@ const SellerSearchForm: FC<CBaseSearch<SellerSearchRequest>> = ({
 
   useEffect(() => {
     if (initialValues) {
+      form.resetFields();
       form.setFieldsValue({ ...initialValues });
     }
   }, [initialValues, form]);
