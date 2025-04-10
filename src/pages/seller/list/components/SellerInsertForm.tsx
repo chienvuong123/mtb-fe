@@ -6,16 +6,18 @@ import {
   BLOCKING_CHARACTERS_PARTERN,
   BLOCKING_NUMBER_PARTERN,
   BLOCKING_VN_SPACE_CHARACTERS_PARTERN,
+  CONVERT_EMAIL_TO_USERNAME,
 } from '@constants/regex';
 import { CategoryType, type UserDTO } from '@dtos';
 import {
   ACCOUNT_MANAGEMENT_KEY,
   useCategoryOptionsListQuery,
+  useSalesManagerListQuery,
 } from '@hooks/queries';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
-import { useEffect, useMemo, type FC } from 'react';
+import { useCallback, useEffect, useMemo, type FC } from 'react';
 
 const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
   onClose,
@@ -42,15 +44,22 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
   const { data: expertiseList } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.EXPERTISE,
   });
+  const { data: saleManagerList } = useSalesManagerListQuery();
 
-  const items = useMemo(() => {
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
       if (mode !== 'edit') {
-        const usernameValue = e.target.value.replace(/@.*|[^a-zA-Z0-9]/g, '');
+        const usernameValue = e.target.value.replace(
+          CONVERT_EMAIL_TO_USERNAME,
+          '',
+        );
         form.setFieldValue('username', usernameValue);
       }
-    };
+    },
+    [form, mode],
+  );
 
+  const items = useMemo(() => {
     return [
       {
         type: INPUT_TYPE.TEXT,
@@ -201,7 +210,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
         label: 'Quản lý',
         name: 'saleManager',
         inputProps: {
-          options: [], // TODO: will be fixed
+          options: saleManagerList,
           showSearch: true,
           filterOption: true,
           placeholder: 'Chọn...',
@@ -286,7 +295,6 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
       },
     ] as TFormItem[];
   }, [
-    form,
     expertiseList,
     positionList,
     branchList,
@@ -295,6 +303,8 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
     startDate,
     endDate,
     initialValues?.memberMb,
+    saleManagerList,
+    handleEmailChange,
   ]) as TFormItem[];
 
   useEffect(() => {

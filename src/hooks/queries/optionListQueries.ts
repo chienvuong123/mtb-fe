@@ -5,6 +5,7 @@ import {
   categoryApi,
   groupCustomerApi,
   locationApi,
+  salesManagerApi,
   sellerApi,
 } from '@apis';
 import {
@@ -214,5 +215,14 @@ export const useCampaignManagerListQuery = (
     queryKey: ['campaign-manager', 'list', params],
     queryFn: () => campaignApi.campaignManagerList(params),
     select: ({ content }) => transformToOptions(content, combine),
+  });
+};
+
+export const useSalesManagerListQuery = (enabled?: boolean) => {
+  return useQuery({
+    queryKey: ['sales-manager', 'list'],
+    queryFn: () => salesManagerApi.list(),
+    select: ({ data: { content } }) => transformToOptions(content),
+    enabled,
   });
 };

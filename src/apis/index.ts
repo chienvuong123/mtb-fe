@@ -15,3 +15,4 @@ export * from './approachScriptApi';
 export * from './accountManagementApi';
 export * from './multimediaApi';
 export * from './dashboardApi';
+export * from './salesManagerApi';

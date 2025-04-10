@@ -11,6 +11,7 @@ import { getOTPCheck, saveOTPCheck } from '@utils/otpHelper';
 import { useCallback, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm, useWatch } from 'antd/es/form/Form';
+import { EResponseCode } from '@constants/responseCode';
 import { LayoutWrapper } from '../components';
 import { FooterAuth } from '../components/footer';
 import { FormContentAuth } from '../components/form-content';
@@ -76,8 +77,8 @@ const OTP = () => {
         otp: values.otp,
       },
       {
-        onSuccess: ({ data, errorCode, errorDesc }) => {
-          if (data) {
+        onSuccess: ({ errorCode, errorDesc }) => {
+          if (errorCode === EResponseCode.SUCCESS) {
             saveOTPCheck({
               ...valueValidOtp,
               otp: values.otp,
@@ -85,13 +86,16 @@ const OTP = () => {
             navigate(ROUTES.CONFIRM_PASSWORD);
             return;
           }
-          if (errorCode === 'AUTH0009') {
+          if (errorCode === EResponseCode.OTP_RESET_PASS_EXPIRED) {
             setAlert('');
             handleResendOtp();
             return;
           }
 
-          if (errorCode === 'AUTH00015' || errorCode === 'AUTH00014') {
+          if (
+            errorCode === EResponseCode.SEND_OTP_FORGOT_PASS_BLOCKED ||
+            errorCode === EResponseCode.OTP_FORGOT_PASS_BLOCKED
+          ) {
             setAlert(errorDesc);
           }
           throw Error('');
