@@ -43,6 +43,13 @@ const items: TFormItem[] = [
     blockingPattern: BLOCKING_NUMBER_SPACE_COMMA_PATTERN,
   },
   {
+    type: INPUT_TYPE.TEXT,
+    label: 'Mã tích hợp từ MB',
+    name: 'mbCode',
+    inputProps: { placeholder: 'Nhập...', maxLength: 50 },
+    colProps: { span: 12 },
+  },
+  {
     type: INPUT_TYPE.SELECT,
     label: 'Trạng thái',
     name: 'status',

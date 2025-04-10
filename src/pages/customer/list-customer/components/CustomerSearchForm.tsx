@@ -38,6 +38,7 @@ const CustomerSearchForm: FC<
   const { data: campaignList } = useQueryCampaignList(
     { categoryId: isSeller ? undefined : categoryId },
     true,
+    !!categoryId,
   );
   const { data: customerSegmentList } = useCategoryOptionsListQuery(
     { categoryTypeCode: CategoryType.CUSTOMER_SEGMENT },
@@ -50,7 +51,7 @@ const CustomerSearchForm: FC<
   const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
     campaignId ?? '',
     false,
-    isAdmin || isCampaignManager || isSellerManager,
+    !!((isAdmin || isCampaignManager || isSellerManager) && campaignId),
   );
 
   const items: TFormItem[] = useMemo(

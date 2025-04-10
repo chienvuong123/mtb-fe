@@ -13,12 +13,12 @@ const items: TFormItem[] = [
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Tên Catagory',
+    label: 'Catagory',
     name: 'categoryName',
   },
   {
     type: INPUT_TYPE.TEXT,
-    label: 'Tên Campaign',
+    label: 'Campaign',
     name: 'campaignName',
     inputProps: { disabled: true },
   },

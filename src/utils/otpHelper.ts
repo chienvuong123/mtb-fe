@@ -7,7 +7,7 @@ interface IValueOtp {
 const keyOtpValid = 'valid_otp';
 
 export const saveOTPCheck = (values: IValueOtp) => {
-  const expirationTime = Date.now() + 14 * 60 * 1000;
+  const expirationTime = Date.now() + 180 * 60 * 1000;
 
   localStorage.setItem(
     keyOtpValid,

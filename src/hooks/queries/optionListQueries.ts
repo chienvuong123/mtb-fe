@@ -5,6 +5,7 @@ import {
   categoryApi,
   groupCustomerApi,
   locationApi,
+  salesManagerApi,
   sellerApi,
 } from '@apis';
 import {
@@ -166,11 +167,13 @@ export const useQueryApproachScriprtList = (
 export const useQueryCampaignList = (
   params?: CampaignListRequest,
   combine?: boolean,
+  enabled?: boolean,
 ) => {
   return useQuery({
     queryKey: ['campaign', 'list', params],
     queryFn: () => campaignApi.campaignListOptions(params),
     select: ({ data }) => transformToOptions(data.content, combine),
+    enabled,
   });
 };
 
@@ -212,5 +215,14 @@ export const useCampaignManagerListQuery = (
     queryKey: ['campaign-manager', 'list', params],
     queryFn: () => campaignApi.campaignManagerList(params),
     select: ({ content }) => transformToOptions(content, combine),
+  });
+};
+
+export const useSalesManagerListQuery = (enabled?: boolean) => {
+  return useQuery({
+    queryKey: ['sales-manager', 'list'],
+    queryFn: () => salesManagerApi.list(),
+    select: ({ data: { content } }) => transformToOptions(content),
+    enabled,
   });
 };
