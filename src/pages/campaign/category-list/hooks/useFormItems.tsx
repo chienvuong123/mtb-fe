@@ -112,8 +112,6 @@ const useCategoryFormItems = ({
       type: INPUT_TYPE.SELECT,
       label: 'Phương thức triển khai',
       name: 'deploymentMethod',
-      required: true,
-      rules: [{ required: true }],
       inputProps: {
         placeholder: 'Chọn...',
         showSearch: true,
@@ -126,8 +124,6 @@ const useCategoryFormItems = ({
       type: INPUT_TYPE.SELECT,
       label: 'Danh mục khách hàng',
       name: 'customer',
-      required: true,
-      rules: [{ required: true }],
       inputProps: {
         placeholder: 'Chọn...',
         showSearch: true,
