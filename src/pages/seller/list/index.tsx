@@ -216,7 +216,7 @@ const SellerPage: FC = () => {
 
   useEffect(() => {
     if (sellerViewRes) {
-      const { user: seller, id } = sellerViewRes.data ?? {};
+      const { user: seller, id, sellerManager } = sellerViewRes.data ?? {};
       const sellerDTO: Partial<UserDTO> = {
         employeeCode: seller?.employeeCode,
         username: seller?.username,
@@ -237,7 +237,7 @@ const SellerPage: FC = () => {
         startDate: seller?.startDate,
         endDate: seller?.endDate,
         memberMb: seller?.memberMb,
-        saleManager: seller?.saleManager,
+        saleManager: sellerManager?.id,
       };
       setInitialValuesForm(sellerDTO);
     }

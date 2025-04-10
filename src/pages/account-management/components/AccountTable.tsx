@@ -134,7 +134,7 @@ const AccountTable: FC<CBaseTable<TAccountManagementRecord>> = ({
       paginations={paginations}
       sortDirection={sortDirection}
       isCheckboxHidden
-      onView={(id) => onView?.(id as string)}
+      onView={(id, record) => onView?.(id as string, record)}
       onSort={onSort}
       scroll={{ x: 1300 }}
       confirmProps={confirmProps}

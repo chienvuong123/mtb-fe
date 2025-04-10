@@ -110,6 +110,12 @@ export type SellerDetailsDTO = {
   totalCampaign: number;
   totalCustomer: number;
   campaigns: SellerCampaignData[];
+  sellerManager?: {
+    id?: string;
+    userId?: string;
+    name?: string;
+    status?: string;
+  };
 };
 
 // assignment

@@ -73,7 +73,7 @@ export interface ITable<T> extends TableProps<T> {
   onEdit?: (record: T) => void;
   onDeleteRow?: (key: Key) => void;
   setSelectedRowKeys?: React.Dispatch<React.SetStateAction<string[]>>;
-  onView?: (key: Key) => void;
+  onView?: (key: Key, record?: T) => void;
   onList?: (key: Key) => void;
   onCall?: (record: T) => void;
   onSort?: (sort: TBaseTableSort) => void;

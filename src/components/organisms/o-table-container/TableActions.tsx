@@ -19,7 +19,7 @@ interface ITableActionsProps<T> {
   onSave?: (key: Key) => void;
   onCancel?: () => void;
   onEdit?: (record: T) => void;
-  onView?: (key: Key) => void;
+  onView?: (key: Key, record?: T) => void;
   onDelete?: (key: Key) => void;
   onCall?: (record: T) => void;
   onList?: (key: Key) => void;
@@ -79,7 +79,7 @@ const TableActions = <T extends object>({
           icon={<EyeIcon className="action-btn-icon" />}
           type="link"
           className="w-22 action-btn"
-          onClick={() => onView?.(record[rowKey] as Key)}
+          onClick={() => onView?.(record[rowKey] as Key, record)}
         />
       )}
       {Boolean(onEdit) && (
