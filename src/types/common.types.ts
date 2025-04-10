@@ -31,7 +31,7 @@ export interface CBaseTable<T> {
   sortDirection?: OrderDTO;
   onEdit?: (record: T) => void;
   onDelete?: (id: string) => void;
-  onView?: (id: string) => void;
+  onView?: (id: string, record?: T) => void;
   onSort?: (sort: TBaseTableSort) => void;
   onCall?: (record: T) => void;
   onList?: (id: string) => void;

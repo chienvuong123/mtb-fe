@@ -5,11 +5,13 @@ import { createBaseQueryHooks } from './baseQueries';
 
 export const USER_KEY = 'user';
 
-export const { useEditMutation: useUserEditMutation } = createBaseQueryHooks<
-  UserDTO,
-  UserRequest,
-  UserViewResponse
->(USER_KEY, userApi);
+export const {
+  useEditMutation: useUserEditMutation,
+  useViewQuery: useUserViewQuery,
+} = createBaseQueryHooks<UserDTO, UserRequest, UserViewResponse>(
+  USER_KEY,
+  userApi,
+);
 
 export const useUserInfoQuery = () => {
   return useQuery({

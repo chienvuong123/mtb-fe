@@ -113,17 +113,14 @@ const AccountManagementPage = () => {
     setInitialValuesForm(userDTO);
   };
 
-  const handleView = (id: string) => {
-    const item = accountManagementRes?.data.content.find((i) => i.id === id);
-    if (item) {
-      setDrawerMode('view');
-      setInitialValuesForm({
-        ...item,
-        position: item.positionDtl.name,
-        department: item.departmentDtl.name,
-        branch: item.branchDtl.name,
-      });
-    }
+  const handleView = (_id: string, record?: Partial<UserDTO>) => {
+    setDrawerMode('view');
+    setInitialValuesForm({
+      ...record,
+      position: record?.positionDtl?.name,
+      department: record?.departmentDtl?.name,
+      branch: record?.branchDtl?.name,
+    });
   };
 
   const handleSort = ({ field, direction, unicodeSort }: TBaseTableSort) => {
