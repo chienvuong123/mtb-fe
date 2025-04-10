@@ -10,7 +10,7 @@ import {
 } from '@constants/regex';
 import { CategoryType, type UserDTO } from '@dtos';
 import {
-  ACCOUNT_MANAGEMENT_KEY,
+  SELLER_KEY,
   useCategoryOptionsListQuery,
   useSalesManagerListQuery,
 } from '@hooks/queries';
@@ -334,7 +334,7 @@ const SellerInsertForm: FC<CBaseForm<UserDTO>> = ({
   return (
     <div>
       <OBaseForm<UserDTO>
-        mutationKey={ACCOUNT_MANAGEMENT_KEY}
+        mutationKey={SELLER_KEY}
         items={items}
         isViewMode={mode === 'view'}
         form={form}

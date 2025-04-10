@@ -92,6 +92,8 @@ export type TCampaignDetailSearchForm = {
   startDate?: string;
   endDate?: string;
   categoryCustomer?: string;
+
+  deploymentMethod?: string;
 };
 
 export interface CampaignScriptDTO extends BaseEntity {

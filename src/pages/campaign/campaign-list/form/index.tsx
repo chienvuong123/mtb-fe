@@ -4,7 +4,7 @@ import { useForm } from 'antd/lib/form/Form';
 import { AButton } from '@components/atoms';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNotification } from '@libs/antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ODrawer } from '@components/organisms';
 import { createNavigatePath, ROUTES } from '@routers/path';
 import type { TFormType } from '@types';
@@ -65,6 +65,14 @@ const CampaignCreate: React.FC = () => {
     useState<CampaignApproachPlanDTO | null>(null);
 
   const { id: campaignId } = useParams<TId>();
+  const { pathname } = useLocation();
+
+  const mode = useMemo(() => {
+    if (pathname.includes('create')) return 'add';
+    if (pathname.includes('edit') && campaignId) return 'edit';
+    if (pathname.includes('copy') && campaignId) return 'copy';
+    return 'view';
+  }, [pathname, campaignId]);
 
   const [form] = useForm();
   const [formCategory] = useForm();
@@ -175,7 +183,7 @@ const CampaignCreate: React.FC = () => {
     }
 
     // update campaign
-    if (campaignId) {
+    if (mode === 'edit') {
       mutationUpdateCampaign(
         { ...data, id: campaignId },
         {
@@ -333,18 +341,21 @@ const CampaignCreate: React.FC = () => {
   };
 
   const drawerProps = getDrawerProps();
+  const openedDrawer = Boolean(
+    showInsertTargetForm || showInsertApproachForm || drawerMode,
+  );
 
   return (
     <div className="pt-32">
       <Title level={3} className="pb-24">
-        {campaignId ? 'Chỉnh sửa Campaign' : 'Tạo mới Campaign'}
+        {mode === 'edit' ? 'Chỉnh sửa Campaign' : 'Tạo mới Campaign'}
       </Title>
       <Flex
         vertical
         className="no-resize border-2 rounded-8 border-gray-border bg-white"
       >
         <CampaignInsertForm
-          mode={campaignId ? 'edit' : 'add'}
+          mode={mode === 'edit' ? 'edit' : 'add'}
           initialValues={dataSourcesDetail}
           isDisabled={false}
           form={form}
@@ -372,7 +383,7 @@ const CampaignCreate: React.FC = () => {
       >
         <Flex justify="between" className="py-4 w-full" gap="middle">
           <Flex className="ml-auto" gap="middle">
-            {campaignId && (
+            {mode === 'edit' && (
               <AButton
                 onClick={handleCreateCopy}
                 color="green"
@@ -400,12 +411,12 @@ const CampaignCreate: React.FC = () => {
         title={drawerProps.title}
         mode={drawerProps.mode}
         onClose={handleCloseForm}
-        open={!!(showInsertTargetForm || showInsertApproachForm || drawerMode)}
+        open={openedDrawer}
         width={drawerProps.width}
         maskClosable={false}
         classNames={{ body: 'pa-0', header: 'py-22 px-40 fs-16 fw-500' }}
       >
-        {drawerProps.content}
+        {openedDrawer && drawerProps.content}
       </ODrawer>
     </div>
   );

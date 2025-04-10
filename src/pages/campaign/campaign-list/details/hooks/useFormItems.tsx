@@ -1,5 +1,8 @@
 import { INPUT_TYPE, type TFormItem, type TFormType } from '@types';
-import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
+import {
+  EStatusCampaign,
+  STATUS_CAMPAIGN_OPTIONS,
+} from '@constants/masterData';
 import {
   useCampaignManagerListQuery,
   useCategoryOptionsListQuery,
@@ -35,15 +38,16 @@ const useCampaignFormItems = ({
     });
 
   const { data: categoryList } = useQueryCategoryList(true);
-  const { data: branchesOptions } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.BRANCHES,
-  });
+
   const { data: campaignManagementList } = useCampaignManagerListQuery(
     {
       page: { pageNum: 1, pageSize: 1000 }, // TODO: remove this
     },
     true,
   );
+  const { data: deploymentOptions } = useCategoryOptionsListQuery({
+    categoryTypeCode: CategoryType.DEPLOYMENT_METHOD,
+  });
 
   return useMemo(
     () =>
@@ -84,16 +88,17 @@ const useCampaignFormItems = ({
         },
         {
           type: INPUT_TYPE.SELECT,
-          label: 'Chi nhánh triển khai',
-          name: 'branches',
+          label: 'Phương thức triển khai',
+          name: 'deploymentMethod',
+          required: true,
+          rules: [{ required: true }],
           inputProps: {
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: branchesOptions,
+            disabled: isDisabled,
+            options: deploymentOptions,
           },
-          required: true,
-          rules: [{ required: true }],
         },
         {
           type: INPUT_TYPE.SELECT,
@@ -115,6 +120,8 @@ const useCampaignFormItems = ({
           inputProps: {
             placeholder: 'Chọn ngày...',
             className: 'date-picker-campaign',
+            disabled:
+              form?.getFieldValue('status') === EStatusCampaign.INPROGRESS,
             minDate: minStartDate,
             maxDate: maxStartDate,
             onCalendarChange: (date) =>
@@ -155,8 +162,6 @@ const useCampaignFormItems = ({
           required: true,
           rules: [{ required: true }],
         },
-        { type: INPUT_TYPE.BLANK },
-        { type: INPUT_TYPE.BLANK },
         {
           type: INPUT_TYPE.TEXT_AREA,
           label: 'Ghi chú',
@@ -187,13 +192,13 @@ const useCampaignFormItems = ({
       isDisabled,
       onShowForm,
       categoryList,
-      branchesOptions,
       campaignManagementList,
       handleGenerateStatus,
       form,
       minStartDate,
       minEndDate,
       maxStartDate,
+      deploymentOptions,
     ],
   );
 };

@@ -1,6 +1,9 @@
 import { INPUT_TYPE, type TFormItem } from '@types';
 import { Dayjs } from 'dayjs';
-import { STATUS_CAMPAIGN_OPTIONS } from '@constants/masterData';
+import {
+  EStatusCampaign,
+  STATUS_CAMPAIGN_OPTIONS,
+} from '@constants/masterData';
 import { CategoryType } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
 import type { FormInstance } from 'antd';
@@ -32,9 +35,6 @@ const useCategoryFormItems = ({
   });
   const { data: customerOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.CUSTOMERS,
-  });
-  const { data: deploymentOptions } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.DEPLOYMENT_METHOD,
   });
 
   return [
@@ -68,7 +68,9 @@ const useCategoryFormItems = ({
       inputProps: {
         placeholder: 'Chọn ngày...',
         className: 'date-picker-campaign',
-        disabled: isDisabled,
+        disabled:
+          isDisabled ||
+          form.getFieldValue('status') === EStatusCampaign.INPROGRESS,
         minDate: minStartDate,
         maxDate: maxStartDate,
         onCalendarChange: (date) =>
@@ -106,18 +108,6 @@ const useCategoryFormItems = ({
         suffixIcon: null,
         disabled: true,
         options: STATUS_CAMPAIGN_OPTIONS,
-      },
-    },
-    {
-      type: INPUT_TYPE.SELECT,
-      label: 'Phương thức triển khai',
-      name: 'deploymentMethod',
-      inputProps: {
-        placeholder: 'Chọn...',
-        showSearch: true,
-        filterOption: true,
-        disabled: isDisabled,
-        options: deploymentOptions,
       },
     },
     {
