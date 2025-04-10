@@ -37,6 +37,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
     {
       categoryTypeCode: CategoryType.DEPARTMENT,
     },
+    false,
     mode !== 'view',
   );
 
@@ -44,6 +45,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
     {
       categoryTypeCode: CategoryType.POSITION,
     },
+    false,
     mode !== 'view',
   );
 
@@ -51,6 +53,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
     {
       categoryTypeCode: CategoryType.BRANCHES,
     },
+    false,
     mode !== 'view',
   );
 
