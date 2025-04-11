@@ -675,9 +675,12 @@ export const useCollectInforController = (opened?: boolean) => {
     useCustomerCheckLoanLimit();
 
   const { data: customerQueryData, refetch: refectchCustomer } =
-    useCustomerViewQuery({
-      id: customerId as string,
-    });
+    useCustomerViewQuery(
+      {
+        id: customerId as string,
+      },
+      { enabled: !!customerId && opened },
+    );
   const customerData = customerQueryData?.data;
   const { data: draftLoanLimit, refetch: refectchLoanLimit } =
     useCustomerGetDraftLoanLimit(customerId);

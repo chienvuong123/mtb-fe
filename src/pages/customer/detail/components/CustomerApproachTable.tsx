@@ -89,8 +89,8 @@ const CustomerApproachTable: FC<{
   useEffect(() => {
     if (approachScriptData) {
       const ids = approachScriptData
-        .filter((i) => i.approachResult?.called)
-        .map((i) => i.id);
+        .filter((i) => i.approachResult?.called && i.campaignScriptId)
+        .map((i) => i.campaignScriptId) as string[];
       setCalledIds(ids);
 
       const findActiveId =
@@ -111,11 +111,11 @@ const CustomerApproachTable: FC<{
       rowSelection={{
         getCheckboxProps: (record) => ({
           className: 'table-form-checkbox px-15',
-          disabled: record.id ? activeId !== record.id : false,
+          disabled: activeId !== record.id,
         }),
       }}
       hideActions
-      rowKey="id"
+      rowKey="campaignScriptId"
     />
   );
 };

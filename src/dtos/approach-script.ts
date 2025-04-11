@@ -44,7 +44,7 @@ export interface ApproachFormData {
   approachStatus: string;
   rate?: number;
   note?: string;
-  campaignScriptId?: string;
+  campaignScriptId: string;
   called?: boolean;
   [key: string]: ApproachStepFormValue | string | number | boolean | undefined;
 }
