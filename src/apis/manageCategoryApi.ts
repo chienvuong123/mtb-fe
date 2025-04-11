@@ -1,13 +1,13 @@
-import type { BaseResponse, BaseSearchResponse, TId } from '@dtos';
 import type {
-  ManageCategorySearchRequest,
-  ManagerCategoryDTO,
-} from 'src/dtos/manage-category';
-import type {
+  BaseResponse,
+  BaseSearchResponse,
+  TId,
   CategoryScriptDTO,
   CategoryScriptRequest,
   TCategoryDetailDTO,
-} from 'src/dtos/manage-category-detail';
+  ManageCategorySearchRequest,
+  ManagerCategoryDTO,
+} from '@dtos';
 import { BaseApi } from './baseApi';
 import { apiRequest } from './apiClient';
 

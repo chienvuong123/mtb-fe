@@ -1,8 +1,9 @@
 import type {
   GroupCustomerDTO,
   GroupCustomerSearchRequest,
-} from 'src/dtos/group-customer';
-import type { BaseOptionListDTO, BaseResponse } from '@dtos';
+  BaseOptionListDTO,
+  BaseResponse,
+} from '@dtos';
 import { BaseApi } from './baseApi';
 import { apiRequest } from './apiClient';
 

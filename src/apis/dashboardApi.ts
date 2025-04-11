@@ -4,7 +4,7 @@ import type {
   StatisticsCustomerCallStatsRespone,
   StatisticsCustomerOfApproadResponse,
   StatisticsCustomerOfDayResponse,
-} from 'src/dtos/dashboard';
+} from '@dtos';
 import { apiRequest } from './apiClient';
 
 class DashboardApi {

@@ -3,10 +3,11 @@ import type {
   ManageCategorySearchRequest,
   ManageCategorySearchResponse,
   ManagerCategoryDTO,
-} from 'src/dtos/manage-category';
-import type { BaseResponse, TId } from '@dtos';
+  BaseResponse,
+  TId,
+  TCategoryDetailDTO,
+} from '@dtos';
 import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
-import type { TCategoryDetailDTO } from 'src/dtos/manage-category-detail';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const MANAGE_CATEGORY = 'manager-category';

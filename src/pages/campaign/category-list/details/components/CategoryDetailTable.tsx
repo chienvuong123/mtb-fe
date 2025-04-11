@@ -1,12 +1,11 @@
 import { OTable } from '@components/organisms';
 import { AButton } from '@components/atoms';
 import { Flex } from 'antd';
-import type { TId } from '@dtos';
+import type { CampaignDTO, TId } from '@dtos';
 import type { ColumnType } from 'antd/es/table';
 import React from 'react';
 import Title from 'antd/lib/typography/Title';
 import { useParams } from 'react-router-dom';
-import type { CategoryScriptDTO } from 'src/dtos/manage-category-detail';
 import { EStatusCampaign, STATUS_CAMPAIGN_OBJECT } from '@constants/masterData';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import dayjs from 'dayjs';
@@ -16,9 +15,7 @@ const BUTTON_TEXT = {
   ADD: 'Thêm mới',
 } as const;
 
-export type TCategoryDetaillRecord = Partial<CategoryScriptDTO>;
-
-const columns: ColumnType<TCategoryDetaillRecord>[] = [
+const columns: ColumnType<CampaignDTO>[] = [
   {
     title: 'Mã Campaign',
     dataIndex: 'code',
@@ -36,7 +33,7 @@ const columns: ColumnType<TCategoryDetaillRecord>[] = [
   },
   {
     title: 'Chi nhánh triển khai',
-    dataIndex: 'branches',
+    dataIndex: 'branchesName',
     minWidth: 150,
     sorter: true,
     showSorterTooltip: false,
@@ -74,7 +71,7 @@ const columns: ColumnType<TCategoryDetaillRecord>[] = [
   },
 ];
 
-const CampaignDetailTable: React.FC<CBaseTable<TCategoryDetaillRecord>> = ({
+const CampaignDetailTable: React.FC<CBaseTable<CampaignDTO>> = ({
   dataSource,
   paginations,
   sortDirection,
@@ -94,7 +91,7 @@ const CampaignDetailTable: React.FC<CBaseTable<TCategoryDetaillRecord>> = ({
           </AButton>
         )}
       </Flex>
-      <OTable<TCategoryDetaillRecord>
+      <OTable<CampaignDTO>
         rowKey="id"
         columns={columns}
         data={dataSource}

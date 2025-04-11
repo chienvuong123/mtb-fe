@@ -2,7 +2,7 @@ import { ATag } from '@components/atoms';
 import { OTable, type TColumnType } from '@components/organisms';
 import { ESalesOpportunities } from '@constants/masterData';
 import React, { useState, type ReactNode } from 'react';
-import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
+import type { SalesOpportunitiesDTO } from '@dtos';
 import type { CBaseTable } from '@types';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import dayjs from 'dayjs';

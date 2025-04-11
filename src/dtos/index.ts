@@ -18,3 +18,6 @@ export * from './seller';
 export * from './approach-script';
 export * from './multimedia';
 export * from './dashboard';
+export * from './category-management';
+export * from './account-management';
+export * from './sales-opportunities';

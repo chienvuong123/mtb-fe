@@ -8,7 +8,7 @@ import { CategoryType } from '@dtos';
 import { useCategoryOptionsListQuery } from '@hooks/queries';
 import type { FormInstance } from 'antd';
 import { useCampaignFormHelper } from '@pages/campaign/hook';
-import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import type { ManagerCategoryDTO } from '@dtos';
 import type { ICategoryInsertForm } from '../components/CategoryInsert';
 
 interface ICategoryFormItemsProps

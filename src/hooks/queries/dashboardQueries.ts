@@ -6,7 +6,7 @@ import type {
   StatisticsCustomerCallStatsRespone,
   StatisticsCustomerOfApproadResponse,
   StatisticsCustomerOfDayResponse,
-} from 'src/dtos/dashboard';
+} from '@dtos';
 
 export const DASHBOARD_KEY = 'dashboard-list';
 

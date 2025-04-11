@@ -10,7 +10,7 @@ import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import clsx from 'clsx';
 import { useEffect, useMemo, type FC } from 'react';
-import type { GroupCustomerDTO } from 'src/dtos/group-customer';
+import type { GroupCustomerDTO } from '@dtos';
 
 const GroupCustomerInsertForm: FC<CBaseForm<GroupCustomerDTO>> = ({
   onClose,

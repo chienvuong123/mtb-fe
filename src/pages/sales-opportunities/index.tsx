@@ -4,7 +4,7 @@ import useUrlParams from '@hooks/useUrlParams';
 import type {
   TSalesOpportunitiesSearchForm,
   SalesOpportunitiesDTO,
-} from 'src/dtos/sales-opportunities';
+} from '@dtos';
 import type { IMPagination, TPagination } from '@components/molecules';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import { useSalesOpportunitiesSearchQuery } from '@hooks/queries';

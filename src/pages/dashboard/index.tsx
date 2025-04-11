@@ -4,10 +4,7 @@ import { useStatisticsCampaign } from '@hooks/queries';
 import type { IMPagination, TPagination } from '@components/molecules';
 import type { TBaseTableSort } from '@types';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import type {
-  DashboardSearchRequest,
-  TStatisticsCampaignDTO,
-} from 'src/dtos/dashboard';
+import type { DashboardSearchRequest, TStatisticsCampaignDTO } from '@dtos';
 import useUrlParams from '@hooks/useUrlParams';
 import { DashboardTable } from './components';
 import DashboardReport from './components/DashboardReport';

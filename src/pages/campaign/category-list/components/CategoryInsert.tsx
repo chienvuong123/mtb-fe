@@ -2,7 +2,7 @@ import { OBaseForm } from '@components/organisms';
 import { GROUP_CUSTOMER_KEY } from '@hooks/queries';
 import type { FormInstance } from 'antd';
 import { type FC } from 'react';
-import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import type { ManagerCategoryDTO } from '@dtos';
 import type { CBaseForm } from '@types';
 import { useCategoryFormItems } from '../hooks';
 

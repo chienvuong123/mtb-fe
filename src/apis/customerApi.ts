@@ -1,6 +1,10 @@
-import type { BaseResponse, CustomerDTO, CustomerSearchRequest } from '@dtos';
+import type {
+  BaseResponse,
+  CustomerDTO,
+  CustomerSearchRequest,
+  CustomerCollectInfoDTO,
+} from '@dtos';
 import type { AxiosRequestConfig } from 'axios';
-import type { CustomerCollectInfoDTO } from 'src/dtos/customer-collect-info';
 import { BaseApi } from './baseApi';
 import { apiRequest, apiRequestFile } from './apiClient';
 

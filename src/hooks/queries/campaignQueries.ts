@@ -6,14 +6,16 @@ import type {
   CampaignSearchRequest,
   CampaignSearchResponse,
   TCampaignDetailDTO,
-} from 'src/dtos/campaign';
+  BaseResponse,
+  BaseSearchResponse,
+  TId,
+} from '@dtos';
 import {
   useMutation,
   useQuery,
   type UseMutationOptions,
   type UseQueryOptions,
 } from '@tanstack/react-query';
-import type { BaseResponse, BaseSearchResponse, TId } from '@dtos';
 import type { AxiosProgressEvent, GenericAbortSignal } from 'axios';
 import { createBaseQueryHooks } from './baseQueries';
 

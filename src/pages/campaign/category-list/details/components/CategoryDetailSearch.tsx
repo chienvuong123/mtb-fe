@@ -1,10 +1,7 @@
 import { OFormDetail } from '@components/organisms';
 import React, { useEffect } from 'react';
 import { useForm } from 'antd/lib/form/Form';
-import type {
-  TCategoryDetailDTO,
-  TCategoryDetailSearchForm,
-} from 'src/dtos/manage-category-detail';
+import type { TCategoryDetailDTO, TCategoryDetailSearchForm } from '@dtos';
 import dayjs from 'dayjs';
 import '../index.scss';
 import { useCategoryFormItems } from '../../hooks';

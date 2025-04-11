@@ -1,4 +1,9 @@
-import type { BaseResponse, CustomerDTO, CustomerSearchRequest } from '@dtos';
+import type {
+  BaseResponse,
+  CustomerDTO,
+  CustomerSearchRequest,
+  CustomerCollectInfoDTO,
+} from '@dtos';
 import { customerApi } from '@apis';
 import {
   useMutation,
@@ -6,7 +11,6 @@ import {
   type UseMutationOptions,
 } from '@tanstack/react-query';
 import type { AxiosProgressEvent, GenericAbortSignal } from 'axios';
-import type { CustomerCollectInfoDTO } from 'src/dtos/customer-collect-info';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const CUSTOMER_KEY = 'customer-list';

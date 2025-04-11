@@ -8,7 +8,7 @@ import type {
   CampaignDTO,
   CampaignSearchRequest,
   TCampaignSearchForm,
-} from 'src/dtos/campaign';
+} from '@dtos';
 import {
   useCampaignExport,
   useCampaignRemoveMutation,
