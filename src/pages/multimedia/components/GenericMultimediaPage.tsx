@@ -104,7 +104,7 @@ const MultimediaPage: FC<IMultimediaPage> = ({ title, mediaType }) => {
   const handleSuccess = (form?: FormInstance, isEdit?: boolean) => {
     form?.resetFields();
     handleCloseForm();
-    if (current === 1) {
+    if (Number(current) === 1) {
       refetchMultimedia();
     } else {
       setFilters({ current: 1 });

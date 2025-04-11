@@ -2,6 +2,13 @@ import type { ERole, EStatus } from '@constants/masterData';
 import type { BaseEntity, BaseSearchParams } from '../common';
 import type { CategoryType } from '../category';
 
+export type SellerManagerDTO = {
+  id?: string;
+  userId?: string;
+  name?: string;
+  status?: string;
+};
+
 export interface SellerSearchRequest extends BaseSearchParams {
   branch?: string;
   department?: string;
@@ -110,12 +117,7 @@ export type SellerDetailsDTO = {
   totalCampaign: number;
   totalCustomer: number;
   campaigns: SellerCampaignData[];
-  sellerManager?: {
-    id?: string;
-    userId?: string;
-    name?: string;
-    status?: string;
-  };
+  sellerManager?: SellerManagerDTO;
 };
 
 // assignment
