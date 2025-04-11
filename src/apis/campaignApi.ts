@@ -3,15 +3,13 @@ import type {
   BaseSearchResponse,
   BaseOptionListDTO,
   TId,
-} from '@dtos';
-import type {
   CampaignDTO,
   CampaignListRequest,
   CampaignScriptDTO,
   CampaignScriptRequest,
   CampaignSearchRequest,
   TCampaignDetailDTO,
-} from 'src/dtos/campaign';
+} from '@dtos';
 import type { AxiosRequestConfig } from 'axios';
 import { apiRequest, apiRequestFile } from './apiClient';
 import { BaseApi } from './baseApi';

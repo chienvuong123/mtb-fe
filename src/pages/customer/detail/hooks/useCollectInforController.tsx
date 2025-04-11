@@ -17,7 +17,7 @@ import { INPUT_TYPE, type TFormItem } from '@types';
 import { Form, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { CustomerCollectFormDTO } from 'src/dtos/customer-collect-info';
+import type { CustomerCollectFormDTO } from '@dtos';
 import { useParams } from 'react-router-dom';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import { BLOCKING_NUMBER_PARTERN } from '@constants/regex';

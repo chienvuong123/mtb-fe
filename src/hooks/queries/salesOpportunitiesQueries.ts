@@ -3,7 +3,7 @@ import type {
   TSalesOpportunitiesSearchForm,
   SalesOpportunitiesDTO,
   SalesOpportunitiesSearchRequest,
-} from 'src/dtos/sales-opportunities';
+} from '@dtos';
 import { useMutation } from '@tanstack/react-query';
 import { createBaseQueryHooks } from './baseQueries';
 

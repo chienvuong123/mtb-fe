@@ -7,7 +7,7 @@ import type { CBaseTable } from '@types';
 import type { ColumnType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useMemo, useState, type Key } from 'react';
-import type { CampaignDTO } from 'src/dtos/campaign';
+import type { CampaignDTO } from '@dtos';
 
 const columns: ColumnType<CampaignDTO>[] = [
   {

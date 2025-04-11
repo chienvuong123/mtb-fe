@@ -1,8 +1,8 @@
 import type {
   SalesOpportunitiesDTO,
   SalesOpportunitiesSearchRequest,
-} from 'src/dtos/sales-opportunities';
-import type { BaseResponse } from '@dtos';
+  BaseResponse,
+} from '@dtos';
 import { BaseApi } from './baseApi';
 import { apiRequest } from './apiClient';
 

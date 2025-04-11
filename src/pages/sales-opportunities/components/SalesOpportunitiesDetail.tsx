@@ -2,7 +2,7 @@ import { OFormDetail } from '@components/organisms';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useForm } from 'antd/lib/form/Form';
 import React, { useEffect, useMemo } from 'react';
-import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
+import type { SalesOpportunitiesDTO } from '@dtos';
 
 const items: TFormItem[] = [
   {

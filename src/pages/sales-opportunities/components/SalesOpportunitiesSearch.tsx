@@ -11,7 +11,7 @@ import { useProfile } from '@stores';
 import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import React, { useEffect, useMemo } from 'react';
-import type { TSalesOpportunitiesSearchForm } from 'src/dtos/sales-opportunities';
+import type { TSalesOpportunitiesSearchForm } from '@dtos';
 
 const SalesOpportunitiesSearch: React.FC<
   CBaseSearch<TSalesOpportunitiesSearchForm>

@@ -5,19 +5,16 @@ import React, { useMemo } from 'react';
 import useUrlParams from '@hooks/useUrlParams';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
 import type { IMPagination, TPagination } from '@components/molecules';
-import type { TCategoryDetailDTO } from 'src/dtos/manage-category-detail';
+import type { TCategoryDetailDTO, TId } from '@dtos';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@routers/path';
-import { type TId } from '@dtos';
 import {
   useCategoryDetailViewQuery,
   useCampaignSearchQuery,
 } from '@hooks/queries';
 import { type TBaseTableSort } from '@types';
 import CategoryDetailSearch from './components/CategoryDetailSearch';
-import CategoryDetailTable, {
-  type TCategoryDetaillRecord,
-} from './components/CategoryDetailTable';
+import CategoryDetailTable from './components/CategoryDetailTable';
 import './index.scss';
 
 const BUTTON_TEXT = {
@@ -41,7 +38,7 @@ const ManagerCategoryDetail: React.FC = () => {
     id: categoryId ?? '',
   });
 
-  const { data: categoryQuery } = useCampaignSearchQuery({
+  const { data: categoryRes } = useCampaignSearchQuery({
     categoryId: categoryId ?? '',
     page: {
       pageNum: Number(current),
@@ -62,21 +59,11 @@ const ManagerCategoryDetail: React.FC = () => {
     [categoryDetailRes],
   );
 
-  const dataSources: TCategoryDetaillRecord[] =
-    useMemo(
-      () =>
-        categoryQuery?.data?.content?.map((i) => ({
-          ...i,
-          key: i.id as string,
-        })),
-      [categoryQuery],
-    ) ?? [];
-
   const paginations: IMPagination = {
     pagination: {
       current,
       pageSize,
-      total: categoryQuery?.data?.total ?? 1,
+      total: categoryRes?.data?.total ?? 0,
     },
     setPagination: handlePaginationChange,
     optionPageSize: [10, 20, 50, 100],
@@ -104,7 +91,7 @@ const ManagerCategoryDetail: React.FC = () => {
       <div className="mb-24" />
       <CategoryDetailTable
         onSort={handleSort}
-        dataSource={dataSources}
+        dataSource={categoryRes?.data?.content ?? []}
         paginations={paginations}
       />
       <div className="fixed bottom-0 left-0 w-full bg-white shadow-md z-10 mt-20 py-10 px-4">

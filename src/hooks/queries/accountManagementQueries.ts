@@ -2,8 +2,8 @@ import { accountManagementApi } from '@apis';
 import type {
   AccountManagementSearchRequest,
   AccountManagementSearchResponse,
-} from 'src/dtos/account-management';
-import type { UserDTO } from 'src/dtos/auth';
+  UserDTO,
+} from '@dtos';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const ACCOUNT_MANAGEMENT_KEY = 'account-management';

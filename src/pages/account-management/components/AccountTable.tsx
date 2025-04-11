@@ -1,11 +1,10 @@
 import type { IModalConfirm } from '@components/organisms/o-modal';
 import { OTable, type TColumnType } from '@components/organisms';
 import { EStatus, STATUS_OBJECT_STATIC } from '@constants/masterData';
-import type { CategoryDTO } from '@dtos';
+import type { CategoryDTO, UserDTO } from '@dtos';
 import { useProfile } from '@stores';
 import type { CBaseTable } from '@types';
 import { useMemo, useState, type FC, type Key } from 'react';
-import type { UserDTO } from 'src/dtos/auth';
 import { ROUTES } from '@routers/path';
 
 const confirmProps: IModalConfirm = {

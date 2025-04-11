@@ -2,7 +2,7 @@ import { OTable } from '@components/organisms';
 import type { CBaseTable } from '@types';
 import type { ColumnType } from 'antd/lib/table';
 import { useState, type FC } from 'react';
-import type { GroupCustomerDTO } from 'src/dtos/group-customer';
+import type { GroupCustomerDTO } from '@dtos';
 
 const columns: ColumnType<GroupCustomerDTO>[] = [
   {

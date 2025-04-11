@@ -8,7 +8,13 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ODrawer } from '@components/organisms';
 import { createNavigatePath, ROUTES } from '@routers/path';
 import type { TFormType } from '@types';
-import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import type {
+  ManagerCategoryDTO,
+  CampaignApproachPlanDTO,
+  CampaignTargetDTO,
+  TCampaignDetailDTO,
+  TId,
+} from '@dtos';
 import {
   useCampaignAddMutation,
   useCampaignDetailViewQuery,
@@ -18,12 +24,6 @@ import {
 } from '@hooks/queries';
 import dayjs from 'dayjs';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
-import type {
-  CampaignApproachPlanDTO,
-  CampaignTargetDTO,
-  TCampaignDetailDTO,
-  TId,
-} from '@dtos';
 import { validationHelper } from '@utils/validationHelper';
 import CategoryInsertForm from '@pages/campaign/category-list/components/CategoryInsert';
 import CampaignTargetForm from './components/CampaignTargerForm';

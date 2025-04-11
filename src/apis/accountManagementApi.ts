@@ -1,5 +1,4 @@
-import type { AccountManagementSearchRequest } from 'src/dtos/account-management';
-import type { UserDTO } from 'src/dtos/auth';
+import type { AccountManagementSearchRequest, UserDTO } from '@dtos';
 import { BaseApi } from './baseApi';
 
 class AccountManagementApi extends BaseApi<

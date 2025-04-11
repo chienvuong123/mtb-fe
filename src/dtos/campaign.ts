@@ -28,6 +28,13 @@ export interface CampaignDTO extends BaseEntity {
   campaignCode?: string;
   categoryId: string;
   categoryCampaign?: CategoryDTO;
+
+  categoryName?: string;
+  status?: string;
+  branches?: string;
+  branchesName?: string;
+  totalCustomerApproach?: number;
+  totalCustomerParticipating?: number;
 }
 
 export interface CampaignSearchRequest extends BaseSearchParams {

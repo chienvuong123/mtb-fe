@@ -9,7 +9,7 @@ import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo } from 'react';
-import type { TCampaignSearchForm } from 'src/dtos/campaign';
+import type { TCampaignSearchForm } from '@dtos';
 
 const CampaignSearch: React.FC<CBaseSearch<TCampaignSearchForm>> = ({
   initialValues,

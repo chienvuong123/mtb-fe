@@ -7,7 +7,7 @@ import type { CBaseTable } from '@types';
 import type { ColumnType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useEffect, useState, type Key } from 'react';
-import type { ManagerCategoryDTO } from 'src/dtos/manage-category';
+import type { ManagerCategoryDTO } from '@dtos';
 
 export type TCategoryTableRecord = Partial<ManagerCategoryDTO>;
 

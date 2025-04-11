@@ -6,7 +6,7 @@ import { INPUT_TYPE, type CBaseSearch, type TFormItem } from '@types';
 import { handleResetFields } from '@utils/formHelper';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { useEffect, useMemo, type FC } from 'react';
-import type { GroupCustomerDTO } from 'src/dtos/group-customer';
+import type { GroupCustomerDTO } from '@dtos';
 
 const GroupCustomerSearchForm: FC<CBaseSearch<GroupCustomerDTO>> = ({
   initialValues,

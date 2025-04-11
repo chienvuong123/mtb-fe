@@ -1,7 +1,7 @@
 import type { IMPagination, TPagination } from '@components/molecules';
 import { ODrawer } from '@components/organisms';
 import { SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import type { BaseResponse } from '@dtos';
+import type { BaseResponse, GroupCustomerDTO } from '@dtos';
 import {
   useGroupCustomerAddMutation,
   useGroupCustomerSearchQuery,
@@ -12,7 +12,6 @@ import type { TBaseTableSort, TFormType } from '@types';
 import { validateInsertCategory } from '@pages/category/utils';
 import Title from 'antd/lib/typography/Title';
 import { useEffect, useState } from 'react';
-import type { GroupCustomerDTO } from 'src/dtos/group-customer';
 import { useNotification } from '@libs/antd';
 import {
   GroupCustomerInsertForm,

@@ -1,4 +1,4 @@
-import type { SalesOpportunitiesDTO } from 'src/dtos/sales-opportunities';
+import type { SalesOpportunitiesDTO } from '@dtos';
 
 export const convertInitValues = (
   initValues: SalesOpportunitiesDTO,

@@ -3,7 +3,7 @@ import type {
   GroupCustomerDTO,
   GroupCustomerSearchRequest,
   GroupCustomerSearchResponse,
-} from 'src/dtos/group-customer';
+} from '@dtos';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const GROUP_CUSTOMER_KEY = 'group-customer';

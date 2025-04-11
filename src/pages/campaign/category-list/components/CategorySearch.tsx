@@ -9,7 +9,7 @@ import { Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo } from 'react';
-import type { TManageCategorySearchForm } from 'src/dtos/manage-category';
+import type { TManageCategorySearchForm } from '@dtos';
 
 const CategorySearch: React.FC<CBaseSearch<TManageCategorySearchForm>> = ({
   onSearch,

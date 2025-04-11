@@ -3,7 +3,7 @@ import type { CBaseTable } from '@types';
 import { Flex, Space, Typography } from 'antd';
 import type { ColumnType } from 'antd/es/table';
 import React, { useState } from 'react';
-import type { TStatisticsCampaignDTO } from 'src/dtos/dashboard';
+import type { TStatisticsCampaignDTO } from '@dtos';
 import { DDatePicker } from './date-picker';
 
 interface IDashboardTable extends CBaseTable<TStatisticsCampaignDTO> {

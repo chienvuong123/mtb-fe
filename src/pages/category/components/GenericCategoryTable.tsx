@@ -55,6 +55,13 @@ export const GenericCategoryTable: FC<GenericCategoryTableProps> = ({
         showSorterTooltip: false,
       },
       {
+        title: 'Mã tích hợp',
+        dataIndex: 'mbCode',
+        minWidth: 213,
+        sorter: true,
+        showSorterTooltip: false,
+      },
+      {
         title: 'Trạng thái',
         dataIndex: 'status',
         minWidth: 164,

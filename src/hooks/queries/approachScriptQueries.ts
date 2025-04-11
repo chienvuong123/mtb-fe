@@ -2,10 +2,10 @@ import type {
   ApproachResultCreateRequest,
   ApproachScriptDTO,
   ApproachScriptSearchRequest,
-} from 'src/dtos/approach-script';
+  BaseResponse,
+} from '@dtos';
 import { approachScriptApi } from '@apis';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import type { BaseResponse } from '@dtos';
 import { createBaseQueryHooks } from './baseQueries';
 
 export const APPROACH_SCRIPT_KEY = 'approach-script-list';

@@ -12,7 +12,11 @@ import {
   useManageCategorySearchQuery,
   useManagerCategoryRemoveMutation,
 } from '@hooks/queries';
-import type { TCampaignSearchForm } from 'src/dtos/campaign';
+import type {
+  TCampaignSearchForm,
+  ManageCategorySearchRequest,
+  ManagerCategoryDTO,
+} from '@dtos';
 import { useNavigate } from 'react-router-dom';
 import { createNavigatePath, ROUTES } from '@routers/path';
 import { Flex, type NotificationArgsProps } from 'antd';
@@ -20,10 +24,6 @@ import { AButton } from '@components/atoms';
 import { useForm } from 'antd/lib/form/Form';
 import { ExportIcon } from '@assets/icons';
 import { dayjsToString } from '@utils/dateHelper';
-import type {
-  ManageCategorySearchRequest,
-  ManagerCategoryDTO,
-} from 'src/dtos/manage-category';
 import { useNotification } from '@libs/antd';
 import type { TBaseTableSort, TFormType } from '@types';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
@@ -33,12 +33,11 @@ import type { TCategoryTableRecord } from './components/CategoryTable';
 import CategoryTable from './components/CategoryTable';
 import CategorySearch from './components/CategorySearch';
 import CategoryInsert from './components/CategoryInsert';
-import type { TCategoryDetaillRecord } from './details/components';
 
 const ManageCategoryPage: React.FC = () => {
   const [drawerMode, setDrawerMode] = useState<TFormType>();
   const [initialValuesForm, setInitialValuesForm] =
-    useState<Partial<TCategoryDetaillRecord> | null>(null);
+    useState<Partial<ManagerCategoryDTO> | null>(null);
   const {
     pagination: { current, pageSize },
     sort,

@@ -87,8 +87,7 @@ const OTP = () => {
             return;
           }
           if (errorCode === EResponseCode.OTP_RESET_PASS_EXPIRED) {
-            setAlert('');
-            handleResendOtp();
+            setAlert('OTP đã hết hạn, vui lòng nhấn gửi lại');
             return;
           }
 

@@ -4,7 +4,7 @@ import type {
 } from '@components/molecules/m-pagination/MPagination.type';
 import { ODrawer } from '@components/organisms';
 import { EStatus, SORT_ORDER_FOR_SERVER } from '@constants/masterData';
-import type { BaseResponse } from '@dtos';
+import type { BaseResponse, AccountRequest, UserDTO } from '@dtos';
 import {
   useAccountManagementSearchQuery,
   useAccountManagementAddMutation,
@@ -16,7 +16,6 @@ import type { TBaseTableSort, TFormType } from '@types';
 import { validateInsertCategory } from '@pages/category/utils';
 import Title from 'antd/lib/typography/Title';
 import { useEffect, useMemo, useState } from 'react';
-import type { AccountRequest, UserDTO } from 'src/dtos/auth';
 import { filterObject } from '@utils/objectHelper';
 import { useNotification } from '@libs/antd';
 import { useProfile } from '@stores';
