@@ -29,25 +29,18 @@ const handleSort = (a?: string, b?: string) =>
 
 const columns: ColumnType<CampaignApproachPlanDTO>[] = [
   {
-    title: 'Phương thức tiếp cận',
-    dataIndex: 'approachName',
-    minWidth: 326,
+    title: 'Kịch bản tiếp cận',
+    dataIndex: 'scriptName',
+    minWidth: 250,
     showSorterTooltip: false,
-    sorter: (a, b) => handleSort(a.approachName, b.approachName),
+    sorter: (a, b) => handleSort(a.scriptName, b.scriptName),
   },
   {
     title: 'Ghi chú',
     dataIndex: 'note',
-    minWidth: 428,
+    minWidth: 300,
     showSorterTooltip: false,
     sorter: (a, b) => handleSort(a.note, b.note),
-  },
-  {
-    title: 'Kịch bản tiếp cận',
-    dataIndex: 'scriptName',
-    minWidth: 326,
-    showSorterTooltip: false,
-    sorter: (a, b) => handleSort(a.scriptName, b.scriptName),
   },
 ];
 
@@ -123,7 +116,7 @@ const CampaignApproachDetailTable: React.FC<ICampaignApproachDetailTable> = ({
         hideActions={hideAddButton}
         onEdit={onEdit}
         confirmProps={{ title: 'Xóa kế hoạch tiếp cận' }}
-        scroll={{ x: 1500 }}
+        scroll={{ x: 1200 }}
         onSort={onSort}
         sortDirection={sortDirection}
       />

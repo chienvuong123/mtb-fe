@@ -53,11 +53,6 @@ const CustomerApproachTable: FC<{
       },
     },
     {
-      title: 'Phương thức tiếp cận',
-      dataIndex: 'approach',
-      minWidth: 160,
-    },
-    {
       title: 'Ghi chú',
       dataIndex: ['approachResult', 'note'],
       minWidth: 164,
