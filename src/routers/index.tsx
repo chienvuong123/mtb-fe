@@ -94,10 +94,10 @@ const routes = createBrowserRouter(
               path: ROUTES.CATEGORY.PRODUCT,
               element: <CategoryPages.ProductCategoryPage />,
             },
-            {
-              path: ROUTES.CATEGORY.MEDIA,
-              element: <CategoryPages.MediaCategoryPage />,
-            },
+            // {
+            //   path: ROUTES.CATEGORY.MEDIA,
+            //   element: <CategoryPages.MediaCategoryPage />,
+            // },
             {
               path: ROUTES.CATEGORY.POSITION,
               element: <CategoryPages.PositionCategoryPage />,

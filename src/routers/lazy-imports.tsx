@@ -175,7 +175,7 @@ export const Guards = {
 
 export const CategoryPages = {
   ProductCategoryPage,
-  MediaCategoryPage,
+  // MediaCategoryPage,
   PositionCategoryPage,
   BranchCategoryPage,
   DeploymentMethodCategoryPage,

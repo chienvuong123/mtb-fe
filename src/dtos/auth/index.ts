@@ -1,6 +1,7 @@
 import type { ERole } from '@constants/masterData';
 import type { CategoryDTO, CategoryType } from '../category';
 import type { BaseEntity, BaseResponse, BaseSearchParams } from '../common';
+import type { SellerManagerDTO } from '../seller';
 
 export interface AuthVerifyDTO extends BaseEntity {
   accessToken: string;
@@ -50,6 +51,11 @@ export interface UserDTO extends BaseEntity {
   endDate?: string;
   saleManager?: string;
   memberMb?: boolean;
+  sellerDtl?: {
+    id: string;
+    name: string;
+    sellerManager?: SellerManagerDTO;
+  };
 }
 
 export interface UserRequest extends BaseSearchParams {

@@ -108,6 +108,7 @@ const AccountManagementPage = () => {
       createdDate: formatDate(record.createdDate),
       updatedBy: record.updatedBy,
       updatedDate: formatDate(record.updatedDate),
+      saleManager: record?.sellerDtl?.sellerManager?.id,
     };
     setInitialValuesForm(userDTO);
   };
@@ -119,6 +120,7 @@ const AccountManagementPage = () => {
       position: record?.positionDtl?.name,
       department: record?.departmentDtl?.name,
       branch: record?.branchDtl?.name,
+      saleManager: record?.sellerDtl?.sellerManager?.name,
     });
   };
 
