@@ -82,12 +82,12 @@ const createApproachResult = (
     id: oldApproachResult?.approachResult?.id,
     customerId,
     campaignScriptId,
-    result: String(approachData.result ?? ''),
-    resultDetail: String(approachData.resultDetail ?? ''),
-    rate: approachData.rate?.toString() || '',
-    note: approachData.note?.toString() || '',
-    status: approachData.status?.toString() || '',
-    rateCampaign: approachData.rateCampaign?.toString() || '',
+    result: approachData?.result?.toString() || '',
+    resultDetail: approachData?.resultDetail?.toString() || '',
+    rate: approachData?.rate?.toString() || '',
+    note: approachData?.note?.toString() || '',
+    status: approachData?.status?.toString() || '',
+    rateCampaign: approachData?.rateCampaign?.toString() || '',
     called: Boolean(calledIds?.includes(campaignScriptId)),
   };
 };
@@ -126,7 +126,7 @@ export const transformDataToSubmit = (
       const approachResult = createApproachResult(
         approachData,
         customerId,
-        campaignScriptId,
+        initialValue.campaignScriptId,
         oldApproachResult,
         calledIds,
       );
@@ -134,7 +134,7 @@ export const transformDataToSubmit = (
       const initialApproachResult = createApproachResult(
         initialValue,
         customerId,
-        campaignScriptId,
+        initialValue.campaignScriptId,
         oldApproachResult,
         calledIds,
       );

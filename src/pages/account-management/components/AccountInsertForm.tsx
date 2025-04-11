@@ -58,7 +58,7 @@ const AccountInsertForm: FC<CBaseForm<UserDTO>> = ({
   );
 
   const { data: saleManagerList } = useSalesManagerListQuery(
-    mode !== 'view' && role === ERole.SELLER,
+    role === ERole.SELLER,
   );
 
   const handleEmailChange = useCallback(

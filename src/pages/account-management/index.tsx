@@ -120,7 +120,7 @@ const AccountManagementPage = () => {
       position: record?.positionDtl?.name,
       department: record?.departmentDtl?.name,
       branch: record?.branchDtl?.name,
-      saleManager: record?.sellerDtl?.sellerManager?.name,
+      saleManager: record?.sellerDtl?.sellerManager?.id,
     });
   };
 

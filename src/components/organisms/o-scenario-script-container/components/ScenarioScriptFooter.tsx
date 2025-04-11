@@ -190,7 +190,7 @@ const ScenarioScriptFooter: FC<IScenarioScriptFooterProps> = ({
                 options={approachResultId ? approachDetailOptions : []}
                 placeholder="Chọn"
                 allowClear
-                disabled={!approachResultId}
+                disabled={!approachResultId || activeId !== approachId}
               />
             </Form.Item>
           </Col>
