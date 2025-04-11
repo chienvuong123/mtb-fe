@@ -36,9 +36,9 @@ const CustomerSearchForm: FC<
 
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: campaignList } = useQueryCampaignList(
-    { categoryId: isSeller ? undefined : categoryId },
+    { categoryId: isSeller || isSellerManager ? undefined : categoryId },
     true,
-    !!categoryId,
+    !!(categoryId || isSellerManager || isSeller),
   );
   const { data: customerSegmentList } = useCategoryOptionsListQuery(
     { categoryTypeCode: CategoryType.CUSTOMER_SEGMENT },
@@ -79,7 +79,7 @@ const CustomerSearchForm: FC<
             showSearch: true,
             filterOption: true,
             options: campaignList,
-            disabled: !isSeller && !categoryId,
+            disabled: !isSeller && !isSellerManager && !categoryId,
             onChange: () => handleResetFields(['cusGroup'], form),
           },
         },
