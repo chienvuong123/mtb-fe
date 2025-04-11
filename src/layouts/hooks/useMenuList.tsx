@@ -155,10 +155,10 @@ const useMenuList = () => {
             key: ROUTES.CATEGORY.PRODUCT,
             label: 'Sản phẩm',
           },
-          {
-            key: ROUTES.CATEGORY.MEDIA,
-            label: 'Loại đa phương tiện',
-          },
+          // {
+          //   key: ROUTES.CATEGORY.MEDIA,
+          //   label: 'Loại đa phương tiện',
+          // },
           {
             key: ROUTES.CATEGORY.POSITION,
             label: 'Chức vụ',
