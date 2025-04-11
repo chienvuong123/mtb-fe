@@ -1,12 +1,8 @@
 import { OBaseForm } from '@components/organisms';
 import { INPUT_TYPE, type CBaseForm, type TFormItem } from '@types';
 import { useEffect, useMemo, type FC } from 'react';
-import { CategoryType, type CampaignApproachPlanDTO } from '@dtos';
-import {
-  CAMPAIGN_KEY,
-  useCategoryOptionsListQuery,
-  useQueryApproachScriprtList,
-} from '@hooks/queries';
+import { type CampaignApproachPlanDTO } from '@dtos';
+import { CAMPAIGN_KEY, useQueryApproachScriprtList } from '@hooks/queries';
 import type { FormInstance } from 'antd';
 
 interface ICampaignTargetForm extends CBaseForm<CampaignApproachPlanDTO> {
@@ -25,10 +21,6 @@ const CampaignApproachForm: FC<ICampaignTargetForm> = ({
   const categoryId = formInsert
     ? formInsert.getFieldValue('categoryId')
     : undefined;
-
-  const { data: approachOptions } = useCategoryOptionsListQuery({
-    categoryTypeCode: CategoryType.APPROACH,
-  });
   const { data: approachScriptOptions } = useQueryApproachScriprtList(
     categoryId,
     true,
@@ -37,20 +29,6 @@ const CampaignApproachForm: FC<ICampaignTargetForm> = ({
   const items: TFormItem[] = useMemo(
     () =>
       [
-        {
-          type: INPUT_TYPE.SELECT,
-          label: 'Phương thức tiếp cận',
-          inputProps: {
-            options: approachOptions,
-            placeholder: 'Chọn...',
-            showSearch: true,
-            filterOption: true,
-          },
-          name: 'approach',
-          colProps: { span: 12 },
-          required: true,
-          rules: [{ required: true }],
-        },
         {
           type: INPUT_TYPE.SELECT,
           label: 'Kịch bản tiếp cận',
@@ -73,7 +51,7 @@ const CampaignApproachForm: FC<ICampaignTargetForm> = ({
           colProps: { span: 12 },
         },
       ] as TFormItem[],
-    [approachScriptOptions, approachOptions],
+    [approachScriptOptions],
   );
 
   useEffect(() => {
