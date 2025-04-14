@@ -21,7 +21,7 @@ const SalesOpportunitiesSearch: React.FC<
 
   const { isSeller, isSellerManager } = useProfile();
 
-  const unselectedCategory = !categoryId && !isSeller;
+  const unselectedCategory = !categoryId && !isSeller && !isSellerManager;
 
   const { data: categoryList } = useQueryCategoryList(true);
   const { data: campaignList } = useQueryCampaignList({ categoryId }, false);
