@@ -8,6 +8,7 @@ import type { FormInstance } from 'antd';
 interface ICampaignTargetForm extends CBaseForm<CampaignApproachPlanDTO> {
   form: FormInstance;
   formInsert?: FormInstance;
+  inactiveIds?: string[];
 }
 
 const CampaignApproachForm: FC<ICampaignTargetForm> = ({
@@ -17,6 +18,7 @@ const CampaignApproachForm: FC<ICampaignTargetForm> = ({
   mode,
   form,
   formInsert,
+  inactiveIds,
 }) => {
   const categoryId = formInsert
     ? formInsert.getFieldValue('categoryId')
@@ -37,7 +39,9 @@ const CampaignApproachForm: FC<ICampaignTargetForm> = ({
             placeholder: 'Chọn...',
             showSearch: true,
             filterOption: true,
-            options: approachScriptOptions,
+            options: approachScriptOptions?.filter(
+              (i) => !inactiveIds?.includes(i.value as string),
+            ),
           },
           colProps: { span: 12 },
           required: true,
@@ -51,7 +55,7 @@ const CampaignApproachForm: FC<ICampaignTargetForm> = ({
           colProps: { span: 12 },
         },
       ] as TFormItem[],
-    [approachScriptOptions],
+    [approachScriptOptions, inactiveIds],
   );
 
   useEffect(() => {

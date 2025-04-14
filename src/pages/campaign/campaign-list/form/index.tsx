@@ -333,6 +333,7 @@ const CampaignCreate: React.FC = () => {
             onSubmit={handleSaveApproach}
             form={formApproach}
             formInsert={form}
+            inactiveIds={initApproachValues.map((i) => i.scriptId)}
           />
         ),
       };
