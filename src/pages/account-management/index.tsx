@@ -37,7 +37,12 @@ const AccountManagementPage = () => {
     useState<Partial<TAccountManagementRecord> | null>(null);
 
   const { pagination, sort, filters, setFilters, handleResetFilters } =
-    useUrlParams<Partial<UserDTO>>();
+    useUrlParams<Partial<UserDTO>>({
+      initSort: {
+        field: 'status',
+        direction: 'asc',
+      },
+    });
 
   const searchParams: AccountRequest = useMemo(
     () => ({

@@ -59,7 +59,14 @@ const LSider: React.FC<LayoutProps> = ({ className, ...props }) => {
   };
 
   const handleMenuClick = ({ key }: { key: string }) => {
-    navigate(key);
+    let url = key;
+    const search = menu.find((i) => i?.key && key.includes(i.key as string))
+      ?.search as unknown as Record<string, string>;
+    if (search) {
+      url = `${url}?${new URLSearchParams(search).toString()}`;
+    }
+
+    navigate(url);
     setSelectedKey([key]);
   };
 

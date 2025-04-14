@@ -19,7 +19,7 @@ import type {
 } from '@dtos';
 import { useNavigate } from 'react-router-dom';
 import { createNavigatePath, ROUTES } from '@routers/path';
-import { Flex, type NotificationArgsProps } from 'antd';
+import { Flex, Typography, type NotificationArgsProps } from 'antd';
 import { AButton } from '@components/atoms';
 import { useForm } from 'antd/lib/form/Form';
 import { ExportIcon } from '@assets/icons';
@@ -29,6 +29,7 @@ import type { TBaseTableSort, TFormType } from '@types';
 import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 import dayjs from 'dayjs';
 import { validationHelper } from '@utils/validationHelper';
+import { EResponseCode } from '@constants/responseCode';
 import type { TCategoryTableRecord } from './components/CategoryTable';
 import CategoryTable from './components/CategoryTable';
 import CategorySearch from './components/CategorySearch';
@@ -158,13 +159,47 @@ const ManageCategoryPage: React.FC = () => {
     mutationDeleteCategory(
       { id },
       {
-        onSuccess: (d) =>
-          validationHelper(d, notify, () => {
+        onSuccess: (d) => {
+          if (d.errorCode === EResponseCode.SUCCESS) {
             notify({
               message: 'Xoá thành công',
               type: 'success',
             });
-          }),
+            return;
+          }
+
+          if (d.errorCode === EResponseCode.CATEGORY_IN_USE) {
+            const links = (d.data as unknown as string[]).map((i) =>
+              `${window.location.origin}${ROUTES.CAMPAIGN.EDIT}`.replace(
+                ':id',
+                i,
+              ),
+            );
+
+            notify({
+              type: 'error',
+              message: links?.length ? (
+                <Typography.Text>
+                  Đang có Link
+                  {links.map((link) => (
+                    <div key={link}>
+                      <a target="_blank" href={link} rel="noreferrer">
+                        {link}
+                      </a>
+                    </div>
+                  ))}
+                  được gán vào category. Không được xóa!
+                </Typography.Text>
+              ) : (
+                d.errorDesc
+              ),
+              duration: 5,
+            });
+            return;
+          }
+
+          notify({ type: 'error', message: d.errorDesc ?? 'Đã xảy ra lỗi!' });
+        },
       },
     );
   };

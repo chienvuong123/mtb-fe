@@ -10,6 +10,7 @@ import { useForm } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo } from 'react';
 import type { TManageCategorySearchForm } from '@dtos';
+import { DATE_SLASH_FORMAT_DDMMYYYY } from '@constants/dateFormat';
 
 const CategorySearch: React.FC<CBaseSearch<TManageCategorySearchForm>> = ({
   onSearch,
@@ -106,7 +107,15 @@ const CategorySearch: React.FC<CBaseSearch<TManageCategorySearchForm>> = ({
   useEffect(() => {
     if (initialValues) {
       form.resetFields();
-      form.setFieldsValue(initialValues);
+      form.setFieldsValue({
+        ...initialValues,
+        startDate: initialValues?.startDate
+          ? dayjs(initialValues.startDate, DATE_SLASH_FORMAT_DDMMYYYY)
+          : undefined,
+        endDate: initialValues?.endDate
+          ? dayjs(initialValues.endDate, DATE_SLASH_FORMAT_DDMMYYYY)
+          : undefined,
+      });
     }
   }, [initialValues, form]);
 

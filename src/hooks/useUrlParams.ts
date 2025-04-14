@@ -47,6 +47,12 @@ const useUrlParams = <T>(props?: TInitFilters<T>) => {
   };
 
   const setFilters = (data: Partial<T & PageParams & SortParams>) => {
+    handleChangeParams({
+      ...initValues?.initSort,
+      ...initValues?.initFilters,
+      ...data,
+    });
+
     setInitValues((pre) => {
       const newData = { ...pre, initFilters: undefined };
       if (
@@ -57,7 +63,6 @@ const useUrlParams = <T>(props?: TInitFilters<T>) => {
       }
       return newData;
     });
-    handleChangeParams(data);
   };
 
   const handleResetFilters = (data?: Partial<T | PageParams | SortParams>) =>

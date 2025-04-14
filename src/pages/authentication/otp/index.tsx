@@ -12,6 +12,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { EResponseCode } from '@constants/responseCode';
+import { Button } from 'antd';
 import { LayoutWrapper } from '../components';
 import { FooterAuth } from '../components/footer';
 import { FormContentAuth } from '../components/form-content';
@@ -60,12 +61,15 @@ const OTP = () => {
 
   const handleResendOtp = useCallback(() => {
     mutateVerifyInfoUser(valueValidOtp, {
-      onSuccess: (res) => {
-        if (res.data) {
+      onSuccess: ({ errorCode, errorDesc }) => {
+        if (errorCode === EResponseCode.SUCCESS) {
           saveOTPCheck(valueValidOtp);
           setAlert(`Đã gửi lại OTP vào email đăng ký`);
+          return;
         }
-        throw Error('');
+        if (errorCode === EResponseCode.SEND_OTP_FORGOT_PASS_BLOCKED) {
+          setAlert(errorDesc);
+        }
       },
     });
   }, [mutateVerifyInfoUser, valueValidOtp]);
@@ -130,12 +134,14 @@ const OTP = () => {
           subLink={
             <>
               Chưa nhận được mail.
-              <span
-                className="remind-link cursor-pointer"
+              <Button
+                type="link"
+                className="red pa-0 w-fit h-fit dis-inline min-w-0"
                 onClick={handleResendOtp}
+                disabled={isPendingResendOtp}
               >
                 Gửi lại!
-              </span>
+              </Button>
             </>
           }
           alertText={alert}
