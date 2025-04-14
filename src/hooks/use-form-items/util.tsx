@@ -33,11 +33,11 @@ import type { ReactQuillProps } from 'react-quill';
 import ReactQuill from 'react-quill';
 import type { DefaultOptionType } from 'antd/es/select';
 import { REMOVE_ACCENTS_REGEX } from '@constants/regex';
+import dayjs from 'dayjs';
 import {
   MMultimediaUpload,
   type TUploadMultimedia,
-} from '@components/molecules';
-import dayjs from 'dayjs';
+} from '@components/molecules/m-multimedia-upload';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FormItemComponent<P = any> = (props: P) => React.ReactElement;

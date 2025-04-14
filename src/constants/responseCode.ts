@@ -15,7 +15,4 @@ export const enum EResponseCode {
 
   // categories
   CATEGORY_DUPLICATE = 'CTA0004',
-
-  // Category Campaign
-  CATEGORY_IN_USE = 'CCP0002',
 }

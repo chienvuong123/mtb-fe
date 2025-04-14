@@ -11,7 +11,6 @@ import {
   ControlType9Icon,
 } from '@assets/icons';
 import { ATag } from '@components/atoms';
-import { EApproachStatus } from '@dtos';
 import { Flex, Space, Typography } from 'antd';
 import type { SortOrder } from 'antd/es/table/interface';
 import type { ReactNode } from 'react';
@@ -20,24 +19,6 @@ export enum EStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
   ALL = 'ALL',
-}
-
-export enum EStatusCampaign {
-  INPROGRESS = 'INPROGRESS',
-  PENDING = 'PENDING',
-  ENDED = 'ENDED',
-}
-
-export enum EGender {
-  MAN = '0',
-  WOMEN = '1',
-  OTHER = '2',
-}
-
-export enum ESalesCampaign {
-  DISBURSED = 'DISBURSED',
-  OPPORTUNITY_TO_SELL = 'OPPORTUNITY_TO_SELL',
-  CANCELED = 'CANCELED',
 }
 
 export enum ERole {
@@ -62,12 +43,6 @@ export enum EControlType {
   BUTTON = 'BUTTON',
 }
 
-export enum ESalesOpportunities {
-  DISBURSED = 'DISBURSED',
-  OPPORTUNITY_TO_SELL = 'OPPORTUNITY_TO_SELL',
-  CANCELED = 'CANCELED',
-}
-
 export const STATUS_OPTIONS = [
   {
     value: EStatus.ACTIVE,
@@ -87,76 +62,12 @@ export const STATUS_OPTIONS_WITHOUT_ALL = STATUS_OPTIONS.filter(
   (i) => i.value !== EStatus.ALL,
 );
 
-export const APPROACH_STATUS_OPTIONS = [
-  {
-    value: EApproachStatus.PENDING,
-    label: 'Chưa bắt đầu',
-  },
-  {
-    value: EApproachStatus.INPROGRESS,
-    label: 'Đang triển khai',
-  },
-  {
-    value: EApproachStatus.FINISHED,
-    label: 'Hoàn thành',
-  },
-];
-
-export const STATUS_CAMPAIGN_OPTIONS = [
-  {
-    value: EStatusCampaign.INPROGRESS,
-    label: <Typography.Text className="green">Đang diễn ra</Typography.Text>,
-  },
-  {
-    value: EStatusCampaign.PENDING,
-    label: <Typography.Text className="info">Sắp diễn ra</Typography.Text>,
-  },
-  {
-    value: EStatusCampaign.ENDED,
-    label: <Typography.Text className="red">Đã diễn ra</Typography.Text>,
-  },
-];
-
-export const STATUS_SALES_OPPORTUNITIES_OPTIONS = [
-  {
-    value: ESalesOpportunities.DISBURSED,
-    label: <Typography.Text className="green">Đã giải ngân</Typography.Text>,
-  },
-  {
-    value: ESalesOpportunities.OPPORTUNITY_TO_SELL,
-    label: (
-      <Typography.Text className="info">Đã tạo cơ hội bán</Typography.Text>
-    ),
-  },
-  {
-    value: ESalesOpportunities.CANCELED,
-    label: <Typography.Text className="red">Đã hủy</Typography.Text>,
-  },
-];
 const optionElementWrapper = (label: string, element: JSX.Element) => (
   <Space>
     <div style={{ width: '100px' }}>{label}:</div>
     <Flex className="pointer-events-none">{element}</Flex>
   </Space>
 );
-
-export const STATUS_CAMPAIGN_OBJECT: Record<EStatusCampaign, ReactNode> = {
-  [EStatusCampaign.INPROGRESS]: <ATag color="green">Đang diễn ra</ATag>,
-  [EStatusCampaign.PENDING]: <ATag color="blue">Sắp diễn ra</ATag>,
-  [EStatusCampaign.ENDED]: <ATag color="red">Đã diễn ra</ATag>,
-};
-
-export const STATUS_CUSTOMER_OBJECT: Record<EApproachStatus, ReactNode> = {
-  [EApproachStatus.PENDING]: 'Chưa bắt đầu',
-  [EApproachStatus.INPROGRESS]: 'Đang triển khai',
-  [EApproachStatus.FINISHED]: 'Hoàn thành',
-};
-
-export const GENDER_OBJECT: Record<EGender, ReactNode> = {
-  [EGender.MAN]: 'Nam',
-  [EGender.WOMEN]: 'Nữ',
-  [EGender.OTHER]: 'Giới tính khác',
-};
 
 export const CONTROL_ELEMENTS = {
   BLOCK_OF_TEXT: (
@@ -265,31 +176,6 @@ export const STATUS_OBJECT: Record<EStatus, ReactNode> = {
   [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
   [EStatus.ALL]: null,
 };
-
-export const STATUS_OBJECT_STATIC: Partial<Record<EStatus, ReactNode>> = {
-  [EStatus.ACTIVE]: <ATag color="green">Hoạt động</ATag>,
-  [EStatus.INACTIVE]: <ATag color="red">Không hoạt động</ATag>,
-};
-
-export const ROLE_OPTIONS = Object.values(ERole).map((role) => ({
-  label: role,
-  value: role,
-}));
-
-export const STATUS_OPTIONS_STATIC = [
-  {
-    value: EStatus.ACTIVE,
-    label: <Typography.Text className="green">Hoạt động</Typography.Text>,
-  },
-  {
-    value: EStatus.INACTIVE,
-    label: <Typography.Text className="red">Không hoạt động</Typography.Text>,
-  },
-  {
-    value: null,
-    label: <Typography.Text>Tất cả</Typography.Text>,
-  },
-];
 
 export const EKYC_OPTIONS = [1, 2, 3].map((i) => ({
   label: `Cấp độ ${i}`,

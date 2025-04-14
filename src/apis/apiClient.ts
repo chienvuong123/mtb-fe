@@ -4,10 +4,7 @@ import axios from 'axios';
 import qs from 'qs';
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { BASE_URL } from '@constants/env';
-import { ROUTES } from '@routers/path';
 import type { BaseResponse } from '@dtos';
-
-const { LOGIN } = ROUTES;
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
@@ -30,9 +27,6 @@ const paramsSerializer = (params: Record<string, unknown>) => {
 const redirectToLogin = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('refresh_token');
-  if (window.location.pathname !== LOGIN) {
-    window.location.href = LOGIN;
-  }
 };
 
 export const apiClient = axios.create({

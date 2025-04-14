@@ -10,7 +10,6 @@ import { MPagination } from '@components/molecules';
 import { SORT_ORDER_FOR_CLIENT } from '@constants/masterData';
 import type { ColumnType } from 'antd/es/table';
 import clsx from 'clsx';
-import { getTableIndex } from '@pages/category/utils';
 import { useIsFetching } from '@tanstack/react-query';
 import { useProfile } from '@stores';
 import { OModalConfirm } from '../o-modal';
@@ -85,13 +84,6 @@ const OTable = <T extends object>({
                 minWidth: 76,
                 width: 112,
                 align: 'center',
-                render: (_: unknown, __: unknown, idx: number) => {
-                  return getTableIndex(
-                    idx,
-                    paginations?.pagination.current,
-                    paginations?.pagination.pageSize,
-                  );
-                },
               },
             ]),
         ...columnsWithSort,
@@ -147,7 +139,6 @@ const OTable = <T extends object>({
     columns,
     hideActions,
     sortDirection,
-    paginations,
     hideIndexColumn,
     rowKey,
     blockingEditIds,

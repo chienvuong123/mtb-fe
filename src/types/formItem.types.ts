@@ -1,4 +1,4 @@
-import type { TUploadMultimedia } from '@components/molecules';
+import type { TUploadMultimedia } from '@components/molecules/m-multimedia-upload';
 import type {
   ButtonProps,
   CheckboxProps,

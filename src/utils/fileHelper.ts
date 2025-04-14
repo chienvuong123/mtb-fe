@@ -17,28 +17,6 @@ export const downloadFile = (data: Blob, filename: string = 'DSKH.xlsx') => {
   URL.revokeObjectURL(url);
 };
 
-export const downloadBase64File = (
-  base64String: string,
-  fileName: string,
-  mimeType: string = MIME_TYPE.xlsx,
-): void => {
-  try {
-    // Convert Base64 to Blob
-    const byteCharacters = atob(base64String);
-    const byteNumbers = new Uint8Array(byteCharacters.length);
-
-    for (let i = 0; i < byteCharacters.length; i += 1) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-
-    const blob = new Blob([byteNumbers], { type: mimeType });
-
-    downloadFile(blob, fileName);
-  } catch (error) {
-    console.error('Lỗi khi tải xuống file:', error);
-  }
-};
-
 export const getBase64FromFile = (file: FileType): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();

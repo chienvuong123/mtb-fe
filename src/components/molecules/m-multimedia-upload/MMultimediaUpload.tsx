@@ -1,4 +1,3 @@
-import type { EMediaType } from '@dtos';
 import {
   downloadFile,
   formatFileSize,
@@ -31,6 +30,14 @@ import clsx from 'clsx';
 import { AButton } from '../../atoms/a-button';
 import { AVideoPlayer, type VideoPlayerProps } from '../../atoms/a-video';
 import { AAudioPlayer, type AudioPlayerProps } from '../../atoms/a-audio';
+
+export enum EMediaType {
+  IMAGE = 'IMAGE',
+  AUDIO = 'AUDIO',
+  VIDEO = 'VIDEO',
+  DOCUMENT = 'DOCUMENT',
+  ANIMATED = 'ANIMATED',
+}
 
 export interface TUploadMultimedia extends UploadProps {
   form?: FormInstance;

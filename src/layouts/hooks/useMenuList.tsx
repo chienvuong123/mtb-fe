@@ -1,13 +1,8 @@
 import {
-  FloppyDiskIcon,
   FolderManagementIcon,
   HelpCircleIcon,
   MarketingIcon,
-  MuslimIcon,
   PieChartIcon,
-  Setting02Icon,
-  Target02Icon,
-  UserSettingsIcon,
 } from '@assets/icons';
 import { Divider } from 'antd';
 import { ROUTES } from '@routers/path';
@@ -16,8 +11,7 @@ import {
   type MenuItemType,
   type SubMenuType,
 } from 'antd/es/menu/interface';
-import { useCallback, useMemo } from 'react';
-import { useProfile } from '@stores';
+import { useMemo } from 'react';
 import type { PageParams, SortParams } from '@dtos';
 
 type TypeWithSearch<T> = T & { search?: PageParams & SortParams };
@@ -39,49 +33,7 @@ type TItemType<T extends MenuItemTypeWithSearch = MenuItemTypeWithSearch> =
 export type TMenuItem = TItemType<MenuItemTypeWithSearch>;
 
 const useMenuList = () => {
-  const { isAuthenticated, hasPermission } = useProfile();
-
-  const addPermissionCheck = useCallback(
-    (items: TItemType<MenuItemTypeWithSearch>[]) => {
-      return items.map((item) => {
-        if (!item) return item;
-
-        if (
-          typeof item.key === 'string' &&
-          (item.key === 'main' ||
-            item.key === 'settings' ||
-            item.key.startsWith('divider'))
-        ) {
-          return item;
-        }
-
-        if ('children' in item && item.children) {
-          const newItem = {
-            ...item,
-            disabled: !hasPermission(item.key as string),
-          };
-          newItem.children = addPermissionCheck(
-            newItem.children as TItemType<MenuItemTypeWithSearch>[],
-          );
-          return newItem;
-        }
-
-        if (typeof item.key === 'string') {
-          return {
-            ...item,
-            disabled: !hasPermission(item.key),
-          };
-        }
-
-        return item;
-      });
-    },
-    [hasPermission],
-  );
-
   const menuList = useMemo(() => {
-    if (!isAuthenticated) return { menu: [], menuBottom: [] };
-
     const menuItems: TMenuItem[] = [
       {
         key: 'main',
@@ -99,78 +51,6 @@ const useMenuList = () => {
         icon: <PieChartIcon />,
       },
       {
-        key: ROUTES.CAMPAIGN.ROOT,
-        label: 'Quản lý chiến dịch',
-        icon: <FolderManagementIcon />,
-        children: [
-          {
-            key: ROUTES.CAMPAIGN.LIST,
-            label: 'Danh sách Campaign',
-          },
-          {
-            key: ROUTES.CAMPAIGN.CATEGORY.LIST,
-            label: 'Danh sách Category',
-          },
-        ],
-      },
-      {
-        key: ROUTES.CUSTOMER.ROOT,
-        label: 'Quản lý khách hàng',
-        icon: <MuslimIcon />,
-        children: [
-          {
-            key: ROUTES.CUSTOMER.LIST,
-            label: 'DS khách hàng Campaign',
-          },
-          {
-            key: ROUTES.CUSTOMER.GROUP,
-            label: 'Danh sách nhóm khách hàng theo Campaign',
-          },
-        ],
-      },
-      {
-        key: ROUTES.SALES.OPPORTUNITIES,
-        label: 'Quản lý cơ hội bán',
-        icon: <MarketingIcon />,
-      },
-      {
-        key: ROUTES.SCENARIO.ROOT,
-        label: 'Quản lý kịch bản',
-        icon: <Target02Icon />,
-        children: [
-          {
-            key: ROUTES.SCENARIO.LIST,
-            label: 'Danh sách kịch bản',
-          },
-        ],
-      },
-      {
-        key: ROUTES.SELLER.ROOT,
-        label: 'Quản lý Seller',
-        icon: <MuslimIcon />,
-        children: [
-          {
-            key: ROUTES.SELLER.LIST,
-            label: 'Danh sách Seller',
-          },
-          {
-            key: ROUTES.SELLER.ASSIGNMENT,
-            label: 'Phân công Seller',
-          },
-        ],
-      },
-      {
-        key: ROUTES.MULTIMEDIA.ROOT,
-        label: 'Kho đa phương tiện',
-        icon: <FloppyDiskIcon />,
-      },
-      {
-        key: ROUTES.ACCOUNT.MANAGEMENT.ROOT,
-        search: { current: 1, direction: 'asc', field: 'status', pageSize: 10 },
-        label: 'Quản lý tài khoản',
-        icon: <UserSettingsIcon />,
-      },
-      {
         key: ROUTES.CATEGORY.ROOT,
         label: 'Quản lý danh mục',
         icon: <FolderManagementIcon />,
@@ -185,61 +65,9 @@ const useMenuList = () => {
             key: ROUTES.CATEGORY.PRODUCT,
             label: 'Sản phẩm',
           },
-          // {
-          //   key: ROUTES.CATEGORY.MEDIA,
-          //   label: 'Loại đa phương tiện',
-          // },
-          {
-            key: ROUTES.CATEGORY.POSITION,
-            label: 'Chức vụ',
-          },
-          {
-            key: ROUTES.CATEGORY.BRANCH,
-            label: 'Chi nhánh',
-          },
-          {
-            key: ROUTES.CATEGORY.DEPLOYMENT_METHOD,
-            label: 'Phương thức triển khai',
-          },
           {
             key: ROUTES.CATEGORY.CUSTOMER_SEGMENT,
             label: 'Phân khúc khách hàng',
-          },
-          {
-            key: ROUTES.CATEGORY.UNIT_CALCULATION,
-            label: 'Đơn vị tính',
-          },
-          // {
-          //   key: ROUTES.CATEGORY.CUSTOMER_TYPE,
-          //   label: 'Loại khách hàng',
-          // },
-          {
-            key: ROUTES.CATEGORY.DEPARTMENT,
-            label: 'Phòng ban',
-          },
-          {
-            key: ROUTES.CATEGORY.EXPERTISE,
-            label: 'Chuyên môn',
-          },
-          {
-            key: ROUTES.CATEGORY.MB_IDENTIFICATION,
-            label: 'Loại giấy tờ định danh',
-          },
-          // {
-          //   key: ROUTES.CATEGORY.APPROACH,
-          //   label: 'Phương thức tiếp cận',
-          // },
-          {
-            key: ROUTES.CATEGORY.GENDER,
-            label: 'Giới tính',
-          },
-          {
-            key: ROUTES.CATEGORY.CUSTOMERS,
-            label: 'Khách hàng',
-          },
-          {
-            key: ROUTES.CATEGORY.TARGET,
-            label: 'Mục tiêu',
           },
         ],
       },
@@ -258,20 +86,9 @@ const useMenuList = () => {
           </>
         ),
       },
-      {
-        key: ROUTES.SETTING.ROOT,
-        label: 'Cài đặt',
-        icon: <Setting02Icon />,
-        children: [
-          {
-            key: ROUTES.SETTING.CONTROL,
-            label: 'Danh mục control',
-          },
-        ],
-      },
     ];
 
-    const menu = addPermissionCheck(menuItems);
+    const menu = menuItems;
 
     const menuBottom = [
       {
@@ -284,7 +101,7 @@ const useMenuList = () => {
     ];
 
     return { menu, menuBottom };
-  }, [isAuthenticated, addPermissionCheck]);
+  }, []);
 
   return menuList;
 };

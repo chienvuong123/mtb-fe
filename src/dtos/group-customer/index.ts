@@ -1,4 +1,3 @@
-import type { CampaignDTO } from '../campaign';
 import type { CategoryDTO } from '../category';
 import type {
   BaseEntity,
@@ -8,7 +7,7 @@ import type {
 } from '../common';
 
 export interface GroupCustomerDTO extends BaseEntity {
-  campaign: CampaignDTO;
+  campaign: unknown;
   campaignId: string;
   nameCampaign: string;
   category: CategoryDTO;
