@@ -28,8 +28,12 @@ const CustomerSearchForm: FC<
     isCampaignManager,
     isSellerManager,
     isSeller,
+    isReporter,
     hasPermission,
   } = useProfile();
+
+  const acceptedRole =
+    isAdmin || isCampaignManager || isSellerManager || isReporter;
 
   const categoryId = useWatch(['categoryId'], form);
   const campaignId = useWatch(['campaignId'], form);
@@ -43,7 +47,7 @@ const CustomerSearchForm: FC<
   const { data: customerSegmentList } = useCategoryOptionsListQuery(
     { categoryTypeCode: CategoryType.CUSTOMER_SEGMENT },
     false,
-    isAdmin || isCampaignManager || isSellerManager,
+    acceptedRole,
   );
   const { data: statusOptions } = useCategoryOptionsListQuery({
     categoryTypeCode: CategoryType.CUSTOMER_APPROACH_STATUS,
@@ -51,7 +55,7 @@ const CustomerSearchForm: FC<
   const { data: groupCustomerList } = useGroupCustomerOptionsListQuery(
     campaignId ?? '',
     false,
-    !!((isAdmin || isCampaignManager || isSellerManager) && campaignId),
+    !!(acceptedRole && campaignId),
   );
 
   const items: TFormItem[] = useMemo(

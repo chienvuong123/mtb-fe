@@ -11,15 +11,38 @@ import {
 } from '@assets/icons';
 import { Divider } from 'antd';
 import { ROUTES } from '@routers/path';
-import { type ItemType, type MenuItemType } from 'antd/es/menu/interface';
+import {
+  type MenuItemGroupType,
+  type MenuItemType,
+  type SubMenuType,
+} from 'antd/es/menu/interface';
 import { useCallback, useMemo } from 'react';
 import { useProfile } from '@stores';
+import type { PageParams, SortParams } from '@dtos';
+
+type TypeWithSearch<T> = T & { search?: PageParams & SortParams };
+
+type MenuItemTypeWithSearch = TypeWithSearch<MenuItemType>;
+type MenuDividerTypeWithSearch = TypeWithSearch<MenuItemType>;
+type SubMenuTypeWithSearch = TypeWithSearch<SubMenuType> & {
+  children?: MenuItemTypeWithSearch[];
+};
+type MenuItemGroupTypeWithSearch = TypeWithSearch<MenuItemGroupType>;
+
+type TItemType<T extends MenuItemTypeWithSearch = MenuItemTypeWithSearch> =
+  | T
+  | SubMenuTypeWithSearch
+  | MenuItemGroupTypeWithSearch
+  | MenuDividerTypeWithSearch
+  | null;
+
+export type TMenuItem = TItemType<MenuItemTypeWithSearch>;
 
 const useMenuList = () => {
   const { isAuthenticated, hasPermission } = useProfile();
 
   const addPermissionCheck = useCallback(
-    (items: ItemType<MenuItemType>[]) => {
+    (items: TItemType<MenuItemTypeWithSearch>[]) => {
       return items.map((item) => {
         if (!item) return item;
 
@@ -38,7 +61,7 @@ const useMenuList = () => {
             disabled: !hasPermission(item.key as string),
           };
           newItem.children = addPermissionCheck(
-            newItem.children as ItemType<MenuItemType>[],
+            newItem.children as TItemType<MenuItemTypeWithSearch>[],
           );
           return newItem;
         }
@@ -59,7 +82,7 @@ const useMenuList = () => {
   const menuList = useMemo(() => {
     if (!isAuthenticated) return { menu: [], menuBottom: [] };
 
-    const menuItems: ItemType<MenuItemType>[] = [
+    const menuItems: TMenuItem[] = [
       {
         key: 'main',
         className: 'item-category',
@@ -143,6 +166,7 @@ const useMenuList = () => {
       },
       {
         key: ROUTES.ACCOUNT.MANAGEMENT.ROOT,
+        search: { current: 1, direction: 'asc', field: 'status', pageSize: 10 },
         label: 'Quản lý tài khoản',
         icon: <UserSettingsIcon />,
       },
@@ -150,6 +174,12 @@ const useMenuList = () => {
         key: ROUTES.CATEGORY.ROOT,
         label: 'Quản lý danh mục',
         icon: <FolderManagementIcon />,
+        search: {
+          current: 1,
+          direction: 'desc',
+          field: 'createdDate',
+          pageSize: 10,
+        },
         children: [
           {
             key: ROUTES.CATEGORY.PRODUCT,

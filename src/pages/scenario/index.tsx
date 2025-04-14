@@ -62,6 +62,7 @@ const ScenarioPage: FC = () => {
     setFilters({
       ...values,
       status: status === EStatus.ALL ? undefined : status,
+      current: 1,
     });
   };
 
